@@ -137,6 +137,7 @@ import meteor.plugins.voidHunter.VoidHunterPlugin;
 import meteor.plugins.voidtempoross.VoidTemporossPlugin;
 import meteor.plugins.woodcutting.WoodcuttingPlugin;
 import meteor.plugins.worldmap.WorldMapPlugin;
+import meteor.plugins.worldmapwalker.WorldMapWalkerPlugin;
 import meteor.plugins.xpglobes.XpGlobesPlugin;
 import meteor.plugins.xptracker.XpTrackerPlugin;
 import meteor.plugins.zulrah.ZulrahPlugin;
@@ -289,7 +290,7 @@ public class PluginManager {
     plugins.add(new WalkerPlugin());
     plugins.add(new WoodcuttingPlugin());
     plugins.add(new WorldMapPlugin());
-    plugins.add(new WorldMapPlugin());
+    plugins.add(new WorldMapWalkerPlugin();
     plugins.add(new XpDropPlugin());
     plugins.add(new XpTrackerPlugin());
     plugins.add(new XpGlobesPlugin());
