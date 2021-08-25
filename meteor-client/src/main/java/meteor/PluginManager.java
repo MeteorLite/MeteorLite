@@ -289,7 +289,7 @@ public class PluginManager {
     plugins.add(new WalkerPlugin());
     plugins.add(new WoodcuttingPlugin());
     plugins.add(new WorldMapPlugin());
-    plugins.add(new WorldMapPlugin());
+    plugins.add(new WorldMapWalkerPlugin();
     plugins.add(new XpDropPlugin());
     plugins.add(new XpTrackerPlugin());
     plugins.add(new XpGlobesPlugin());
