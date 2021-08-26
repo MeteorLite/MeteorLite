@@ -18,6 +18,7 @@ import meteor.plugins.ammo.AmmoPlugin;
 import meteor.plugins.animsmoothing.AnimationSmoothingPlugin;
 import meteor.plugins.aoewarnings.AoeWarningPlugin;
 import meteor.plugins.api.example.chickenkiller.ChickenKillerPlugin;
+import meteor.plugins.api.example.deathevent.DeathEventPlugin;
 import meteor.plugins.api.example.walking.WalkerPlugin;
 import meteor.plugins.autoclicker.AutoClickerPlugin;
 import meteor.plugins.autologhop.AutoLogHop;
@@ -191,6 +192,7 @@ public class PluginManager {
     plugins.add(new CombatLevelPlugin());
     plugins.add(new CoxPlugin());
     plugins.add(new DagannothKingsPlugin());
+    plugins.add(new DeathEventPlugin());
     plugins.add(new DefaultWorldPlugin());
     plugins.add(new DemonicGorillaPlugin());
     plugins.add(new DevToolsPlugin());
