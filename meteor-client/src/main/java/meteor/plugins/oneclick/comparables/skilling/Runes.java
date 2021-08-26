@@ -71,7 +71,7 @@ public class Runes extends ClickCompare
 			event.setId(1);
 			event.setMenuAction(MenuAction.CC_OP);
 			event.setActionParam(-1);
-			event.setWidgetId(WidgetInfo.SPELL_MAGIC_IMBUE.getId());
+			event.setWidgetId(WidgetInfo.SPELL_MAGIC_IMBUE.getPackedId());
 		}
 	}
 

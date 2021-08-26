@@ -155,7 +155,7 @@ public class WidgetItem implements Interactable {
 
   @Override
   public void interact(int index, int menuAction) {
-    interact(getId(), menuAction, getSlot(), WidgetInfo.INVENTORY.getId());
+    interact(getId(), menuAction, getSlot(), WidgetInfo.INVENTORY.getPackedId());
   }
 
 

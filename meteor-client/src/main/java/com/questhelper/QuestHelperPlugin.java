@@ -48,18 +48,15 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 import javax.inject.Inject;
 import javax.inject.Named;
-import javax.swing.SwingUtilities;
 
 import lombok.Getter;
 import lombok.Setter;
-import lombok.extern.slf4j.Slf4j;
 import meteor.MeteorLiteClientModule;
 import meteor.eventbus.events.ClientShutdown;
 import meteor.eventbus.events.ConfigChanged;
@@ -107,16 +104,16 @@ public class QuestHelperPlugin extends Plugin
 
 	private static final int[] QUESTLIST_WIDGET_IDS = new int[]
 		{
-			WidgetInfo.QUESTLIST_FREE_CONTAINER.getId(),
-			WidgetInfo.QUESTLIST_MEMBERS_CONTAINER.getId(),
-			WidgetInfo.QUESTLIST_MINIQUEST_CONTAINER.getId(),
+			WidgetInfo.QUESTLIST_FREE_CONTAINER.getPackedId(),
+			WidgetInfo.QUESTLIST_MEMBERS_CONTAINER.getPackedId(),
+			WidgetInfo.QUESTLIST_MINIQUEST_CONTAINER.getPackedId(),
 		};
 
 	private static final int[] QUESTTAB_WIDGET_IDS = new int[]
 		{
 			RESIZABLE_VIEWPORT_BOTTOM_LINE_GROUP_ID,
-			WidgetInfo.RESIZABLE_VIEWPORT_QUESTS_TAB.getId(),
-			WidgetInfo.FIXED_VIEWPORT_QUESTS_TAB.getId(),
+			WidgetInfo.RESIZABLE_VIEWPORT_QUESTS_TAB.getPackedId(),
+			WidgetInfo.FIXED_VIEWPORT_QUESTS_TAB.getPackedId(),
 			QUESTTAB_GROUP_ID
 		};
 

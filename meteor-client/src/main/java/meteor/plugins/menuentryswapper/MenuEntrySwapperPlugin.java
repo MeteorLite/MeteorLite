@@ -51,7 +51,6 @@ import java.util.function.Supplier;
 import javax.inject.Inject;
 import lombok.Getter;
 import meteor.callback.ClientThread;
-import meteor.config.Config;
 import meteor.config.ConfigManager;
 import meteor.eventbus.Subscribe;
 import meteor.eventbus.events.ConfigChanged;
@@ -549,7 +548,7 @@ public class MenuEntrySwapperPlugin extends Plugin {
     }
 
     int widgetId = firstEntry.getParam1();
-    if (widgetId != WidgetInfo.INVENTORY.getId()) {
+    if (widgetId != WidgetInfo.INVENTORY.getPackedId()) {
       return;
     }
 
@@ -659,7 +658,7 @@ public class MenuEntrySwapperPlugin extends Plugin {
   @Subscribe
   public void onMenuOptionClicked(MenuOptionClicked event) {
     if (event.getMenuAction() != MenuAction.RUNELITE || event.getWidgetId() != WidgetInfo.INVENTORY
-        .getId()) {
+        .getPackedId()) {
       return;
     }
 

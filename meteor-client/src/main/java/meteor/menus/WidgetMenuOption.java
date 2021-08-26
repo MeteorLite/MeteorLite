@@ -78,7 +78,7 @@ public final class WidgetMenuOption {
     this.menuOption = menuOption;
     setMenuTarget(menuTarget);
     this.widget = widget;
-    this.widgetId = widget.getId();
+    this.widgetId = widget.getPackedId();
   }
 
   /**

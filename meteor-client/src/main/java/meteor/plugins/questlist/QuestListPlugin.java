@@ -295,8 +295,8 @@ public class QuestListPlugin extends Plugin
 		clientThread.invokeLater(() ->
 			client.runScript(
 				ScriptID.UPDATE_SCROLLBAR,
-				WidgetInfo.QUESTLIST_SCROLLBAR.getId(),
-				WidgetInfo.QUESTLIST_CONTAINER.getId(),
+				WidgetInfo.QUESTLIST_SCROLLBAR.getPackedId(),
+				WidgetInfo.QUESTLIST_CONTAINER.getPackedId(),
 				newHeight
 			));
 	}

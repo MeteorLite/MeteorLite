@@ -102,7 +102,7 @@ public class PrayerPotDrinkerPlugin extends Plugin
                                 restoreItem.getId(),
                                 MenuAction.ITEM_FIRST_OPTION.getId(),
                                 restoreItem.getSlot(),
-                                WidgetInfo.INVENTORY.getId()
+                                WidgetInfo.INVENTORY.getPackedId()
                         )
                 );
                 nextRestoreVal = r.nextInt(config.maxPrayerLevel() - config.minPrayerLevel()) + config.minPrayerLevel();
@@ -116,7 +116,7 @@ public class PrayerPotDrinkerPlugin extends Plugin
 
     private MenuEntry getConsumableEntry(String itemName, int itemId, int itemIndex)
     {
-        return new MenuEntry("Drink", "<col=ff9040>" + itemName, itemId, MenuAction.ITEM_FIRST_OPTION.getId(), itemIndex, WidgetInfo.INVENTORY.getId(), false);
+        return new MenuEntry("Drink", "<col=ff9040>" + itemName, itemId, MenuAction.ITEM_FIRST_OPTION.getId(), itemIndex, WidgetInfo.INVENTORY.getPackedId(), false);
     }
 
     public WidgetItem getRestoreItem()

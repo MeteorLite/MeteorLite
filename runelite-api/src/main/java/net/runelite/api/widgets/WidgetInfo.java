@@ -942,7 +942,7 @@ public enum WidgetInfo
    *
    * @return the ID
    */
-  public int getId()
+  public int getPackedId()
   {
     return groupId << 16 | childId;
   }
@@ -968,17 +968,7 @@ public enum WidgetInfo
   }
 
   /**
-   * Gets the packed widget ID.
-   *
-   * @return the packed ID
-   */
-  public int getPackedId()
-  {
-    return groupId << 16 | childId;
-  }
-
-  /**
-   * Utility method that converts an ID returned by {@link #getId()} back
+   * Utility method that converts an ID returned by {@link #getPackedId()} back
    * to its group ID.
    *
    * @param id passed group-child ID
@@ -990,7 +980,7 @@ public enum WidgetInfo
   }
 
   /**
-   * Utility method that converts an ID returned by {@link #getId()} back
+   * Utility method that converts an ID returned by {@link #getPackedId()} back
    * to its child ID.
    *
    * @param id passed group-child ID

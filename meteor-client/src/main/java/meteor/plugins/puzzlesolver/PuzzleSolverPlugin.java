@@ -133,35 +133,35 @@ public class PuzzleSolverPlugin extends Plugin
 		}
 
 		Combination combination;
-		if (widgetId == LIGHT_BOX_BUTTON_A.getId())
+		if (widgetId == LIGHT_BOX_BUTTON_A.getPackedId())
 		{
 			combination = Combination.A;
 		}
-		else if (widgetId == LIGHT_BOX_BUTTON_B.getId())
+		else if (widgetId == LIGHT_BOX_BUTTON_B.getPackedId())
 		{
 			combination = Combination.B;
 		}
-		else if (widgetId == LIGHT_BOX_BUTTON_C.getId())
+		else if (widgetId == LIGHT_BOX_BUTTON_C.getPackedId())
 		{
 			combination = Combination.C;
 		}
-		else if (widgetId == LIGHT_BOX_BUTTON_D.getId())
+		else if (widgetId == LIGHT_BOX_BUTTON_D.getPackedId())
 		{
 			combination = Combination.D;
 		}
-		else if (widgetId == LIGHT_BOX_BUTTON_E.getId())
+		else if (widgetId == LIGHT_BOX_BUTTON_E.getPackedId())
 		{
 			combination = Combination.E;
 		}
-		else if (widgetId == LIGHT_BOX_BUTTON_F.getId())
+		else if (widgetId == LIGHT_BOX_BUTTON_F.getPackedId())
 		{
 			combination = Combination.F;
 		}
-		else if (widgetId == LIGHT_BOX_BUTTON_G.getId())
+		else if (widgetId == LIGHT_BOX_BUTTON_G.getPackedId())
 		{
 			combination = Combination.G;
 		}
-		else if (widgetId == LIGHT_BOX_BUTTON_H.getId())
+		else if (widgetId == LIGHT_BOX_BUTTON_H.getPackedId())
 		{
 			combination = Combination.H;
 		}

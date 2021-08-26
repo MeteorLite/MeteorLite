@@ -6,8 +6,10 @@ import net.runelite.api.*;
 import net.runelite.api.widgets.WidgetInfo;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 public class Inventory {
 
@@ -18,18 +20,12 @@ public class Inventory {
             return items;
         }
 
-        for (Item item : container.getItems()) {
-            if (!Game.getClient().isItemDefinitionCached(item.getId())) {
-                GameThread.invokeLater(() -> Game.getClient().getItemComposition(item.getId()));
-            }
+        Inventory.cacheItems(container);
 
+        for (Item item : container.getItems()) {
             if (item.getId() != -1 && item.getName() != null && !item.getName().equals("null")) {
-                WidgetInfo widgetInfo = WidgetInfo.INVENTORY;
-                item.setIdentifier(item.getId());
-                item.setWidgetInfo(widgetInfo);
                 item.setActionParam(item.getSlot());
-                item.setWidgetId(widgetInfo.getId());
-                item.setActions(Game.getClient().getItemComposition(item.getId()).getInventoryActions());
+                item.setWidgetId(item.calculateWidgetId(WidgetInfo.INVENTORY));
 
                 if (filter.test(item)) {
                     items.add(item);
@@ -134,5 +130,21 @@ public class Inventory {
 
             return false;
         });
+    }
+
+    public static void cacheItems(ItemContainer container) {
+        List<Item> uncached = Arrays.stream(container.getItems())
+                .filter(x -> !Game.getClient().isItemDefinitionCached(x.getId()))
+                .collect(Collectors.toList());
+
+        if (!uncached.isEmpty()) {
+            GameThread.invokeLater(() -> {
+                for (Item item : uncached) {
+                    Game.getClient().getItemComposition(item.getId());
+                }
+
+                return null;
+            });
+        }
     }
 }

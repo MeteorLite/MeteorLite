@@ -3,7 +3,6 @@ package meteor.plugins.oneclick3t4g;
 import com.google.inject.Provides;
 import meteor.config.ConfigManager;
 import meteor.eventbus.Subscribe;
-import meteor.plugins.api.items.Inventory;
 import net.runelite.api.*;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.*;
@@ -108,7 +107,7 @@ public class OneClick3t4g extends Plugin {
             }
             if(knife!=null) {
                 event.setSelectedItemIndex(knife.getSlot());
-                client.setSelectedItemWidget(WidgetInfo.INVENTORY.getId());
+                client.setSelectedItemWidget(WidgetInfo.INVENTORY.getPackedId());
                 client.setSelectedItemSlot(knife.getSlot());
                 client.setSelectedItemID(knife.getId());
                 stage = 1;
@@ -169,7 +168,7 @@ public class OneClick3t4g extends Plugin {
                 }
                 if(knife!=null) {
                     event.setSelectedItemIndex(knife.getSlot());
-                    client.setSelectedItemWidget(WidgetInfo.INVENTORY.getId());
+                    client.setSelectedItemWidget(WidgetInfo.INVENTORY.getPackedId());
                     client.setSelectedItemSlot(knife.getSlot());
                     client.setSelectedItemID(knife.getId());
                     stage = 1;

@@ -70,7 +70,7 @@ public abstract class ClickCompare
 		final Pair<Integer, Integer> pair = findItem(id);
 		if (pair.getLeft() != -1)
 		{
-			client.setSelectedItemWidget(WidgetInfo.INVENTORY.getId());
+			client.setSelectedItemWidget(WidgetInfo.INVENTORY.getPackedId());
 			client.setSelectedItemSlot(pair.getRight());
 			client.setSelectedItemID(pair.getLeft());
 			return true;
@@ -87,7 +87,7 @@ public abstract class ClickCompare
 		final Pair<Integer, Integer> pair = findItem(ids);
 		if (pair.getLeft() != -1)
 		{
-			client.setSelectedItemWidget(WidgetInfo.INVENTORY.getId());
+			client.setSelectedItemWidget(WidgetInfo.INVENTORY.getPackedId());
 			client.setSelectedItemSlot(pair.getRight());
 			client.setSelectedItemID(pair.getLeft());
 			return true;

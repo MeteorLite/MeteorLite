@@ -340,7 +340,7 @@ public class BankTagsPlugin extends Plugin implements MouseWheelListener
 	{
 		MenuEntry[] entries = client.getMenuEntries();
 
-		if (event.getParam1() == WidgetInfo.BANK_ITEM_CONTAINER.getId()
+		if (event.getParam1() == WidgetInfo.BANK_ITEM_CONTAINER.getPackedId()
 			&& event.getOption().equals("Examine"))
 		{
 			Widget container = client.getWidget(WidgetInfo.BANK_ITEM_CONTAINER);
@@ -372,7 +372,7 @@ public class BankTagsPlugin extends Plugin implements MouseWheelListener
 	@Subscribe
 	public void onMenuOptionClicked(MenuOptionClicked event)
 	{
-		if (event.getParam1() == WidgetInfo.BANK_ITEM_CONTAINER.getId()
+		if (event.getParam1() == WidgetInfo.BANK_ITEM_CONTAINER.getPackedId()
 			&& event.getMenuAction() == MenuAction.RUNELITE
 			&& event.getMenuOption().startsWith(EDIT_TAGS_MENU_OPTION))
 		{
@@ -559,8 +559,8 @@ public class BankTagsPlugin extends Plugin implements MouseWheelListener
 		final int itemContainerScroll = bankItemContainer.getScrollY();
 		clientThread.invokeLater(() ->
 			client.runScript(ScriptID.UPDATE_SCROLLBAR,
-				WidgetInfo.BANK_SCROLLBAR.getId(),
-				WidgetInfo.BANK_ITEM_CONTAINER.getId(),
+				WidgetInfo.BANK_SCROLLBAR.getPackedId(),
+				WidgetInfo.BANK_ITEM_CONTAINER.getPackedId(),
 				itemContainerScroll));
 
 	}

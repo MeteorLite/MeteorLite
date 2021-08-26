@@ -14,9 +14,11 @@ import net.runelite.api.widgets.WidgetID;
 import net.runelite.api.widgets.WidgetInfo;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
+import java.util.stream.Collectors;
 
 public class Bank {
 	private static final int WITHDRAW_MODE_VARBIT = 3958;
@@ -220,18 +222,11 @@ public class Bank {
 			return items;
 		}
 
-		for (Item item : container.getItems()) {
-			if (!Game.getClient().isItemDefinitionCached(item.getId())) {
-				GameThread.invokeLater(() -> Game.getClient().getItemComposition(item.getId()));
-			}
+		Inventory.cacheItems(container);
 
+		for (Item item : container.getItems()) {
 			if (item.getId() != -1 && item.getName() != null && !item.getName().equals("null")) {
-				WidgetInfo widgetInfo = WidgetInfo.BANK_INVENTORY_ITEMS_CONTAINER;
-				item.setIdentifier(0);
-				item.setWidgetInfo(widgetInfo);
-				item.setActionParam(item.getSlot());
-				item.setWidgetId(widgetInfo.getId());
-				item.setActions(Widgets.get(widgetInfo).getActions());
+				item.setWidgetId(item.calculateWidgetId(WidgetInfo.BANK_INVENTORY_ITEMS_CONTAINER));
 
 				if (filter.test(item)) {
 					items.add(item);
@@ -249,14 +244,11 @@ public class Bank {
 			return items;
 		}
 
+		Inventory.cacheItems(container);
+
 		for (Item item : container.getItems()) {
 			if (item.getId() != -1 && item.getName() != null && !item.getName().equals("null")) {
-				WidgetInfo widgetInfo = WidgetInfo.BANK_ITEM_CONTAINER;
-				item.setIdentifier(0);
-				item.setWidgetInfo(widgetInfo);
-				item.setActionParam(item.getSlot());
-				item.setWidgetId(widgetInfo.getId());
-				item.setActions(Widgets.get(widgetInfo).getActions());
+				item.setWidgetId(item.calculateWidgetId(WidgetInfo.BANK_ITEM_CONTAINER));
 
 				if (filter.test(item)) {
 					items.add(item);

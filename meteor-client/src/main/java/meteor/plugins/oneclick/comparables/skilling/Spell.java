@@ -52,7 +52,7 @@ public class Spell extends ClickCompare
 
 		final int widgetId = firstEntry.getParam1();
 
-		if (widgetId == WidgetInfo.INVENTORY.getId())
+		if (widgetId == WidgetInfo.INVENTORY.getPackedId())
 		{
 			final Widget spell = client.getWidget(spellSelection.getWidgetInfo());
 
@@ -276,9 +276,9 @@ public class Spell extends ClickCompare
 				event.setMenuAction(MenuAction.ITEM_USE_ON_WIDGET);
 				event.setId(pair.getLeft());
 				event.setActionParam(pair.getRight());
-				event.setWidgetId(WidgetInfo.INVENTORY.getId());
+				event.setWidgetId(WidgetInfo.INVENTORY.getPackedId());
 				client.setSelectedSpellName("<col=00ff00>" + spell + "</col>" + "<col=ffffff>");
-				client.setSelectedSpellWidget(spellSelection.getWidgetInfo().getId());
+				client.setSelectedSpellWidget(spellSelection.getWidgetInfo().getPackedId());
 			}
 		}
 		else if (reset.test(event))

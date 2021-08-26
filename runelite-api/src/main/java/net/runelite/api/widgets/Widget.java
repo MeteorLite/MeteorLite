@@ -27,10 +27,8 @@ package net.runelite.api.widgets;
 import java.awt.Rectangle;
 import java.util.Collection;
 import javax.annotation.Nullable;
-import net.runelite.api.FontTypeFace;
-import net.runelite.api.Interactable;
-import net.runelite.api.Point;
-import net.runelite.api.SpritePixels;
+
+import net.runelite.api.*;
 
 /**
  * Represents an on-screen UI element that is drawn on the canvas.
@@ -1063,4 +1061,25 @@ public interface Widget extends Interactable {
    * Gets the image which is (or should be) drawn on this widget
    */
   SpritePixels getSprite();
+
+  static int getMenuIdentifier(Widget widget, int actionIndex) {
+    return switch (widget.getType()) {
+      case WidgetType.LAYER, WidgetType.RECTANGLE -> actionIndex + 1;
+      case WidgetType.GRAPHIC -> widget.getTargetVerb() == null || widget.getTargetVerb().isEmpty() ? actionIndex + 1 : 0;
+      case WidgetType.TEXT, WidgetType.MODEL -> 0;
+      default -> throw new IllegalArgumentException("Widget: no identifier for " + actionIndex);
+    };
+  }
+
+  static int getActionId(Widget widget, int actionIndex) {
+    return switch (widget.getType()) {
+      case WidgetType.LAYER, WidgetType.RECTANGLE -> MenuAction.CC_OP.getId();
+      case WidgetType.GRAPHIC -> widget.getTargetVerb() == null || widget.getTargetVerb().isEmpty()
+              ? MenuAction.CC_OP.getId() : MenuAction.WIDGET_TYPE_2.getId();
+      case WidgetType.INVENTORY -> MenuAction.WIDGET_TYPE_2.getId();
+      case WidgetType.TEXT -> MenuAction.WIDGET_TYPE_6.getId();
+      case WidgetType.MODEL -> MenuAction.WIDGET_TYPE_1.getId();
+      default -> throw new IllegalArgumentException("Widget: no identifier for " + actionIndex);
+    };
+  }
 }

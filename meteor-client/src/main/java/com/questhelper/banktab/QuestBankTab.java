@@ -51,7 +51,6 @@ import net.runelite.api.SpriteID;
 import net.runelite.api.VarClientStr;
 import net.runelite.api.events.ClientTick;
 import net.runelite.api.events.GrandExchangeSearched;
-import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.events.ScriptCallbackEvent;
 import net.runelite.api.events.ScriptPostFired;
@@ -370,8 +369,8 @@ public class QuestBankTab
 		final int itemContainerScroll = bankItemContainer.getScrollY();
 		clientThread.invokeLater(() ->
 			client.runScript(ScriptID.UPDATE_SCROLLBAR,
-				WidgetInfo.BANK_SCROLLBAR.getId(),
-				WidgetInfo.BANK_ITEM_CONTAINER.getId(),
+				WidgetInfo.BANK_SCROLLBAR.getPackedId(),
+				WidgetInfo.BANK_ITEM_CONTAINER.getPackedId(),
 				itemContainerScroll));
 	}
 

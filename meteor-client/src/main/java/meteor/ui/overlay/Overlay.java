@@ -34,7 +34,6 @@ import javax.inject.Inject;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
-import meteor.MeteorLiteClientModule;
 import meteor.plugins.Plugin;
 import meteor.ui.overlay.components.LayoutableRenderableEntity;
 import net.runelite.api.Client;
@@ -90,7 +89,7 @@ public abstract class Overlay implements LayoutableRenderableEntity {
   }
 
   protected void drawAfterLayer(WidgetInfo layer) {
-    drawHooks.add(layer.getId());
+    drawHooks.add(layer.getPackedId());
   }
 
   public void onMouseOver() {

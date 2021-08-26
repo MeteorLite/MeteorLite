@@ -348,8 +348,8 @@ public class FairyRingPlugin extends Plugin
 		list.revalidateScroll();
 		client.runScript(
 			ScriptID.UPDATE_SCROLLBAR,
-			WidgetInfo.FAIRY_RING_LIST_SCROLLBAR.getId(),
-			WidgetInfo.FAIRY_RING_LIST.getId(),
+			WidgetInfo.FAIRY_RING_LIST_SCROLLBAR.getPackedId(),
+			WidgetInfo.FAIRY_RING_LIST.getPackedId(),
 			newHeight
 		);
 	}

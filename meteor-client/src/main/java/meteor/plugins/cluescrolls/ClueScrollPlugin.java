@@ -969,8 +969,8 @@ public class ClueScrollPlugin extends Plugin {
 
     client.runScript(
         ScriptID.UPDATE_SCROLLBAR,
-        scrollbar.getId(),
-        list.getId(),
+        scrollbar.getPackedId(),
+        list.getPackedId(),
         newScroll
     );
   }

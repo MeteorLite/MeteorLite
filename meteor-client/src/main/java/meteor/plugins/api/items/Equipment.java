@@ -2,7 +2,6 @@ package meteor.plugins.api.items;
 
 import meteor.plugins.api.game.Game;
 import meteor.plugins.api.game.GameThread;
-import meteor.plugins.api.widgets.Widgets;
 import net.runelite.api.*;
 import net.runelite.api.widgets.WidgetInfo;
 
@@ -19,19 +18,15 @@ public class Equipment {
             return items;
         }
 
-        for (Item item : container.getItems()) {
-            if (!Game.getClient().isItemDefinitionCached(item.getId())) {
-                GameThread.invokeLater(() -> Game.getClient().getItemComposition(item.getId()));
-            }
+        Inventory.cacheItems(container);
 
+        for (Item item : container.getItems()) {
             if (item.getId() != -1 && item.getName() != null && !item.getName().equals("null")) {
                 WidgetInfo widgetInfo = getEquipmentWidgetInfo(item.getSlot());
+                item.setActionParam(-1);
+
                 if (widgetInfo != null) {
-                    item.setIdentifier(0);
-                    item.setActionParam(-1);
                     item.setWidgetId(widgetInfo.getPackedId());
-                    item.setActions(Widgets.get(widgetInfo).getActions());
-                    item.setWidgetInfo(widgetInfo);
 
                     if (filter.test(item)) {
                         items.add(item);

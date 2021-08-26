@@ -31,4 +31,8 @@ public class Widgets {
 
         return Arrays.asList(widgets);
     }
+
+    public static Widget fromId(int packedId) {
+        return Game.getClient().getWidget(packedId);
+    }
 }

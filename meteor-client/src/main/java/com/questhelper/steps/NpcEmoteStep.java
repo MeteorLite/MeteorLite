@@ -118,8 +118,8 @@ public class NpcEmoteStep extends NpcStep
 
 		client.runScript(
 			ScriptID.UPDATE_SCROLLBAR,
-			WidgetInfo.EMOTE_SCROLLBAR.getId(),
-			WidgetInfo.EMOTE_CONTAINER.getId(),
+			WidgetInfo.EMOTE_SCROLLBAR.getPackedId(),
+			WidgetInfo.EMOTE_CONTAINER.getPackedId(),
 			newScroll
 		);
 	}
