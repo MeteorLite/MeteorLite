@@ -250,6 +250,7 @@ public interface GauntletConfig extends Config
 		return ResourceFilter.OFF;
 	}
 
+	@Range(min = 1, max = 15)
 	@ConfigItem(
 		name = "Ore",
 		description = "The desired number of ores to acquire.",
@@ -265,6 +266,7 @@ public interface GauntletConfig extends Config
 		return 3;
 	}
 
+	@Range(min = 1, max = 15)
 	@ConfigItem(
 		name = "Phren bark",
 		description = "The desired number of phren barks to acquire.",
@@ -280,6 +282,7 @@ public interface GauntletConfig extends Config
 		return 3;
 	}
 
+	@Range(min = 1, max = 15)
 	@ConfigItem(
 		name = "Linum tirinum",
 		description = "The desired number of linum tirinums to acquire.",
@@ -295,6 +298,7 @@ public interface GauntletConfig extends Config
 		return 3;
 	}
 
+	@Range(min = 1, max = 5)
 	@ConfigItem(
 		name = "Grym leaf",
 		description = "The desired number of grym leaves to acquire.",
@@ -310,6 +314,7 @@ public interface GauntletConfig extends Config
 		return 2;
 	}
 
+	@Range(min = 1, max = 3)
 	@ConfigItem(
 		name = "Weapon frames",
 		description = "The desired number of weapon frames to acquire.",
@@ -325,6 +330,7 @@ public interface GauntletConfig extends Config
 		return 2;
 	}
 
+	@Range(min = 1, max = 28)
 	@ConfigItem(
 		name = "Paddlefish",
 		description = "The desired number of paddlefish to acquire.",
@@ -340,6 +346,7 @@ public interface GauntletConfig extends Config
 		return 20;
 	}
 
+	@Range(textInput = true)
 	@ConfigItem(
 		name = "Crystal shards",
 		description = "The desired number of crystal shards to acquire.",

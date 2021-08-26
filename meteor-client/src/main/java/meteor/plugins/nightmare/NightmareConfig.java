@@ -184,7 +184,7 @@ public interface NightmareConfig extends Config
 	@Alpha
 	@ConfigItem(
 		keyName = "huskBorderCol",
-		name = "Husk Target Border Color",
+		name = "Husk Target Border",
 		description = "Colour the edges of the area highlighted by poison special will be",
 		position = 11,
 		section = generalSection
@@ -222,7 +222,7 @@ public interface NightmareConfig extends Config
 	@Alpha
 	@ConfigItem(
 		keyName = "nightmareChargeBorderCol",
-		name = "Nightmare Charge Border Color",
+		name = "NM Charge Border",
 		description = "Color the edges of the area highlighted by the nightmare's charge attack",
 		position = 14,
 		section = generalSection
@@ -236,7 +236,7 @@ public interface NightmareConfig extends Config
 	@Alpha
 	@ConfigItem(
 		keyName = "nightmareChargeCol",
-		name = "Nightmare charge fill color",
+		name = "NM charge fill",
 		description = "Color the fill of the area highlighted by the nightmare's charge attack",
 		position = 15,
 		section = generalSection
@@ -248,7 +248,7 @@ public interface NightmareConfig extends Config
 
 	@ConfigItem(
 		keyName = "flash",
-		name = "Flash your screen when you get impregnated",
+		name = "Flash screen when infected",
 		description = "Your Screen flashes when the nightmare infects you with her parasite",
 		position = 16,
 		section = generalSection

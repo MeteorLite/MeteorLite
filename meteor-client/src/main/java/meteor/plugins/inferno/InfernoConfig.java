@@ -26,10 +26,7 @@ package meteor.plugins.inferno;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import meteor.config.Config;
-import meteor.config.ConfigGroup;
-import meteor.config.ConfigItem;
-import meteor.config.ConfigSection;
+import meteor.config.*;
 import meteor.plugins.inferno.displaymodes.*;
 
 import java.awt.*;
@@ -222,6 +219,7 @@ public interface InfernoConfig extends Config
 		return InfernoSafespotDisplayMode.AREA;
 	}
 
+	@Range(min = 0, max = 12)
 	@ConfigItem(
 		position = 5,
 		keyName = "safespotsCheckSize",
@@ -718,7 +716,7 @@ public interface InfernoConfig extends Config
 	@ConfigItem(
 		position = 0,
 		keyName = "indicateActiveHealersZuk",
-		name = "Indicate Active Healers (UNTESTED)",
+		name = "Indicate Active Healers",
 		description = "Indicate healers that are still healing Zuk",
 		section = ZukHealersSection
 	)
@@ -742,7 +740,7 @@ public interface InfernoConfig extends Config
 	@ConfigItem(
 		position = 1,
 		keyName = "safespotsZukShieldBeforeHealers",
-		name = "Safespots (Before Healers)",
+		name = "Safespots(Before Healers)",
 		description = "Indicate the zuk shield safespots. 'Tile Safespots' in the 'Safespots' category needs to be turned on for this to take effect. Shield must go back and forth at least 1 time before the predict option will work.",
 		section = ZukSection
 	)
@@ -754,7 +752,7 @@ public interface InfernoConfig extends Config
 	@ConfigItem(
 		position = 2,
 		keyName = "safespotsZukShieldAfterHealers",
-		name = "Safespots (After Healers)",
+		name = "Safespots(After Healers)",
 		description = "Indicate the zuk shield safespots. 'Tile Safespots' in the 'Safespots' category needs to be turned on for this to take effect.",
 		section = ZukSection
 	)

@@ -24,10 +24,7 @@
  */
 package meteor.plugins.vorkath;
 
-import meteor.config.Config;
-import meteor.config.ConfigGroup;
-import meteor.config.ConfigItem;
-import meteor.config.ConfigSection;
+import meteor.config.*;
 
 
 @ConfigGroup("vorkath")
@@ -65,6 +62,7 @@ public interface VorkathConfig extends Config
 		return true;
 	}
 
+	@Range (min = 0, max = 25)
 	@ConfigItem(
 		keyName = "acidFreePathMinLength",
 		name = "Minimum Length Acid Free Path",
