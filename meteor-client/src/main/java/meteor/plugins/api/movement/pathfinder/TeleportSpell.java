@@ -1,6 +1,7 @@
 package meteor.plugins.api.movement.pathfinder;
 
 import meteor.plugins.api.game.Skills;
+import meteor.plugins.api.game.Vars;
 import meteor.plugins.api.game.Worlds;
 import meteor.plugins.api.magic.Magic;
 import meteor.plugins.api.magic.Regular;
@@ -119,7 +120,9 @@ public enum TeleportSpell {
             return false;
         }
 
-        // TODO: check if ardy spell and plague city completed
+        if (this == ARDOUGNE_TELEPORT && Vars.getVarp(165) < 30) {
+            return false;
+        }
 
         return haveRunesAvailable();
     }
