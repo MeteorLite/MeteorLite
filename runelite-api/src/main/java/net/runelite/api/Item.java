@@ -122,7 +122,7 @@ public class Item implements Interactable {
 				itemWidget.interact(index, menuAction);
 			}
 			case EQUIPMENT -> interact(index + 1, menuAction, actionParam, widgetId);
-			case BANK, BANK_INVENTORY -> interact(index, menuAction, actionParam, widgetId);
+			case BANK, BANK_INVENTORY -> interact(index, menuAction, getSlot(), widgetId);
 			case INVENTORY -> interact(getId(), menuAction, actionParam, widgetId);
 			case UNKNOWN -> throw new IllegalStateException("Couldn't detect Item type for itemId: " + getId());
 		}

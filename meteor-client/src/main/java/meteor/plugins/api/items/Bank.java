@@ -171,13 +171,7 @@ public class Bank {
 	}
 
 	public static void withdraw(Predicate<Item> filter, int amount, WithdrawMode withdrawMode) {
-		Item item = getFirst(filter.and(x -> {
-			if (Game.getClient().isItemDefinitionCached(x.getId())) {
-				return Game.getClient().getItemComposition(x.getId()).getPlaceholderTemplateId() == -1;
-			}
-
-			return GameThread.invokeLater(() -> Game.getClient().getItemComposition(x.getId()).getPlaceholderTemplateId() == -1);
-		}));
+		Item item = getFirst(filter.and(x -> GameThread.invokeLater(() -> Game.getClient().getItemComposition(x.getId()).getPlaceholderTemplateId() == -1)));
 
 		if (item == null) {
 			return;
@@ -224,9 +218,12 @@ public class Bank {
 
 		Inventory.cacheItems(container);
 
-		for (Item item : container.getItems()) {
+		Item[] containerItems = container.getItems();
+		for (int i = 0, containerItemsLength = containerItems.length; i < containerItemsLength; i++) {
+			Item item = containerItems[i];
 			if (item.getId() != -1 && item.getName() != null && !item.getName().equals("null")) {
-				item.setWidgetId(item.calculateWidgetId(WidgetInfo.BANK_INVENTORY_ITEMS_CONTAINER));
+				item.setWidgetId(WidgetInfo.BANK_INVENTORY_ITEMS_CONTAINER.getPackedId());
+				item.setSlot(i);
 
 				if (filter.test(item)) {
 					items.add(item);
@@ -246,9 +243,12 @@ public class Bank {
 
 		Inventory.cacheItems(container);
 
-		for (Item item : container.getItems()) {
+		Item[] containerItems = container.getItems();
+		for (int i = 0, containerItemsLength = containerItems.length; i < containerItemsLength; i++) {
+			Item item = containerItems[i];
 			if (item.getId() != -1 && item.getName() != null && !item.getName().equals("null")) {
-				item.setWidgetId(item.calculateWidgetId(WidgetInfo.BANK_ITEM_CONTAINER));
+				item.setWidgetId(WidgetInfo.BANK_ITEM_CONTAINER.getPackedId());
+				item.setSlot(i);
 
 				if (filter.test(item)) {
 					items.add(item);

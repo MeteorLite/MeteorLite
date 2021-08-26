@@ -11,6 +11,7 @@ import meteor.plugins.api.entities.Players;
 import meteor.plugins.api.entities.TileItems;
 import meteor.plugins.api.entities.TileObjects;
 import meteor.plugins.api.game.Combat;
+import meteor.plugins.api.items.Bank;
 import meteor.plugins.api.items.Equipment;
 import meteor.plugins.api.items.Inventory;
 import meteor.plugins.api.movement.Movement;
@@ -62,6 +63,26 @@ public class ChickenKillerPlugin extends Plugin {
 
             try {
                 if (Movement.isWalking()) {
+                    return;
+                }
+
+                if (Bank.isOpen()) {
+                    if (!Inventory.contains(995)) {
+                        logger.debug("Withdrawing coins");
+                        Bank.withdrawAll(995, Bank.WithdrawMode.DEFAULT);
+                        return;
+                    }
+
+                    if (Inventory.contains("Feather")) {
+                        logger.debug("Depositing feathers");
+                        Bank.depositAll("Feather");
+                        return;
+                    }
+                }
+
+                Item shield = Equipment.getFirst("Iron kiteshield (t)");
+                if (shield != null) {
+                    shield.interact("Remove");
                     return;
                 }
 
