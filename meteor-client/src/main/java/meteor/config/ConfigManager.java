@@ -86,6 +86,8 @@ import meteor.eventbus.events.ConfigChanged;
 import meteor.plugins.Plugin;
 import meteor.plugins.PluginDescriptor;
 import meteor.util.ColorUtil;
+import net.runelite.api.Client;
+import net.runelite.api.GameState;
 import net.runelite.api.coords.WorldPoint;
 import org.sponge.util.Logger;
 import org.sponge.util.Message;
@@ -108,21 +110,24 @@ public class ConfigManager {
   private final Logger log = new Logger("ConfigManager");
   private Properties properties = new Properties();
   private boolean loaded;
+  private Client client;
 
   @Inject
   public ConfigManager(
       @Named("config") File config,
       ScheduledExecutorService scheduledExecutorService,
-      EventBus eventBus) {
+      EventBus eventBus,
+      Client client) {
     this.settingsFileInput = config;
     this.eventBus = eventBus;
     this.propertiesFile = getPropertiesFile();
+    this.client = client;
 
     scheduledExecutorService.scheduleWithFixedDelay(this::saveProperties, 30, 30, TimeUnit.SECONDS);
     this.eventBus.register(this);
   }
 
-  private void saveProperties() {
+  public void saveProperties() {
     saveProperties(false);
   }
 
@@ -409,7 +414,7 @@ public class ConfigManager {
     log.debug("Configuration loaded");
   }
 
-  private void saveProperties(boolean forced) {
+  public void saveProperties(boolean forced) {
     try {
       if (loaded || forced)
       {
@@ -498,11 +503,7 @@ public class ConfigManager {
       oldValue = (String) properties.setProperty(wholeKey, value);
     }
 
-    String message = Message.newMessage()
-            .add(ANSI_YELLOW, "set config - ")
-            .addDefault("{" + wholeKey + "}{" + value + "}")
-        .build();
-    //log.debug(message);
+    log.debug("set config {}-{} ", wholeKey, value);
     handler.invalidate();
 
     ConfigChanged configChanged = new ConfigChanged();
@@ -513,6 +514,9 @@ public class ConfigManager {
     configChanged.setNewValue(value);
 
     eventBus.post(configChanged);
+
+    if (client.getGameState() == GameState.LOGGED_IN)
+    saveProperties();
   }
 
   public void setConfiguration(String groupName, String profile, String key, Object value) {

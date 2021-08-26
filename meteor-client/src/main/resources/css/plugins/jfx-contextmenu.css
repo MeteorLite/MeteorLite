@@ -1,0 +1,17 @@
+.root {
+  -fx-background-color: #121212;
+  -fx-padding: 10;
+}
+
+.context-menu {
+  -fx-background-color: #212121;
+  -fx-text-fill: cyan;
+}
+
+.menu-item .label {
+  -fx-text-fill: cyan;
+}
+
+.menu-item:focused .label {
+  -fx-text-fill: cyan;
+}

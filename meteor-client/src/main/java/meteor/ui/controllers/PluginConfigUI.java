@@ -262,7 +262,8 @@ public class PluginConfigUI {
     });
 
     name.addEventHandler(MouseEvent.MOUSE_EXITED, (e) -> {
-      tooltip.hide();
+      if (tooltip.isShowing())
+        tooltip.hide();
     });
 
     root.getChildren().add(name);

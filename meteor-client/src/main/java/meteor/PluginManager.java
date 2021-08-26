@@ -356,5 +356,11 @@ public class PluginManager {
     return null;
   }
 
-
+  public static Plugin getInstance(String name)
+  {
+    for (Plugin p : PluginManager.plugins)
+      if (p.getName().equals(name))
+        return p;
+    return null;
+  }
 }
