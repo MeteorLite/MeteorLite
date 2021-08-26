@@ -4,6 +4,7 @@ import meteor.plugins.api.commons.Time;
 import meteor.plugins.api.game.Game;
 import meteor.plugins.api.game.GameThread;
 import meteor.plugins.api.input.Keyboard;
+import meteor.plugins.api.items.GrandExchange;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetID;
 import net.runelite.api.widgets.WidgetInfo;
@@ -97,8 +98,7 @@ public class Dialog {
 
 	public static boolean isEnterInputOpen() {
 		Widget widget = Widgets.get(WidgetInfo.CHATBOX_FULL_INPUT);
-		// TODO: make sure GE search isn't open
-		return widget != null && !GameThread.invokeLater(widget::isHidden);
+		return widget != null && !GameThread.invokeLater(widget::isHidden) && !GrandExchange.isSearchingItem();
 	}
 
 	public static void enterInput(String input) {
