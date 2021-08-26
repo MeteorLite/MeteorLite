@@ -109,10 +109,13 @@ public class Trade {
 
 		Inventory.cacheItems(container);
 
-		for (Item item : container.getItems()) {
+		Item[] containerItems = container.getItems();
+		for (int i = 0, containerItemsLength = containerItems.length; i < containerItemsLength; i++) {
+			Item item = containerItems[i];
 			if (item.getId() != -1 && item.getName() != null && !item.getName().equals("null")) {
 				Widget containerWidget = theirs ? THEIR_ITEMS.get() : OUR_ITEMS.get();
 				item.setWidgetId(item.calculateWidgetId(containerWidget));
+				item.setSlot(i);
 
 				if (filter.test(item)) {
 					items.add(item);
@@ -132,9 +135,12 @@ public class Trade {
 
 		Inventory.cacheItems(container);
 
-		for (Item item : container.getItems()) {
+		Item[] containerItems = container.getItems();
+		for (int i = 0, containerItemsLength = containerItems.length; i < containerItemsLength; i++) {
+			Item item = containerItems[i];
 			if (item.getId() != -1 && item.getName() != null && !item.getName().equals("null")) {
 				item.setWidgetId(item.calculateWidgetId(INVENTORY.get()));
+				item.setSlot(i);
 
 				if (filter.test(item)) {
 					items.add(item);

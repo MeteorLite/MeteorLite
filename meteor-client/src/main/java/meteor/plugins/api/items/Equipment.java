@@ -20,10 +20,13 @@ public class Equipment {
 
         Inventory.cacheItems(container);
 
-        for (Item item : container.getItems()) {
+        Item[] containerItems = container.getItems();
+        for (int i = 0, containerItemsLength = containerItems.length; i < containerItemsLength; i++) {
+            Item item = containerItems[i];
             if (item.getId() != -1 && item.getName() != null && !item.getName().equals("null")) {
                 WidgetInfo widgetInfo = getEquipmentWidgetInfo(item.getSlot());
                 item.setActionParam(-1);
+                item.setSlot(i);
 
                 if (widgetInfo != null) {
                     item.setWidgetId(widgetInfo.getPackedId());
