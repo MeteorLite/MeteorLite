@@ -222,7 +222,7 @@ public class Bank {
 		for (int i = 0, containerItemsLength = containerItems.length; i < containerItemsLength; i++) {
 			Item item = containerItems[i];
 			if (item.getId() != -1 && item.getName() != null && !item.getName().equals("null")) {
-				item.setWidgetId(WidgetInfo.BANK_INVENTORY_ITEMS_CONTAINER.getPackedId());
+				item.setWidgetId(item.calculateWidgetId(WidgetInfo.BANK_ITEM_CONTAINER));
 				item.setSlot(i);
 
 				if (filter.test(item)) {
@@ -247,7 +247,7 @@ public class Bank {
 		for (int i = 0, containerItemsLength = containerItems.length; i < containerItemsLength; i++) {
 			Item item = containerItems[i];
 			if (item.getId() != -1 && item.getName() != null && !item.getName().equals("null")) {
-				item.setWidgetId(WidgetInfo.BANK_ITEM_CONTAINER.getPackedId());
+				item.setWidgetId(item.calculateWidgetId(WidgetInfo.BANK_ITEM_CONTAINER));
 				item.setSlot(i);
 
 				if (filter.test(item)) {
