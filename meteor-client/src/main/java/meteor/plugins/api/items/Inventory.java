@@ -25,7 +25,7 @@ public class Inventory {
         for (Item item : container.getItems()) {
             if (item.getId() != -1 && item.getName() != null && !item.getName().equals("null")) {
                 item.setActionParam(item.getSlot());
-                item.setWidgetId(item.calculateWidgetId(WidgetInfo.INVENTORY));
+                item.setWidgetId(WidgetInfo.INVENTORY.getPackedId());
 
                 if (filter.test(item)) {
                     items.add(item);
