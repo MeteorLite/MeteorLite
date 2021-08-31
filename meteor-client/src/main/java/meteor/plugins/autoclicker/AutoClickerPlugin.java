@@ -26,6 +26,7 @@ import java.util.List;
 import java.util.Random;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 @PluginDescriptor(
         name = "Soxs' AutoClicker",
@@ -144,21 +145,24 @@ public class AutoClickerPlugin extends Plugin {
                     if (config.mouseOnNPC())
                     {
                         List<NPC> npcs = client.getNpcs();
-                        boolean shouldContinue = false;
-                        for (NPC npc : npcs)
-                        {
-                            if (npc == null)
-                                continue;
-                            if (npc.getId() == config.mouseOnNPCID())
+                        AtomicBoolean shouldContinue = new AtomicBoolean(false);
+                        clientThread.invokeLater(() -> {
+                            for (NPC npc : npcs)
                             {
-                                if (npc.getConvexHull().contains(mousePoint.getX(), mousePoint.getY()))
+                                if (npc == null)
+                                    continue;
+                                if (npc.getId() == config.mouseOnNPCID())
                                 {
-                                    shouldContinue = true;
-                                    break;
+                                    if (npc.getConvexHull().contains(mousePoint.getX(), mousePoint.getY()))
+                                    {
+                                        shouldContinue.set(true);
+                                        break;
+                                    }
                                 }
                             }
-                        }
-                        if (!shouldContinue)
+                        });
+
+                        if (!shouldContinue.get())
                         {
                             try {
                                 Thread.sleep(getBetweenClicksDelay());
