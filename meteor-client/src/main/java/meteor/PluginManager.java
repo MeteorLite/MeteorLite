@@ -15,6 +15,7 @@ import java.net.URLClassLoader;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Optional;
 import java.util.jar.JarFile;
 
 import meteor.config.Config;
@@ -433,15 +434,11 @@ public class PluginManager {
 		plugins.stream().filter(Plugin::isExternal).forEach(Plugin::unload);
 		plugins.removeIf(Plugin::isExternal);
 
-		// Temp solution for externals
-		Category cat = PluginListUI.categories.stream()
-				.filter(c -> c.name.equals("MeteorLite"))
-				.findAny()
-				.get();
+		Category category = PluginListUI.INSTANCE.findOrCreateCategory(PluginListUI.EXTERNAL_CATEGORY_NAME);
 
 		for (Plugin external : externals) {
-			if (!cat.plugins.contains(external.getName())) {
-				cat.plugins.add(0, external.getName());
+			if (!category.plugins.contains(external.getName())) {
+				category.plugins.add(0, external.getName());
 			}
 			plugins.add(external);
 			startPlugin(external);

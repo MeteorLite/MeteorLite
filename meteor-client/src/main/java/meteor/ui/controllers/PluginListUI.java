@@ -33,11 +33,13 @@ import javax.inject.Inject;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 import static meteor.MeteorLiteClientModule.pluginsPanelVisible;
 
 public class PluginListUI {
-  private static final String MAIN_CATEGORY_NAME = "Plugins";
+  public static final String MAIN_CATEGORY_NAME = "Plugins";
+  public static final String EXTERNAL_CATEGORY_NAME = "Externals";
 
   @FXML
   private FontAwesomeIconView addCategory;
@@ -224,14 +226,7 @@ public class PluginListUI {
     okButton.setStyle("-fx-background-color: #252525; -fx-text-fill: CYAN; -jfx-button-type: RAISED;");
     okButton.addEventHandler(MouseEvent.MOUSE_CLICKED, (e) -> {
       newStage.close();
-      ArrayList<Category> oldCategories = categories;
-      ArrayList<Category> newCategories = new ArrayList<>();
-      Category c = new Category(nameField.getText());
-      newCategories.add(c);
-      newCategories.addAll(oldCategories);
-      categories = newCategories;
-      saveCategories();
-      refreshPlugins();
+      findOrCreateCategory(nameField.getText());
     });
     rootPanel.getChildren().add(nameField);
     rootPanel.getChildren().add(okButton);
@@ -240,6 +235,27 @@ public class PluginListUI {
     Scene stageScene = new Scene(rootPanel, 200, 65);
     newStage.setScene(stageScene);
     newStage.show();
+  }
+
+  public Category findOrCreateCategory(final String name) {
+    Optional<Category> categoryOptional =
+            categories.stream()
+              .filter(c -> c.name.equals(name))
+              .findFirst();
+
+    if (categoryOptional.isPresent()) {
+      return categoryOptional.get();
+    }
+
+    ArrayList<Category> oldCategories = categories;
+    ArrayList<Category> newCategories = new ArrayList<>();
+    Category c = new Category(name);
+    newCategories.add(c);
+    newCategories.addAll(oldCategories);
+    categories = newCategories;
+    saveCategories();
+    refreshPlugins();
+    return c;
   }
 
   private int getCategoryPosition(Category category) {
