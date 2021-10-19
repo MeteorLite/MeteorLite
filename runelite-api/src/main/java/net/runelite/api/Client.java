@@ -2148,7 +2148,7 @@ public interface Client extends GameEngine {
 
   IndexDataBase getObjectDefinition_archive();
 
-  IndexDataBase getItemComposition_archive();
+  IndexDataBase getItemDefinition_archive();
 
   IndexDataBase getKitDefinition_archive();
 

@@ -1426,7 +1426,7 @@ public interface RSClient extends RSGameEngine, Client {
 
   @Override
   @Import("ItemDefinition_archive")
-  RSAbstractArchive getItemComposition_archive();
+  RSAbstractArchive getItemDefinition_archive();
 
   @Override
   @Import("KitDefinition_archive")
