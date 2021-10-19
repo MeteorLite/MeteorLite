@@ -26,9 +26,9 @@
  */
 package com.questhelper.banktab;
 
-import javax.inject.Inject;
 import lombok.Getter;
 import lombok.Setter;
+import meteor.plugins.bank.BankSearch;
 import net.runelite.api.Client;
 import net.runelite.api.ScriptEvent;
 import net.runelite.api.ScriptID;
@@ -42,196 +42,165 @@ import net.runelite.api.widgets.JavaScriptCallback;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.api.widgets.WidgetType;
-import meteor.plugins.bank.BankSearch;
 
-public class QuestBankTabInterface
-{
-	private static final String VIEW_TAB = "View tab ";
+import javax.inject.Inject;
 
-	@Setter
-	@Getter
-	private boolean questTabActive = false;
+public class QuestBankTabInterface {
+    private static final String VIEW_TAB = "View tab ";
+    private final Client client;
+    private final BankSearch bankSearch;
+    @Setter
+    @Getter
+    private boolean questTabActive = false;
+    @Getter
+    private Widget parent;
+    @Getter
+    private Widget questIconWidget;
+    @Getter
+    private Widget questBackgroundWidget;
 
-	@Getter
-	private Widget parent;
+    @Inject
+    public QuestBankTabInterface(Client client, BankSearch bankSearch) {
+        this.client = client;
+        this.bankSearch = bankSearch;
+    }
 
-	@Getter
-	private Widget questIconWidget;
+    public void init() {
+        if (isHidden()) {
+            return;
+        }
 
-	@Getter
-	private Widget questBackgroundWidget;
+        parent = client.getWidget(WidgetInfo.BANK_CONTAINER);
 
-	private final Client client;
-	private final BankSearch bankSearch;
+        int QUEST_BUTTON_SIZE = 25;
+        int QUEST_BUTTON_X = 408;
+        int QUEST_BUTTON_Y = 5;
+        questBackgroundWidget = createGraphic("quest-helper", SpriteID.UNKNOWN_BUTTON_SQUARE_SMALL, QUEST_BUTTON_SIZE,
+                QUEST_BUTTON_SIZE,
+                QUEST_BUTTON_X, QUEST_BUTTON_Y);
+        questBackgroundWidget.setAction$api(1, VIEW_TAB);
+        questBackgroundWidget.setOnOpListener((JavaScriptCallback) this::handleTagTab);
 
-	@Inject
-	public QuestBankTabInterface(Client client, BankSearch bankSearch)
-	{
-		this.client = client;
-		this.bankSearch = bankSearch;
-	}
+        questIconWidget = createGraphic("", SpriteID.QUESTS_PAGE_ICON_BLUE_QUESTS, QUEST_BUTTON_SIZE - 6,
+                QUEST_BUTTON_SIZE - 6,
+                QUEST_BUTTON_X + 3, QUEST_BUTTON_Y + 3);
 
-	public void init()
-	{
-		if (isHidden())
-		{
-			return;
-		}
+        if (questTabActive) {
+            questTabActive = false;
+            activateTab();
+        }
+    }
 
-		parent = client.getWidget(WidgetInfo.BANK_CONTAINER);
+    public void destroy() {
+        if (questTabActive) {
+            closeTab();
+            bankSearch.reset(true);
+        }
 
-		int QUEST_BUTTON_SIZE = 25;
-		int QUEST_BUTTON_X = 408;
-		int QUEST_BUTTON_Y = 5;
-		questBackgroundWidget = createGraphic("quest-helper", SpriteID.UNKNOWN_BUTTON_SQUARE_SMALL, QUEST_BUTTON_SIZE,
-			QUEST_BUTTON_SIZE,
-			QUEST_BUTTON_X, QUEST_BUTTON_Y);
-		questBackgroundWidget.setAction$api(1, VIEW_TAB);
-		questBackgroundWidget.setOnOpListener((JavaScriptCallback) this::handleTagTab);
+        parent = null;
 
-		questIconWidget = createGraphic("", SpriteID.QUESTS_PAGE_ICON_BLUE_QUESTS, QUEST_BUTTON_SIZE - 6,
-			QUEST_BUTTON_SIZE - 6,
-			QUEST_BUTTON_X + 3, QUEST_BUTTON_Y + 3);
+        if (questIconWidget != null) {
+            questIconWidget.setHidden(true);
+        }
 
-		if (questTabActive)
-		{
-			questTabActive = false;
-			activateTab();
-		}
-	}
+        if (questBackgroundWidget != null) {
+            questBackgroundWidget.setHidden(true);
+        }
+        questTabActive = false;
+    }
 
-	public void destroy()
-	{
-		if (questTabActive)
-		{
-			closeTab();
-			bankSearch.reset(true);
-		}
+    public void handleClick(MenuOptionClicked event) {
+        if (isHidden()) {
+            return;
+        }
+        String menuOption = event.getMenuOption();
 
-		parent = null;
+        // If click a base tab, close
+        boolean clickedTabTag = menuOption.startsWith("View tab") && !event.getMenuTarget().equals("quest-helper");
+        boolean clickedOtherTab = menuOption.equals("View all items") || menuOption.startsWith("View tag tab");
+        if (questTabActive && (clickedTabTag || clickedOtherTab)) {
+            closeTab();
+        }
+    }
 
-		if (questIconWidget != null)
-		{
-			questIconWidget.setHidden(true);
-		}
+    public void handleSearch() {
+        if (questTabActive) {
+            closeTab();
+            // This ensures that when clicking Search when tab is selected, the search input is opened rather
+            // than client trying to close it first
+            client.setVar(VarClientStr.INPUT_TEXT, "");
+            client.setVar(VarClientInt.INPUT_TYPE, 0);
+        }
+    }
 
-		if (questBackgroundWidget != null)
-		{
-			questBackgroundWidget.setHidden(true);
-		}
-		questTabActive = false;
-	}
+    public boolean isHidden() {
+        Widget widget = client.getWidget(WidgetInfo.BANK_CONTAINER);
+        return widget == null || widget.isHidden();
+    }
 
-	public void handleClick(MenuOptionClicked event)
-	{
-		if (isHidden())
-		{
-			return;
-		}
-		String menuOption = event.getMenuOption();
+    private void handleTagTab(ScriptEvent event) {
+        if (event.getOp() == 2) {
+            client.setVarbit(Varbits.CURRENT_BANK_TAB, 0);
 
-		// If click a base tab, close
-		boolean clickedTabTag = menuOption.startsWith("View tab") && !event.getMenuTarget().equals("quest-helper");
-		boolean clickedOtherTab = menuOption.equals("View all items") || menuOption.startsWith("View tag tab");
-		if (questTabActive && (clickedTabTag || clickedOtherTab))
-		{
-			closeTab();
-		}
-	}
+            if (questTabActive) {
+                closeTab();
+                bankSearch.reset(true);
+            } else {
+                activateTab();
+                // openTag will reset and relayout
+            }
 
-	public void handleSearch()
-	{
-		if (questTabActive)
-		{
-			closeTab();
-			// This ensures that when clicking Search when tab is selected, the search input is opened rather
-			// than client trying to close it first
-			client.setVar(VarClientStr.INPUT_TEXT, "");
-			client.setVar(VarClientInt.INPUT_TYPE, 0);
-		}
-	}
+            client.playSoundEffect(SoundEffectID.UI_BOOP);
+        }
+    }
 
-	public boolean isHidden()
-	{
-		Widget widget = client.getWidget(WidgetInfo.BANK_CONTAINER);
-		return widget == null || widget.isHidden();
-	}
+    public void closeTab() {
+        questTabActive = false;
+        if (questBackgroundWidget != null) {
+            questBackgroundWidget.setSpriteId(SpriteID.UNKNOWN_BUTTON_SQUARE_SMALL);
+            questBackgroundWidget.revalidate();
+        }
+    }
 
-	private void handleTagTab(ScriptEvent event)
-	{
-		if (event.getOp() == 2)
-		{
-			client.setVarbit(Varbits.CURRENT_BANK_TAB, 0);
+    private void activateTab() {
+        if (questTabActive) {
+            return;
+        }
 
-			if (questTabActive)
-			{
-				closeTab();
-				bankSearch.reset(true);
-			}
-			else
-			{
-				activateTab();
-				// openTag will reset and relayout
-			}
+        questBackgroundWidget.setSpriteId(SpriteID.UNKNOWN_BUTTON_SQUARE_SMALL_SELECTED);
+        questBackgroundWidget.revalidate();
+        questTabActive = true;
 
-			client.playSoundEffect(SoundEffectID.UI_BOOP);
-		}
-	}
+        bankSearch.reset(true); // clear search dialog & relayout bank for new tab.
 
-	public void closeTab()
-	{
-		questTabActive = false;
-		if (questBackgroundWidget != null)
-		{
-			questBackgroundWidget.setSpriteId(SpriteID.UNKNOWN_BUTTON_SQUARE_SMALL);
-			questBackgroundWidget.revalidate();
-		}
-	}
+        // When searching the button has a script on timer to detect search end, that will set the background back
+        // and remove the timer. However since we are going from a bank search to our fake search this will not remove
+        // the timer but instead re-add it and reset the background. So remove the timer and the background. This is the
+        // same as bankmain_search_setbutton.
+        Widget searchButtonBackground = client.getWidget(WidgetInfo.BANK_SEARCH_BUTTON_BACKGROUND);
+        if (searchButtonBackground != null) {
+            searchButtonBackground.setOnTimerListener((Object[]) null);
+            searchButtonBackground.setSpriteId(SpriteID.EQUIPMENT_SLOT_TILE);
+        }
+    }
 
-	private void activateTab()
-	{
-		if (questTabActive)
-		{
-			return;
-		}
+    private Widget createGraphic(Widget container, String name, int spriteId, int width, int height, int x, int y) {
+        Widget widget = container.createChild(-1, WidgetType.GRAPHIC);
+        widget.setOriginalWidth(width);
+        widget.setOriginalHeight(height);
+        widget.setOriginalX(x);
+        widget.setOriginalY(y);
 
-		questBackgroundWidget.setSpriteId(SpriteID.UNKNOWN_BUTTON_SQUARE_SMALL_SELECTED);
-		questBackgroundWidget.revalidate();
-		questTabActive = true;
+        widget.setSpriteId(spriteId);
+        widget.setOnOpListener(ScriptID.NULL);
+        widget.setHasListener(true);
+        widget.setName(name);
+        widget.revalidate();
 
-		bankSearch.reset(true); // clear search dialog & relayout bank for new tab.
+        return widget;
+    }
 
-		// When searching the button has a script on timer to detect search end, that will set the background back
-		// and remove the timer. However since we are going from a bank search to our fake search this will not remove
-		// the timer but instead re-add it and reset the background. So remove the timer and the background. This is the
-		// same as bankmain_search_setbutton.
-		Widget searchButtonBackground = client.getWidget(WidgetInfo.BANK_SEARCH_BUTTON_BACKGROUND);
-		if (searchButtonBackground != null)
-		{
-			searchButtonBackground.setOnTimerListener((Object[]) null);
-			searchButtonBackground.setSpriteId(SpriteID.EQUIPMENT_SLOT_TILE);
-		}
-	}
-
-	private Widget createGraphic(Widget container, String name, int spriteId, int width, int height, int x, int y)
-	{
-		Widget widget = container.createChild(-1, WidgetType.GRAPHIC);
-		widget.setOriginalWidth(width);
-		widget.setOriginalHeight(height);
-		widget.setOriginalX(x);
-		widget.setOriginalY(y);
-
-		widget.setSpriteId(spriteId);
-		widget.setOnOpListener(ScriptID.NULL);
-		widget.setHasListener(true);
-		widget.setName(name);
-		widget.revalidate();
-
-		return widget;
-	}
-
-	private Widget createGraphic(String name, int spriteId, int width, int height, int x, int y)
-	{
-		return createGraphic(parent, name, spriteId, width, height, x, y);
-	}
+    private Widget createGraphic(String name, int spriteId, int width, int height, int x, int y) {
+        return createGraphic(parent, name, spriteId, width, height, x, y);
+    }
 }

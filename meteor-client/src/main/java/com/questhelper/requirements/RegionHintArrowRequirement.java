@@ -29,34 +29,28 @@ import com.questhelper.steps.tools.QuestPerspective;
 import net.runelite.api.Client;
 import net.runelite.api.coords.WorldPoint;
 
-public class RegionHintArrowRequirement extends SimpleRequirement
-{
-	private final Zone zone;
+public class RegionHintArrowRequirement extends SimpleRequirement {
+    private final Zone zone;
 
-	public RegionHintArrowRequirement(WorldPoint worldPoint)
-	{
-		this.zone = new Zone(worldPoint, worldPoint);
-	}
+    public RegionHintArrowRequirement(WorldPoint worldPoint) {
+        this.zone = new Zone(worldPoint, worldPoint);
+    }
 
-	public RegionHintArrowRequirement(Zone zone)
-	{
-		this.zone = zone;
-	}
+    public RegionHintArrowRequirement(Zone zone) {
+        this.zone = zone;
+    }
 
-	public boolean check(Client client)
-	{
-		WorldPoint hintArrowPoint = client.getHintArrowPoint();
-		if (hintArrowPoint == null)
-		{
-			return false;
-		}
+    public boolean check(Client client) {
+        WorldPoint hintArrowPoint = client.getHintArrowPoint();
+        if (hintArrowPoint == null) {
+            return false;
+        }
 
-		WorldPoint wp = QuestPerspective.getInstanceWorldPoint(client, hintArrowPoint);
-		if (wp == null)
-		{
-			return false;
-		}
+        WorldPoint wp = QuestPerspective.getInstanceWorldPoint(client, hintArrowPoint);
+        if (wp == null) {
+            return false;
+        }
 
-		return zone.contains(wp);
-	}
+        return zone.contains(wp);
+    }
 }

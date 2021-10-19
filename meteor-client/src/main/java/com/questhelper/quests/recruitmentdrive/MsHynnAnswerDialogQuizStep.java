@@ -28,83 +28,73 @@ package com.questhelper.quests.recruitmentdrive;
 import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.var.VarbitRequirement;
-import com.questhelper.requirements.util.RequirementBuilder;
 import com.questhelper.steps.ConditionalStep;
-import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
+import meteor.eventbus.Subscribe;
+import net.runelite.api.events.VarbitChanged;
+
 import java.util.ArrayList;
 import java.util.List;
-import net.runelite.api.events.VarbitChanged;
-import meteor.eventbus.Subscribe;
 
-public class MsHynnAnswerDialogQuizStep extends ConditionalStep
-{
-	private QuestStep leaveRoom, talkToMsHynnTerprett;
+public class MsHynnAnswerDialogQuizStep extends ConditionalStep {
+    private final int VARBIT_FINISHED_ROOM = 665;
+    private final int VARBIT_PUZZLE_SOLUTION = 667;
+    private final QuestStep talkToMsHynnTerprett;
+    String[] answers = {
+            "unknown",
+            "10",
+            "three false statements",
+            "the wolves",
+            "bucket A",
+            "zero"
+    };
+    private QuestStep leaveRoom;
 
-	private final int VARBIT_FINISHED_ROOM = 665;
-	private final int VARBIT_PUZZLE_SOLUTION = 667;
+    public MsHynnAnswerDialogQuizStep(QuestHelper questHelper, QuestStep step, Requirement... requirements) {
+        super(questHelper, step, requirements);
 
-	String[] answers = {
-		"unknown",
-		"10",
-		"three false statements",
-		"the wolves",
-		"bucket A",
-		"zero"
-	};
+        talkToMsHynnTerprett = step;
+        talkToMsHynnTerprett.addDialogSteps(
+                "The wolves.",
+                "Bucket A (32 degrees)",
+                "The number of false statements here is three.",
+                "Zero.");
+        addSteps();
+    }
 
-	public MsHynnAnswerDialogQuizStep(QuestHelper questHelper, QuestStep step, Requirement... requirements)
-	{
-		super(questHelper, step, requirements);
+    @Override
+    public void startUp() {
+        super.startUp();
+        int answerID = client.getVarbitValue(VARBIT_PUZZLE_SOLUTION);
+        if (answerID == 0) {
+            return;
+        }
+        String answer = "The answer is " + answers[answerID] + ".";
+        talkToMsHynnTerprett.setText("Talk to Ms Hynn Terprett and answer the riddle. " + answer);
+    }
 
-		talkToMsHynnTerprett = step;
-		talkToMsHynnTerprett.addDialogSteps(
-			"The wolves.",
-			"Bucket A (32 degrees)",
-			"The number of false statements here is three.",
-			"Zero.");
-		addSteps();
-	}
+    @Subscribe
+    @Override
+    public void onVarbitChanged(VarbitChanged varbitChanged) {
+        int answerID = client.getVarbitValue(VARBIT_PUZZLE_SOLUTION);
+        if (answerID == 0) {
+            return;
+        }
+        String answer = "The answer is " + answers[answerID] + ".";
+        talkToMsHynnTerprett.setText("Talk to Ms Hynn Terprett and answer the riddle. " + answer);
+    }
 
-	@Override
-	public void startUp()
-	{
-		super.startUp();
-		int answerID = client.getVarbitValue(VARBIT_PUZZLE_SOLUTION);
-		if (answerID == 0)
-		{
-			return;
-		}
-		String answer = "The answer is " + answers[answerID] + ".";
-		talkToMsHynnTerprett.setText("Talk to Ms Hynn Terprett and answer the riddle. " + answer);
-	}
+    private void addSteps() {
+        VarbitRequirement finishedRoomCondition = new VarbitRequirement(VARBIT_FINISHED_ROOM, 1);
+        leaveRoom = new ObjectStep(questHelper, 7354, "Leave through the door to enter the portal and continue.");
 
-	@Subscribe
-	@Override
-	public void onVarbitChanged(VarbitChanged varbitChanged)
-	{
-		int answerID = client.getVarbitValue(VARBIT_PUZZLE_SOLUTION);
-		if (answerID == 0)
-		{
-			return;
-		}
-		String answer = "The answer is " + answers[answerID] + ".";
-		talkToMsHynnTerprett.setText("Talk to Ms Hynn Terprett and answer the riddle. " + answer);
-	}
+        addStep(finishedRoomCondition, leaveRoom);
+    }
 
-	private void addSteps()
-	{
-		VarbitRequirement finishedRoomCondition = new VarbitRequirement(VARBIT_FINISHED_ROOM, 1);
-		leaveRoom = new ObjectStep(questHelper, 7354, "Leave through the door to enter the portal and continue.");
-
-		addStep(finishedRoomCondition, leaveRoom);
-	}
-
-	public List<QuestStep> getPanelSteps()
-	{
-		List<QuestStep> steps = new ArrayList<>();
-		steps.add(leaveRoom);
-		return steps;
-	}
+    public List<QuestStep> getPanelSteps() {
+        List<QuestStep> steps = new ArrayList<>();
+        steps.add(leaveRoom);
+        return steps;
+    }
 }

@@ -28,107 +28,106 @@ import com.questhelper.QuestDescriptor;
 import com.questhelper.QuestHelperQuest;
 import com.questhelper.Zone;
 import com.questhelper.questhelpers.BasicQuestHelper;
-import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.ZoneRequirement;
+import com.questhelper.requirements.item.ItemRequirement;
+import com.questhelper.rewards.ItemReward;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.DigStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
 import net.runelite.api.ObjectID;
 import net.runelite.api.coords.WorldPoint;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 @QuestDescriptor(
-quest = QuestHelperQuest.BEAR_YOUR_SOUL
+        quest = QuestHelperQuest.BEAR_YOUR_SOUL
 )
-public class BearYourSoul extends BasicQuestHelper
-{
-	//Items Required
-	ItemRequirement spade, dustyKeyOr70AgilOrKeyMasterTeleport, damagedSoulBearer;
+public class BearYourSoul extends BasicQuestHelper {
+    //Items Required
+    ItemRequirement spade, dustyKeyOr70AgilOrKeyMasterTeleport, damagedSoulBearer;
 
-	Requirement inTaverleyDungeon, inKeyMaster;
+    Requirement inTaverleyDungeon, inKeyMaster;
 
-	QuestStep findSoulJourneyAndRead, talkToAretha, arceuusChurchDig, goToTaverleyDungeon, enterCaveToKeyMaster, speakKeyMaster;
+    QuestStep findSoulJourneyAndRead, talkToAretha, arceuusChurchDig, goToTaverleyDungeon, enterCaveToKeyMaster, speakKeyMaster;
 
-	//Zones
-	Zone inTaverleyDungeonZone, inKeyMasterZone;
+    //Zones
+    Zone inTaverleyDungeonZone, inKeyMasterZone;
 
-	@Override
-	public Map<Integer, QuestStep> loadSteps()
-	{
-		loadZones();
-		setupItemRequirements();
-		setupConditions();
-		setupSteps();
-		Map<Integer, QuestStep> steps = new HashMap<>();
+    @Override
+    public Map<Integer, QuestStep> loadSteps() {
+        loadZones();
+        setupItemRequirements();
+        setupConditions();
+        setupSteps();
+        Map<Integer, QuestStep> steps = new HashMap<>();
 
-		steps.put(0, findSoulJourneyAndRead);
-		steps.put(1, talkToAretha);
+        steps.put(0, findSoulJourneyAndRead);
+        steps.put(1, talkToAretha);
 
-		ConditionalStep repairSoulBearer = new ConditionalStep(this, arceuusChurchDig);
-		repairSoulBearer.addStep(inKeyMaster, speakKeyMaster);
-		repairSoulBearer.addStep(inTaverleyDungeon, enterCaveToKeyMaster);
-		repairSoulBearer.addStep(damagedSoulBearer, goToTaverleyDungeon);
+        ConditionalStep repairSoulBearer = new ConditionalStep(this, arceuusChurchDig);
+        repairSoulBearer.addStep(inKeyMaster, speakKeyMaster);
+        repairSoulBearer.addStep(inTaverleyDungeon, enterCaveToKeyMaster);
+        repairSoulBearer.addStep(damagedSoulBearer, goToTaverleyDungeon);
 
-		steps.put(2, repairSoulBearer);
+        steps.put(2, repairSoulBearer);
 
-		return steps;
-	}
+        return steps;
+    }
 
-	public void setupItemRequirements()
-	{
-		dustyKeyOr70AgilOrKeyMasterTeleport = new ItemRequirement("Dusty key, or another way to get into the deep Taverley Dungeon", ItemID.DUSTY_KEY);
-		spade = new ItemRequirement("Spade", ItemID.SPADE);
-		damagedSoulBearer = new ItemRequirement("Damaged soul bearer", ItemID.DAMAGED_SOUL_BEARER);
-	}
+    public void setupItemRequirements() {
+        dustyKeyOr70AgilOrKeyMasterTeleport = new ItemRequirement("Dusty key, or another way to get into the deep Taverley Dungeon", ItemID.DUSTY_KEY);
+        spade = new ItemRequirement("Spade", ItemID.SPADE);
+        damagedSoulBearer = new ItemRequirement("Damaged soul bearer", ItemID.DAMAGED_SOUL_BEARER);
+    }
 
-	public void loadZones()
-	{
-		inTaverleyDungeonZone = new Zone(new WorldPoint(2816, 9668, 0), new WorldPoint(2973, 9855, 0));
-		inKeyMasterZone = new Zone(new WorldPoint(1289, 1236, 0), new WorldPoint(1333, 1274, 0));
-	}
+    public void loadZones() {
+        inTaverleyDungeonZone = new Zone(new WorldPoint(2816, 9668, 0), new WorldPoint(2973, 9855, 0));
+        inKeyMasterZone = new Zone(new WorldPoint(1289, 1236, 0), new WorldPoint(1333, 1274, 0));
+    }
 
-	public void setupConditions()
-	{
-		inTaverleyDungeon = new ZoneRequirement(inTaverleyDungeonZone);
-		inKeyMaster = new ZoneRequirement(inKeyMasterZone);
-	}
+    public void setupConditions() {
+        inTaverleyDungeon = new ZoneRequirement(inTaverleyDungeonZone);
+        inKeyMaster = new ZoneRequirement(inKeyMasterZone);
+    }
 
-	public void setupSteps()
-	{
-		findSoulJourneyAndRead = new DetailedQuestStep(this, new WorldPoint(1632, 3808, 0), "Go to the Arceuus library and find The Soul journey book in one of the bookcases, then read it. You can ask Biblia for help locating it, or make use of the Runelite Kourend Library plugin.");
+    @Override
+    public List<ItemReward> getItemRewards() {
+        return Collections.singletonList(new ItemReward("A Soul Bearer", ItemID.SOUL_BEARER, 1));
+    }
 
-		talkToAretha = new NpcStep(this, NpcID.ARETHA, new WorldPoint(1814, 3851, 0),
-			"Talk to Aretha at the Soul Altar.");
-		talkToAretha.addDialogStep("I've been reading your book...");
-		talkToAretha.addDialogStep("Yes please.");
+    public void setupSteps() {
+        findSoulJourneyAndRead = new DetailedQuestStep(this, new WorldPoint(1632, 3808, 0), "Go to the Arceuus library and find The Soul journey book in one of the bookcases, then read it. You can ask Biblia for help locating it, or make use of the Runelite Kourend Library plugin.");
 
-		arceuusChurchDig = new DigStep(this, new WorldPoint(1699, 3794, 0), "Go to the Arceuus church and dig for the Damaged soul bearer.");
+        talkToAretha = new NpcStep(this, NpcID.ARETHA, new WorldPoint(1814, 3851, 0),
+                "Talk to Aretha at the Soul Altar.");
+        talkToAretha.addDialogStep("I've been reading your book...");
+        talkToAretha.addDialogStep("Yes please.");
 
-		goToTaverleyDungeon = new ObjectStep(this, ObjectID.LADDER_16680, new WorldPoint(2884, 3397, 0), "Go to Taverley Dungeon, or teleport to the Key Master directly.", damagedSoulBearer, dustyKeyOr70AgilOrKeyMasterTeleport);
+        arceuusChurchDig = new DigStep(this, new WorldPoint(1699, 3794, 0), "Go to the Arceuus church and dig for the Damaged soul bearer.");
 
-		enterCaveToKeyMaster = new ObjectStep(this, ObjectID.CAVE_26567, new WorldPoint(2874, 9846, 0), "Enter the cave to the Key Master.", damagedSoulBearer, dustyKeyOr70AgilOrKeyMasterTeleport);
+        goToTaverleyDungeon = new ObjectStep(this, ObjectID.LADDER_16680, new WorldPoint(2884, 3397, 0), "Go to Taverley Dungeon, or teleport to the Key Master directly.", damagedSoulBearer, dustyKeyOr70AgilOrKeyMasterTeleport);
 
-		speakKeyMaster = new NpcStep(this, NpcID.KEY_MASTER, new WorldPoint(2686, 9884, 0),
-			"Talk to Key Master in the Cerberus' Lair.", damagedSoulBearer);
-	}
+        enterCaveToKeyMaster = new ObjectStep(this, ObjectID.CAVE_26567, new WorldPoint(2874, 9846, 0), "Enter the cave to the Key Master.", damagedSoulBearer, dustyKeyOr70AgilOrKeyMasterTeleport);
 
-	@Override
-	public List<ItemRequirement> getItemRequirements()
-	{
-		List<ItemRequirement> reqs = new ArrayList<>();
-		reqs.add(spade);
-		reqs.add(dustyKeyOr70AgilOrKeyMasterTeleport);
-		return reqs;
-	}
+        speakKeyMaster = new NpcStep(this, NpcID.KEY_MASTER, new WorldPoint(2686, 9884, 0),
+                "Talk to Key Master in the Cerberus' Lair.", damagedSoulBearer);
+    }
+
+    @Override
+    public List<ItemRequirement> getItemRequirements() {
+        List<ItemRequirement> reqs = new ArrayList<>();
+        reqs.add(spade);
+        reqs.add(dustyKeyOr70AgilOrKeyMasterTeleport);
+        return reqs;
+    }
 }

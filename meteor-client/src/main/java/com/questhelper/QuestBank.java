@@ -28,116 +28,101 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
+import lombok.extern.slf4j.Slf4j;
+import meteor.config.ConfigManager;
+import meteor.config.RuneScapeProfileType;
+import net.runelite.api.Client;
+import net.runelite.api.Item;
+import net.runelite.api.WorldType;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.EnumSet;
 import java.util.List;
-import net.runelite.api.Client;
-import net.runelite.api.Item;
-import net.runelite.api.WorldType;
-import meteor.config.ConfigManager;
-import meteor.config.RuneScapeProfileType;
 
+@Slf4j
 @Singleton
-public class QuestBank
-{
-	private final ConfigManager configManager;
-	private final Client client;
-	private final Gson gson;
+public class QuestBank {
+    private static final String CONFIG_GROUP = "questhelper";
+    private static final String BANK_KEY = "bankitems";
+    private final ConfigManager configManager;
+    private final Client client;
+    private final Gson gson;
+    public List<WorldType> worldTypes = Arrays.asList(WorldType.SEASONAL, WorldType.TOURNAMENT_WORLD,
+            WorldType.DEADMAN, WorldType.NOSAVE_MODE);
+    private List<Item> bankItems;
+    private String rsProfileKey;
+    private RuneScapeProfileType worldType;
 
-	private static final String CONFIG_GROUP = "questhelper";
-	private static final String BANK_KEY = "bankitems";
+    @Inject
+    public QuestBank(Client client, ConfigManager configManager, Gson gson) {
+        this.configManager = configManager;
+        this.client = client;
+        this.gson = gson;
+        this.bankItems = new ArrayList<>();
+    }
 
-	private List<Item> bankItems;
-	private String rsProfileKey;
-	private RuneScapeProfileType worldType;
+    public void updateLocalBank(Item[] items) {
+        bankItems = Arrays.asList(items);
+    }
 
-	public List<WorldType> worldTypes = Arrays.asList(WorldType.SEASONAL, WorldType.TOURNAMENT_WORLD,
-			WorldType.DEADMAN, WorldType.NOSAVE_MODE);
+    public List<Item> getBankItems() {
+        return bankItems;
+    }
 
-	@Inject
-	public QuestBank(Client client, ConfigManager configManager, Gson gson)
-	{
-		this.configManager = configManager;
-		this.client = client;
-		this.gson = gson;
-		this.bankItems = new ArrayList<>();
-	}
+    public void emptyState() {
+        rsProfileKey = null;
+        worldType = null;
+        bankItems = new ArrayList<>();
+    }
 
-	public void updateLocalBank(Item[] items)
-	{
-		bankItems = Arrays.asList(items);
-	}
+    public void loadState() {
+        // Only re-load from config if loading from a new profile
+        if (!RuneScapeProfileType.getCurrent(client).equals(worldType)) {
+            // If we've hopped between profiles
+            if (rsProfileKey != null) {
+                saveBankToConfig();
+            }
+            loadBankFromConfig();
+        }
+    }
 
-	public List<Item> getBankItems()
-	{
-		return bankItems;
-	}
-
-	public void emptyState()
-	{
-		rsProfileKey = null;
-		worldType = null;
-		bankItems = new ArrayList<>();
-	}
-
-	public void loadState()
-	{
-		// Only re-load from config if loading from a new profile
-		if (!RuneScapeProfileType.getCurrent(client).equals(worldType))
-		{
-			// If we've hopped between profiles
-			if (rsProfileKey != null)
-			{
-				saveBankToConfig();
-			}
-			loadBankFromConfig();
-		}
-	}
-
-	private void loadBankFromConfig()
-	{
-		// Remove deprecated config
-		configManager.unsetConfiguration(CONFIG_GROUP, getCurrentKey());
+    private void loadBankFromConfig() {
+        // Remove deprecated config
+        configManager.unsetConfiguration(CONFIG_GROUP, getCurrentKey());
 
 
-		worldType = RuneScapeProfileType.getCurrent(client);
-		List<Item> storedItems = gson.fromJson(
-			configManager.getConfiguration(CONFIG_GROUP, BANK_KEY),
-			new TypeToken<List<Item>>(){}.getType());
-		if (storedItems != null)
-		{
-			bankItems = storedItems;
-		}
-		else
-		{
-			bankItems = new ArrayList<>();
-		}
-	}
+        worldType = RuneScapeProfileType.getCurrent(client);
+        List<Item> storedItems = gson.fromJson(
+                configManager.getConfiguration(CONFIG_GROUP, BANK_KEY),
+                new TypeToken<List<Item>>() {
+                }.getType());
+        if (storedItems != null) {
+            bankItems = storedItems;
+        } else {
+            bankItems = new ArrayList<>();
+        }
+    }
 
-	public void saveBankToConfig()
-	{
-		if (rsProfileKey == null)
-		{
-			return;
-		}
-		configManager.setConfiguration(CONFIG_GROUP, rsProfileKey, BANK_KEY, gson.toJson(bankItems));
-	}
+    public void saveBankToConfig() {
+        if (rsProfileKey == null) {
+            return;
+        }
+        configManager.setConfiguration(CONFIG_GROUP, rsProfileKey, BANK_KEY, gson.toJson(bankItems));
+    }
 
-	private String getCurrentKey()
-	{
-		StringBuilder key = new StringBuilder();
-		EnumSet<WorldType> worldType = client.getWorldType();
-		for (WorldType type : worldType)
-		{
-			if (worldTypes.contains(type))
-				key.append(type.name()).append(":");
-		}
-		if (client.getLocalPlayer() == null)
-		{
-			return "NULL PLAYER";
-		}
-		key.append(client.getLocalPlayer().getName());
-		return key.toString();
-	}
+    private String getCurrentKey() {
+        StringBuilder key = new StringBuilder();
+        EnumSet<WorldType> worldType = client.getWorldType();
+        for (WorldType type : worldType) {
+            if (worldTypes.contains(type)) {
+                key.append(type.name()).append(":");
+            }
+        }
+        if (client.getLocalPlayer() == null) {
+            return "NULL PLAYER";
+        }
+        key.append(client.getLocalPlayer().getName());
+        return key.toString();
+    }
 }

@@ -29,51 +29,44 @@ package com.questhelper.overlays;
 import com.questhelper.QuestHelperPlugin;
 import com.questhelper.questhelpers.QuestDebugRenderer;
 import com.questhelper.questhelpers.QuestHelper;
-import java.awt.Dimension;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import javax.inject.Inject;
 import meteor.ui.overlay.OverlayLayer;
 import meteor.ui.overlay.OverlayPanel;
 import meteor.ui.overlay.components.PanelComponent;
 
-public class QuestHelperDebugOverlay extends OverlayPanel implements QuestDebugRenderer
-{
-	private final QuestHelperPlugin plugin;
-	private QuestHelper quest;
+import javax.inject.Inject;
+import java.awt.*;
 
-	@Inject
-	public QuestHelperDebugOverlay(QuestHelperPlugin plugin)
-	{
-		this.plugin = plugin;
-		this.quest = plugin.getSelectedQuest();
-		setLayer(OverlayLayer.ALWAYS_ON_TOP);
-	}
+public class QuestHelperDebugOverlay extends OverlayPanel implements QuestDebugRenderer {
+    private final QuestHelperPlugin plugin;
+    private QuestHelper quest;
 
-	@Override
-	public Dimension render(Graphics2D graphics)
-	{
-		QuestHelper quest = plugin.getSelectedQuest();
+    @Inject
+    public QuestHelperDebugOverlay(QuestHelperPlugin plugin) {
+        this.plugin = plugin;
+        this.quest = plugin.getSelectedQuest();
+        setLayer(OverlayLayer.ALWAYS_ON_TOP);
+    }
 
-		renderDebugOverlay(graphics, plugin, panelComponent);
-		renderDebugWorldOverlayHint(graphics, plugin, quest, panelComponent);
-		renderDebugWidgetOverlayHint(graphics, plugin, quest, panelComponent);
+    @Override
+    public Dimension render(Graphics2D graphics) {
+        QuestHelper quest = plugin.getSelectedQuest();
 
-		return super.render(graphics);
-	}
+        renderDebugOverlay(graphics, plugin, panelComponent);
+        renderDebugWorldOverlayHint(graphics, plugin, quest, panelComponent);
+        renderDebugWidgetOverlayHint(graphics, plugin, quest, panelComponent);
 
-	@Override
-	public void renderDebugOverlay(Graphics graphics, QuestHelperPlugin plugin, PanelComponent panelComponent)
-	{
-		QuestHelper currentQuest = plugin.getSelectedQuest();
-		if ((quest == null || (currentQuest != quest)) && currentQuest != null)
-		{
-			quest = currentQuest;
-		}
+        return super.render(graphics);
+    }
 
-		if (plugin.isDeveloperMode() && quest != null)
-		{
-			quest.renderDebugOverlay(graphics, plugin, panelComponent);
-		}
-	}
+    @Override
+    public void renderDebugOverlay(Graphics graphics, QuestHelperPlugin plugin, PanelComponent panelComponent) {
+        QuestHelper currentQuest = plugin.getSelectedQuest();
+        if ((quest == null || (currentQuest != quest)) && currentQuest != null) {
+            quest = currentQuest;
+        }
+
+        if (plugin.isDeveloperMode() && quest != null) {
+            quest.renderDebugOverlay(graphics, plugin, panelComponent);
+        }
+    }
 }

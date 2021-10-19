@@ -26,45 +26,43 @@ package com.questhelper.requirements.conditional;
 
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.util.LogicType;
-import java.util.ArrayList;
-import java.util.List;
 import lombok.Getter;
 import lombok.Setter;
 import net.runelite.api.Client;
 
-public abstract class ConditionForStep implements InitializableRequirement
-{
-	@Setter
-	@Getter
-	protected boolean hasPassed;
-	protected boolean onlyNeedToPassOnce;
-	protected LogicType logicType;
+import java.util.ArrayList;
+import java.util.List;
 
-	@Getter
-	protected List<Requirement> conditions = new ArrayList<>();
+public abstract class ConditionForStep implements InitializableRequirement {
+    @Setter
+    @Getter
+    protected boolean hasPassed;
+    protected boolean onlyNeedToPassOnce;
+    protected LogicType logicType;
 
-	@Override
-	abstract public boolean check(Client client);
+    @Getter
+    protected List<Requirement> conditions = new ArrayList<>();
 
-	@Override
-	public void initialize(Client client)
-	{
-		conditions.stream()
-			.filter(InitializableRequirement.class::isInstance)
-			.forEach(req -> ((InitializableRequirement) req).initialize(client));
-	}
+    @Override
+    abstract public boolean check(Client client);
 
-	@Override
-	public void updateHandler()
-	{
-		conditions.stream()
-			.filter(InitializableRequirement.class::isInstance)
-			.forEach(req -> ((InitializableRequirement) req).updateHandler());
-	}
+    @Override
+    public void initialize(Client client) {
+        conditions.stream()
+                .filter(InitializableRequirement.class::isInstance)
+                .forEach(req -> ((InitializableRequirement) req).initialize(client));
+    }
 
-	@Override
-	public String getDisplayText() // conditions don't need display text (yet?)
-	{
-		return null;
-	}
+    @Override
+    public void updateHandler() {
+        conditions.stream()
+                .filter(InitializableRequirement.class::isInstance)
+                .forEach(req -> ((InitializableRequirement) req).updateHandler());
+    }
+
+    @Override
+    public String getDisplayText() // conditions don't need display text (yet?)
+    {
+        return null;
+    }
 }

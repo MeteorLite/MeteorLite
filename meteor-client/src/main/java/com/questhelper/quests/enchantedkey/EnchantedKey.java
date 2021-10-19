@@ -25,84 +25,85 @@
 package com.questhelper.quests.enchantedkey;
 
 import com.questhelper.ItemCollections;
+import com.questhelper.QuestDescriptor;
 import com.questhelper.QuestHelperQuest;
-import com.questhelper.requirements.quest.QuestRequirement;
+import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.Requirement;
+import com.questhelper.requirements.item.ItemRequirement;
+import com.questhelper.requirements.quest.QuestRequirement;
+import com.questhelper.rewards.ItemReward;
+import com.questhelper.steps.QuestStep;
+import net.runelite.api.ItemID;
+import net.runelite.api.QuestState;
+
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import net.runelite.api.ItemID;
-import com.questhelper.requirements.item.ItemRequirement;
-import com.questhelper.questhelpers.BasicQuestHelper;
-import com.questhelper.steps.QuestStep;
-import com.questhelper.QuestDescriptor;
-import net.runelite.api.QuestState;
 
 @QuestDescriptor(
-	quest = QuestHelperQuest.ENCHANTED_KEY
+        quest = QuestHelperQuest.ENCHANTED_KEY
 )
-public class EnchantedKey extends BasicQuestHelper
-{
-	//Items Required
-	ItemRequirement spade, key;
+public class EnchantedKey extends BasicQuestHelper {
+    //Items Required
+    ItemRequirement spade, key;
 
-	//Items Recommended
-	ItemRequirement rellekkaTeleports, varrockTeleports, ardougneTeleports, lumbridgeTeleports, passage;
+    //Items Recommended
+    ItemRequirement rellekkaTeleports, varrockTeleports, ardougneTeleports, lumbridgeTeleports, passage;
 
-	QuestStep solvePuzzle;
+    QuestStep solvePuzzle;
 
-	@Override
-	public Map<Integer, QuestStep> loadSteps()
-	{
-		setupRequirements();
-		setupSteps();
+    @Override
+    public Map<Integer, QuestStep> loadSteps() {
+        setupRequirements();
+        setupSteps();
 
-		Map<Integer, QuestStep> steps = new HashMap<>();
+        Map<Integer, QuestStep> steps = new HashMap<>();
 
-		for (int i = 0; i < 2047; i++)
-		{
-			steps.put(i, solvePuzzle);
-		}
+        for (int i = 0; i < 2047; i++) {
+            steps.put(i, solvePuzzle);
+        }
 
-		return steps;
-	}
+        return steps;
+    }
 
-	private void setupRequirements()
-	{
-		spade = new ItemRequirement("Spade", ItemID.SPADE);
-		key = new ItemRequirement("Enchanted key", ItemID.ENCHANTED_KEY);
-		varrockTeleports = new ItemRequirement("Varrock teleports", ItemID.VARROCK_TELEPORT);
-		ardougneTeleports = new ItemRequirement("Ardougne teleports", ItemID.ARDOUGNE_TELEPORT);
-		rellekkaTeleports = new ItemRequirement("Rellekka teleport", ItemID.RELLEKKA_TELEPORT);
-		lumbridgeTeleports = new ItemRequirement("Lumbridge teleports", ItemID.LUMBRIDGE_TELEPORT);
-		passage = new ItemRequirement("Necklace of passage", ItemCollections.getNecklaceOfPassages());
-	}
+    private void setupRequirements() {
+        spade = new ItemRequirement("Spade", ItemID.SPADE);
+        key = new ItemRequirement("Enchanted key", ItemID.ENCHANTED_KEY);
+        varrockTeleports = new ItemRequirement("Varrock teleports", ItemID.VARROCK_TELEPORT);
+        ardougneTeleports = new ItemRequirement("Ardougne teleports", ItemID.ARDOUGNE_TELEPORT);
+        rellekkaTeleports = new ItemRequirement("Rellekka teleport", ItemID.RELLEKKA_TELEPORT);
+        lumbridgeTeleports = new ItemRequirement("Lumbridge teleports", ItemID.LUMBRIDGE_TELEPORT);
+        passage = new ItemRequirement("Necklace of passage", ItemCollections.getNecklaceOfPassages());
+    }
 
-	private void setupSteps()
-	{
-		solvePuzzle = new EnchantedKeyDigStep(this, key, spade);
-	}
+    private void setupSteps() {
+        solvePuzzle = new EnchantedKeyDigStep(this, key, spade);
+    }
 
-	@Override
-	public List<ItemRequirement> getItemRequirements()
-	{
-		return Arrays.asList(key, spade);
-	}
+    @Override
+    public List<ItemRequirement> getItemRequirements() {
+        return Arrays.asList(key, spade);
+    }
 
-	@Override
-	public List<ItemRequirement> getItemRecommended()
-	{
-		return Arrays.asList(rellekkaTeleports, varrockTeleports, ardougneTeleports, lumbridgeTeleports, passage);
-	}
+    @Override
+    public List<ItemRequirement> getItemRecommended() {
+        return Arrays.asList(rellekkaTeleports, varrockTeleports, ardougneTeleports, lumbridgeTeleports, passage);
+    }
 
-	@Override
-	public List<Requirement> getGeneralRequirements()
-	{
-		ArrayList<Requirement> req = new ArrayList<>();
-		req.add(new QuestRequirement(QuestHelperQuest.MAKING_HISTORY, QuestState.FINISHED));
-		return req;
-	}
+    @Override
+    public List<ItemReward> getItemRewards() {
+        return Arrays.asList(
+                new ItemReward("Saradomin Mjolnir", ItemID.SARADOMIN_MJOLNIR, 1),
+                new ItemReward("Guthix Mjolnir", ItemID.GUTHIX_MJOLNIR, 1),
+                new ItemReward("Zamorak Mjolnir", ItemID.ZAMORAK_MJOLNIR, 1));
+    }
+
+    @Override
+    public List<Requirement> getGeneralRequirements() {
+        ArrayList<Requirement> req = new ArrayList<>();
+        req.add(new QuestRequirement(QuestHelperQuest.MAKING_HISTORY, QuestState.FINISHED));
+        return req;
+    }
 }

@@ -25,12 +25,7 @@
 package com.questhelper.steps.overlay;
 
 import com.questhelper.steps.tools.QuestPerspective;
-import java.awt.Color;
-import java.awt.Graphics2D;
-import java.awt.Rectangle;
-import java.awt.geom.Line2D;
-import java.util.List;
-import javax.annotation.Nonnull;
+import meteor.ui.overlay.OverlayUtil;
 import net.runelite.api.Client;
 import net.runelite.api.Constants;
 import net.runelite.api.Perspective;
@@ -39,136 +34,121 @@ import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
-import meteor.ui.overlay.OverlayUtil;
 
-public class WorldLines
-{
-	public static void createWorldMapLines(Graphics2D graphics, Client client, List<WorldPoint> linePoints,
-										   Color color)
-	{
-		Rectangle mapViewArea = QuestPerspective.getWorldMapClipArea(client);
+import javax.annotation.Nonnull;
+import java.awt.*;
+import java.awt.geom.Line2D;
+import java.util.List;
 
-		for (int i = 0; i < linePoints.size() - 1; i++)
-		{
-			Point startPoint = QuestPerspective.mapWorldPointToGraphicsPoint(client, linePoints.get(i));
-			Point endPoint = QuestPerspective.mapWorldPointToGraphicsPoint(client, linePoints.get(i + 1));
+public class WorldLines {
+    public static void createWorldMapLines(Graphics2D graphics, Client client, List<WorldPoint> linePoints,
+                                           Color color) {
+        Rectangle mapViewArea = QuestPerspective.getWorldMapClipArea(client);
 
-			WorldLines.renderWorldMapLine(graphics, client, mapViewArea, startPoint, endPoint,
-				color);
-		}
-	}
+        for (int i = 0; i < linePoints.size() - 1; i++) {
+            Point startPoint = QuestPerspective.mapWorldPointToGraphicsPoint(client, linePoints.get(i));
+            Point endPoint = QuestPerspective.mapWorldPointToGraphicsPoint(client, linePoints.get(i + 1));
 
-	public static void createMinimapLines(Graphics2D graphics, Client client, List<WorldPoint> linePoints,
-									  Color color)
-	{
-		if (linePoints == null || linePoints.size() < 2)
-		{
-			return;
-		}
-		for (int i = 0; i < linePoints.size() - 1; i++)
-		{
-			LocalPoint startPoint = QuestPerspective.getInstanceLocalPoint(client, linePoints.get(i));
-			LocalPoint destinationPoint = QuestPerspective.getInstanceLocalPoint(client, linePoints.get(i+1));
-			if (startPoint == null || destinationPoint == null)
-			{
-				continue;
-			}
+            WorldLines.renderWorldMapLine(graphics, client, mapViewArea, startPoint, endPoint,
+                    color);
+        }
+    }
 
-			Point startPosOnMinimap = Perspective.localToMinimap(client, startPoint, 10000000);
-			Point destinationPosOnMinimap = Perspective.localToMinimap(client, destinationPoint, 10000000);
+    public static void createMinimapLines(Graphics2D graphics, Client client, List<WorldPoint> linePoints,
+                                          Color color) {
+        if (linePoints == null || linePoints.size() < 2) {
+            return;
+        }
+        for (int i = 0; i < linePoints.size() - 1; i++) {
+            LocalPoint startPoint = QuestPerspective.getInstanceLocalPoint(client, linePoints.get(i));
+            LocalPoint destinationPoint = QuestPerspective.getInstanceLocalPoint(client, linePoints.get(i + 1));
+            if (startPoint == null || destinationPoint == null) {
+                continue;
+            }
 
-			if (destinationPosOnMinimap == null || startPosOnMinimap == null)
-			{
-				continue;
-			}
+            Point startPosOnMinimap = Perspective.localToMinimap(client, startPoint, 10000000);
+            Point destinationPosOnMinimap = Perspective.localToMinimap(client, destinationPoint, 10000000);
 
-			Line2D.Double line = new Line2D.Double(startPosOnMinimap.getX(), startPosOnMinimap.getY(), destinationPosOnMinimap.getX(), destinationPosOnMinimap.getY());
+            if (destinationPosOnMinimap == null || startPosOnMinimap == null) {
+                continue;
+            }
 
-			Rectangle bounds = new Rectangle(0, 0, client.getCanvasWidth(), client.getCanvasHeight());
-			Widget minimapWidget = client.getWidget(WidgetInfo.RESIZABLE_MINIMAP_STONES_DRAW_AREA);
+            Line2D.Double line = new Line2D.Double(startPosOnMinimap.getX(), startPosOnMinimap.getY(), destinationPosOnMinimap.getX(), destinationPosOnMinimap.getY());
 
-			if (minimapWidget == null)
-			{
-				minimapWidget = client.getWidget(WidgetInfo.RESIZABLE_MINIMAP_DRAW_AREA);
-			}
-			if (minimapWidget == null)
-			{
-				minimapWidget = client.getWidget(WidgetInfo.FIXED_VIEWPORT_MINIMAP_DRAW_AREA);
-			}
+            Rectangle bounds = new Rectangle(0, 0, client.getCanvasWidth(), client.getCanvasHeight());
+            Widget minimapWidget = client.getWidget(WidgetInfo.RESIZABLE_MINIMAP_STONES_DRAW_AREA);
 
-			if (minimapWidget != null)
-			{
-				bounds = minimapWidget.getBounds();
-			}
+            if (minimapWidget == null) {
+                minimapWidget = client.getWidget(WidgetInfo.RESIZABLE_MINIMAP_DRAW_AREA);
+            }
+            if (minimapWidget == null) {
+                minimapWidget = client.getWidget(WidgetInfo.FIXED_VIEWPORT_MINIMAP_DRAW_AREA);
+            }
 
-			DirectionArrow.drawLine(graphics, line, color, bounds);
-		}
-	}
+            if (minimapWidget != null) {
+                bounds = minimapWidget.getBounds();
+            }
 
-	public static void renderWorldMapLine(Graphics2D graphics, Client client, Rectangle mapViewArea, Point startPoint,
-									Point endPoint, Color color)
-	{
-		if (mapViewArea == null || startPoint == null || endPoint == null)
-		{
-			return;
-		}
-		if (!mapViewArea.contains(startPoint.getX(), startPoint.getY()) && !mapViewArea.contains(endPoint.getX(), endPoint.getY()))
-		{
-			return;
-		}
+            DirectionArrow.drawLine(graphics, line, color, bounds);
+        }
+    }
 
-		Line2D.Double line = new Line2D.Double(startPoint.getX(), startPoint.getY(), endPoint.getX(), endPoint.getY());
-		DirectionArrow.drawLine(graphics, line, color, QuestPerspective.getWorldMapClipArea(client));
-	}
+    public static void renderWorldMapLine(Graphics2D graphics, Client client, Rectangle mapViewArea, Point startPoint,
+                                          Point endPoint, Color color) {
+        if (mapViewArea == null || startPoint == null || endPoint == null) {
+            return;
+        }
+        if (!mapViewArea.contains(startPoint.getX(), startPoint.getY()) && !mapViewArea.contains(endPoint.getX(), endPoint.getY())) {
+            return;
+        }
 
-	public static Line2D.Double getWorldLines(@Nonnull Client client, @Nonnull LocalPoint startLocation, LocalPoint endLocation)
-	{
-		final int plane = client.getPlane();
+        Line2D.Double line = new Line2D.Double(startPoint.getX(), startPoint.getY(), endPoint.getX(), endPoint.getY());
+        DirectionArrow.drawLine(graphics, line, color, QuestPerspective.getWorldMapClipArea(client));
+    }
 
-		final int startX = startLocation.getX();
-		final int startY = startLocation.getY();
-		final int endX = endLocation.getX();
-		final int endY = endLocation.getY();
+    public static Line2D.Double getWorldLines(@Nonnull Client client,
+                                              @Nonnull LocalPoint startLocation,
+                                              LocalPoint endLocation) {
+        final int plane = client.getPlane();
 
-		final int sceneX = startLocation.getSceneX();
-		final int sceneY = startLocation.getSceneY();
+        final int startX = startLocation.getX();
+        final int startY = startLocation.getY();
+        final int endX = endLocation.getX();
+        final int endY = endLocation.getY();
 
-		if (sceneX < 0 || sceneY < 0 || sceneX >= Constants.SCENE_SIZE || sceneY >= Constants.SCENE_SIZE)
-		{
-			return null;
-		}
+        final int sceneX = startLocation.getSceneX();
+        final int sceneY = startLocation.getSceneY();
 
-		final int startHeight = Perspective.getTileHeight(client, startLocation, plane);
-		final int endHeight = Perspective.getTileHeight(client, endLocation, plane);
+        if (sceneX < 0 || sceneY < 0 || sceneX >= Constants.SCENE_SIZE || sceneY >= Constants.SCENE_SIZE) {
+            return null;
+        }
 
-		Point p1 = Perspective.localToCanvas(client, startX, startY, startHeight);
-		Point p2 = Perspective.localToCanvas(client, endX, endY, endHeight);
+        final int startHeight = Perspective.getTileHeight(client, startLocation, plane);
+        final int endHeight = Perspective.getTileHeight(client, endLocation, plane);
 
-		if (p1 == null || p2 == null)
-		{
-			return null;
-		}
+        Point p1 = Perspective.localToCanvas(client, startX, startY, startHeight);
+        Point p2 = Perspective.localToCanvas(client, endX, endY, endHeight);
 
-		return new Line2D.Double(p1.getX(), p1.getY(), p2.getX(), p2.getY());
-	}
+        if (p1 == null || p2 == null) {
+            return null;
+        }
 
-	public static void drawLinesOnWorld(Graphics2D graphics, Client client, List<WorldPoint> linePoints,
-									   Color color)
-	{
-		for (int i = 0; i < linePoints.size() - 1; i++)
-		{
-			LocalPoint startLp = QuestPerspective.getInstanceLocalPoint(client, linePoints.get(i));
-			LocalPoint endLp = QuestPerspective.getInstanceLocalPoint(client, linePoints.get(i+1));
-			if (startLp == null || endLp == null)
-			{
-				continue;
-			}
+        return new Line2D.Double(p1.getX(), p1.getY(), p2.getX(), p2.getY());
+    }
 
-			Line2D.Double newLine = getWorldLines(client, startLp, endLp);
-			if (newLine != null)
-			{
-				OverlayUtil.renderPolygon(graphics, newLine, color);
-			}
-		}
-	}
+    public static void drawLinesOnWorld(Graphics2D graphics, Client client, List<WorldPoint> linePoints,
+                                        Color color) {
+        for (int i = 0; i < linePoints.size() - 1; i++) {
+            LocalPoint startLp = QuestPerspective.getInstanceLocalPoint(client, linePoints.get(i));
+            LocalPoint endLp = QuestPerspective.getInstanceLocalPoint(client, linePoints.get(i + 1));
+            if (startLp == null || endLp == null) {
+                continue;
+            }
+
+            Line2D.Double newLine = getWorldLines(client, startLp, endLp);
+            if (newLine != null) {
+                OverlayUtil.renderPolygon(graphics, newLine, color);
+            }
+        }
+    }
 }

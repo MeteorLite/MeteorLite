@@ -24,109 +24,103 @@
  */
 package com.questhelper.banktab;
 
+import com.questhelper.QuestBank;
 import com.questhelper.QuestHelperPlugin;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.item.ItemRequirements;
 import com.questhelper.requirements.util.LogicType;
+import net.runelite.api.InventoryID;
+import net.runelite.api.ItemContainer;
+
+import javax.inject.Inject;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
-import javax.inject.Inject;
-import net.runelite.api.InventoryID;
-import net.runelite.api.ItemContainer;
 
-public class QuestHelperBankTagService
-{
-	private final QuestHelperPlugin plugin;
+public class QuestHelperBankTagService {
+    private final QuestHelperPlugin plugin;
+    private final QuestBank questBank;
 
-	@Inject
-	public QuestHelperBankTagService(QuestHelperPlugin plugin)
-	{
-		this.plugin = plugin;
-	}
+    @Inject
+    public QuestHelperBankTagService(QuestHelperPlugin plugin, QuestBank questBank) {
+        this.plugin = plugin;
+        this.questBank = questBank;
+    }
 
-	public ArrayList<Integer> itemsToTag()
-	{
-		ArrayList<BankTabItems> sortedItems = getPluginBankTagItemsForSections();
+    public ArrayList<Integer> itemsToTag() {
+        ArrayList<BankTabItems> sortedItems = getPluginBankTagItemsForSections(true);
 
-		if (sortedItems == null)
-		{
-			return null;
-		}
+        if (sortedItems == null) {
+            return null;
+        }
 
-		ArrayList<Integer> flattenedList = new ArrayList<>();
+        ArrayList<Integer> flattenedList = new ArrayList<>();
 
-		 sortedItems.stream()
-					.map(BankTabItems::getItems)
-					.flatMap(Collection::stream)
-					.map(BankTabItem::getItemIDs)
-					.flatMap(Collection::stream)
-					.filter(Objects::nonNull) // filter non-null just in case any Integer get in the list
-					.filter(id -> !flattenedList.contains(id))
-					.forEach(flattenedList::add);
-		return flattenedList;
-	}
-	
-	public ArrayList<BankTabItems> getPluginBankTagItemsForSections()
-	{
-		ArrayList<BankTabItems> newList = new ArrayList<>();
+        sortedItems.stream()
+                .map(BankTabItems::getItems)
+                .flatMap(Collection::stream)
+                .map(BankTabItem::getItemIDs)
+                .flatMap(Collection::stream)
+                .filter(Objects::nonNull) // filter non-null just in case any Integer get in the list
+                .filter(id -> !flattenedList.contains(id))
+                .forEach(flattenedList::add);
+        return flattenedList;
+    }
 
-		return newList;
-	}
+    public ArrayList<BankTabItems> getPluginBankTagItemsForSections(boolean onlyGetMissingItems) {
+        ArrayList<BankTabItems> newList = new ArrayList<>();
 
-	private void getItemsFromRequirement(BankTabItems pluginItems, ItemRequirement itemRequirement)
-	{
-		if (itemRequirement instanceof ItemRequirements)
-		{
-			ItemRequirements itemRequirements = (ItemRequirements) itemRequirement;
-			LogicType logicType = itemRequirements.getLogicType();
-			ArrayList<ItemRequirement> requirements = itemRequirements.getItemRequirements();
-			if (logicType == LogicType.AND)
-			{
-				requirements.forEach(req -> getItemsFromRequirement(pluginItems, req));
-			}
-			if (logicType == LogicType.OR)
-			{
-				ItemRequirement match = requirements.stream()
-					.filter(r -> r.checkBank(plugin.getClient()))
-					.findFirst()
-					.orElse(requirements.get(0));
+        List<ItemRequirement> recommendedItems = plugin.getSelectedQuest().getItemRecommended();
 
-				getItemsFromRequirement(pluginItems, match);
-			}
-		}
-		else
-		{
-			if (itemRequirement.getDisplayItemId() != null)
-			{
-				pluginItems.addItems(new BankTabItem(itemRequirement));
-			}
-			else if (!itemRequirement.getDisplayItemIds().contains(-1))
-			{
-				pluginItems.addItems(makeBankTabItem(itemRequirement));
-			}
-		}
-	}
+        if (recommendedItems != null && !recommendedItems.isEmpty()) {
+            BankTabItems pluginItems = new BankTabItems("Recommended items");
+            recommendedItems.forEach(item -> getItemsFromRequirement(pluginItems, item));
+            newList.add(pluginItems);
+        }
 
-	private BankTabItem makeBankTabItem(ItemRequirement item)
-	{
-		List<Integer> itemIds = item.getDisplayItemIds();
+        return newList;
+    }
 
-		Integer displayId = itemIds.stream().filter(this::hasItemInBank).findFirst().orElse(itemIds.get(0));
+    private void getItemsFromRequirement(BankTabItems pluginItems, ItemRequirement itemRequirement) {
+        if (itemRequirement instanceof ItemRequirements) {
+            ItemRequirements itemRequirements = (ItemRequirements) itemRequirement;
+            LogicType logicType = itemRequirements.getLogicType();
+            ArrayList<ItemRequirement> requirements = itemRequirements.getItemRequirements();
+            if (logicType == LogicType.AND) {
+                requirements.forEach(req -> getItemsFromRequirement(pluginItems, req));
+            }
+            if (logicType == LogicType.OR) {
+                ItemRequirement match = requirements.stream()
+                        .filter(r -> r.checkBank(plugin.getClient()))
+                        .findFirst()
+                        .orElse(requirements.get(0));
 
-		return new BankTabItem(item.getQuantity(), item.getName(), displayId, item.getTooltip());
-	}
+                getItemsFromRequirement(pluginItems, match);
+            }
+        } else {
+            if (itemRequirement.getDisplayItemId() != null) {
+                pluginItems.addItems(new BankTabItem(itemRequirement));
+            } else if (!itemRequirement.getDisplayItemIds().contains(-1)) {
+                pluginItems.addItems(makeBankTabItem(itemRequirement));
+            }
+        }
+    }
 
-	public boolean hasItemInBank(int itemID)
-	{
-		ItemContainer bankContainer = plugin.getClient().getItemContainer(InventoryID.BANK);
-		if (bankContainer == null)
-		{
-			return false;
-		}
+    private BankTabItem makeBankTabItem(ItemRequirement item) {
+        List<Integer> itemIds = item.getDisplayItemIds();
 
-		return bankContainer.contains(itemID);
-	}
+        Integer displayId = itemIds.stream().filter(this::hasItemInBank).findFirst().orElse(itemIds.get(0));
+
+        return new BankTabItem(item.getQuantity(), item.getName(), displayId, item.getTooltip());
+    }
+
+    public boolean hasItemInBank(int itemID) {
+        ItemContainer bankContainer = plugin.getClient().getItemContainer(InventoryID.BANK);
+        if (bankContainer == null) {
+            return false;
+        }
+
+        return bankContainer.contains(itemID);
+    }
 }

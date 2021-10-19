@@ -27,89 +27,80 @@ package com.questhelper.quests.recruitmentdrive;
 
 import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.requirements.Requirement;
-import com.questhelper.requirements.var.VarbitRequirement;
-import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.WidgetTextRequirement;
+import com.questhelper.requirements.conditional.Conditions;
+import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
-import java.util.ArrayList;
-import java.util.List;
-
 import meteor.eventbus.Subscribe;
 import net.runelite.api.events.VarbitChanged;
 
-public class SirRenItchoodStep extends ConditionalStep
-{
-	private String answer = null;
+import java.util.ArrayList;
+import java.util.List;
 
-	private String[] answers = {
-		"NULL", "TIME", "FISH", "RAIN", "BITE", "MEAT", "LAST"
-	};
+public class SirRenItchoodStep extends ConditionalStep {
+    private final int VARBIT_FINISHED_ROOM = 663;
+    private final int VARBIT_ANSWER = 666;
+    private final String answer = null;
+    private final String[] answers = {
+            "NULL", "TIME", "FISH", "RAIN", "BITE", "MEAT", "LAST"
+    };
+    private final QuestStep talkToRen;
+    private Requirement answerWidgetOpen;
+    private DoorPuzzle enterDoorcode;
+    private QuestStep openAnswerWidget;
+    private QuestStep leaveRoom;
+    private VarbitRequirement finishedRoomCondition;
 
-	private final int VARBIT_FINISHED_ROOM = 663;
-	private final int VARBIT_ANSWER = 666;
+    public SirRenItchoodStep(QuestHelper questHelper, QuestStep step, Requirement... requirements) {
+        super(questHelper, step, requirements);
 
-	private Requirement answerWidgetOpen;
-	private DoorPuzzle enterDoorcode;
-	private QuestStep talkToRen, openAnswerWidget, leaveRoom;
-	private VarbitRequirement finishedRoomCondition;
+        talkToRen = step;
+        addRenSteps();
+    }
 
-	public SirRenItchoodStep(QuestHelper questHelper, QuestStep step, Requirement... requirements)
-	{
-		super(questHelper, step, requirements);
+    @Override
+    public void startUp() {
+        super.startUp();
+        int answerID = client.getVarbitValue(VARBIT_ANSWER);
+        if (answerID == 0) {
+            return;
+        }
+        String answer = answers[answerID];
+        enterDoorcode.updateWord(answer);
+    }
 
-		talkToRen = step;
-		addRenSteps();
-	}
+    @Subscribe
+    @Override
+    public void onVarbitChanged(VarbitChanged varbitChanged) {
+        super.onVarbitChanged(varbitChanged);
+        int answerID = client.getVarbitValue(VARBIT_ANSWER);
+        if (answerID == 0) {
+            return;
+        }
+        String answer = answers[answerID];
+        enterDoorcode.updateWord(answer);
+    }
 
-	@Override
-	public void startUp()
-	{
-		super.startUp();
-		int answerID = client.getVarbitValue(VARBIT_ANSWER);
-		if (answerID == 0)
-		{
-			return;
-		}
-		String answer = answers[answerID];
-		enterDoorcode.updateWord(answer);
-	}
+    private void addRenSteps() {
+        finishedRoomCondition = new VarbitRequirement(VARBIT_FINISHED_ROOM, 1);
+        openAnswerWidget = new ObjectStep(questHelper, 7323, "Open the door to be prompted to enter a code.");
+        answerWidgetOpen = new WidgetTextRequirement(285, 55, "Combination Lock Door");
+        enterDoorcode = new DoorPuzzle(questHelper, "NONE");
+        leaveRoom = new ObjectStep(questHelper, 7323, "Leave through the door to enter the portal and continue.");
 
-	@Subscribe
-	@Override
-	public void onVarbitChanged(VarbitChanged varbitChanged)
-	{
-		super.onVarbitChanged(varbitChanged);
-		int answerID = client.getVarbitValue(VARBIT_ANSWER);
-		if (answerID == 0)
-		{
-			return;
-		}
-		String answer = answers[answerID];
-		enterDoorcode.updateWord(answer);
-	}
+        addStep(finishedRoomCondition, leaveRoom);
+        addStep(new Conditions(answerWidgetOpen), enterDoorcode);
+        addStep(null, openAnswerWidget);
+    }
 
-	private void addRenSteps()
-	{
-		finishedRoomCondition = new VarbitRequirement(VARBIT_FINISHED_ROOM, 1);
-		openAnswerWidget = new ObjectStep(questHelper, 7323, "Open the door to be prompted to enter a code.");
-		answerWidgetOpen = new WidgetTextRequirement(285, 55, "Combination Lock Door");
-		enterDoorcode = new DoorPuzzle(questHelper, "NONE");
-		leaveRoom = new ObjectStep(questHelper, 7323, "Leave through the door to enter the portal and continue.");
-
-		addStep(finishedRoomCondition, leaveRoom);
-		addStep(new Conditions(answerWidgetOpen), enterDoorcode);
-		addStep(null, openAnswerWidget);
-	}
-
-	public List<QuestStep> getPanelSteps()
-	{
-		List<QuestStep> steps = new ArrayList<>();
-		steps.add(talkToRen);
-		steps.add(openAnswerWidget);
-		steps.add(enterDoorcode);
-		steps.add(leaveRoom);
-		return steps;
-	}
+    public List<QuestStep> getPanelSteps() {
+        List<QuestStep> steps = new ArrayList<>();
+        steps.add(talkToRen);
+        steps.add(openAnswerWidget);
+        steps.add(enterDoorcode);
+        steps.add(leaveRoom);
+        return steps;
+    }
 }

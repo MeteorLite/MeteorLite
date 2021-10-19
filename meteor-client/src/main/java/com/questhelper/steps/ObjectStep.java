@@ -29,13 +29,30 @@ import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.steps.overlay.DirectionArrow;
 import com.questhelper.steps.tools.QuestPerspective;
-import net.runelite.api.Point;
-import net.runelite.api.*;
-import net.runelite.api.coords.LocalPoint;
-import net.runelite.api.coords.WorldPoint;
-import net.runelite.api.events.*;
 import meteor.eventbus.Subscribe;
 import meteor.ui.overlay.OverlayUtil;
+import net.runelite.api.GameObject;
+import net.runelite.api.GameState;
+import net.runelite.api.ObjectComposition;
+import net.runelite.api.Point;
+import net.runelite.api.Tile;
+import net.runelite.api.TileObject;
+import net.runelite.api.coords.LocalPoint;
+import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.events.DecorativeObjectChanged;
+import net.runelite.api.events.DecorativeObjectDespawned;
+import net.runelite.api.events.DecorativeObjectSpawned;
+import net.runelite.api.events.GameObjectChanged;
+import net.runelite.api.events.GameObjectDespawned;
+import net.runelite.api.events.GameObjectSpawned;
+import net.runelite.api.events.GameStateChanged;
+import net.runelite.api.events.GameTick;
+import net.runelite.api.events.GroundObjectChanged;
+import net.runelite.api.events.GroundObjectDespawned;
+import net.runelite.api.events.GroundObjectSpawned;
+import net.runelite.api.events.WallObjectChanged;
+import net.runelite.api.events.WallObjectDespawned;
+import net.runelite.api.events.WallObjectSpawned;
 
 import java.awt.*;
 import java.awt.geom.Rectangle2D;
@@ -44,348 +61,291 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
-public class ObjectStep extends DetailedQuestStep
-{
-	private final int objectID;
-	private final ArrayList<Integer> alternateObjectIDs = new ArrayList<>();
-	private TileObject object;
+public class ObjectStep extends DetailedQuestStep {
+    private final int objectID;
+    private final ArrayList<Integer> alternateObjectIDs = new ArrayList<>();
+    private final List<TileObject> objects = new ArrayList<>();
+    private TileObject object;
+    private int lastPlane;
+    private boolean revalidateObjects;
 
-	private final List<TileObject> objects = new ArrayList<>();
-	private int lastPlane;
-	private boolean revalidateObjects;
+    public ObjectStep(QuestHelper questHelper,
+                      int objectID,
+                      WorldPoint worldPoint,
+                      String text,
+                      Requirement... requirements) {
+        super(questHelper, worldPoint, text, requirements);
+        this.objectID = objectID;
+    }
 
-	public ObjectStep(QuestHelper questHelper, int objectID, WorldPoint worldPoint, String text, Requirement... requirements)
-	{
-		super(questHelper, worldPoint, text, requirements);
-		this.objectID = objectID;
-	}
+    public ObjectStep(QuestHelper questHelper, int objectID, String text, Requirement... requirements) {
+        super(questHelper, null, text, requirements);
+        this.objectID = objectID;
+    }
 
-	public ObjectStep(QuestHelper questHelper, int objectID, String text, Requirement... requirements)
-	{
-		super(questHelper, null, text, requirements);
-		this.objectID = objectID;
-	}
+    public void setRevalidateObjects(boolean value) {
+        this.revalidateObjects = value;
+    }
 
-	public void setRevalidateObjects(boolean value)
-	{
-		this.revalidateObjects = value;
-	}
+    @Override
+    public void startUp() {
+        super.startUp();
+        if (worldPoint != null) {
+            checkTileForObject(worldPoint);
+        } else {
+            loadObjects();
+        }
+    }
 
-	@Override
-	public void startUp()
-	{
-		super.startUp();
-		if (worldPoint != null)
-		{
-			checkTileForObject(worldPoint);
-		}
-		else
-		{
-			loadObjects();
-		}
-	}
+    private void loadObjects() {
+        objects.clear();
+        Tile[][] tiles = client.getScene().getTiles()[client.getPlane()];
+        for (Tile[] lineOfTiles : tiles) {
+            for (Tile tile : lineOfTiles) {
+                if (tile != null) {
+                    for (GameObject object : tile.getGameObjects()) {
+                        handleObjects(object);
+                    }
 
-	private void loadObjects()
-	{
-		objects.clear();
-		Tile[][] tiles = client.getScene().getTiles()[client.getPlane()];
-		for (Tile[] lineOfTiles : tiles)
-		{
-			for (Tile tile : lineOfTiles)
-			{
-				if (tile != null)
-				{
-					for (GameObject object : tile.getGameObjects())
-					{
-						handleObjects(object);
-					}
-
-					handleObjects(tile.getDecorativeObject());
-					handleObjects(tile.getGroundObject());
-					handleObjects(tile.getWallObject());
-				}
-			}
-		}
-	}
+                    handleObjects(tile.getDecorativeObject());
+                    handleObjects(tile.getGroundObject());
+                    handleObjects(tile.getWallObject());
+                }
+            }
+        }
+    }
 
 
-	@Subscribe
-	public void onGameTick(final GameTick event)
-	{
-		if (revalidateObjects)
-		{
-			if (lastPlane != client.getPlane())
-			{
-				lastPlane = client.getPlane();
-				loadObjects();
-			}
-		}
-		if (worldPoint == null)
-		{
-			return;
-		}
-		object = null;
-		objects.clear();
-		checkTileForObject(worldPoint);
-	}
+    @Subscribe
+    public void onGameTick(final GameTick event) {
+        if (revalidateObjects) {
+            if (lastPlane != client.getPlane()) {
+                lastPlane = client.getPlane();
+                loadObjects();
+            }
+        }
+        if (worldPoint == null) {
+            return;
+        }
+        object = null;
+        objects.clear();
+        checkTileForObject(worldPoint);
+    }
 
-	public void checkTileForObject(WorldPoint wp)
-	{
-		Collection<WorldPoint> localWorldPoints = QuestPerspective.toLocalInstance(client, wp);
+    public void checkTileForObject(WorldPoint wp) {
+        Collection<WorldPoint> localWorldPoints = QuestPerspective.toLocalInstance(client, wp);
 
-		for (WorldPoint point : localWorldPoints)
-		{
-			LocalPoint localPoint = LocalPoint.fromWorld(client, point);
-			if (localPoint == null)
-			{
-				continue;
-			}
-			Tile[][][] tiles = client.getScene().getTiles();
-			if (tiles == null)
-			{
-				continue;
-			}
+        for (WorldPoint point : localWorldPoints) {
+            LocalPoint localPoint = LocalPoint.fromWorld(client, point);
+            if (localPoint == null) {
+                continue;
+            }
+            Tile[][][] tiles = client.getScene().getTiles();
+            if (tiles == null) {
+                continue;
+            }
 
-			Tile tile = tiles[client.getPlane()][localPoint.getSceneX()][localPoint.getSceneY()];
-			if (tile != null)
-			{
-				Arrays.stream(tile.getGameObjects()).forEach(this::handleObjects);
-				handleObjects(tile.getDecorativeObject());
-				handleObjects(tile.getGroundObject());
-				handleObjects(tile.getWallObject());
-			}
-		}
-	}
+            Tile tile = tiles[client.getPlane()][localPoint.getSceneX()][localPoint.getSceneY()];
+            if (tile != null) {
+                Arrays.stream(tile.getGameObjects()).forEach(this::handleObjects);
+                handleObjects(tile.getDecorativeObject());
+                handleObjects(tile.getGroundObject());
+                handleObjects(tile.getWallObject());
+            }
+        }
+    }
 
-	@Override
-	public void shutDown()
-	{
-		super.shutDown();
-		objects.clear();
-	}
+    @Override
+    public void shutDown() {
+        super.shutDown();
+        objects.clear();
+    }
 
-	@Subscribe
-	@Override
-	public void onGameStateChanged(GameStateChanged event)
-	{
-		super.onGameStateChanged(event);
-		if (event.getGameState() == GameState.LOADING)
-		{
-			object = null;
-			objects.clear();
-		}
-	}
+    @Subscribe
+    @Override
+    public void onGameStateChanged(GameStateChanged event) {
+        super.onGameStateChanged(event);
+        if (event.getGameState() == GameState.LOADING) {
+            object = null;
+            objects.clear();
+        }
+    }
 
-	public void addAlternateObjects(Integer... alternateObjectIDs)
-	{
-		this.alternateObjectIDs.addAll(Arrays.asList(alternateObjectIDs));
-	}
+    public void addAlternateObjects(Integer... alternateObjectIDs) {
+        this.alternateObjectIDs.addAll(Arrays.asList(alternateObjectIDs));
+    }
 
-	@Subscribe
-	public void onGameObjectSpawned(GameObjectSpawned event)
-	{
-		handleObjects(event.getGameObject());
-	}
+    @Subscribe
+    public void onGameObjectSpawned(GameObjectSpawned event) {
+        handleObjects(event.getGameObject());
+    }
 
-	@Subscribe
-	public void onGameObjectDespawned(GameObjectDespawned event)
-	{
-		handleRemoveObjects(event.getGameObject());
-	}
+    @Subscribe
+    public void onGameObjectDespawned(GameObjectDespawned event) {
+        handleRemoveObjects(event.getGameObject());
+    }
 
-	@Subscribe
-	public void onGameObjectChanged(GameObjectChanged event)
-	{
-		handleRemoveObjects(event.getOldObject());
-		handleObjects(event.getNewObject());
-	}
+    @Subscribe
+    public void onGameObjectChanged(GameObjectChanged event) {
+        handleRemoveObjects(event.getOldObject());
+        handleObjects(event.getNewObject());
+    }
 
-	@Subscribe
-	public void onGroundObjectSpawned(GroundObjectSpawned event)
-	{
-		handleObjects(event.getGroundObject());
-	}
+    @Subscribe
+    public void onGroundObjectSpawned(GroundObjectSpawned event) {
+        handleObjects(event.getGroundObject());
+    }
 
-	@Subscribe
-	public void onGroundObjectDespawned(GroundObjectDespawned event)
-	{
-		handleRemoveObjects(event.getGroundObject());
-	}
+    @Subscribe
+    public void onGroundObjectDespawned(GroundObjectDespawned event) {
+        handleRemoveObjects(event.getGroundObject());
+    }
 
-	@Subscribe
-	public void onGroundObjectChanged(GroundObjectChanged event)
-	{
-		handleRemoveObjects(event.getPrevious());
-		handleObjects(event.getGroundObject());
-	}
+    @Subscribe
+    public void onGroundObjectChanged(GroundObjectChanged event) {
+        handleRemoveObjects(event.getPrevious());
+        handleObjects(event.getGroundObject());
+    }
 
-	@Subscribe
-	public void onDecorativeObjectSpawned(DecorativeObjectSpawned event)
-	{
-		handleObjects(event.getDecorativeObject());
-	}
+    @Subscribe
+    public void onDecorativeObjectSpawned(DecorativeObjectSpawned event) {
+        handleObjects(event.getDecorativeObject());
+    }
 
-	@Subscribe
-	public void onDecorativeObjectDespawned(DecorativeObjectDespawned event)
-	{
-		handleRemoveObjects(event.getDecorativeObject());
-	}
+    @Subscribe
+    public void onDecorativeObjectDespawned(DecorativeObjectDespawned event) {
+        handleRemoveObjects(event.getDecorativeObject());
+    }
 
-	@Subscribe
-	public void onDecorativeObjectChanged(DecorativeObjectChanged event)
-	{
-		handleRemoveObjects(event.getPrevious());
-		handleObjects(event.getDecorativeObject());
-	}
+    @Subscribe
+    public void onDecorativeObjectChanged(DecorativeObjectChanged event) {
+        handleRemoveObjects(event.getPrevious());
+        handleObjects(event.getDecorativeObject());
+    }
 
-	@Subscribe
-	public void onWallObjectSpawned(WallObjectSpawned event)
-	{
-		handleObjects(event.getWallObject());
-	}
+    @Subscribe
+    public void onWallObjectSpawned(WallObjectSpawned event) {
+        handleObjects(event.getWallObject());
+    }
 
-	@Subscribe
-	public void onWallObjectDespawned(WallObjectDespawned event)
-	{
-		handleRemoveObjects(event.getWallObject());
-	}
+    @Subscribe
+    public void onWallObjectDespawned(WallObjectDespawned event) {
+        handleRemoveObjects(event.getWallObject());
+    }
 
-	@Subscribe
-	public void onWallObjectChanged(WallObjectChanged event)
-	{
-		handleRemoveObjects(event.getPrevious());
-		handleObjects(event.getWallObject());
-	}
+    @Subscribe
+    public void onWallObjectChanged(WallObjectChanged event) {
+        handleRemoveObjects(event.getPrevious());
+        handleObjects(event.getWallObject());
+    }
 
-	@Override
-	public void makeWorldOverlayHint(Graphics2D graphics, QuestHelperPlugin plugin)
-	{
-		super.makeWorldOverlayHint(graphics, plugin);
-		if (objects.isEmpty())
-		{
-			return;
-		}
+    @Override
+    public void makeWorldOverlayHint(Graphics2D graphics, QuestHelperPlugin plugin) {
+        super.makeWorldOverlayHint(graphics, plugin);
+        if (objects.isEmpty()) {
+            return;
+        }
 
-		if (inCutscene)
-		{
-			return;
-		}
+        if (inCutscene) {
+            return;
+        }
 
-		Point mousePosition = client.getMouseCanvasPosition();
+        Point mousePosition = client.getMouseCanvasPosition();
 
-		for (TileObject tileObject : objects)
-		{
-			if (tileObject.getPlane() == client.getPlane())
-			{
-				Color configColor = getQuestHelper().getConfig().targetOverlayColor();
-				Color fillColor = new Color(configColor.getRed(), configColor.getGreen(), configColor.getBlue(), 20);
-				OverlayUtil.renderHoverableArea(graphics, tileObject.getClickbox(), mousePosition, fillColor,
-					getQuestHelper().getConfig().targetOverlayColor().darker(),
-					getQuestHelper().getConfig().targetOverlayColor());
-			}
-		}
+        for (TileObject tileObject : objects) {
+            if (tileObject.getPlane() == client.getPlane()) {
+                Color configColor = getQuestHelper().getConfig().targetOverlayColor();
+                Color fillColor = new Color(configColor.getRed(), configColor.getGreen(), configColor.getBlue(), 20);
+                OverlayUtil.renderHoverableArea(graphics, tileObject.getClickbox(), mousePosition, fillColor,
+                        getQuestHelper().getConfig().targetOverlayColor().darker(),
+                        getQuestHelper().getConfig().targetOverlayColor());
+            }
+        }
 
-		if (iconItemID != -1 && object != null)
-		{
-			Shape clickbox = object.getClickbox();
-			if (clickbox != null && !inCutscene)
-			{
-				Rectangle2D boundingBox = clickbox.getBounds2D();
-				graphics.drawImage(icon, (int) boundingBox.getCenterX() - 15,  (int) boundingBox.getCenterY() - 10,
-					null);
-			}
-		}
-	}
+        if (iconItemID != -1 && object != null) {
+            Shape clickbox = object.getClickbox();
+            if (clickbox != null && !inCutscene) {
+                Rectangle2D boundingBox = clickbox.getBounds2D();
+                graphics.drawImage(icon, (int) boundingBox.getCenterX() - 15, (int) boundingBox.getCenterY() - 10,
+                        null);
+            }
+        }
+    }
 
 
+    @Override
+    public void renderArrow(Graphics2D graphics) {
+        if (questHelper.getConfig().showMiniMapArrow()) {
+            if (object == null || hideWorldArrow) {
+                return;
+            }
+            Shape clickbox = object.getClickbox();
+            if (clickbox != null && questHelper.getConfig().showMiniMapArrow()) {
+                Rectangle2D boundingBox = clickbox.getBounds2D();
+                int x = (int) boundingBox.getCenterX();
+                int y = (int) boundingBox.getMinY() - 20;
 
-	@Override
-	public void renderArrow(Graphics2D graphics) {
-		if (questHelper.getConfig().showMiniMapArrow()) {
-			if (object == null || hideWorldArrow) {
-				return;
-			}
-			Shape clickbox = object.getClickbox();
-			if (clickbox != null && questHelper.getConfig().showMiniMapArrow()) {
-				Rectangle2D boundingBox = clickbox.getBounds2D();
-				int x = (int) boundingBox.getCenterX();
-				int y = (int) boundingBox.getMinY() - 20;
+                DirectionArrow.drawWorldArrow(graphics, getQuestHelper().getConfig().targetOverlayColor(), x, y);
+            }
+        }
+    }
 
-				DirectionArrow.drawWorldArrow(graphics, getQuestHelper().getConfig().targetOverlayColor(), x, y);
-			}
-		}
-	}
+    private void handleRemoveObjects(TileObject object) {
+        if (object.equals(this.object)) {
+            this.object = null;
+        }
 
-	private void handleRemoveObjects(TileObject object)
-	{
-		if (object.equals(this.object))
-		{
-			this.object = null;
-		}
+        objects.remove(object);
+    }
 
-		objects.remove(object);
-	}
+    private void handleObjects(TileObject object) {
+        if (object == null) {
+            return;
+        }
 
-	private void handleObjects(TileObject object)
-	{
-		if (object == null)
-		{
-			return;
-		}
+        Collection<WorldPoint> localWorldPoints = null;
+        if (worldPoint != null) {
+            localWorldPoints = QuestPerspective.toLocalInstance(client, worldPoint);
+        }
 
-		Collection<WorldPoint> localWorldPoints = null;
-		if (worldPoint != null)
-		{
-			localWorldPoints = QuestPerspective.toLocalInstance(client, worldPoint);
-		}
+        if (object.getId() == objectID || alternateObjectIDs.contains(object.getId())) {
+            setObjects(object, localWorldPoints);
+            return;
+        }
 
-		if (object.getId() == objectID || alternateObjectIDs.contains(object.getId()))
-		{
-			setObjects(object, localWorldPoints);
-			return;
-		}
+        final ObjectComposition comp = client.getObjectComposition(object.getId());
+        final int[] impostorIds = comp.getImpostorIds();
 
-		final ObjectComposition comp = client.getObjectComposition(object.getId());
-		final int[] impostorIds = comp.getImpostorIds();
+        if (impostorIds != null && comp.getImpostor() != null) {
+            boolean imposterIsMainObject = comp.getImpostor().getId() == objectID;
+            boolean imposterIsAlternateObject = alternateObjectIDs.contains(comp.getImpostor().getId());
+            if (imposterIsMainObject || imposterIsAlternateObject) {
+                setObjects(object, localWorldPoints);
+            }
+        }
+    }
 
-		if (impostorIds != null && comp.getImpostor() != null)
-		{
-			boolean imposterIsMainObject = comp.getImpostor().getId() == objectID;
-			boolean imposterIsAlternateObject = alternateObjectIDs.contains(comp.getImpostor().getId());
-			if (imposterIsMainObject || imposterIsAlternateObject)
-			{
-				setObjects(object, localWorldPoints);
-			}
-		}
-	}
+    private void setObjects(TileObject object, Collection<WorldPoint> localWorldPoints) {
+        if (localWorldPoints != null &&
+                (localWorldPoints.contains(object.getWorldLocation()) ||
+                        localWorldPoints.contains(objLocation(object)))) {
+            this.object = object;
+            if (!this.objects.contains(object)) {
+                this.objects.add(object);
+            }
+            return;
+        }
+        if (worldPoint == null) {
+            this.object = object;
+            if (!this.objects.contains(object)) {
+                this.objects.add(object);
+            }
+        }
+    }
 
-	private void setObjects(TileObject object, Collection<WorldPoint> localWorldPoints)
-	{
-		if (localWorldPoints != null &&
-			(localWorldPoints.contains(object.getWorldLocation()) ||
-				localWorldPoints.contains(objLocation(object))))
-		{
-			this.object = object;
-			if (!this.objects.contains(object))
-			{
-				this.objects.add(object);
-			}
-			return;
-		}
-		if (worldPoint == null)
-		{
-			this.object = object;
-			if (!this.objects.contains(object))
-			{
-				this.objects.add(object);
-			}
-		}
-	}
-
-	// This is required due to changes in how object.getWorldLocation() works
-	// See https://github.com/runelite/runelite/commit/4f34a0de6a0100adf79cac5b92198aa432debc4c
-	private WorldPoint objLocation(TileObject obj)
-	{
-		return WorldPoint.fromLocal(client, obj.getX(), obj.getY(), obj.getPlane());
-	}
+    // This is required due to changes in how object.getWorldLocation() works
+    // See https://github.com/runelite/runelite/commit/4f34a0de6a0100adf79cac5b92198aa432debc4c
+    private WorldPoint objLocation(TileObject obj) {
+        return WorldPoint.fromLocal(client, obj.getX(), obj.getY(), obj.getPlane());
+    }
 }

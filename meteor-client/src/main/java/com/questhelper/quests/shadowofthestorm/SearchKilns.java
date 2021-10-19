@@ -28,62 +28,50 @@ import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.steps.DetailedOwnerStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
-import java.util.Arrays;
-import java.util.Collection;
+import meteor.eventbus.Subscribe;
 import net.runelite.api.NullObjectID;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.GameTick;
-import meteor.eventbus.Subscribe;
 
-public class SearchKilns extends DetailedOwnerStep
-{
-	ObjectStep searchKiln1, searchKiln2, searchKiln3, searchKiln4;
+import java.util.Arrays;
+import java.util.Collection;
 
-	public SearchKilns(QuestHelper questHelper)
-	{
-		super(questHelper, "Search the kilns in Uzer until you find a book.");
-	}
+public class SearchKilns extends DetailedOwnerStep {
+    ObjectStep searchKiln1, searchKiln2, searchKiln3, searchKiln4;
 
-	@Subscribe
-	public void onGameTick(GameTick event)
-	{
-		updateSteps();
-	}
+    public SearchKilns(QuestHelper questHelper) {
+        super(questHelper, "Search the kilns in Uzer until you find a book.");
+    }
 
-	@Override
-	protected void updateSteps()
-	{
-		int correctKiln = client.getVarbitValue(1378);
-		if (correctKiln == 0)
-		{
-			startUpStep(searchKiln1);
-		}
-		else if (correctKiln == 1)
-		{
-			startUpStep(searchKiln2);
-		}
-		else if (correctKiln == 2)
-		{
-			startUpStep(searchKiln3);
-		}
-		else if (correctKiln == 3)
-		{
-			startUpStep(searchKiln4);
-		}
-	}
+    @Subscribe
+    public void onGameTick(GameTick event) {
+        updateSteps();
+    }
 
-	@Override
-	protected void setupSteps()
-	{
-		searchKiln1 = new ObjectStep(getQuestHelper(), NullObjectID.NULL_10242, new WorldPoint(3468, 3124, 0), "Search the kilns in Uzer until you find a book.");
-		searchKiln2 = new ObjectStep(getQuestHelper(), NullObjectID.NULL_10243, new WorldPoint(3479, 3083, 0), "Search the kilns in Uzer until you find a book.");
-		searchKiln3 = new ObjectStep(getQuestHelper(), NullObjectID.NULL_10244, new WorldPoint(3473, 3093, 0), "Search the kilns in Uzer until you find a book.");
-		searchKiln4 = new ObjectStep(getQuestHelper(), NullObjectID.NULL_10245, new WorldPoint(3501, 3085, 0), "Search the kilns in Uzer until you find a book.");
-	}
+    @Override
+    protected void updateSteps() {
+        int correctKiln = client.getVarbitValue(1378);
+        if (correctKiln == 0) {
+            startUpStep(searchKiln1);
+        } else if (correctKiln == 1) {
+            startUpStep(searchKiln2);
+        } else if (correctKiln == 2) {
+            startUpStep(searchKiln3);
+        } else if (correctKiln == 3) {
+            startUpStep(searchKiln4);
+        }
+    }
 
-	@Override
-	public Collection<QuestStep> getSteps()
-	{
-		return Arrays.asList(searchKiln1, searchKiln2, searchKiln3, searchKiln4);
-	}
+    @Override
+    protected void setupSteps() {
+        searchKiln1 = new ObjectStep(getQuestHelper(), NullObjectID.NULL_10242, new WorldPoint(3468, 3124, 0), "Search the kilns in Uzer until you find a book.");
+        searchKiln2 = new ObjectStep(getQuestHelper(), NullObjectID.NULL_10243, new WorldPoint(3479, 3083, 0), "Search the kilns in Uzer until you find a book.");
+        searchKiln3 = new ObjectStep(getQuestHelper(), NullObjectID.NULL_10244, new WorldPoint(3473, 3093, 0), "Search the kilns in Uzer until you find a book.");
+        searchKiln4 = new ObjectStep(getQuestHelper(), NullObjectID.NULL_10245, new WorldPoint(3501, 3085, 0), "Search the kilns in Uzer until you find a book.");
+    }
+
+    @Override
+    public Collection<QuestStep> getSteps() {
+        return Arrays.asList(searchKiln1, searchKiln2, searchKiln3, searchKiln4);
+    }
 }

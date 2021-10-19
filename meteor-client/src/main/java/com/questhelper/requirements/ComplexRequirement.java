@@ -25,70 +25,63 @@
 package com.questhelper.requirements;
 
 import com.questhelper.requirements.util.LogicType;
-import java.util.stream.Stream;
 import lombok.Getter;
 import net.runelite.api.Client;
+
+import java.util.stream.Stream;
 
 /**
  * Requirement that combines multiple other {@link Requirement}s using
  * {@link LogicType} to determine if the requirement(s) is/are met.
  */
 @Getter
-public class ComplexRequirement extends AbstractRequirement
-{
-	private final Requirement[] requirements;
-	private final LogicType logicType;
-	private final String name;
+public class ComplexRequirement extends AbstractRequirement {
+    private final Requirement[] requirements;
+    private final LogicType logicType;
+    private final String name;
 
-	/**
-	 * Requirement that combines multiple other {@link Requirement}s using
-	 * {@link LogicType} to determine if the requirement(s) is/are met.
-	 * <br>
-	 * The default {@link LogicType} is {@link LogicType#AND}.
-	 */
-	public ComplexRequirement(String name, AbstractRequirement... requirements)
-	{
-		this.name = name;
-		this.requirements = requirements;
-		this.logicType = LogicType.AND;
+    /**
+     * Requirement that combines multiple other {@link Requirement}s using
+     * {@link LogicType} to determine if the requirement(s) is/are met.
+     * <br>
+     * The default {@link LogicType} is {@link LogicType#AND}.
+     */
+    public ComplexRequirement(String name, AbstractRequirement... requirements) {
+        this.name = name;
+        this.requirements = requirements;
+        this.logicType = LogicType.AND;
 
-		shouldCountForFilter = true;
-		// If any sub-requirements shouldn't be considered for filtering, don't consider the
-		// whole ComplexRequirement for filtering
-		for (AbstractRequirement requirement : requirements)
-		{
-			if (!requirement.shouldConsiderForFilter())
-			{
-				shouldCountForFilter = false;
-				break;
-			}
-		}
-	}
+        shouldCountForFilter = true;
+        // If any sub-requirements shouldn't be considered for filtering, don't consider the
+        // whole ComplexRequirement for filtering
+        for (AbstractRequirement requirement : requirements) {
+            if (!requirement.shouldConsiderForFilter()) {
+                shouldCountForFilter = false;
+                break;
+            }
+        }
+    }
 
-	/**
-	 * Requirement that combines multiple other {@link Requirement}s using
-	 * {@link LogicType} to determine if the requirement(s) is/are met.
-	 */
-	public ComplexRequirement(LogicType logicType, String name, Requirement... requirements)
-	{
-		this.name = name;
-		this.requirements = requirements;
-		this.logicType = logicType;
-	}
+    /**
+     * Requirement that combines multiple other {@link Requirement}s using
+     * {@link LogicType} to determine if the requirement(s) is/are met.
+     */
+    public ComplexRequirement(LogicType logicType, String name, Requirement... requirements) {
+        this.name = name;
+        this.requirements = requirements;
+        this.logicType = logicType;
+    }
 
-	@Override
-	public boolean check(Client client)
-	{
-		if (logicType == null)
-		{
-			return false;
-		}
-		return logicType.test(Stream.of(requirements), r -> r.check(client));
-	}
+    @Override
+    public boolean check(Client client) {
+        if (logicType == null) {
+            return false;
+        }
+        return logicType.test(Stream.of(requirements), r -> r.check(client));
+    }
 
-	@Override
-	public String getDisplayText()
-	{
-		return name;
-	}
+    @Override
+    public String getDisplayText() {
+        return name;
+    }
 }

@@ -29,86 +29,76 @@ package com.questhelper.requirements;
 
 import com.questhelper.Zone;
 import com.questhelper.questhelpers.QuestUtil;
-import java.util.Collections;
-import java.util.List;
-import java.util.stream.Stream;
-import javax.annotation.Nonnull;
 import net.runelite.api.Client;
 import net.runelite.api.Player;
 import net.runelite.api.coords.WorldPoint;
 
-public class ZoneRequirement extends AbstractRequirement
-{
-	private final List<Zone> zones;
-	private final boolean checkInZone;
-	private String displayText;
+import javax.annotation.Nonnull;
+import java.util.List;
+import java.util.stream.Stream;
 
-	/**
-	 * Check if the player is either in the specified zone.
-	 *
-	 * @param displayText display text
-	 * @param zone the zone to check
-	 */
-	public ZoneRequirement(String displayText, Zone zone)
-	{
-		this(displayText, false, zone);
-	}
+public class ZoneRequirement extends AbstractRequirement {
+    private final List<Zone> zones;
+    private final boolean checkInZone;
+    private String displayText;
 
-	/**
-	 * Check if the player is either in, or not in, the specified zone.
-	 *
-	 * @param displayText display text
-	 * @param checkNotInZone true to negate this requirement check (i.e. it will check if the player is NOT in the zone)
-	 * @param zone the zone to check
-	 */
-	public ZoneRequirement(String displayText, boolean checkNotInZone, Zone zone)
-	{
-		this.displayText = displayText;
-		this.checkInZone = !checkNotInZone; // This was originally 'checkNotInZone' so we have to maintain that behavior
-		this.zones = QuestUtil.toArrayList(zone);
-	}
+    /**
+     * Check if the player is either in the specified zone.
+     *
+     * @param displayText display text
+     * @param zone        the zone to check
+     */
+    public ZoneRequirement(String displayText, Zone zone) {
+        this(displayText, false, zone);
+    }
 
-	public ZoneRequirement(WorldPoint... worldPoints)
-	{
-		this.zones = Stream.of(worldPoints).map(Zone::new).collect(QuestUtil.collectToArrayList());
-		this.checkInZone = true;
-	}
+    /**
+     * Check if the player is either in, or not in, the specified zone.
+     *
+     * @param displayText    display text
+     * @param checkNotInZone true to negate this requirement check (i.e. it will check if the player is NOT in the zone)
+     * @param zone           the zone to check
+     */
+    public ZoneRequirement(String displayText, boolean checkNotInZone, Zone zone) {
+        this.displayText = displayText;
+        this.checkInZone = !checkNotInZone; // This was originally 'checkNotInZone' so we have to maintain that behavior
+        this.zones = QuestUtil.toArrayList(zone);
+    }
 
-	public ZoneRequirement(Zone... zone)
-	{
-		this.zones = QuestUtil.toArrayList(zone);
-		this.checkInZone = true;
-	}
+    public ZoneRequirement(WorldPoint... worldPoints) {
+        this.zones = Stream.of(worldPoints).map(Zone::new).collect(QuestUtil.collectToArrayList());
+        this.checkInZone = true;
+    }
 
-	public ZoneRequirement(boolean checkInZone, Zone... zone)
-	{
-		this.zones = QuestUtil.toArrayList(zone);
-		this.checkInZone = checkInZone;
-	}
+    public ZoneRequirement(Zone... zone) {
+        this.zones = QuestUtil.toArrayList(zone);
+        this.checkInZone = true;
+    }
 
-	public ZoneRequirement(boolean checkInZone, WorldPoint... worldPoints)
-	{
-		this.zones = Stream.of(worldPoints).map(Zone::new).collect(QuestUtil.collectToArrayList());
-		this.checkInZone = checkInZone;
-	}
+    public ZoneRequirement(boolean checkInZone, Zone... zone) {
+        this.zones = QuestUtil.toArrayList(zone);
+        this.checkInZone = checkInZone;
+    }
 
-	@Override
-	public boolean check(Client client)
-	{
-		Player player = client.getLocalPlayer();
-		if (player != null && zones != null)
-		{
-			WorldPoint location = WorldPoint.fromLocalInstance(client, player.getLocalLocation());
-			boolean inZone = zones.stream().anyMatch(z -> z.contains(location));
-			return inZone == checkInZone;
-		}
-		return false;
-	}
+    public ZoneRequirement(boolean checkInZone, WorldPoint... worldPoints) {
+        this.zones = Stream.of(worldPoints).map(Zone::new).collect(QuestUtil.collectToArrayList());
+        this.checkInZone = checkInZone;
+    }
 
-	@Nonnull
-	@Override
-	public String getDisplayText()
-	{
-		return displayText == null ? "" : displayText;
-	}
+    @Override
+    public boolean check(Client client) {
+        Player player = client.getLocalPlayer();
+        if (player != null && zones != null) {
+            WorldPoint location = WorldPoint.fromLocalInstance(client, player.getLocalLocation());
+            boolean inZone = zones.stream().anyMatch(z -> z.contains(location));
+            return inZone == checkInZone;
+        }
+        return false;
+    }
+
+    @Nonnull
+    @Override
+    public String getDisplayText() {
+        return displayText == null ? "" : displayText;
+    }
 }

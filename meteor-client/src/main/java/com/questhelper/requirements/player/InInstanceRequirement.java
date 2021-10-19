@@ -30,11 +30,9 @@ package com.questhelper.requirements.player;
 import com.questhelper.requirements.SimpleRequirement;
 import net.runelite.api.Client;
 
-public class InInstanceRequirement extends SimpleRequirement
-{
-	@Override
-	public boolean check(Client client)
-	{
-		return client.isInInstancedRegion();
-	}
+public class InInstanceRequirement extends SimpleRequirement {
+    @Override
+    public boolean check(Client client) {
+        return client.isInInstancedRegion();
+    }
 }

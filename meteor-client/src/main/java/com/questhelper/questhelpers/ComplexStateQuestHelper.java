@@ -25,41 +25,36 @@
 package com.questhelper.questhelpers;
 
 import com.questhelper.QuestHelperConfig;
-import java.util.ArrayList;
-import java.util.Collections;
 import com.questhelper.steps.QuestStep;
-import java.util.List;
 
-public abstract class ComplexStateQuestHelper extends QuestHelper
-{
-	protected QuestStep step;
-	protected int var;
+import java.util.Collections;
 
-	@Override
-	public void startUp(QuestHelperConfig config)
-	{
-		this.config = config;
-		if (step == null)
-		{
-			step = loadStep();
-			instantiateSteps(Collections.singletonList(step));
-			var = getVar();
-			startUpStep(step);
-		}
-	}
+public abstract class ComplexStateQuestHelper extends QuestHelper {
+    protected QuestStep step;
+    protected int var;
 
-	@Override
-	public void shutDown()
-	{
-		step = null;
-		shutDownStep();
-	}
+    @Override
+    public void startUp(QuestHelperConfig config) {
+        this.config = config;
+        if (step == null) {
+            step = loadStep();
+            instantiateSteps(Collections.singletonList(step));
+            var = getVar();
+            startUpStep(step);
+        }
+    }
 
-	@Override
-	public boolean updateQuest()
-	{
-		return true;
-	}
+    @Override
+    public void shutDown() {
+        step = null;
+        shutDownStep();
+    }
 
-	public abstract QuestStep loadStep();
+    @Override
+    public boolean updateQuest() {
+        return true;
+    }
+
+
+    public abstract QuestStep loadStep();
 }

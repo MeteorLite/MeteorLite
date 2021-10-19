@@ -24,139 +24,156 @@
  */
 package com.questhelper.achievementdiaries.karamja;
 
+import com.questhelper.QuestDescriptor;
 import com.questhelper.QuestHelperQuest;
 import com.questhelper.Zone;
 import com.questhelper.questhelpers.ComplexStateQuestHelper;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
+import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.var.VarplayerRequirement;
+import com.questhelper.rewards.ItemReward;
+import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
+import com.questhelper.steps.QuestStep;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
 import net.runelite.api.NullObjectID;
 import net.runelite.api.ObjectID;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
-import com.questhelper.requirements.item.ItemRequirement;
-import com.questhelper.QuestDescriptor;
-import com.questhelper.steps.QuestStep;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 @QuestDescriptor(
-	quest = QuestHelperQuest.KARAMJA_ELITE
+        quest = QuestHelperQuest.KARAMJA_ELITE
 )
-public class KaramjaElite extends ComplexStateQuestHelper
-{
-	// Items required
-	ItemRequirement natureTiaraOrAbyss, pureEssence, fireCapeOrInfernal, palmTreeSapling, antidotePlusPlus,
-		zulrahScales, calquatSapling;
+public class KaramjaElite extends ComplexStateQuestHelper {
+    // Items required
+    ItemRequirement natureTiaraOrAbyss, pureEssence, fireCapeOrInfernal, palmTreeSapling, antidotePlusPlus,
+            zulrahScales, calquatSapling;
 
-	ItemRequirement rake, spade;
+    ItemRequirement rake, spade;
 
-	Requirement notCraftedRunes, notEquippedCape, notCheckedPalm, notCheckedCalquat, notMadePotion;
+    Requirement notCraftedRunes, notEquippedCape, notCheckedPalm, notCheckedCalquat, notMadePotion;
 
-	Requirement farming72, herblore87, runecraft91;
+    Requirement farming72, herblore87, runecraft91;
 
-	Requirement inNatureAltar;
+    Requirement inNatureAltar;
 
-	Zone natureAltar;
+    Zone natureAltar;
 
-	QuestStep enterNatureAltar, craftRunes, equipCape, checkPalm, checkCalquat, makePotion, claimReward;
+    QuestStep enterNatureAltar, craftRunes, equipCape, checkPalm, checkCalquat, makePotion, claimReward;
 
-	@Override
-	public QuestStep loadStep()
-	{
-		setupRequirements();
-		setupSteps();
+    @Override
+    public QuestStep loadStep() {
+        setupRequirements();
+        setupSteps();
 
-		ConditionalStep doElite = new ConditionalStep(this, claimReward);
-		doElite.addStep(notEquippedCape, equipCape);
-		doElite.addStep(notMadePotion, makePotion);
-		doElite.addStep(new Conditions(notCraftedRunes, inNatureAltar), craftRunes);
-		doElite.addStep(notCraftedRunes, enterNatureAltar);
-		doElite.addStep(notCheckedCalquat, checkCalquat);
-		doElite.addStep(notCheckedPalm, checkPalm);
+        ConditionalStep doElite = new ConditionalStep(this, claimReward);
+        doElite.addStep(notEquippedCape, equipCape);
+        doElite.addStep(notMadePotion, makePotion);
+        doElite.addStep(new Conditions(notCraftedRunes, inNatureAltar), craftRunes);
+        doElite.addStep(notCraftedRunes, enterNatureAltar);
+        doElite.addStep(notCheckedCalquat, checkCalquat);
+        doElite.addStep(notCheckedPalm, checkPalm);
 
-		return doElite;
-	}
+        return doElite;
+    }
 
-	public void setupRequirements()
-	{
-		notCraftedRunes = new VarplayerRequirement(1200, false, 1);
-		notEquippedCape = new VarplayerRequirement(1200, false, 2);
-		notCheckedPalm = new VarplayerRequirement(1200, false, 3);
-		notMadePotion = new VarplayerRequirement(1200, false, 4);
-		notCheckedCalquat = new VarplayerRequirement(1200, false, 5);
+    public void setupRequirements() {
+        notCraftedRunes = new VarplayerRequirement(1200, false, 1);
+        notEquippedCape = new VarplayerRequirement(1200, false, 2);
+        notCheckedPalm = new VarplayerRequirement(1200, false, 3);
+        notMadePotion = new VarplayerRequirement(1200, false, 4);
+        notCheckedCalquat = new VarplayerRequirement(1200, false, 5);
 
-		natureTiaraOrAbyss = new ItemRequirement("Nature tiara, or access to nature altar through the Abyss",
-			ItemID.NATURE_TIARA).showConditioned(notCraftedRunes);
-		pureEssence = new ItemRequirement("Pure essence", ItemID.PURE_ESSENCE).showConditioned(notCraftedRunes);
-		fireCapeOrInfernal = new ItemRequirement("Fire cape or infernal cape", ItemID.FIRE_CAPE).showConditioned(notEquippedCape);
-		fireCapeOrInfernal.addAlternates(ItemID.INFERNAL_CAPE);
-		palmTreeSapling = new ItemRequirement("Palm tree sapling", ItemID.PALM_SAPLING).showConditioned(notCheckedPalm);
-		antidotePlusPlus = new ItemRequirement("Antidote++", ItemID.ANTIDOTE4_5952).showConditioned(notMadePotion);
-		antidotePlusPlus.addAlternates(ItemID.ANTIDOTE3_5954, ItemID.ANTIDOTE2_5956, ItemID.ANTIDOTE1_5958);
-		zulrahScales = new ItemRequirement("Zulrah scales", ItemID.ZULRAHS_SCALES).showConditioned(notMadePotion);
-		calquatSapling = new ItemRequirement("Calquat sapling", ItemID.CALQUAT_SAPLING).showConditioned(notCheckedCalquat);
-		rake = new ItemRequirement("Rake", ItemID.RAKE).showConditioned(new Conditions(LogicType.OR, notCheckedCalquat,
-			notCheckedPalm));
-		spade = new ItemRequirement("Spade", ItemID.SPADE).showConditioned(new Conditions(LogicType.OR, notCheckedCalquat,
-			notCheckedPalm));
+        natureTiaraOrAbyss = new ItemRequirement("Nature tiara, or access to nature altar through the Abyss",
+                ItemID.NATURE_TIARA).showConditioned(notCraftedRunes);
+        pureEssence = new ItemRequirement("Pure essence", ItemID.PURE_ESSENCE).showConditioned(notCraftedRunes);
+        fireCapeOrInfernal = new ItemRequirement("Fire cape or infernal cape", ItemID.FIRE_CAPE).showConditioned(notEquippedCape);
+        fireCapeOrInfernal.addAlternates(ItemID.INFERNAL_CAPE);
+        palmTreeSapling = new ItemRequirement("Palm tree sapling", ItemID.PALM_SAPLING).showConditioned(notCheckedPalm);
+        antidotePlusPlus = new ItemRequirement("Antidote++", ItemID.ANTIDOTE4_5952).showConditioned(notMadePotion);
+        antidotePlusPlus.addAlternates(ItemID.ANTIDOTE3_5954, ItemID.ANTIDOTE2_5956, ItemID.ANTIDOTE1_5958);
+        zulrahScales = new ItemRequirement("Zulrah scales", ItemID.ZULRAHS_SCALES).showConditioned(notMadePotion);
+        calquatSapling = new ItemRequirement("Calquat sapling", ItemID.CALQUAT_SAPLING).showConditioned(notCheckedCalquat);
+        rake = new ItemRequirement("Rake", ItemID.RAKE).showConditioned(new Conditions(LogicType.OR, notCheckedCalquat,
+                notCheckedPalm));
+        spade = new ItemRequirement("Spade", ItemID.SPADE).showConditioned(new Conditions(LogicType.OR, notCheckedCalquat,
+                notCheckedPalm));
 
 
-		farming72 = new SkillRequirement(Skill.FARMING, 72, true);
-		herblore87 = new SkillRequirement(Skill.HERBLORE, 87, true);
-		runecraft91 = new SkillRequirement(Skill.RUNECRAFT, 91, true);
+        farming72 = new SkillRequirement(Skill.FARMING, 72, true);
+        herblore87 = new SkillRequirement(Skill.HERBLORE, 87, true);
+        runecraft91 = new SkillRequirement(Skill.RUNECRAFT, 91, true);
 
-		natureAltar = new Zone(new WorldPoint(2374, 4809, 0), new WorldPoint(2421, 4859, 0));
-		inNatureAltar = new ZoneRequirement(natureAltar);
-	}
+        natureAltar = new Zone(new WorldPoint(2374, 4809, 0), new WorldPoint(2421, 4859, 0));
+        inNatureAltar = new ZoneRequirement(natureAltar);
+    }
 
-	public void setupSteps()
-	{
-		enterNatureAltar = new ObjectStep(this, NullObjectID.NULL_34821, new WorldPoint(2869, 3019, 0),
-			"Enter the nature altar, either from the ruin or through the Abyss.", natureTiaraOrAbyss,
-			pureEssence.quantity(28));
-		craftRunes = new ObjectStep(this, ObjectID.ALTAR_34768, new WorldPoint(2400, 4841, 0),
-			"Craft a full inventory of nature runes.", pureEssence.quantity(28));
-		equipCape = new DetailedQuestStep(this, "Equip a fire or infernal cape.", fireCapeOrInfernal.equipped());
-		checkPalm = new ObjectStep(this, NullObjectID.NULL_7964, new WorldPoint(2765, 3213, 0),
-			"Grow and check the health of a palm tree in the Brimhaven patch.", palmTreeSapling, rake, spade);
-		checkCalquat = new ObjectStep(this, NullObjectID.NULL_7807, new WorldPoint(2796, 3101, 0),
-			"Grow and check the health of a Calquat in Tai Bwo Wannai.", calquatSapling, rake, spade);
-		makePotion = new DetailedQuestStep(this, new WorldPoint(2734, 3224, 0), "Make an antivenom potion whilst " +
-			"standing in the horse shoe mine.", antidotePlusPlus.highlighted(), zulrahScales.quantity(20).highlighted());
+    public void setupSteps() {
+        enterNatureAltar = new ObjectStep(this, NullObjectID.NULL_34821, new WorldPoint(2869, 3019, 0),
+                "Enter the nature altar, either from the ruin or through the Abyss.", natureTiaraOrAbyss,
+                pureEssence.quantity(28));
+        craftRunes = new ObjectStep(this, ObjectID.ALTAR_34768, new WorldPoint(2400, 4841, 0),
+                "Craft a full inventory of nature runes.", pureEssence.quantity(28));
+        equipCape = new DetailedQuestStep(this, "Equip a fire or infernal cape.", fireCapeOrInfernal.equipped());
+        checkPalm = new ObjectStep(this, NullObjectID.NULL_7964, new WorldPoint(2765, 3213, 0),
+                "Grow and check the health of a palm tree in the Brimhaven patch.", palmTreeSapling, rake, spade);
+        checkCalquat = new ObjectStep(this, NullObjectID.NULL_7807, new WorldPoint(2796, 3101, 0),
+                "Grow and check the health of a Calquat in Tai Bwo Wannai.", calquatSapling, rake, spade);
+        makePotion = new DetailedQuestStep(this, new WorldPoint(2734, 3224, 0), "Make an antivenom potion whilst " +
+                "standing in the horse shoe mine.", antidotePlusPlus.highlighted(), zulrahScales.quantity(20).highlighted());
 
-		claimReward = new NpcStep(this, NpcID.PIRATE_JACKIE_THE_FRUIT, new WorldPoint(2810, 3192, 0),
-			"Talk to Pirate Jackie the Fruit in Brimhaven to claim your reward!");
-		claimReward.addDialogStep("I have a question about my Achievement Diary.");
-	}
+        claimReward = new NpcStep(this, NpcID.PIRATE_JACKIE_THE_FRUIT, new WorldPoint(2810, 3192, 0),
+                "Talk to Pirate Jackie the Fruit in Brimhaven to claim your reward!");
+        claimReward.addDialogStep("I have a question about my Achievement Diary.");
+    }
 
-	@Override
-	public List<ItemRequirement> getItemRequirements()
-	{
-		return Arrays.asList(natureTiaraOrAbyss, pureEssence, fireCapeOrInfernal, palmTreeSapling, antidotePlusPlus,
-			zulrahScales.quantity(20), calquatSapling, rake, spade);
-	}
+    @Override
+    public List<ItemRequirement> getItemRequirements() {
+        return Arrays.asList(natureTiaraOrAbyss, pureEssence, fireCapeOrInfernal, palmTreeSapling, antidotePlusPlus,
+                zulrahScales.quantity(20), calquatSapling, rake, spade);
+    }
 
-	@Override
-	public List<Requirement> getGeneralRequirements()
-	{
-		List<Requirement> reqs = new ArrayList<>();
+    @Override
+    public List<Requirement> getGeneralRequirements() {
+        List<Requirement> reqs = new ArrayList<>();
 
-		reqs.add(new SkillRequirement(Skill.FARMING, 72, true));
-		reqs.add(new SkillRequirement(Skill.HERBLORE, 87, true));
-		reqs.add(new SkillRequirement(Skill.RUNECRAFT, 91, true));
+        reqs.add(new SkillRequirement(Skill.FARMING, 72, true));
+        reqs.add(new SkillRequirement(Skill.HERBLORE, 87, true));
+        reqs.add(new SkillRequirement(Skill.RUNECRAFT, 91, true));
 
-		return reqs;
-	}
+        return reqs;
+    }
+
+    public List<ItemReward> getItemRewards() {
+        return Arrays.asList(
+                new ItemReward("Karamja Gloves (4)", ItemID.KARAMJA_GLOVES_4, 1),
+                new ItemReward("50,000 Exp. Lamp (Any skill above level 70)", ItemID.ANTIQUE_LAMP, 1));
+    }
+
+    @Override
+    public List<UnlockReward> getUnlockRewards() {
+        return Arrays.asList(
+                new UnlockReward("10% chance of receiving 2 Agility arena tickets in the Brimhaven Agility Dungeon"),
+                new UnlockReward("Free usage of Shilo Village's furnace"),
+                new UnlockReward("Free cart rides on Hajedy's cart system"),
+                new UnlockReward("Free access to the Hardwood Grove"),
+                new UnlockReward("Access to the stepping stones shortcut leading to the red dragons in Brimhaven Dungeon"),
+                new UnlockReward("Red and Metal in Brimhaven Dungeon will drop noted draonhide and bars"),
+                new UnlockReward("One free resurrection per day in the Fight Caves (Not the Inferno)"),
+                new UnlockReward("Double Tokkul from TzHaar Fight Caves, Inferno and Ket-Rak's Challenges"));
+    }
+
+
 }

@@ -26,43 +26,38 @@
 package com.questhelper.overlays;
 
 import com.questhelper.QuestHelperPlugin;
-import java.awt.Dimension;
-import java.awt.Graphics2D;
-import javax.inject.Inject;
 import com.questhelper.questhelpers.QuestHelper;
 import meteor.ui.overlay.Overlay;
 import meteor.ui.overlay.OverlayLayer;
 import meteor.ui.overlay.OverlayPosition;
 
-public class QuestHelperWorldOverlay extends Overlay
-{
-	public static final int IMAGE_Z_OFFSET = 30;
+import javax.inject.Inject;
+import java.awt.*;
 
-	private final QuestHelperPlugin plugin;
+public class QuestHelperWorldOverlay extends Overlay {
+    public static final int IMAGE_Z_OFFSET = 30;
 
-	@Inject
-	public QuestHelperWorldOverlay(QuestHelperPlugin plugin)
-	{
-		setPosition(OverlayPosition.DYNAMIC);
-		setLayer(OverlayLayer.ABOVE_SCENE);
-		this.plugin = plugin;
-	}
+    private final QuestHelperPlugin plugin;
 
-	@Override
-	public Dimension render(Graphics2D graphics)
-	{
-		if (!plugin.getConfig().showSymbolOverlay())
-		{
-			return null;
-		}
+    @Inject
+    public QuestHelperWorldOverlay(QuestHelperPlugin plugin) {
+        setPosition(OverlayPosition.DYNAMIC);
+        setLayer(OverlayLayer.ABOVE_SCENE);
+        this.plugin = plugin;
+    }
 
-		QuestHelper quest = plugin.getSelectedQuest();
+    @Override
+    public Dimension render(Graphics2D graphics) {
+        if (!plugin.getConfig().showSymbolOverlay()) {
+            return null;
+        }
 
-		if (quest != null && quest.getCurrentStep() != null)
-		{
-			quest.getCurrentStep().makeWorldOverlayHint(graphics, plugin);
-		}
+        QuestHelper quest = plugin.getSelectedQuest();
 
-		return null;
-	}
+        if (quest != null && quest.getCurrentStep() != null) {
+            quest.getCurrentStep().makeWorldOverlayHint(graphics, plugin);
+        }
+
+        return null;
+    }
 }

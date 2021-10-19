@@ -27,32 +27,25 @@ package com.questhelper.requirements.player;
 import com.questhelper.requirements.AbstractRequirement;
 import net.runelite.api.Client;
 
-public class PlayerModelRequirement extends AbstractRequirement
-{
-	final boolean shouldBeFemale;
+public class PlayerModelRequirement extends AbstractRequirement {
+    final boolean shouldBeFemale;
 
-	public PlayerModelRequirement(boolean shouldBeFemale)
-	{
-		this.shouldBeFemale = shouldBeFemale;
-	}
+    public PlayerModelRequirement(boolean shouldBeFemale) {
+        this.shouldBeFemale = shouldBeFemale;
+    }
 
-	@Override
-	public boolean check(Client client)
-	{
-		return client.getLocalPlayer() != null &&
-			client.getLocalPlayer().getPlayerComposition().isFemale() == shouldBeFemale;
-	}
+    @Override
+    public boolean check(Client client) {
+        return client.getLocalPlayer() != null &&
+                client.getLocalPlayer().getPlayerComposition().isFemale() == shouldBeFemale;
+    }
 
-	@Override
-	public String getDisplayText()
-	{
-		if (shouldBeFemale)
-		{
-			return "You need to be female";
-		}
-		else
-		{
-			return "You need to be male";
-		}
-	}
+    @Override
+    public String getDisplayText() {
+        if (shouldBeFemale) {
+            return "You need to be female";
+        } else {
+            return "You need to be male";
+        }
+    }
 }

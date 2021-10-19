@@ -25,35 +25,31 @@
 package com.questhelper.banktab;
 
 import com.questhelper.questhelpers.QuestUtil;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 import lombok.Getter;
 import lombok.Setter;
 
-public class BankTabItems
-{
-	@Getter
-	@Setter
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
-	private String name;
+public class BankTabItems {
+    @Getter
+    private final List<BankTabItem> items;
+    @Getter
+    @Setter
 
-	@Getter
-	private final List<BankTabItem> items;
+    private String name;
 
-	public BankTabItems(String name, BankTabItem... items)
-	{
-		this.name = name;
-		this.items = QuestUtil.toArrayList(items);
-	}
+    public BankTabItems(String name, BankTabItem... items) {
+        this.name = name;
+        this.items = QuestUtil.toArrayList(items);
+    }
 
-	public void addItems(BankTabItem... items)
-	{
-		this.items.addAll(Arrays.asList(items));
-	}
+    public void addItems(BankTabItem... items) {
+        this.items.addAll(Arrays.asList(items));
+    }
 
-	public void addItems(ArrayList<BankTabItem> items)
-	{
-		this.items.addAll(items);
-	}
+    public void addItems(ArrayList<BankTabItem> items) {
+        this.items.addAll(items);
+    }
 }

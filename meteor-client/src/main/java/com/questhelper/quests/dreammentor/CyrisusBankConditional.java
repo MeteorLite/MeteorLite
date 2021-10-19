@@ -27,13 +27,11 @@ package com.questhelper.quests.dreammentor;
 import com.questhelper.requirements.SimpleRequirement;
 import net.runelite.api.Client;
 
-public class CyrisusBankConditional extends SimpleRequirement
-{
-	@Override
-	public boolean check(Client client)
-	{
+public class CyrisusBankConditional extends SimpleRequirement {
+    @Override
+    public boolean check(Client client) {
 
-		return CyrisusArmourSet.isReady(client);
-	}
+        return CyrisusArmourSet.isReady(client);
+    }
 }
 

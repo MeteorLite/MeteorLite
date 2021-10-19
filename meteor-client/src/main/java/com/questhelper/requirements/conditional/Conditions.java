@@ -27,120 +27,106 @@ package com.questhelper.requirements.conditional;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.util.Operation;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import javax.annotation.Nonnull;
 import lombok.Setter;
 import net.runelite.api.Client;
 
-public class Conditions extends ConditionForStep
-{
-	protected Operation operation;
-	protected int quantity;
+import javax.annotation.Nonnull;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
-	@Setter
-	protected String text;
+public class Conditions extends ConditionForStep {
+    protected Operation operation;
+    protected int quantity;
 
-	public Conditions(Requirement... conditions)
-	{
-		this.conditions = new ArrayList<>();
-		Collections.addAll(this.conditions, conditions);
-		logicType = LogicType.AND;
-	}
+    @Setter
+    protected String text;
 
-	public Conditions(List<Requirement> conditions)
-	{
-		this.conditions = new ArrayList<>(conditions);
-		logicType = LogicType.AND;
-	}
+    public Conditions(Requirement... conditions) {
+        this.conditions = new ArrayList<>();
+        Collections.addAll(this.conditions, conditions);
+        logicType = LogicType.AND;
+    }
 
-	public Conditions(LogicType logicType, Requirement... conditions)
-	{
-		this.conditions = new ArrayList<>();
-		Collections.addAll(this.conditions, conditions);
-		this.logicType = logicType;
-	}
+    public Conditions(List<Requirement> conditions) {
+        this.conditions = new ArrayList<>(conditions);
+        logicType = LogicType.AND;
+    }
 
-	public Conditions(Operation operation, int quantity, Requirement... conditions)
-	{
-		this.conditions = new ArrayList<>();
-		Collections.addAll(this.conditions, conditions);
-		this.logicType = LogicType.AND;
-		this.operation = operation;
-		this.quantity = quantity;
-	}
+    public Conditions(LogicType logicType, Requirement... conditions) {
+        this.conditions = new ArrayList<>();
+        Collections.addAll(this.conditions, conditions);
+        this.logicType = logicType;
+    }
 
-	public Conditions(LogicType logicType, List<Requirement> conditions)
-	{
-		this.conditions = new ArrayList<>(conditions);
-		this.logicType = logicType;
-	}
+    public Conditions(Operation operation, int quantity, Requirement... conditions) {
+        this.conditions = new ArrayList<>();
+        Collections.addAll(this.conditions, conditions);
+        this.logicType = LogicType.AND;
+        this.operation = operation;
+        this.quantity = quantity;
+    }
 
-	public Conditions(boolean onlyNeedToPassOnce, Operation operation, int quantity, Requirement... conditions)
-	{
-		this.conditions = new ArrayList<>();
-		Collections.addAll(this.conditions, conditions);
-		this.onlyNeedToPassOnce = onlyNeedToPassOnce;
-		this.logicType = LogicType.AND;
-		this.operation = operation;
-		this.quantity = quantity;
-	}
+    public Conditions(LogicType logicType, List<Requirement> conditions) {
+        this.conditions = new ArrayList<>(conditions);
+        this.logicType = logicType;
+    }
 
-	public Conditions(boolean onlyNeedToPassOnce, LogicType logicType, Requirement... conditions)
-	{
-		this.conditions = new ArrayList<>();
-		Collections.addAll(this.conditions, conditions);
-		this.onlyNeedToPassOnce = onlyNeedToPassOnce;
-		this.logicType = logicType;
-	}
+    public Conditions(boolean onlyNeedToPassOnce, Operation operation, int quantity, Requirement... conditions) {
+        this.conditions = new ArrayList<>();
+        Collections.addAll(this.conditions, conditions);
+        this.onlyNeedToPassOnce = onlyNeedToPassOnce;
+        this.logicType = LogicType.AND;
+        this.operation = operation;
+        this.quantity = quantity;
+    }
 
-	public Conditions(boolean onlyNeedToPassOnce, Requirement... conditions)
-	{
-		this.conditions = new ArrayList<>();
-		Collections.addAll(this.conditions, conditions);
-		this.onlyNeedToPassOnce = onlyNeedToPassOnce;
-		this.logicType = LogicType.AND;
-	}
+    public Conditions(boolean onlyNeedToPassOnce, LogicType logicType, Requirement... conditions) {
+        this.conditions = new ArrayList<>();
+        Collections.addAll(this.conditions, conditions);
+        this.onlyNeedToPassOnce = onlyNeedToPassOnce;
+        this.logicType = logicType;
+    }
 
-	@Override
-	@Nonnull
-	public String getDisplayText()
-	{
-		return text;
-	}
+    public Conditions(boolean onlyNeedToPassOnce, Requirement... conditions) {
+        this.conditions = new ArrayList<>();
+        Collections.addAll(this.conditions, conditions);
+        this.onlyNeedToPassOnce = onlyNeedToPassOnce;
+        this.logicType = LogicType.AND;
+    }
 
-	@Override
-	public boolean check(Client client)
-	{
-		if (onlyNeedToPassOnce && hasPassed)
-		{
-			return true;
-		}
+    @Override
+    @Nonnull
+    public String getDisplayText() {
+        return text;
+    }
 
-		int conditionsPassed = (int) conditions.stream().filter(c -> {
-			if (c == null)
-			{
-				return true;
-			}
-			return c.check(client);
-		}).count();
+    @Override
+    public boolean check(Client client) {
+        if (onlyNeedToPassOnce && hasPassed) {
+            return true;
+        }
 
-		if (operation != null)
-		{
-			return operation.check(conditionsPassed, quantity);
-		}
+        int conditionsPassed = (int) conditions.stream().filter(c -> {
+            if (c == null) {
+                return true;
+            }
+            return c.check(client);
+        }).count();
 
-		//TODO: Replace with LogicType check, however more testing to be done to make sure nothing breaks
-		if ((conditionsPassed > 0 && logicType == LogicType.OR)
-			|| (conditionsPassed == 0 && logicType == LogicType.NOR)
-			|| (conditionsPassed == conditions.size() && logicType == LogicType.AND)
-			|| (conditionsPassed < conditions.size() && logicType == LogicType.NAND))
-		{
-			hasPassed = true;
-			return true;
-		}
+        if (operation != null) {
+            return operation.check(conditionsPassed, quantity);
+        }
 
-		return false;
-	}
+        //TODO: Replace with LogicType check, however more testing to be done to make sure nothing breaks
+        if ((conditionsPassed > 0 && logicType == LogicType.OR)
+                || (conditionsPassed == 0 && logicType == LogicType.NOR)
+                || (conditionsPassed == conditions.size() && logicType == LogicType.AND)
+                || (conditionsPassed < conditions.size() && logicType == LogicType.NAND)) {
+            hasPassed = true;
+            return true;
+        }
+
+        return false;
+    }
 }

@@ -4,52 +4,45 @@ import com.questhelper.QuestHelperPlugin;
 import com.questhelper.QuestHelperWorldMapPoint;
 import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.requirements.Requirement;
-import java.awt.Graphics2D;
-import java.awt.Polygon;
+import meteor.ui.overlay.OverlayUtil;
 import net.runelite.api.Perspective;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
-import meteor.ui.overlay.OverlayUtil;
 
-public class TileStep extends DetailedQuestStep
-{
-	private final WorldPoint worldPoint;
+import java.awt.*;
 
-	public TileStep(QuestHelper questHelper, WorldPoint worldPoint, String text, Requirement... requirements)
-	{
-		super(questHelper, text, requirements);
-		this.worldPoint = worldPoint;
-	}
+public class TileStep extends DetailedQuestStep {
+    private final WorldPoint worldPoint;
 
-	@Override
-	public void startUp()
-	{
-		worldMapPointManager.add(new QuestHelperWorldMapPoint(worldPoint, getQuestImage()));
-	}
+    public TileStep(QuestHelper questHelper, WorldPoint worldPoint, String text, Requirement... requirements) {
+        super(questHelper, text, requirements);
+        this.worldPoint = worldPoint;
+    }
 
-	@Override
-	public void shutDown()
-	{
-		worldMapPointManager.removeIf(QuestHelperWorldMapPoint.class::isInstance);
-	}
+    @Override
+    public void startUp() {
+        worldMapPointManager.add(new QuestHelperWorldMapPoint(worldPoint, getQuestImage()));
+    }
 
-	@Override
-	public void makeWorldOverlayHint(Graphics2D graphics, QuestHelperPlugin plugin)
-	{
-		super.makeWorldOverlayHint(graphics, plugin);
+    @Override
+    public void shutDown() {
+        worldMapPointManager.removeIf(QuestHelperWorldMapPoint.class::isInstance);
+    }
 
-		LocalPoint lp = LocalPoint.fromWorld(client, worldPoint);
-		if (lp == null)
-		{
-			return;
-		}
+    @Override
+    public void makeWorldOverlayHint(Graphics2D graphics, QuestHelperPlugin plugin) {
+        super.makeWorldOverlayHint(graphics, plugin);
 
-		Polygon poly = Perspective.getCanvasTilePoly(client, lp);
-		if (poly == null)
-		{
-			return;
-		}
+        LocalPoint lp = LocalPoint.fromWorld(client, worldPoint);
+        if (lp == null) {
+            return;
+        }
 
-		OverlayUtil.renderPolygon(graphics, poly, questHelper.getConfig().targetOverlayColor());
-	}
+        Polygon poly = Perspective.getCanvasTilePoly(client, lp);
+        if (poly == null) {
+            return;
+        }
+
+        OverlayUtil.renderPolygon(graphics, poly, questHelper.getConfig().targetOverlayColor());
+    }
 }

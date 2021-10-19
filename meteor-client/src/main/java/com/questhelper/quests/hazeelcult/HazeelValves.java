@@ -32,145 +32,114 @@ import com.questhelper.steps.DetailedOwnerStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
-import java.util.Arrays;
-import java.util.Collection;
+import meteor.eventbus.Subscribe;
 import net.runelite.api.ObjectID;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.widgets.Widget;
-import meteor.eventbus.Subscribe;
 
-public class HazeelValves extends DetailedOwnerStep
-{
+import java.util.Arrays;
+import java.util.Collection;
 
-	DetailedQuestStep turnValve1, turnValve2, turnValve3, turnValve4, turnValve5;
+public class HazeelValves extends DetailedOwnerStep {
 
-	private Zone valve1, valve2, valve3, valve4, valve5;
+    public ManualRequirement solved;
+    DetailedQuestStep turnValve1, turnValve2, turnValve3, turnValve4, turnValve5;
+    private Zone valve1, valve2, valve3, valve4, valve5;
+    private ZoneRequirement atValve1, atValve2, atValve3, atValve4, atValve5;
+    private boolean solved1, solved2, solved3, solved4, solved5;
 
-	private ZoneRequirement atValve1, atValve2, atValve3, atValve4, atValve5;
+    public HazeelValves(QuestHelper questHelper) {
+        super(questHelper, "Turn the valves near the cave to direct the underground water.");
+    }
 
-	private boolean solved1, solved2, solved3, solved4, solved5;
+    @Override
+    protected void updateSteps() {
+        if (!solved1) {
+            startUpStep(turnValve1);
+        } else if (!solved2) {
+            startUpStep(turnValve2);
+        } else if (!solved3) {
+            startUpStep(turnValve3);
+        } else if (!solved4) {
+            startUpStep(turnValve4);
+        } else if (!solved5) {
+            startUpStep(turnValve5);
+        }
+    }
 
-	public ManualRequirement solved;
+    @Subscribe
+    public void onGameTick(GameTick event) {
+        Widget widgetText = client.getWidget(229, 1);
+        if (widgetText == null) {
+            return;
+        }
 
-	public HazeelValves(QuestHelper questHelper)
-	{
-		super(questHelper, "Turn the valves near the cave to direct the underground water.");
-	}
+        String text = widgetText.getText();
 
-	@Override
-	protected void updateSteps()
-	{
-		if (!solved1)
-		{
-			startUpStep(turnValve1);
-		}
-		else if (!solved2)
-		{
-			startUpStep(turnValve2);
-		}
-		else if (!solved3)
-		{
-			startUpStep(turnValve3);
-		}
-		else if (!solved4)
-		{
-			startUpStep(turnValve4);
-		}
-		else if (!solved5)
-		{
-			startUpStep(turnValve5);
-		}
-	}
+        boolean turnedLeft = text.contains("left");
 
-	@Subscribe
-	public void onGameTick(GameTick event)
-	{
-		Widget widgetText = client.getWidget(229, 1);
-		if (widgetText == null)
-		{
-			return;
-		}
+        if (!turnedLeft && !text.contains("right")) {
+            return;
+        }
 
-		String text = widgetText.getText();
+        if (atValve1.check(client)) {
+            solved1 = !turnedLeft;
+        } else if (atValve2.check(client)) {
+            solved2 = !turnedLeft;
+        } else if (atValve3.check(client)) {
+            solved3 = turnedLeft;
+        } else if (atValve4.check(client)) {
+            solved4 = !turnedLeft;
+        } else if (atValve5.check(client)) {
+            solved5 = !turnedLeft;
+        }
 
-		boolean turnedLeft = text.contains("left");
+        solved.setShouldPass(solved1 && solved2 && solved3 && solved4 && solved5);
 
-		if (!turnedLeft && !text.contains("right"))
-		{
-			return;
-		}
+        updateSteps();
+    }
 
-		if (atValve1.check(client))
-		{
-			solved1 = !turnedLeft;
-		}
-		else if (atValve2.check(client))
-		{
-			solved2 = !turnedLeft;
-		}
-		else if (atValve3.check(client))
-		{
-			solved3 = turnedLeft;
-		}
-		else if (atValve4.check(client))
-		{
-			solved4 = !turnedLeft;
-		}
-		else if (atValve5.check(client))
-		{
-			solved5 = !turnedLeft;
-		}
+    protected void setupZones() {
+        valve1 = new Zone(new WorldPoint(2560, 3245, 0), new WorldPoint(2565, 3251, 0));
+        valve2 = new Zone(new WorldPoint(2567, 3262, 0), new WorldPoint(2575, 3264, 0));
+        valve3 = new Zone(new WorldPoint(2581, 3242, 0), new WorldPoint(2589, 3248, 0));
+        valve4 = new Zone(new WorldPoint(2594, 3261, 0), new WorldPoint(2600, 3266, 0));
+        valve5 = new Zone(new WorldPoint(2607, 3239, 0), new WorldPoint(2615, 3245, 0));
+    }
 
-		solved.setShouldPass(solved1 && solved2 && solved3 && solved4 && solved5);
+    protected void setupConditions() {
+        atValve1 = new ZoneRequirement(valve1);
+        atValve2 = new ZoneRequirement(valve2);
+        atValve3 = new ZoneRequirement(valve3);
+        atValve4 = new ZoneRequirement(valve4);
+        atValve5 = new ZoneRequirement(valve5);
+        solved = new ManualRequirement();
+    }
 
-		updateSteps();
-	}
+    @Override
+    protected void setupSteps() {
+        setupZones();
+        setupConditions();
 
-	protected void setupZones()
-	{
-		valve1 = new Zone(new WorldPoint(2560, 3245, 0), new WorldPoint(2565, 3251, 0));
-		valve2 = new Zone(new WorldPoint(2567, 3262, 0), new WorldPoint(2575, 3264, 0));
-		valve3 = new Zone(new WorldPoint(2581, 3242, 0), new WorldPoint(2589, 3248, 0));
-		valve4 = new Zone(new WorldPoint(2594, 3261, 0), new WorldPoint(2600, 3266, 0));
-		valve5 = new Zone(new WorldPoint(2607, 3239, 0), new WorldPoint(2615, 3245, 0));
-	}
+        turnValve1 = new ObjectStep(getQuestHelper(), ObjectID.SEWER_VALVE, new WorldPoint(2562, 3247, 0),
+                "Turn the valve west of the Clocktower to the right.");
 
-	protected void setupConditions()
-	{
-		atValve1 = new ZoneRequirement(valve1);
-		atValve2 = new ZoneRequirement(valve2);
-		atValve3 = new ZoneRequirement(valve3);
-		atValve4 = new ZoneRequirement(valve4);
-		atValve5 = new ZoneRequirement(valve5);
-		solved = new ManualRequirement();
-	}
+        turnValve2 = new ObjectStep(getQuestHelper(), ObjectID.SEWER_VALVE_2845, new WorldPoint(2572, 3263, 0),
+                "Turn the valve next to the Carnillean home to the right.");
 
-	@Override
-	protected void setupSteps()
-	{
-		setupZones();
-		setupConditions();
+        turnValve3 = new ObjectStep(getQuestHelper(), ObjectID.SEWER_VALVE_2846, new WorldPoint(2585, 3245, 0),
+                "Turn the valve east of the Clocktower to the left.");
 
-		turnValve1 = new ObjectStep(getQuestHelper(), ObjectID.SEWER_VALVE, new WorldPoint(2562, 3247, 0),
-			"Turn the valve west of the Clocktower to the right.");
+        turnValve4 = new ObjectStep(getQuestHelper(), ObjectID.SEWER_VALVE_2847, new WorldPoint(2597, 3263, 0),
+                "Turn the valve next to the zoo to the right.");
 
-		turnValve2 = new ObjectStep(getQuestHelper(), ObjectID.SEWER_VALVE_2845, new WorldPoint(2572, 3263, 0),
-			"Turn the valve next to the Carnillean home to the right.");
+        turnValve5 = new ObjectStep(getQuestHelper(), ObjectID.SEWER_VALVE_2848, new WorldPoint(2611, 3242, 0),
+                "Turn the valve north of the monastery to the right.");
+    }
 
-		turnValve3 = new ObjectStep(getQuestHelper(), ObjectID.SEWER_VALVE_2846, new WorldPoint(2585, 3245, 0),
-			"Turn the valve east of the Clocktower to the left.");
-
-		turnValve4 = new ObjectStep(getQuestHelper(), ObjectID.SEWER_VALVE_2847, new WorldPoint(2597, 3263, 0),
-			"Turn the valve next to the zoo to the right.");
-
-		turnValve5 = new ObjectStep(getQuestHelper(), ObjectID.SEWER_VALVE_2848, new WorldPoint(2611, 3242, 0),
-			"Turn the valve north of the monastery to the right.");
-	}
-
-	@Override
-	public Collection<QuestStep> getSteps()
-	{
-		return Arrays.asList(turnValve1, turnValve2, turnValve3, turnValve4, turnValve5);
-	}
+    @Override
+    public Collection<QuestStep> getSteps() {
+        return Arrays.asList(turnValve1, turnValve2, turnValve3, turnValve4, turnValve5);
+    }
 }

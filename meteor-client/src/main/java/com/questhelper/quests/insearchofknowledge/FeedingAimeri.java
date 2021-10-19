@@ -28,33 +28,29 @@ import com.questhelper.ItemCollections;
 import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.steps.NpcStep;
+import meteor.eventbus.Subscribe;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.GameTick;
-import meteor.eventbus.Subscribe;
 
-public class FeedingAimeri extends NpcStep
-{
-	static ItemRequirement food5Highlighted = new ItemRequirement("Food", ItemCollections.getFishFood(), 5);
-	static ItemRequirement knife = new ItemRequirement("Knife or slash weapon to cut through a web",ItemID.KNIFE);
+public class FeedingAimeri extends NpcStep {
+    static ItemRequirement food5Highlighted = new ItemRequirement("Food", ItemCollections.getFishFood(), 5);
+    static ItemRequirement knife = new ItemRequirement("Knife or slash weapon to cut through a web", ItemID.KNIFE);
 
-	public FeedingAimeri(QuestHelper questHelper)
-	{
-		super(questHelper, NpcID.BROTHER_AIMERI, new WorldPoint(1840, 9926, 0), "Cut through the web to" +
-				" the south, and use 5 pieces of food on Aimeri there.", food5Highlighted, knife);
-		food5Highlighted.setHighlightInInventory(true);
-	}
+    public FeedingAimeri(QuestHelper questHelper) {
+        super(questHelper, NpcID.BROTHER_AIMERI, new WorldPoint(1840, 9926, 0), "Cut through the web to" +
+                " the south, and use 5 pieces of food on Aimeri there.", food5Highlighted, knife);
+        food5Highlighted.setHighlightInInventory(true);
+    }
 
-	@Subscribe
-	public void onGameTick(GameTick event)
-	{
-		updateSteps();
-	}
+    @Subscribe
+    public void onGameTick(GameTick event) {
+        updateSteps();
+    }
 
-	protected void updateSteps()
-	{
-		int numFoodUsed = client.getVarbitValue(8393);
-		food5Highlighted.setQuantity(5 - numFoodUsed);
-	}
+    protected void updateSteps() {
+        int numFoodUsed = client.getVarbitValue(8393);
+        food5Highlighted.setQuantity(5 - numFoodUsed);
+    }
 }

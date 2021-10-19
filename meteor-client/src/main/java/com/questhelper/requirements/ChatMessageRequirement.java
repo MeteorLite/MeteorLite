@@ -27,60 +27,47 @@
 package com.questhelper.requirements;
 
 import com.questhelper.requirements.conditional.ConditionForStep;
-import java.util.Arrays;
-import java.util.List;
 import lombok.Setter;
 import net.runelite.api.Client;
 
-public class ChatMessageRequirement extends ConditionForStep
-{
-	@Setter
-	private boolean hasReceivedChatMessage = false;
+import java.util.Arrays;
+import java.util.List;
 
-	private Requirement condition;
+public class ChatMessageRequirement extends ConditionForStep {
+    private final List<String> messages;
+    @Setter
+    private boolean hasReceivedChatMessage = false;
+    private Requirement condition;
+    @Setter
+    private ChatMessageRequirement invalidateRequirement;
 
-	@Setter
-	private ChatMessageRequirement invalidateRequirement;
+    public ChatMessageRequirement(String... message) {
+        this.messages = Arrays.asList(message);
+    }
 
-	private final List<String> messages;
+    public ChatMessageRequirement(Requirement condition, String... message) {
+        this.condition = condition;
+        this.messages = Arrays.asList(message);
+    }
 
-	public ChatMessageRequirement(String... message)
-	{
-		this.messages = Arrays.asList(message);
-	}
+    @Override
+    public boolean check(Client client) {
+        return hasReceivedChatMessage;
+    }
 
-	public ChatMessageRequirement(Requirement condition, String... message)
-	{
-		this.condition = condition;
-		this.messages = Arrays.asList(message);
-	}
-
-	@Override
-	public boolean check(Client client)
-	{
-		return hasReceivedChatMessage;
-	}
-
-	public void validateCondition(Client client, String chatMessage)
-	{
-		if (!hasReceivedChatMessage)
-		{
-			if (messages.contains(chatMessage))
-			{
-				if (condition == null || condition.check(client))
-				{
-					hasReceivedChatMessage = true;
-				}
-			}
-		}
-		else
-		{
-			invalidateRequirement.validateCondition(client, chatMessage);
-			if (invalidateRequirement.check(client))
-			{
-				invalidateRequirement.setHasReceivedChatMessage(false);
-				setHasReceivedChatMessage(false);
-			}
-		}
-	}
+    public void validateCondition(Client client, String chatMessage) {
+        if (!hasReceivedChatMessage) {
+            if (messages.contains(chatMessage)) {
+                if (condition == null || condition.check(client)) {
+                    hasReceivedChatMessage = true;
+                }
+            }
+        } else if (invalidateRequirement != null) {
+            invalidateRequirement.validateCondition(client, chatMessage);
+            if (invalidateRequirement.check(client)) {
+                invalidateRequirement.setHasReceivedChatMessage(false);
+                setHasReceivedChatMessage(false);
+            }
+        }
+    }
 }

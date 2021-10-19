@@ -29,132 +29,148 @@ import com.questhelper.QuestDescriptor;
 import com.questhelper.QuestHelperQuest;
 import com.questhelper.Zone;
 import com.questhelper.questhelpers.BasicQuestHelper;
-import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.ZoneRequirement;
+import com.questhelper.requirements.item.ItemRequirement;
+import com.questhelper.rewards.ItemReward;
+import com.questhelper.rewards.QuestPointReward;
+import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
 import net.runelite.api.ObjectID;
 import net.runelite.api.coords.WorldPoint;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 @QuestDescriptor(
-	quest = QuestHelperQuest.RUNE_MYSTERIES
+        quest = QuestHelperQuest.RUNE_MYSTERIES
 )
-public class RuneMysteries extends BasicQuestHelper
-{
-	//Items Required
-	ItemRequirement airTalisman, researchPackage, notes;
+public class RuneMysteries extends BasicQuestHelper {
+    //Items Required
+    ItemRequirement airTalisman, researchPackage, notes;
 
-	//Items Recommended
-	ItemRequirement varrockTeleport, wizardTeleport;
+    //Items Recommended
+    ItemRequirement varrockTeleport, wizardTeleport;
 
-	Requirement inUpstairsLumbridge, inWizardBasement;
+    Requirement inUpstairsLumbridge, inWizardBasement;
 
-	QuestStep goUpToHoracio, talkToHoracio, goDownToSedridor, talkToSedridor, finishTalkingToSedridor, talkToAubury, talkToAudburyAgain, goDownToSedridor2, talkToSedridor2;
+    QuestStep goUpToHoracio, talkToHoracio, goDownToSedridor, talkToSedridor, finishTalkingToSedridor, talkToAubury, talkToAudburyAgain, goDownToSedridor2, talkToSedridor2;
 
-	//Zones
-	Zone wizardBasement, upstairsLumbridge;
+    //Zones
+    Zone wizardBasement, upstairsLumbridge;
 
-	@Override
-	public Map<Integer, QuestStep> loadSteps()
-	{
-		setupItemRequirements();
-		setupZones();
-		setupConditions();
-		setupSteps();
-		Map<Integer, QuestStep> steps = new HashMap<>();
+    @Override
+    public Map<Integer, QuestStep> loadSteps() {
+        setupItemRequirements();
+        setupZones();
+        setupConditions();
+        setupSteps();
+        Map<Integer, QuestStep> steps = new HashMap<>();
 
-		ConditionalStep goTalkToHoracio = new ConditionalStep(this, goUpToHoracio);
-		goTalkToHoracio.addStep(inUpstairsLumbridge, talkToHoracio);
+        ConditionalStep goTalkToHoracio = new ConditionalStep(this, goUpToHoracio);
+        goTalkToHoracio.addStep(inUpstairsLumbridge, talkToHoracio);
 
-		steps.put(0, goTalkToHoracio);
+        steps.put(0, goTalkToHoracio);
 
-		ConditionalStep goTalkToSedridor = new ConditionalStep(this, goDownToSedridor);
-		goTalkToSedridor.addStep(inWizardBasement, talkToSedridor);
+        ConditionalStep goTalkToSedridor = new ConditionalStep(this, goDownToSedridor);
+        goTalkToSedridor.addStep(inWizardBasement, talkToSedridor);
 
-		steps.put(1, goTalkToSedridor);
+        steps.put(1, goTalkToSedridor);
 
-		steps.put(2, finishTalkingToSedridor);
+        steps.put(2, finishTalkingToSedridor);
 
-		steps.put(3, talkToAubury);
+        steps.put(3, talkToAubury);
 
-		steps.put(4, talkToAudburyAgain);
+        steps.put(4, talkToAudburyAgain);
 
-		ConditionalStep goTalkToSedridor2 = new ConditionalStep(this, goDownToSedridor2);
-		goTalkToSedridor2.addStep(inWizardBasement, talkToSedridor2);
-		steps.put(5, goTalkToSedridor2);
+        ConditionalStep goTalkToSedridor2 = new ConditionalStep(this, goDownToSedridor2);
+        goTalkToSedridor2.addStep(inWizardBasement, talkToSedridor2);
+        steps.put(5, goTalkToSedridor2);
 
-		return steps;
-	}
+        return steps;
+    }
 
-	public void setupItemRequirements()
-	{
-		airTalisman = new ItemRequirement("Air talisman", ItemID.AIR_TALISMAN);
-		airTalisman.setTooltip("You can get another from Duke Horacio if you lost it");
-		researchPackage = new ItemRequirement("Research package", ItemID.RESEARCH_PACKAGE);
-		researchPackage.setTooltip("You can get another from Sedridor if you lost it");
-		notes = new ItemRequirement("Notes", ItemID.NOTES);
-		notes.setTooltip("You can get another from Aubury if you lost them");
-		varrockTeleport = new ItemRequirement("Varrock teleport", ItemID.VARROCK_TELEPORT);
-		wizardTeleport = new ItemRequirement("A teleport to the Wizard's Tower", ItemCollections.getNecklaceOfPassages());
-	}
+    public void setupItemRequirements() {
+        airTalisman = new ItemRequirement("Air talisman", ItemID.AIR_TALISMAN);
+        airTalisman.setTooltip("You can get another from Duke Horacio if you lost it");
+        researchPackage = new ItemRequirement("Research package", ItemID.RESEARCH_PACKAGE);
+        researchPackage.setTooltip("You can get another from Sedridor if you lost it");
+        notes = new ItemRequirement("Notes", ItemID.NOTES);
+        notes.setTooltip("You can get another from Aubury if you lost them");
+        varrockTeleport = new ItemRequirement("Varrock teleport", ItemID.VARROCK_TELEPORT);
+        wizardTeleport = new ItemRequirement("A teleport to the Wizard's Tower", ItemCollections.getNecklaceOfPassages());
+    }
 
-	public void setupConditions()
-	{
-		inUpstairsLumbridge = new ZoneRequirement(upstairsLumbridge);
-		inWizardBasement = new ZoneRequirement(wizardBasement);
-	}
+    public void setupConditions() {
+        inUpstairsLumbridge = new ZoneRequirement(upstairsLumbridge);
+        inWizardBasement = new ZoneRequirement(wizardBasement);
+    }
 
-	public void setupZones()
-	{
-		upstairsLumbridge = new Zone(new WorldPoint(3203, 3206, 1), new WorldPoint(3218, 3231, 1));
-		wizardBasement = new Zone(new WorldPoint(3094, 9553, 0), new WorldPoint(3125, 9582, 0));
-	}
+    public void setupZones() {
+        upstairsLumbridge = new Zone(new WorldPoint(3203, 3206, 1), new WorldPoint(3218, 3231, 1));
+        wizardBasement = new Zone(new WorldPoint(3094, 9553, 0), new WorldPoint(3125, 9582, 0));
+    }
 
-	public void setupSteps()
-	{
-		goUpToHoracio = new ObjectStep(this, ObjectID.STAIRCASE_16671, new WorldPoint(3205, 3208, 0), "Talk to Duke Horacio on the first floor of Lumbidge castle.");
-		talkToHoracio = new NpcStep(this, NpcID.DUKE_HORACIO, new WorldPoint(3210, 3220, 1), "Talk to Duke Horacio on the first floor of Lumbidge castle.");
-		talkToHoracio.addDialogStep("Have you any quests for me?");
-		talkToHoracio.addDialogStep("Sure, no problem.");
-		talkToHoracio.addSubSteps(goUpToHoracio);
+    public void setupSteps() {
+        goUpToHoracio = new ObjectStep(this, ObjectID.STAIRCASE_16671, new WorldPoint(3205, 3208, 0), "Talk to Duke Horacio on the first floor of Lumbidge castle.");
+        talkToHoracio = new NpcStep(this, NpcID.DUKE_HORACIO, new WorldPoint(3210, 3220, 1), "Talk to Duke Horacio on the first floor of Lumbidge castle.");
+        talkToHoracio.addDialogStep("Have you any quests for me?");
+        talkToHoracio.addDialogStep("Sure, no problem.");
+        talkToHoracio.addSubSteps(goUpToHoracio);
 
-		goDownToSedridor = new ObjectStep(this, ObjectID.LADDER_2147, new WorldPoint(3104, 3162, 0), "Bring the Air Talisman to Sedridor in the Wizard Tower's basement.", airTalisman);
-		goDownToSedridor.addDialogStep("Have you any quests for me?");
+        goDownToSedridor = new ObjectStep(this, ObjectID.LADDER_2147, new WorldPoint(3104, 3162, 0), "Bring the Air Talisman to Sedridor in the Wizard Tower's basement.", airTalisman);
+        goDownToSedridor.addDialogStep("Have you any quests for me?");
 
-		talkToSedridor = new NpcStep(this, NpcID.SEDRIDOR, new WorldPoint(3104, 9571, 0), "Bring the Air Talisman to Sedridor in the Wizard Tower's basement.", airTalisman);
-		talkToSedridor.addDialogStep("I'm looking for the head wizard.");
-		talkToSedridor.addDialogStep("Ok, here you are.");
+        talkToSedridor = new NpcStep(this, NpcID.SEDRIDOR, new WorldPoint(3104, 9571, 0), "Bring the Air Talisman to Sedridor in the Wizard Tower's basement.", airTalisman);
+        talkToSedridor.addDialogStep("I'm looking for the head wizard.");
+        talkToSedridor.addDialogStep("Ok, here you are.");
 
-		finishTalkingToSedridor = new NpcStep(this, NpcID.SEDRIDOR, new WorldPoint(3104, 9571, 0), "Accept taking the package for Sedridor.");
-		finishTalkingToSedridor.addDialogStep("Yes, certainly.");
+        finishTalkingToSedridor = new NpcStep(this, NpcID.SEDRIDOR, new WorldPoint(3104, 9571, 0), "Accept taking the package for Sedridor.");
+        finishTalkingToSedridor.addDialogStep("Yes, certainly.");
 
-		talkToSedridor.addSubSteps(goDownToSedridor, finishTalkingToSedridor);
+        talkToSedridor.addSubSteps(goDownToSedridor, finishTalkingToSedridor);
 
-		talkToAubury = new NpcStep(this, NpcID.AUBURY, new WorldPoint(3253, 3401, 0), "Bring the Research Package to Aubury in south east Varrock.", researchPackage);
-		talkToAubury.addDialogStep("I have been sent here with a package for you.");
-		talkToAudburyAgain = new NpcStep(this, NpcID.AUBURY, new WorldPoint(3253, 3401, 0), "Talk to Aubury again in south east Varrock.");
+        talkToAubury = new NpcStep(this, NpcID.AUBURY, new WorldPoint(3253, 3401, 0), "Bring the Research Package to Aubury in south east Varrock.", researchPackage);
+        talkToAubury.addDialogStep("I have been sent here with a package for you.");
+        talkToAudburyAgain = new NpcStep(this, NpcID.AUBURY, new WorldPoint(3253, 3401, 0), "Talk to Aubury again in south east Varrock.");
 
-		goDownToSedridor2 = new ObjectStep(this, ObjectID.LADDER_2147, new WorldPoint(3104, 3162, 0), "Bring the research notes to Sedridor in the Wizard Tower's basement.", notes);
-		talkToSedridor2 = new NpcStep(this, NpcID.SEDRIDOR, new WorldPoint(3104, 9571, 0), "Bring the notes to Sedridor in the Wizard Tower's basement.", notes);
-		talkToSedridor2.addSubSteps(goDownToSedridor2);
-	}
+        goDownToSedridor2 = new ObjectStep(this, ObjectID.LADDER_2147, new WorldPoint(3104, 3162, 0), "Bring the research notes to Sedridor in the Wizard Tower's basement.", notes);
+        talkToSedridor2 = new NpcStep(this, NpcID.SEDRIDOR, new WorldPoint(3104, 9571, 0), "Bring the notes to Sedridor in the Wizard Tower's basement.", notes);
+        talkToSedridor2.addSubSteps(goDownToSedridor2);
+    }
 
-	@Override
-	public List<ItemRequirement> getItemRecommended()
-	{
-		ArrayList<ItemRequirement> reqs = new ArrayList<>();
-		reqs.add(varrockTeleport);
-		reqs.add(wizardTeleport);
-		return reqs;
-	}
+    @Override
+    public List<ItemRequirement> getItemRecommended() {
+        ArrayList<ItemRequirement> reqs = new ArrayList<>();
+        reqs.add(varrockTeleport);
+        reqs.add(wizardTeleport);
+        return reqs;
+    }
+
+    @Override
+    public QuestPointReward getQuestPointReward() {
+        return new QuestPointReward(1);
+    }
+
+    @Override
+    public List<ItemReward> getItemRewards() {
+        return Collections.singletonList(new ItemReward("Air Talisman", ItemID.AIR_TALISMAN, 1));
+    }
+
+    @Override
+    public List<UnlockReward> getUnlockRewards() {
+        return Arrays.asList(
+                new UnlockReward("Ability to use the Runecrafting Skill."),
+                new UnlockReward("Ability to mine Rune and Pure Essence."));
+    }
+
 }

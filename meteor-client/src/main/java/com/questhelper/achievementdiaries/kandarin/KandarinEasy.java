@@ -26,6 +26,7 @@
 package com.questhelper.achievementdiaries.kandarin;
 
 import com.questhelper.ItemCollections;
+import com.questhelper.QuestDescriptor;
 import com.questhelper.QuestHelperQuest;
 import com.questhelper.Zone;
 import com.questhelper.banktab.BankSlotIcons;
@@ -33,42 +34,52 @@ import com.questhelper.questhelpers.ComplexStateQuestHelper;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
+import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.item.ItemRequirements;
 import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.var.VarplayerRequirement;
-import com.questhelper.steps.*;
+import com.questhelper.rewards.ItemReward;
+import com.questhelper.rewards.UnlockReward;
+import com.questhelper.steps.ConditionalStep;
+import com.questhelper.steps.ItemStep;
+import com.questhelper.steps.NpcStep;
+import com.questhelper.steps.ObjectStep;
+import com.questhelper.steps.QuestStep;
+import net.runelite.api.ItemID;
+import net.runelite.api.NpcID;
+import net.runelite.api.NullObjectID;
+import net.runelite.api.ObjectID;
+import net.runelite.api.QuestState;
+import net.runelite.api.Skill;
+import net.runelite.api.coords.WorldPoint;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import net.runelite.api.*;
-import net.runelite.api.coords.WorldPoint;
-import com.questhelper.requirements.item.ItemRequirement;
-import com.questhelper.QuestDescriptor;
 
 @QuestDescriptor(
         quest = QuestHelperQuest.KANDARIN_EASY
 )
 
-public class KandarinEasy extends ComplexStateQuestHelper
-{
+public class KandarinEasy extends ComplexStateQuestHelper {
     // Items required
     ItemRequirement combatGear, bigFishingNet, coins, juteSeed, seedDibber, rake, batteredKey,
-		emptyFishbowl, fishBowl, seaweed, fishBowlSeaweed, tinyNet, genericFishbowl;
+            emptyFishbowl, fishBowl, seaweed, fishBowlSeaweed, tinyNet, genericFishbowl;
 
     // Items recommended
     ItemRequirement food;
 
     Requirement notCatchMackerel, notBuyCandle, notCollectFlax, notPlayOrgan, notPlantJute, notCupTea,
-		notKillEle, notPetFish, notBuyStew, notTalkSherlock, notLogShortcut;
+            notKillEle, notPetFish, notBuyStew, notTalkSherlock, notLogShortcut;
 
     Requirement eleWorkI;
 
     // quest steps
     QuestStep buyCandle, collectFlax, playOrgan, plantJute, cupTea, petFish, fillFishbowl,
-		buyStew, talkSherlock, logShortcut, claimReward, moveToWorkshop, petFishMix, petFishFish;
+            buyStew, talkSherlock, logShortcut, claimReward, moveToWorkshop, petFishMix, petFishFish;
 
     NpcStep catchMackerel, killEle;
 
@@ -77,8 +88,7 @@ public class KandarinEasy extends ComplexStateQuestHelper
     ZoneRequirement inWorkshop;
 
     @Override
-    public QuestStep loadStep()
-    {
+    public QuestStep loadStep() {
         loadZones();
         setupRequirements();
         setupSteps();
@@ -88,7 +98,7 @@ public class KandarinEasy extends ComplexStateQuestHelper
         doEasy.addStep(new Conditions(notPetFish, fishBowlSeaweed, tinyNet), petFishFish);
         doEasy.addStep(new Conditions(notPetFish, fishBowlSeaweed), petFish);
         doEasy.addStep(new Conditions(notPetFish, fishBowl), petFishMix);
-		doEasy.addStep(new Conditions(notPetFish), fillFishbowl);
+        doEasy.addStep(new Conditions(notPetFish), fillFishbowl);
         doEasy.addStep(notBuyCandle, buyCandle);
         doEasy.addStep(notCollectFlax, collectFlax);
         doEasy.addStep(notTalkSherlock, talkSherlock);
@@ -103,8 +113,7 @@ public class KandarinEasy extends ComplexStateQuestHelper
         return doEasy;
     }
 
-    public void setupRequirements()
-    {
+    public void setupRequirements() {
         notCatchMackerel = new VarplayerRequirement(1178, false, 1);
         notBuyCandle = new VarplayerRequirement(1178, false, 2);
         notCollectFlax = new VarplayerRequirement(1178, false, 3);
@@ -122,9 +131,9 @@ public class KandarinEasy extends ComplexStateQuestHelper
 
         emptyFishbowl = new ItemRequirement("Empty fishbowl", ItemID.EMPTY_FISHBOWL).showConditioned(notPetFish);
         fishBowl = new ItemRequirement("Filled fishbowl", ItemID.FISHBOWL).showConditioned(notPetFish);
-		fishBowlSeaweed = new ItemRequirement("Fishbowl with seaweed", ItemID.FISHBOWL_6669).showConditioned(notPetFish);
-		tinyNet = new ItemRequirement("Tiny fish net", ItemID.TINY_NET).showConditioned(notPetFish);
-		genericFishbowl = new ItemRequirements(LogicType.OR, "Fishbowl", emptyFishbowl, fishBowl, fishBowlSeaweed).showConditioned(notPetFish);
+        fishBowlSeaweed = new ItemRequirement("Fishbowl with seaweed", ItemID.FISHBOWL_6669).showConditioned(notPetFish);
+        tinyNet = new ItemRequirement("Tiny fish net", ItemID.TINY_NET).showConditioned(notPetFish);
+        genericFishbowl = new ItemRequirements(LogicType.OR, "Fishbowl", emptyFishbowl, fishBowl, fishBowlSeaweed).showConditioned(notPetFish);
 
         seaweed = new ItemRequirement("Seaweed", ItemID.SEAWEED).showConditioned(notPetFish);
         juteSeed = new ItemRequirement("Jute seeds", ItemID.JUTE_SEED).showConditioned(notPlantJute);
@@ -132,7 +141,7 @@ public class KandarinEasy extends ComplexStateQuestHelper
         seedDibber = new ItemRequirement("Seed dibber", ItemID.SEED_DIBBER).showConditioned(notPlantJute);
         batteredKey = new ItemRequirement("Battered key", ItemID.BATTERED_KEY).showConditioned(notKillEle);
         batteredKey.setTooltip("You can get another by searching the bookcase in the house south of the Elemental " +
-			"Workshop, then reading the book you get from it");
+                "Workshop, then reading the book you get from it");
 
         combatGear = new ItemRequirement("Combat gear to defeat all types of elementals (level 35)", -1, -1).showConditioned(notKillEle);
         combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
@@ -144,31 +153,28 @@ public class KandarinEasy extends ComplexStateQuestHelper
         setupGenericRequirements();
     }
 
-    public void setupGenericRequirements()
-	{
-		eleWorkI = new Conditions(LogicType.OR,
-			new VarplayerRequirement(299, true, 15),
-			new QuestRequirement(QuestHelperQuest.ELEMENTAL_WORKSHOP_I, QuestState.FINISHED)
-		);
-		((Conditions) eleWorkI).setText("Partial completion of Elemental Workshop I");
-	}
+    public void setupGenericRequirements() {
+        eleWorkI = new Conditions(LogicType.OR,
+                new VarplayerRequirement(299, true, 15),
+                new QuestRequirement(QuestHelperQuest.ELEMENTAL_WORKSHOP_I, QuestState.FINISHED)
+        );
+        ((Conditions) eleWorkI).setText("Partial completion of Elemental Workshop I");
+    }
 
-    public void loadZones()
-    {
+    public void loadZones() {
         workshop = new Zone(new WorldPoint(2682, 9862, 0), new WorldPoint(2747, 9927, 0));
     }
 
-    public void setupSteps()
-    {
+    public void setupSteps() {
         catchMackerel = new NpcStep(this, NpcID.FISHING_SPOT_1518, new WorldPoint(2841, 3432, 0),
                 "Fish on Catherby beach at the Big Net fishing spots for a mackerel.", true, bigFishingNet);
         catchMackerel.addAlternateNpcs(NpcID.FISHING_SPOT_1520);
         buyCandle = new NpcStep(this, NpcID.CANDLE_MAKER, new WorldPoint(2799, 3439, 0),
                 "Buy a candle from the candle maker in Catherby.", coins.quantity(3));
 
-		fillFishbowl = new ObjectStep(this, ObjectID.SINK_874, new WorldPoint(2830, 3441, 0),
-			"Fill an empty fish bowl at a sink.", emptyFishbowl.highlighted(), seaweed, coins.quantity(10));
-		fillFishbowl.addIcon(ItemID.EMPTY_FISHBOWL);
+        fillFishbowl = new ObjectStep(this, ObjectID.SINK_874, new WorldPoint(2830, 3441, 0),
+                "Fill an empty fish bowl at a sink.", emptyFishbowl.highlighted(), seaweed, coins.quantity(10));
+        fillFishbowl.addIcon(ItemID.EMPTY_FISHBOWL);
         petFish = new NpcStep(this, NpcID.HARRY, new WorldPoint(2833, 3443, 0),
                 "Speak with Harry in the Catherby Fishing Shop to get a tiny net.", fishBowlSeaweed, coins.quantity(10));
         petFish.addDialogSteps("Can I get a fish for this bowl?", "I'll take it!");
@@ -191,7 +197,7 @@ public class KandarinEasy extends ComplexStateQuestHelper
                 "Play the organ in Seers' Village Church.");
         plantJute = new ObjectStep(this, NullObjectID.NULL_8176, new WorldPoint(2669, 3523, 0),
                 "Plant 3 jute seeds in the hops patch north west of Seers' Village.", juteSeed.quantity(3),
-			seedDibber, rake);
+                seedDibber, rake);
         plantJute.addIcon(ItemID.JUTE_SEED);
         cupTea = new NpcStep(this, NpcID.GALAHAD, new WorldPoint(2612, 3474, 0),
                 "Talk with Galahad west of McGrubor's Wood until he gives you some tea.");
@@ -205,28 +211,24 @@ public class KandarinEasy extends ComplexStateQuestHelper
     }
 
     @Override
-    public List<ItemRequirement> getItemRequirements()
-    {
+    public List<ItemRequirement> getItemRequirements() {
         return Arrays.asList(coins.quantity(33), bigFishingNet, juteSeed.quantity(3),
-			seedDibber, rake, batteredKey, genericFishbowl, seaweed, combatGear);
+                seedDibber, rake, batteredKey, genericFishbowl, seaweed, combatGear);
     }
 
     @Override
-    public List<ItemRequirement> getItemRecommended()
-    {
+    public List<ItemRequirement> getItemRecommended() {
         return Collections.singletonList(food);
     }
 
     @Override
-    public List<String> getCombatRequirements()
-    {
+    public List<String> getCombatRequirements() {
         return Collections.singletonList("4 level 35 elementals");
     }
 
     @Override
-    public List<Requirement> getGeneralRequirements()
-    {
-		setupGenericRequirements();
+    public List<Requirement> getGeneralRequirements() {
+        setupGenericRequirements();
         ArrayList<Requirement> req = new ArrayList<>();
 
         req.add(eleWorkI);
@@ -236,4 +238,21 @@ public class KandarinEasy extends ComplexStateQuestHelper
 
         return req;
     }
+
+    @Override
+    public List<ItemReward> getItemRewards() {
+        return Arrays.asList(
+                new ItemReward("Kandarin headgear (1)", ItemID.KANDARIN_HEADGEAR_1, 1),
+                new ItemReward("2,500 Exp. Lamp (Any skill over 30)", ItemID.ANTIQUE_LAMP, 1));
+    }
+
+    @Override
+    public List<UnlockReward> getUnlockRewards() {
+        return Arrays.asList(
+                new UnlockReward("Coal trucks can hold up to 140 coal."),
+                new UnlockReward("The Flax keeper will exchange 30 noted flax for 30 noted bow strings daily"),
+                new UnlockReward("5% more marks of grace on Seers' Village Rooftop Course"));
+    }
+
+
 }

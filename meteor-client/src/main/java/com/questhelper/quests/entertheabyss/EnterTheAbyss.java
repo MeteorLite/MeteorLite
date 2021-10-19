@@ -29,151 +29,163 @@ import com.questhelper.QuestDescriptor;
 import com.questhelper.QuestHelperQuest;
 import com.questhelper.Zone;
 import com.questhelper.questhelpers.BasicQuestHelper;
-import com.questhelper.requirements.item.ItemRequirement;
-import com.questhelper.requirements.item.ItemRequirements;
-import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.Requirement;
-import com.questhelper.requirements.var.VarbitRequirement;
 import com.questhelper.requirements.ZoneRequirement;
 import com.questhelper.requirements.conditional.Conditions;
+import com.questhelper.requirements.item.ItemRequirement;
+import com.questhelper.requirements.quest.QuestRequirement;
+import com.questhelper.requirements.var.VarbitRequirement;
+import com.questhelper.rewards.ExperienceReward;
+import com.questhelper.rewards.ItemReward;
+import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
+import net.runelite.api.ItemID;
+import net.runelite.api.NpcID;
+import net.runelite.api.ObjectID;
+import net.runelite.api.QuestState;
+import net.runelite.api.Skill;
+import net.runelite.api.coords.WorldPoint;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import net.runelite.api.ItemID;
-import net.runelite.api.NpcID;
-import net.runelite.api.ObjectID;
-import net.runelite.api.QuestState;
-import net.runelite.api.coords.WorldPoint;
 
 @QuestDescriptor(
-	quest = QuestHelperQuest.ENTER_THE_ABYSS
+        quest = QuestHelperQuest.ENTER_THE_ABYSS
 )
-public class EnterTheAbyss extends BasicQuestHelper
-{
-	// Recommended
-	ItemRequirement varrockTeleport, ardougneTeleport, edgevilleTeleport, passageTeleport;
+public class EnterTheAbyss extends BasicQuestHelper {
+    // Recommended
+    ItemRequirement varrockTeleport, ardougneTeleport, edgevilleTeleport, passageTeleport;
 
-	// Items during quest
-	ItemRequirement scryingOrb, scryingOrbCharged;
+    // Items during quest
+    ItemRequirement scryingOrb, scryingOrbCharged;
 
-	Requirement inWizardBasement, teleportedFromVarrock, teleportedFromArdougne, teleportedFromWizardsTower,
-		teleportedFromGnome, teleportedFromDistentor;
+    Requirement inWizardBasement, teleportedFromVarrock, teleportedFromArdougne, teleportedFromWizardsTower,
+            teleportedFromGnome, teleportedFromDistentor;
 
-	QuestStep talkToMageInWildy, talkToMageInVarrock, talkToAubury, goDownInWizardsTower, talkToSedridor,
-		talkToCromperty, talkToMageAfterTeleports, talkToMageToFinish;
+    QuestStep talkToMageInWildy, talkToMageInVarrock, talkToAubury, goDownInWizardsTower, talkToSedridor,
+            talkToCromperty, talkToMageAfterTeleports, talkToMageToFinish;
 
-	Zone wizardBasement;
+    Zone wizardBasement;
 
-	@Override
-	public Map<Integer, QuestStep> loadSteps()
-	{
-		loadZones();
-		setupRequirements();
-		setupConditions();
-		setupSteps();
-		Map<Integer, QuestStep> steps = new HashMap<>();
+    @Override
+    public Map<Integer, QuestStep> loadSteps() {
+        loadZones();
+        setupRequirements();
+        setupConditions();
+        setupSteps();
+        Map<Integer, QuestStep> steps = new HashMap<>();
 
-		steps.put(0, talkToMageInWildy);
-		steps.put(1, talkToMageInVarrock);
+        steps.put(0, talkToMageInWildy);
+        steps.put(1, talkToMageInVarrock);
 
-		ConditionalStep locateEssenceMine = new ConditionalStep(this, talkToAubury);
-		locateEssenceMine.addStep(new Conditions(scryingOrbCharged), talkToMageAfterTeleports);
-		locateEssenceMine.addStep(new Conditions(teleportedFromVarrock, teleportedFromWizardsTower), talkToCromperty);
-		locateEssenceMine.addStep(new Conditions(teleportedFromVarrock, inWizardBasement), talkToSedridor);
-		locateEssenceMine.addStep(teleportedFromVarrock, goDownInWizardsTower);
-		steps.put(2, locateEssenceMine);
+        ConditionalStep locateEssenceMine = new ConditionalStep(this, talkToAubury);
+        locateEssenceMine.addStep(new Conditions(scryingOrbCharged), talkToMageAfterTeleports);
+        locateEssenceMine.addStep(new Conditions(teleportedFromVarrock, teleportedFromWizardsTower), talkToCromperty);
+        locateEssenceMine.addStep(new Conditions(teleportedFromVarrock, inWizardBasement), talkToSedridor);
+        locateEssenceMine.addStep(teleportedFromVarrock, goDownInWizardsTower);
+        steps.put(2, locateEssenceMine);
 
-		steps.put(3, talkToMageToFinish);
+        steps.put(3, talkToMageToFinish);
 
-		return steps;
-	}
+        return steps;
+    }
 
-	public void setupRequirements()
-	{
-		varrockTeleport = new ItemRequirement("Teleports to Varrock", ItemID.VARROCK_TELEPORT, 2);
-		ardougneTeleport = new ItemRequirement("Teleport to Ardougne", ItemID.ARDOUGNE_TELEPORT);
-		edgevilleTeleport = new ItemRequirement("Teleport to Edgeville", ItemCollections.getAmuletOfGlories());
-		passageTeleport = new ItemRequirement("Teleport to Wizards' Tower", ItemCollections.getNecklaceOfPassages());
+    public void setupRequirements() {
+        varrockTeleport = new ItemRequirement("Teleports to Varrock", ItemID.VARROCK_TELEPORT, 2);
+        ardougneTeleport = new ItemRequirement("Teleport to Ardougne", ItemID.ARDOUGNE_TELEPORT);
+        edgevilleTeleport = new ItemRequirement("Teleport to Edgeville", ItemCollections.getAmuletOfGlories());
+        passageTeleport = new ItemRequirement("Teleport to Wizards' Tower", ItemCollections.getNecklaceOfPassages());
 
-		scryingOrb = new ItemRequirement("Scrying orb", ItemID.SCRYING_ORB_5519);
-		scryingOrb.setTooltip("You can get another from the Mage of Zamorak in south east Varrock");
+        scryingOrb = new ItemRequirement("Scrying orb", ItemID.SCRYING_ORB_5519);
+        scryingOrb.setTooltip("You can get another from the Mage of Zamorak in south east Varrock");
 
-		scryingOrbCharged = new ItemRequirement("Scrying orb", ItemID.SCRYING_ORB);
-		scryingOrbCharged.setTooltip("You can get another from the Mage of Zamorak in south east Varrock");
-	}
+        scryingOrbCharged = new ItemRequirement("Scrying orb", ItemID.SCRYING_ORB);
+        scryingOrbCharged.setTooltip("You can get another from the Mage of Zamorak in south east Varrock");
+    }
 
-	public void loadZones()
-	{
-		wizardBasement = new Zone(new WorldPoint(3094, 9553, 0), new WorldPoint(3125, 9582, 0));
-	}
+    public void loadZones() {
+        wizardBasement = new Zone(new WorldPoint(3094, 9553, 0), new WorldPoint(3125, 9582, 0));
+    }
 
-	public void setupConditions()
-	{
-		inWizardBasement = new ZoneRequirement(wizardBasement);
+    public void setupConditions() {
+        inWizardBasement = new ZoneRequirement(wizardBasement);
 
-		teleportedFromWizardsTower = new VarbitRequirement(2314, 1);
-		teleportedFromVarrock = new VarbitRequirement(2315, 1);
-		teleportedFromArdougne = new VarbitRequirement(2316, 1);
-		teleportedFromDistentor = new VarbitRequirement(2317, 1);
-		teleportedFromGnome = new VarbitRequirement(2318, 1);
-	}
+        teleportedFromWizardsTower = new VarbitRequirement(2314, 1);
+        teleportedFromVarrock = new VarbitRequirement(2315, 1);
+        teleportedFromArdougne = new VarbitRequirement(2316, 1);
+        teleportedFromDistentor = new VarbitRequirement(2317, 1);
+        teleportedFromGnome = new VarbitRequirement(2318, 1);
+    }
 
-	public void setupSteps()
-	{
-		talkToMageInWildy = new NpcStep(this, NpcID.MAGE_OF_ZAMORAK, new WorldPoint(3102, 3557, 0), "Talk to the Mage" +
-			" of Zamorak in the Wilderness north of Edgeville. BRING NOTHING AS YOU CAN BE KILLED BY OTHER PLAYERS HERE.");
+    public void setupSteps() {
+        talkToMageInWildy = new NpcStep(this, NpcID.MAGE_OF_ZAMORAK, new WorldPoint(3102, 3557, 0), "Talk to the Mage" +
+                " of Zamorak in the Wilderness north of Edgeville. BRING NOTHING AS YOU CAN BE KILLED BY OTHER PLAYERS HERE.");
 
-		talkToMageInVarrock = new NpcStep(this, NpcID.MAGE_OF_ZAMORAK_2582, new WorldPoint(3259, 3383, 0),
-			"Talk to the Mage of Zamorak in south east Varrock.");
-		talkToMageInVarrock.addDialogSteps("Where do you get your runes from?", "Yes");
+        talkToMageInVarrock = new NpcStep(this, NpcID.MAGE_OF_ZAMORAK_2582, new WorldPoint(3259, 3383, 0),
+                "Talk to the Mage of Zamorak in south east Varrock.");
+        talkToMageInVarrock.addDialogSteps("Where do you get your runes from?", "Yes");
 
-		talkToAubury = new NpcStep(this, NpcID.AUBURY, new WorldPoint(3253, 3401, 0),
-			"Teleport to the essence mine with Aubury in south east Varrock.", scryingOrb);
-		talkToAubury.addDialogStep("Can you teleport me to the Rune Essence?");
+        talkToAubury = new NpcStep(this, NpcID.AUBURY, new WorldPoint(3253, 3401, 0),
+                "Teleport to the essence mine with Aubury in south east Varrock.", scryingOrb);
+        talkToAubury.addDialogStep("Can you teleport me to the Rune Essence?");
 
-		goDownInWizardsTower = new ObjectStep(this, ObjectID.LADDER_2147, new WorldPoint(3104, 3162, 0),
-			"Teleport to the essence mine with Sedridor in the Wizard Tower's basement.", scryingOrb);
-		goDownInWizardsTower.addDialogStep("Wizard's Tower");
-		talkToSedridor = new NpcStep(this, NpcID.SEDRIDOR, new WorldPoint(3104, 9571, 0),
-			"Teleport to the essence mine with Sedridor in the Wizard Tower's basement.", scryingOrb);
-		talkToSedridor.addDialogStep("Can you teleport me to the Rune Essence?");
-		talkToSedridor.addSubSteps(goDownInWizardsTower);
+        goDownInWizardsTower = new ObjectStep(this, ObjectID.LADDER_2147, new WorldPoint(3104, 3162, 0),
+                "Teleport to the essence mine with Sedridor in the Wizard Tower's basement.", scryingOrb);
+        goDownInWizardsTower.addDialogStep("Wizard's Tower");
+        talkToSedridor = new NpcStep(this, NpcID.SEDRIDOR, new WorldPoint(3104, 9571, 0),
+                "Teleport to the essence mine with Sedridor in the Wizard Tower's basement.", scryingOrb);
+        talkToSedridor.addDialogStep("Can you teleport me to the Rune Essence?");
+        talkToSedridor.addSubSteps(goDownInWizardsTower);
 
-		talkToCromperty = new NpcStep(this, NpcID.WIZARD_CROMPERTY, new WorldPoint(2684, 3323, 0),
-			"Teleport to the essence mine with Wizard Cromperty in East Ardougne.", scryingOrb);
-		talkToCromperty.addDialogStep("Can you teleport me to the Rune Essence?");
+        talkToCromperty = new NpcStep(this, NpcID.WIZARD_CROMPERTY, new WorldPoint(2684, 3323, 0),
+                "Teleport to the essence mine with Wizard Cromperty in East Ardougne.", scryingOrb);
+        talkToCromperty.addDialogStep("Can you teleport me to the Rune Essence?");
 
-		talkToMageAfterTeleports = new NpcStep(this, NpcID.MAGE_OF_ZAMORAK_2582, new WorldPoint(3259, 3383, 0),
-			"Talk to the Mage of Zamorak in south east Varrock.", scryingOrbCharged);
-		talkToMageToFinish = new NpcStep(this, NpcID.MAGE_OF_ZAMORAK_2582, new WorldPoint(3259, 3383, 0),
-			"Talk to the Mage of Zamorak again.");
-	}
+        talkToMageAfterTeleports = new NpcStep(this, NpcID.MAGE_OF_ZAMORAK_2582, new WorldPoint(3259, 3383, 0),
+                "Talk to the Mage of Zamorak in south east Varrock.", scryingOrbCharged);
+        talkToMageToFinish = new NpcStep(this, NpcID.MAGE_OF_ZAMORAK_2582, new WorldPoint(3259, 3383, 0),
+                "Talk to the Mage of Zamorak again.");
+    }
 
-	@Override
-	public List<ItemRequirement> getItemRecommended()
-	{
-		return Arrays.asList(edgevilleTeleport, varrockTeleport, passageTeleport, ardougneTeleport);
-	}
+    @Override
+    public List<ItemRequirement> getItemRecommended() {
+        return Arrays.asList(edgevilleTeleport, varrockTeleport, passageTeleport, ardougneTeleport);
+    }
 
-	@Override
-	public List<String> getNotes()
-	{
-		return Collections.singletonList("The start of this miniquest is in the Wilderness. Other players can " +
-			"attack you there, so make sure to not bring anything there!");
-	}
+    @Override
+    public List<String> getNotes() {
+        return Collections.singletonList("The start of this miniquest is in the Wilderness. Other players can " +
+                "attack you there, so make sure to not bring anything there!");
+    }
 
-	@Override
-	public List<Requirement> getGeneralRequirements()
-	{
-		ArrayList<Requirement> req = new ArrayList<>();
-		req.add(new QuestRequirement(QuestHelperQuest.RUNE_MYSTERIES, QuestState.FINISHED));
-		return req;
-	}
+    @Override
+    public List<Requirement> getGeneralRequirements() {
+        ArrayList<Requirement> req = new ArrayList<>();
+        req.add(new QuestRequirement(QuestHelperQuest.RUNE_MYSTERIES, QuestState.FINISHED));
+        return req;
+    }
+
+    @Override
+    public List<ExperienceReward> getExperienceRewards() {
+        return Collections.singletonList(new ExperienceReward(Skill.RUNECRAFT, 1000));
+    }
+
+    @Override
+    public List<ItemReward> getItemRewards() {
+        return Collections.singletonList(new ItemReward("A small rune pouch", ItemID.SMALL_POUCH, 1));
+    }
+
+    @Override
+    public List<UnlockReward> getUnlockRewards() {
+        return Collections.singletonList(new UnlockReward("Ability to enter The Abyss"));
+    }
+
+
 }

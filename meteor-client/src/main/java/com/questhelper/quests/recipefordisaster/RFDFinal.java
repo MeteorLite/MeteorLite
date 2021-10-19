@@ -31,22 +31,20 @@ import com.questhelper.QuestVarbits;
 import com.questhelper.Zone;
 import com.questhelper.banktab.BankSlotIcons;
 import com.questhelper.questhelpers.BasicQuestHelper;
+import com.questhelper.requirements.Requirement;
+import com.questhelper.requirements.ZoneRequirement;
+import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.quest.QuestPointRequirement;
 import com.questhelper.requirements.quest.QuestRequirement;
-import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.var.VarbitRequirement;
-import com.questhelper.requirements.ZoneRequirement;
-import com.questhelper.requirements.conditional.Conditions;
+import com.questhelper.rewards.ItemReward;
+import com.questhelper.rewards.QuestPointReward;
+import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 import net.runelite.api.Client;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
@@ -54,141 +52,152 @@ import net.runelite.api.NullObjectID;
 import net.runelite.api.QuestState;
 import net.runelite.api.coords.WorldPoint;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 @QuestDescriptor(
-	quest = QuestHelperQuest.RECIPE_FOR_DISASTER_FINALE
+        quest = QuestHelperQuest.RECIPE_FOR_DISASTER_FINALE
 )
-public class RFDFinal extends BasicQuestHelper
-{
-	ItemRequirement iceGloves, restorePotions, combatGear;
+public class RFDFinal extends BasicQuestHelper {
+    ItemRequirement iceGloves, restorePotions, combatGear;
 
-	Requirement inFightArena, killedAgrith, killedFlambeed, killedKaramel, killedDessourt, killedMother;
+    Requirement inFightArena, killedAgrith, killedFlambeed, killedKaramel, killedDessourt, killedMother;
 
-	QuestStep enterPortal, killAgrith, enterPortalFlambeed, killFlambeed, enterPortalKaramel, killKaramel, enterPortalDessourt, killDessourt,
-		enterPortalMother, killMother, enterPortalCulinaromancer, killCulinaromancer;
+    QuestStep enterPortal, killAgrith, enterPortalFlambeed, killFlambeed, enterPortalKaramel, killKaramel, enterPortalDessourt, killDessourt,
+            enterPortalMother, killMother, enterPortalCulinaromancer, killCulinaromancer;
 
-	//Zones
-	Zone fightArena;
+    //Zones
+    Zone fightArena;
 
-	@Override
-	public Map<Integer, QuestStep> loadSteps()
-	{
-		loadZones();
-		setupRequirements();
-		setupConditions();
-		setupSteps();
+    @Override
+    public Map<Integer, QuestStep> loadSteps() {
+        loadZones();
+        setupRequirements();
+        setupConditions();
+        setupSteps();
 
-		Map<Integer, QuestStep> steps = new HashMap<>();
+        Map<Integer, QuestStep> steps = new HashMap<>();
 
-		ConditionalStep defeatAll = new ConditionalStep(this, enterPortal);
-		defeatAll.addStep(new Conditions(killedMother, inFightArena), killCulinaromancer);
-		defeatAll.addStep(new Conditions(killedMother), enterPortalCulinaromancer);
+        ConditionalStep defeatAll = new ConditionalStep(this, enterPortal);
+        defeatAll.addStep(new Conditions(killedMother, inFightArena), killCulinaromancer);
+        defeatAll.addStep(new Conditions(killedMother), enterPortalCulinaromancer);
 
-		defeatAll.addStep(new Conditions(killedDessourt, inFightArena), killMother);
-		defeatAll.addStep(new Conditions(killedDessourt), enterPortalMother);
+        defeatAll.addStep(new Conditions(killedDessourt, inFightArena), killMother);
+        defeatAll.addStep(new Conditions(killedDessourt), enterPortalMother);
 
-		defeatAll.addStep(new Conditions(killedKaramel, inFightArena), killDessourt);
-		defeatAll.addStep(new Conditions(killedKaramel), enterPortalDessourt);
+        defeatAll.addStep(new Conditions(killedKaramel, inFightArena), killDessourt);
+        defeatAll.addStep(new Conditions(killedKaramel), enterPortalDessourt);
 
-		defeatAll.addStep(new Conditions(killedFlambeed, inFightArena), killKaramel);
-		defeatAll.addStep(new Conditions(killedFlambeed), enterPortalKaramel);
+        defeatAll.addStep(new Conditions(killedFlambeed, inFightArena), killKaramel);
+        defeatAll.addStep(new Conditions(killedFlambeed), enterPortalKaramel);
 
-		defeatAll.addStep(new Conditions(killedAgrith, inFightArena), killFlambeed);
-		defeatAll.addStep(new Conditions(killedAgrith), enterPortalFlambeed);
+        defeatAll.addStep(new Conditions(killedAgrith, inFightArena), killFlambeed);
+        defeatAll.addStep(new Conditions(killedAgrith), enterPortalFlambeed);
 
-		defeatAll.addStep(inFightArena, killAgrith);
-		steps.put(4, defeatAll);
+        defeatAll.addStep(inFightArena, killAgrith);
+        steps.put(4, defeatAll);
 
-		return steps;
-	}
+        return steps;
+    }
 
-	public void setupRequirements()
-	{
-		iceGloves = new ItemRequirement("Ice gloves", ItemID.ICE_GLOVES);
-		restorePotions = new ItemRequirement("Restore potions for Karamel", ItemCollections.getRestorePotions());
-		combatGear = new ItemRequirement("Combat gear, food and potions", -1, -1);
-		combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
+    public void setupRequirements() {
+        iceGloves = new ItemRequirement("Ice gloves", ItemID.ICE_GLOVES);
+        restorePotions = new ItemRequirement("Restore potions for Karamel", ItemCollections.getRestorePotions());
+        combatGear = new ItemRequirement("Combat gear, food and potions", -1, -1);
+        combatGear.setDisplayItemId(BankSlotIcons.getCombatGear());
 
-	}
+    }
 
-	public void loadZones()
-	{
-		fightArena = new Zone(new WorldPoint(1889, 5345, 2), new WorldPoint(1910, 5366, 2));
-		killedAgrith = new VarbitRequirement(1855, 1);
-		killedFlambeed = new VarbitRequirement(1855, 2);
-		killedKaramel = new VarbitRequirement(1855, 3);
-		killedDessourt = new VarbitRequirement(1855, 4);
-		killedMother = new VarbitRequirement(1855, 5);
-	}
+    public void loadZones() {
+        fightArena = new Zone(new WorldPoint(1889, 5345, 2), new WorldPoint(1910, 5366, 2));
+        killedAgrith = new VarbitRequirement(1855, 1);
+        killedFlambeed = new VarbitRequirement(1855, 2);
+        killedKaramel = new VarbitRequirement(1855, 3);
+        killedDessourt = new VarbitRequirement(1855, 4);
+        killedMother = new VarbitRequirement(1855, 5);
+    }
 
-	public void setupConditions()
-	{
-		inFightArena = new ZoneRequirement(fightArena);
-	}
+    public void setupConditions() {
+        inFightArena = new ZoneRequirement(fightArena);
+    }
 
-	public void setupSteps()
-	{
-		enterPortal = new ObjectStep(this, NullObjectID.NULL_12354, new WorldPoint(3209, 3218, 0), "Enter the portal in Lumbridge Castle, ready to fight. You can leave between fights to re-gear.", combatGear);
-		killAgrith = new NpcStep(this, NpcID.AGRITHNANA, new WorldPoint(1900, 5355, 2),"Kill Agrith-Na-Na. He uses magic at ranged, and melee up close.");
+    public void setupSteps() {
+        enterPortal = new ObjectStep(this, NullObjectID.NULL_12354, new WorldPoint(3209, 3218, 0), "Enter the portal in Lumbridge Castle, ready to fight. You can leave between fights to re-gear.", combatGear);
+        killAgrith = new NpcStep(this, NpcID.AGRITHNANA, new WorldPoint(1900, 5355, 2), "Kill Agrith-Na-Na. He uses magic at ranged, and melee up close.");
 
-		enterPortalFlambeed = new ObjectStep(this, NullObjectID.NULL_12354, new WorldPoint(3209, 3218, 0), "Enter the portal in Lumbridge Castle, ready to fight kill Flambeed. Water spells are especially effective.", combatGear, iceGloves);
-		killFlambeed = new NpcStep(this, NpcID.FLAMBEED, new WorldPoint(1900, 5355, 2),"Equip ice gloves and kill Flambeed. Water spells are especially effective.", iceGloves);
-		killFlambeed.addSubSteps(enterPortalFlambeed);
+        enterPortalFlambeed = new ObjectStep(this, NullObjectID.NULL_12354, new WorldPoint(3209, 3218, 0), "Enter the portal in Lumbridge Castle, ready to fight kill Flambeed. Water spells are especially effective.", combatGear, iceGloves);
+        killFlambeed = new NpcStep(this, NpcID.FLAMBEED, new WorldPoint(1900, 5355, 2), "Equip ice gloves and kill Flambeed. Water spells are especially effective.", iceGloves);
+        killFlambeed.addSubSteps(enterPortalFlambeed);
 
-		enterPortalKaramel = new ObjectStep(this, NullObjectID.NULL_12354, new WorldPoint(3209, 3218, 0), "Enter the portal to fight Karamel. Stand in melee distance, and bring restore potions to as they drain your stats. Fire spells are especially effective.", combatGear, restorePotions);
-		killKaramel = new NpcStep(this, NpcID.KARAMEL, new WorldPoint(1900, 5355, 2), "Kill Karamel. Stand in melee distance, and bring restore potions to as they drain your stats. Fire spells are especially effective.", combatGear, restorePotions);
-		killKaramel.addSubSteps(enterPortalKaramel);
+        enterPortalKaramel = new ObjectStep(this, NullObjectID.NULL_12354, new WorldPoint(3209, 3218, 0), "Enter the portal to fight Karamel. Stand in melee distance, and bring restore potions to as they drain your stats. Fire spells are especially effective.", combatGear, restorePotions);
+        killKaramel = new NpcStep(this, NpcID.KARAMEL, new WorldPoint(1900, 5355, 2), "Kill Karamel. Stand in melee distance, and bring restore potions to as they drain your stats. Fire spells are especially effective.", combatGear, restorePotions);
+        killKaramel.addSubSteps(enterPortalKaramel);
 
-		enterPortalDessourt = new ObjectStep(this, NullObjectID.NULL_12354, new WorldPoint(3209, 3218, 0), "Enter the portal in Lumbridge Castle, ready to fight Dessourt.", combatGear);
-		killDessourt = new NpcStep(this, NpcID.DESSOURT, new WorldPoint(1900, 5355, 2), "Kill Dessourt.");
-		killDessourt.addSubSteps(enterPortalDessourt);
+        enterPortalDessourt = new ObjectStep(this, NullObjectID.NULL_12354, new WorldPoint(3209, 3218, 0), "Enter the portal in Lumbridge Castle, ready to fight Dessourt.", combatGear);
+        killDessourt = new NpcStep(this, NpcID.DESSOURT, new WorldPoint(1900, 5355, 2), "Kill Dessourt.");
+        killDessourt.addSubSteps(enterPortalDessourt);
 
-		enterPortalMother = new ObjectStep(this, NullObjectID.NULL_12354, new WorldPoint(3209, 3218, 0), "Enter the portal in Lumbridge Castle, ready to fight the Gelatinnoth mother. You'll need to use air spells when she's white, earth when brown, fire when red and water when blue.", combatGear);
-		killMother = new NpcStep(this, NpcID.GELATINNOTH_MOTHER, new WorldPoint(1900, 5355, 2), "Kill the Gelatinnoth mother. You'll need to use air spells when she's white, earth when brown, fire when red and water when blue, melee when orange and ranged when green.");
-		((NpcStep)(killMother)).addAlternateNpcs(NpcID.GELATINNOTH_MOTHER_4885, NpcID.GELATINNOTH_MOTHER_4886, NpcID.GELATINNOTH_MOTHER_4887, NpcID.GELATINNOTH_MOTHER_4888, NpcID.GELATINNOTH_MOTHER_4889);
-		killMother.addSubSteps(enterPortalMother);
+        enterPortalMother = new ObjectStep(this, NullObjectID.NULL_12354, new WorldPoint(3209, 3218, 0), "Enter the portal in Lumbridge Castle, ready to fight the Gelatinnoth mother. You'll need to use air spells when she's white, earth when brown, fire when red and water when blue.", combatGear);
+        killMother = new NpcStep(this, NpcID.GELATINNOTH_MOTHER, new WorldPoint(1900, 5355, 2), "Kill the Gelatinnoth mother. You'll need to use air spells when she's white, earth when brown, fire when red and water when blue, melee when orange and ranged when green.");
+        ((NpcStep) (killMother)).addAlternateNpcs(NpcID.GELATINNOTH_MOTHER_4885, NpcID.GELATINNOTH_MOTHER_4886, NpcID.GELATINNOTH_MOTHER_4887, NpcID.GELATINNOTH_MOTHER_4888, NpcID.GELATINNOTH_MOTHER_4889);
+        killMother.addSubSteps(enterPortalMother);
 
-		enterPortalCulinaromancer = new ObjectStep(this, NullObjectID.NULL_12354, new WorldPoint(3209, 3218, 0), "Enter the portal in Lumbridge Castle, ready to fight the Culinaromancer. Try to keep your distance.", combatGear);
-		killCulinaromancer = new NpcStep(this, NpcID.CULINAROMANCER_4878,  new WorldPoint(1900, 5355, 2), "Kill the Culinaromancer. Try to keep your distance.");
-		killCulinaromancer.addSubSteps(enterPortalCulinaromancer);
-	}
+        enterPortalCulinaromancer = new ObjectStep(this, NullObjectID.NULL_12354, new WorldPoint(3209, 3218, 0), "Enter the portal in Lumbridge Castle, ready to fight the Culinaromancer. Try to keep your distance.", combatGear);
+        killCulinaromancer = new NpcStep(this, NpcID.CULINAROMANCER_4878, new WorldPoint(1900, 5355, 2), "Kill the Culinaromancer. Try to keep your distance.");
+        killCulinaromancer.addSubSteps(enterPortalCulinaromancer);
+    }
 
-	@Override
-	public List<ItemRequirement> getItemRequirements()
-	{
-		return Arrays.asList(iceGloves, restorePotions, combatGear);
-	}
+    @Override
+    public List<ItemRequirement> getItemRequirements() {
+        return Arrays.asList(iceGloves, restorePotions, combatGear);
+    }
 
-	@Override
-	public List<String> getCombatRequirements()
-	{
-		return Arrays.asList("Agrith-Na-Na (level 146)", "Flambeed (level 149)", "Karamel (level 136)", "Dessourt (level 121)", "Gelatinnoth Mother (level 130)", "Culinaromancer (level 75)");
-	}
+    @Override
+    public List<String> getCombatRequirements() {
+        return Arrays.asList("Agrith-Na-Na (level 146)", "Flambeed (level 149)", "Karamel (level 136)", "Dessourt (level 121)", "Gelatinnoth Mother (level 130)", "Culinaromancer (level 75)");
+    }
 
-	@Override
-	public List<Requirement> getGeneralRequirements()
-	{
-		ArrayList<Requirement> req = new ArrayList<>();
-		req.add(new QuestPointRequirement(175));
-		req.add(new QuestRequirement(QuestHelperQuest.DESERT_TREASURE, QuestState.FINISHED));
-		req.add(new QuestRequirement(QuestHelperQuest.HORROR_FROM_THE_DEEP, QuestState.FINISHED));
-		return req;
-	}
+    @Override
+    public List<Requirement> getGeneralRequirements() {
+        ArrayList<Requirement> req = new ArrayList<>();
+        req.add(new QuestPointRequirement(175));
+        req.add(new QuestRequirement(QuestHelperQuest.DESERT_TREASURE, QuestState.FINISHED));
+        req.add(new QuestRequirement(QuestHelperQuest.HORROR_FROM_THE_DEEP, QuestState.FINISHED));
+        return req;
+    }
 
-	@Override
-	public QuestState getState(Client client)
-	{
-		int questState = client.getVarbitValue(QuestVarbits.QUEST_RECIPE_FOR_DISASTER.getId());
-		if (questState < 4)
-		{
-			return QuestState.NOT_STARTED;
-		}
+    @Override
+    public QuestPointReward getQuestPointReward() {
+        return new QuestPointReward(1);
+    }
 
-		return getQuest().getState(client);
-	}
+    @Override
+    public List<ItemReward> getItemRewards() {
+        return Collections.singletonList(new ItemReward("20,000 Experience Lamp (Any skill over level 50)", ItemID.ANTIQUE_LAMP, 1)); //4447 is placeholder for filter
+    }
 
-	@Override
-	public boolean isCompleted()
-	{
-		return (client.getVarbitValue(QuestVarbits.QUEST_RECIPE_FOR_DISASTER.getId()) < 4 || super.isCompleted());
-	}
+    @Override
+    public List<UnlockReward> getUnlockRewards() {
+        return Collections.singletonList(new UnlockReward("Full access to the Culinaromancer's Chest"));
+    }
+
+
+    @Override
+    public QuestState getState(Client client) {
+        int questState = client.getVarbitValue(QuestVarbits.QUEST_RECIPE_FOR_DISASTER.getId());
+        if (questState < 4) {
+            return QuestState.NOT_STARTED;
+        }
+
+        return getQuest().getState(client);
+    }
+
+    @Override
+    public boolean isCompleted() {
+        return (client.getVarbitValue(QuestVarbits.QUEST_RECIPE_FOR_DISASTER.getId()) < 4 || super.isCompleted());
+    }
 }

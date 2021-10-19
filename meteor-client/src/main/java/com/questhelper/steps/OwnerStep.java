@@ -26,7 +26,6 @@ package com.questhelper.steps;
 
 import java.util.Collection;
 
-public interface OwnerStep
-{
-	Collection<QuestStep> getSteps();
+public interface OwnerStep {
+    Collection<QuestStep> getSteps();
 }

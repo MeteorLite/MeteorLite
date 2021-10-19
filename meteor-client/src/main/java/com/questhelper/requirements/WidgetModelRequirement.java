@@ -26,72 +26,59 @@
  */
 package com.questhelper.requirements;
 
-import com.questhelper.requirements.SimpleRequirement;
 import lombok.Getter;
 import lombok.Setter;
 import net.runelite.api.Client;
 import net.runelite.api.widgets.Widget;
 
-public class WidgetModelRequirement extends SimpleRequirement
-{
-	@Setter
-	@Getter
-	protected boolean hasPassed;
-	protected boolean onlyNeedToPassOnce;
+public class WidgetModelRequirement extends SimpleRequirement {
+    @Getter
+    private final int groupId;
+    private final int childId;
+    private final int id;
+    @Setter
+    @Getter
+    protected boolean hasPassed;
+    protected boolean onlyNeedToPassOnce;
+    private int childChildId = -1;
 
-	@Getter
-	private final int groupId;
+    public WidgetModelRequirement(int groupId, int childId, int childChildId, int id) {
+        this.groupId = groupId;
+        this.childId = childId;
+        this.childChildId = childChildId;
+        this.id = id;
+    }
 
-	private final int childId;
-	private final int id;
-	private int childChildId = -1;
+    public WidgetModelRequirement(int groupId, int childId, int id) {
+        this.groupId = groupId;
+        this.childId = childId;
+        this.id = id;
+    }
 
-	public WidgetModelRequirement(int groupId, int childId, int childChildId, int id)
-	{
-		this.groupId = groupId;
-		this.childId = childId;
-		this.childChildId = childChildId;
-		this.id = id;
-	}
+    @Override
+    public boolean check(Client client) {
+        if (onlyNeedToPassOnce && hasPassed) {
+            return true;
+        }
+        return checkWidget(client);
+    }
 
-	public WidgetModelRequirement(int groupId, int childId, int id)
-	{
-		this.groupId = groupId;
-		this.childId = childId;
-		this.id = id;
-	}
+    public boolean checkWidget(Client client) {
+        Widget widget = client.getWidget(groupId, childId);
+        if (widget == null) {
+            return false;
+        }
+        if (childChildId != -1) {
+            widget = widget.getChild(childChildId);
+        }
+        if (widget != null) {
+            return widget.getModelId() == id;
+        }
+        return false;
+    }
 
-	@Override
-	public boolean check(Client client)
-	{
-		if (onlyNeedToPassOnce && hasPassed)
-		{
-			return true;
-		}
-		return checkWidget(client);
-	}
-
-	public boolean checkWidget(Client client)
-	{
-		Widget widget = client.getWidget(groupId, childId);
-		if (widget == null)
-		{
-			return false;
-		}
-		if (childChildId != -1)
-		{
-			widget = widget.getChild(childChildId);
-		}
-		if (widget != null)
-		{
-			return widget.getModelId() == id;
-		}
-		return false;
-	}
-
-	public void checkWidgetText(Client client)
-	{
-		hasPassed = hasPassed || checkWidget(client);
-	}
+    public void checkWidgetText(Client client) {
+        hasPassed = hasPassed || checkWidget(client);
+    }
 }
 

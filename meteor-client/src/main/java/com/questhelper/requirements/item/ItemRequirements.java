@@ -29,144 +29,124 @@ package com.questhelper.requirements.item;
 import com.questhelper.QuestHelperConfig;
 import com.questhelper.questhelpers.QuestUtil;
 import com.questhelper.requirements.util.LogicType;
-import java.awt.Color;
+import lombok.Getter;
+import net.runelite.api.Client;
+import net.runelite.api.Item;
+
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.function.Predicate;
-import lombok.Getter;
-import lombok.Setter;
-import net.runelite.api.Client;
-import net.runelite.api.Item;
 
-public class ItemRequirements extends ItemRequirement
-{
-	@Getter
-	ArrayList<ItemRequirement> itemRequirements = new ArrayList<>();
+public class ItemRequirements extends ItemRequirement {
+    @Getter
+    ArrayList<ItemRequirement> itemRequirements = new ArrayList<>();
 
-	@Getter
-	LogicType logicType;
+    @Getter
+    LogicType logicType;
 
-	public ItemRequirements(ItemRequirement... requirements)
-	{
-		this("", requirements);
-	}
+    public ItemRequirements(ItemRequirement... requirements) {
+        this("", requirements);
+    }
 
-	public ItemRequirements(String name, ItemRequirement... itemRequirements)
-	{
-		super(name, itemRequirements[0].getId(), -1);
-		this.itemRequirements.addAll(Arrays.asList(itemRequirements));
-		this.logicType = LogicType.AND;
-	}
+    public ItemRequirements(String name, ItemRequirement... itemRequirements) {
+        super(name, itemRequirements[0].getId(), -1);
+        this.itemRequirements.addAll(Arrays.asList(itemRequirements));
+        this.logicType = LogicType.AND;
+    }
 
-	public ItemRequirements(LogicType logicType, String name, ItemRequirement... itemRequirements)
-	{
-		super(name, itemRequirements[0].getId(), -1);
-		this.itemRequirements.addAll(Arrays.asList(itemRequirements));
-		this.logicType = logicType;
-	}
+    public ItemRequirements(LogicType logicType, String name, ItemRequirement... itemRequirements) {
+        super(name, itemRequirements[0].getId(), -1);
+        this.itemRequirements.addAll(Arrays.asList(itemRequirements));
+        this.logicType = logicType;
+    }
 
-	public ItemRequirements(LogicType logicType, String name, List<ItemRequirement> itemRequirements)
-	{
-		super(name, itemRequirements.get(0).getId(), -1);
-		this.itemRequirements.addAll(itemRequirements);
-		this.logicType = logicType;
-	}
+    public ItemRequirements(LogicType logicType, String name, List<ItemRequirement> itemRequirements) {
+        super(name, itemRequirements.get(0).getId(), -1);
+        this.itemRequirements.addAll(itemRequirements);
+        this.logicType = logicType;
+    }
 
-	public ItemRequirements(LogicType logicType, ItemRequirement... requirements)
-	{
-		this(logicType, "", requirements);
-	}
+    public ItemRequirements(LogicType logicType, ItemRequirement... requirements) {
+        this(logicType, "", requirements);
+    }
 
-	@Override
-	public boolean isActualItem()
-	{
-		return LogicType.OR.test(getItemRequirements().stream(), item -> !item.getAllIds().contains(-1) && item.getQuantity() >= 0);
-	}
+    @Override
+    public boolean isActualItem() {
+        return LogicType.OR.test(getItemRequirements().stream(), item -> !item.getAllIds().contains(-1) && item.getQuantity() >= 0);
+    }
 
-	@Override
-	public boolean check(Client client)
-	{
-		return check(client, false);
-	}
+    @Override
+    public boolean check(Client client) {
+        return check(client, false);
+    }
 
-	@Override
-	public boolean check(Client client, boolean checkConsideringSlotRestrictions)
-	{
-		Predicate<ItemRequirement> predicate = r -> r.check(client, checkConsideringSlotRestrictions);
-		int successes = (int) itemRequirements.stream().filter(predicate).count();
-		return logicType.compare(successes, itemRequirements.size());
-	}
+    @Override
+    public boolean check(Client client, boolean checkConsideringSlotRestrictions) {
+        Predicate<ItemRequirement> predicate = r -> r.check(client, checkConsideringSlotRestrictions);
+        int successes = (int) itemRequirements.stream().filter(predicate).count();
+        return logicType.compare(successes, itemRequirements.size());
+    }
 
-	@Override
-	public boolean check(Client client, boolean checkConsideringSlotRestrictions, List<Item> items)
-	{
-		Predicate<ItemRequirement> predicate = r -> r.check(client, checkConsideringSlotRestrictions, items);
-		int successes = (int) itemRequirements.stream().filter(predicate).count();
-		return logicType.compare(successes, itemRequirements.size());
-	}
+    @Override
+    public boolean check(Client client, boolean checkConsideringSlotRestrictions, List<Item> items) {
+        Predicate<ItemRequirement> predicate = r -> r.check(client, checkConsideringSlotRestrictions, items);
+        int successes = (int) itemRequirements.stream().filter(predicate).count();
+        return logicType.compare(successes, itemRequirements.size());
+    }
 
-	@Override
-	public Color getColor(Client client, QuestHelperConfig config)
-	{
-		return this.check(client, true) ? config.passColour() : config.failColour();
-	}
+    @Override
+    public Color getColor(Client client, QuestHelperConfig config) {
+        return this.check(client, true) ? config.passColour() : config.failColour();
+    }
 
-	@Override
-	public Color getColorConsideringBank(Client client, boolean checkConsideringSlotRestrictions,
-										 List<Item> bankItems, QuestHelperConfig config)
-	{
-		Color color = config.failColour();
-		if (!this.isActualItem())
-		{
-			color = Color.GRAY;
-		}
-		else if (this.check(client, checkConsideringSlotRestrictions))
-		{
-			color = config.passColour();
-		}
+    @Override
+    public Color getColorConsideringBank(Client client, boolean checkConsideringSlotRestrictions,
+                                         List<Item> bankItems, QuestHelperConfig config) {
+        Color color = config.failColour();
+        if (!this.isActualItem()) {
+            color = Color.GRAY;
+        } else if (this.check(client, checkConsideringSlotRestrictions)) {
+            color = config.passColour();
+        }
 
-		if (color == config.failColour() && bankItems != null)
-		{
-			if (check(client, false, bankItems))
-			{
-				color = Color.WHITE;
-			}
-		}
+        if (color == config.failColour() && bankItems != null) {
+            if (check(client, false, bankItems)) {
+                color = Color.WHITE;
+            }
+        }
 
-		return color;
-	}
+        return color;
+    }
 
-	@Override
-	public ItemRequirement copy()
-	{
-		ItemRequirements newItem = new ItemRequirements(getLogicType(), getName(), getItemRequirements());
-		newItem.addAlternates(alternateItems);
-		newItem.setDisplayItemId(getDisplayItemId());
-		newItem.setExclusiveToOneItemType(exclusiveToOneItemType);
-		newItem.setHighlightInInventory(highlightInInventory);
-		newItem.setDisplayMatchedItemName(isDisplayMatchedItemName());
-		newItem.setConditionToHide(getConditionToHide());
-		newItem.setQuestBank(getQuestBank());
-		newItem.setTooltip(getTooltip());
-		newItem.logicType = logicType;
+    @Override
+    public ItemRequirement copy() {
+        ItemRequirements newItem = new ItemRequirements(getLogicType(), getName(), getItemRequirements());
+        newItem.addAlternates(alternateItems);
+        newItem.setDisplayItemId(getDisplayItemId());
+        newItem.setExclusiveToOneItemType(exclusiveToOneItemType);
+        newItem.setHighlightInInventory(highlightInInventory);
+        newItem.setDisplayMatchedItemName(isDisplayMatchedItemName());
+        newItem.setConditionToHide(getConditionToHide());
+        newItem.setQuestBank(getQuestBank());
+        newItem.setTooltip(getTooltip());
+        newItem.logicType = logicType;
 
-		return newItem;
-	}
+        return newItem;
+    }
 
-	@Override
-	public List<Integer> getAllIds()
-	{
-		return itemRequirements.stream()
-			.map(ItemRequirement::getAllIds)
-			.flatMap(Collection::stream)
-			.collect(QuestUtil.collectToArrayList());
-	}
+    @Override
+    public List<Integer> getAllIds() {
+        return itemRequirements.stream()
+                .map(ItemRequirement::getAllIds)
+                .flatMap(Collection::stream)
+                .collect(QuestUtil.collectToArrayList());
+    }
 
-	@Override
-	public boolean checkBank(Client client)
-	{
-		return logicType.test(getItemRequirements().stream(), item -> item.checkBank(client) || item.check(client, false));
-	}
+    @Override
+    public boolean checkBank(Client client) {
+        return logicType.test(getItemRequirements().stream(), item -> item.checkBank(client) || item.check(client, false));
+    }
 }

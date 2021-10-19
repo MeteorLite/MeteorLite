@@ -24,16 +24,14 @@
  */
 package com.questhelper.banktab;
 
-public class BankText
-{
-	String text;
-	int x;
-	int y;
+public class BankText {
+    String text;
+    int x;
+    int y;
 
-	public BankText(String text, int x, int y)
-	{
-		this.text = text;
-		this.x = x;
-		this.y = y;
-	}
+    public BankText(String text, int x, int y) {
+        this.text = text;
+        this.x = x;
+        this.y = y;
+    }
 }

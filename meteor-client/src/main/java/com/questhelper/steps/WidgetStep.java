@@ -24,71 +24,61 @@
  */
 package com.questhelper.steps;
 
-import java.awt.Color;
-import java.awt.Graphics2D;
+import com.questhelper.QuestHelperPlugin;
+import com.questhelper.questhelpers.QuestHelper;
+import lombok.Setter;
+import net.runelite.api.widgets.Widget;
+import net.runelite.api.widgets.WidgetItem;
+
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import lombok.Setter;
-import net.runelite.api.widgets.Widget;
-import com.questhelper.QuestHelperPlugin;
-import com.questhelper.questhelpers.QuestHelper;
-import net.runelite.api.widgets.WidgetItem;
 
-public class WidgetStep extends DetailedQuestStep
-{
-	@Setter
-	protected List<WidgetDetails> widgetDetails = new ArrayList<>();
+public class WidgetStep extends DetailedQuestStep {
+    @Setter
+    protected List<WidgetDetails> widgetDetails = new ArrayList<>();
 
-	public WidgetStep(QuestHelper questHelper, String text, int groupID, int childID)
-	{
-		super(questHelper, text);
-		widgetDetails.add(new WidgetDetails(groupID, childID, -1));
-	}
+    public WidgetStep(QuestHelper questHelper, String text, int groupID, int childID) {
+        super(questHelper, text);
+        widgetDetails.add(new WidgetDetails(groupID, childID, -1));
+    }
 
-	public WidgetStep(QuestHelper questHelper, String text, WidgetDetails... widgetDetails)
-	{
-		super(questHelper, text);
-		this.widgetDetails.addAll(Arrays.asList(widgetDetails));
-	}
+    public WidgetStep(QuestHelper questHelper, String text, WidgetDetails... widgetDetails) {
+        super(questHelper, text);
+        this.widgetDetails.addAll(Arrays.asList(widgetDetails));
+    }
 
-	@Override
-	public void makeWidgetOverlayHint(Graphics2D graphics, QuestHelperPlugin plugin)
-	{
-		super.makeWidgetOverlayHint(graphics, plugin);
-		for (WidgetDetails widgetDetail : widgetDetails)
-		{
-			Widget widget = client.getWidget(widgetDetail.groupID, widgetDetail.childID);
-			if (widget == null || widget.isHidden())
-			{
-				continue;
-			}
+    @Override
+    public void makeWidgetOverlayHint(Graphics2D graphics, QuestHelperPlugin plugin) {
+        super.makeWidgetOverlayHint(graphics, plugin);
+        for (WidgetDetails widgetDetail : widgetDetails) {
+            Widget widget = client.getWidget(widgetDetail.groupID, widgetDetail.childID);
+            if (widget == null || widget.isHidden()) {
+                continue;
+            }
 
-			if (widgetDetail.childChildID != -1)
-			{
-				Widget tmpWidget = widget.getChild(widgetDetail.childChildID);
-				if (tmpWidget != null)
-				{
-					widget = tmpWidget;
-				}
-				else
-				{
-					WidgetItem widgetItem = widget.getWidgetItem(widgetDetail.childChildID);
-					graphics.setColor(new Color(questHelper.getConfig().targetOverlayColor().getRed(),
-						questHelper.getConfig().targetOverlayColor().getGreen(),
-						questHelper.getConfig().targetOverlayColor().getBlue(), 65));
-					graphics.fill(widgetItem.getCanvasBounds());
-					graphics.setColor(questHelper.getConfig().targetOverlayColor());
-					graphics.draw(widgetItem.getCanvasBounds());
-					continue;
-				}
-			}
-			graphics.setColor(new Color(questHelper.getConfig().targetOverlayColor().getRed(),
-				questHelper.getConfig().targetOverlayColor().getGreen(),
-				questHelper.getConfig().targetOverlayColor().getBlue(), 65));
-			graphics.fill(widget.getBounds());
-			graphics.setColor(questHelper.getConfig().targetOverlayColor());
-			graphics.draw(widget.getBounds());
-		}
-	}
+            if (widgetDetail.childChildID != -1) {
+                Widget tmpWidget = widget.getChild(widgetDetail.childChildID);
+                if (tmpWidget != null) {
+                    widget = tmpWidget;
+                } else {
+                    WidgetItem widgetItem = widget.getWidgetItem(widgetDetail.childChildID);
+                    graphics.setColor(new Color(questHelper.getConfig().targetOverlayColor().getRed(),
+                            questHelper.getConfig().targetOverlayColor().getGreen(),
+                            questHelper.getConfig().targetOverlayColor().getBlue(), 65));
+                    graphics.fill(widgetItem.getCanvasBounds());
+                    graphics.setColor(questHelper.getConfig().targetOverlayColor());
+                    graphics.draw(widgetItem.getCanvasBounds());
+                    continue;
+                }
+            }
+            graphics.setColor(new Color(questHelper.getConfig().targetOverlayColor().getRed(),
+                    questHelper.getConfig().targetOverlayColor().getGreen(),
+                    questHelper.getConfig().targetOverlayColor().getBlue(), 65));
+            graphics.fill(widget.getBounds());
+            graphics.setColor(questHelper.getConfig().targetOverlayColor());
+            graphics.draw(widget.getBounds());
+        }
+    }
 }

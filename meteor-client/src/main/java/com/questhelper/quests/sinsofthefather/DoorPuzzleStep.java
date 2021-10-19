@@ -28,412 +28,336 @@ import com.questhelper.QuestHelperPlugin;
 import com.questhelper.questhelpers.BasicQuestHelper;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.steps.DetailedQuestStep;
+import meteor.eventbus.Subscribe;
+import meteor.ui.overlay.components.LineComponent;
+import meteor.ui.overlay.components.PanelComponent;
 import net.runelite.api.Client;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.widgets.Widget;
-import meteor.eventbus.Subscribe;
-
-import meteor.ui.overlay.components.LineComponent;
-import meteor.ui.overlay.components.PanelComponent;
 
 import javax.inject.Inject;
 import java.awt.*;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.Queue;
 
-public class DoorPuzzleStep extends DetailedQuestStep
-{
-	@Inject
-	Client client;
+public class DoorPuzzleStep extends DetailedQuestStep {
+    private final int UNKNOWN_VALUE = 0;
+    private final int EMPTY = 1;
+    private final int FILLED = 2;
+    private final int SIZE = 5;
+    @Inject
+    Client client;
+    private PuzzleLine[] result = null;
 
-	private final int UNKNOWN_VALUE = 0;
-	private final int EMPTY = 1;
-	private final int FILLED = 2;
+    private boolean solving = false;
 
-	private final int SIZE = 5;
+    public DoorPuzzleStep(BasicQuestHelper questHelper) {
+        super(questHelper, "Solve the puzzle by marking the highlighted squares.");
+    }
 
-	private PuzzleLine[] result = null;
+    private PuzzleLine[] solve() {
+        int[] rowSums = new int[SIZE];
+        int[] colSums = new int[SIZE];
+        try {
+            for (int i = 0; i < SIZE; i++) {
+                colSums[i] = Integer.parseInt(client.getWidget(665, 19 + i).getText());
+                rowSums[i] = Integer.parseInt(client.getWidget(665, 26 + i).getText());
+            }
+        } catch (NumberFormatException nfe) {
+            System.out.println("NumberFormatException: " + nfe.getMessage());
+        }
 
-	private boolean solving = false;
+        PuzzleState solved = newSolveState(rowSums, colSums);
+        return solveGrid(solved);
+    }
 
-	static class PuzzleLine
-	{
-		public int[] cells;
+    private PuzzleLine[] solveGrid(PuzzleState puzzleState) {
+        int iterations = 0;
+        Queue<PuzzleState> puzzleStates = new LinkedList<>();
+        puzzleStates.add(puzzleState);
+        int MAX_ITERATIONS = 20;
+        while (iterations < MAX_ITERATIONS) {
+            PuzzleState solution = checkSolutionOverlaps(puzzleStates.remove());
+            if (solution == null && puzzleStates.isEmpty()) {
+                return null;
+            } else if (solution != null && solution.numberOfGray == 0) { // If solved
+                return solution.grid;
+            }
+            /* If unable to find answer, assume a square if filled or empty and then try solving again */
+            if (solution != null) {
+                puzzleStates.add(setFirstUnknownTo(solution, FILLED));
+                puzzleStates.add(setFirstUnknownTo(solution, EMPTY));
+            }
+            iterations++;
+        }
+        return null;
+    }
 
-		PuzzleLine(int... cells)
-		{
-			this.cells = cells;
-		}
+    private PuzzleState setFirstUnknownTo(PuzzleState puzzleState, int state) {
+        int x = -1, y = -1;
 
-		PuzzleLine(int size)
-		{
-			this.cells = new int[size];
-		}
-	}
+        PuzzleState newPuzzleState = cloneState(puzzleState);
 
-	static class PuzzleState
-	{
-		PuzzleLine[][] rowSolutions;
-		PuzzleLine[][] columnSolutions;
-		PuzzleLine[] grid;
-		int numberOfGray;
+        boolean found = false;
+        for (int r = 0; r < SIZE; r++) {
+            for (int c = 0; c < SIZE; c++) {
+                if (!found) {
+                    if (newPuzzleState.grid[r].cells[c] == UNKNOWN_VALUE) {
+                        x = r;
+                        y = c;
+                        found = true;
+                    }
+                }
+            }
+        }
 
-		PuzzleState(PuzzleLine[][] row, PuzzleLine[][] column, PuzzleLine[] grid, int numberOfGray)
-		{
-			this.rowSolutions = row;
-			this.columnSolutions = column;
-			this.grid = grid;
-			this.numberOfGray = numberOfGray;
-		}
-	}
+        newPuzzleState.grid[x].cells[y] = state;
+        newPuzzleState.numberOfGray--;
+        newPuzzleState.rowSolutions[x] = removeIncorrectSolutions(newPuzzleState.rowSolutions[x], y, state);
+        newPuzzleState.rowSolutions[y] = removeIncorrectSolutions(newPuzzleState.rowSolutions[y], x, state);
+        return newPuzzleState;
+    }
 
-	public DoorPuzzleStep(BasicQuestHelper questHelper)
-	{
-		super(questHelper, "Solve the puzzle by marking the highlighted squares.");
-	}
+    private PuzzleLine[] cloneGrid(PuzzleLine[] oldPuzzle) {
+        PuzzleLine[] newGrid = generateNewGrid();
+        for (int i = 0; i < SIZE; i++) {
+            for (int j = 0; j < SIZE; j++) {
+                newGrid[i].cells[j] = oldPuzzle[i].cells[j];
+            }
+        }
+        return newGrid;
+    }
 
-	private PuzzleLine[] solve()
-	{
-		int[] rowSums = new int[SIZE];
-		int[] colSums = new int[SIZE];
-		try
-		{
-			for (int i = 0; i < SIZE; i++)
-			{
-				colSums[i] = Integer.parseInt(client.getWidget(665, 19 + i).getText());
-				rowSums[i] = Integer.parseInt(client.getWidget(665, 26 + i).getText());
-			}
-		}
-		catch (NumberFormatException nfe)
-		{
-			System.out.println("NumberFormatException: " + nfe.getMessage());
-		}
+    private PuzzleLine[][] cloneSolutions(PuzzleLine[][] oldSolution) {
+        PuzzleLine[][] newSolution = new PuzzleLine[SIZE][];
+        for (int i = 0; i < SIZE; i++) {
+            newSolution[i] = new PuzzleLine[oldSolution[i].length];
+            for (int j = 0; j < oldSolution[i].length; j++) {
+                PuzzleLine newLine = new PuzzleLine(SIZE);
+                for (int k = 0; k < SIZE; k++) {
+                    newLine.cells[k] = oldSolution[i][j].cells[k];
+                }
+                newSolution[i][j] = newLine;
+            }
+        }
+        return newSolution;
+    }
 
-		PuzzleState solved = newSolveState(rowSums, colSums);
-		return solveGrid(solved);
-	}
+    private PuzzleState cloneState(PuzzleState oldState) {
+        return new PuzzleState(
+                cloneSolutions(oldState.rowSolutions),
+                cloneSolutions(oldState.columnSolutions),
+                cloneGrid(oldState.grid),
+                oldState.numberOfGray);
+    }
 
-	private PuzzleLine[] solveGrid(PuzzleState puzzleState)
-	{
-		int iterations = 0;
-		Queue<PuzzleState> puzzleStates = new LinkedList<>();
-		puzzleStates.add(puzzleState);
-		int MAX_ITERATIONS = 20;
-		while (iterations < MAX_ITERATIONS)
-		{
-			PuzzleState solution = checkSolutionOverlaps(puzzleStates.remove());
-			if (solution == null && puzzleStates.isEmpty())
-			{
-				return null;
-			}
-			else if (solution != null && solution.numberOfGray == 0)
-			{ // If solved
-				return solution.grid;
-			}
-			/* If unable to find answer, assume a square if filled or empty and then try solving again */
-			if (solution != null)
-			{
-				puzzleStates.add(setFirstUnknownTo(solution, FILLED));
-				puzzleStates.add(setFirstUnknownTo(solution, EMPTY));
-			}
-			iterations++;
-		}
-		return null;
-	}
+    private PuzzleLine deduceColorsFromSols(PuzzleLine[] sols) {
+        int numSolutions = sols.length;
 
-	private PuzzleState setFirstUnknownTo(PuzzleState puzzleState, int state)
-	{
-		int x = -1, y = -1;
+        if (numSolutions == 0) {
+            return null;
+        }
+        if (numSolutions == 1) {
+            return sols[0];
+        }
+        PuzzleLine c = new PuzzleLine(SIZE);
+        for (int i = 0; i < SIZE; i++) {
+            int acc = 0;
+            for (PuzzleLine sol : sols) {
+                if (sol.cells[i] == FILLED) {
+                    acc++;
+                }
+            }
 
-		PuzzleState newPuzzleState = cloneState(puzzleState);
+            if (acc == 0) { /* If no solutions contain this cell */
+                c.cells[i] = EMPTY;
+            } else if (acc == numSolutions) { /* If all solutions contain this cell */
+                c.cells[i] = FILLED;
+            } else {
+                c.cells[i] = UNKNOWN_VALUE;
+            }
+        }
+        return c;
+    }
 
-		boolean found = false;
-		for (int r = 0; r < SIZE; r++)
-		{
-			for (int c = 0; c < SIZE; c++)
-			{
-				if (!found)
-				{
-					if (newPuzzleState.grid[r].cells[c] == UNKNOWN_VALUE)
-					{
-						x = r;
-						y = c;
-						found = true;
-					}
-				}
-			}
-		}
+    private PuzzleState checkSolutionOverlaps(PuzzleState oldPuzzleState) {
+        boolean hasFoundASolution = true;
 
-		newPuzzleState.grid[x].cells[y] = state;
-		newPuzzleState.numberOfGray--;
-		newPuzzleState.rowSolutions[x] = removeIncorrectSolutions(newPuzzleState.rowSolutions[x], y, state);
-		newPuzzleState.rowSolutions[y] = removeIncorrectSolutions(newPuzzleState.rowSolutions[y], x, state);
-		return newPuzzleState;
-	}
+        /* Loop until either we're finished, or are unable to find another change */
+        while (hasFoundASolution && oldPuzzleState.numberOfGray > 0) {
+            hasFoundASolution = false;
+            for (int r = 0; r < SIZE; r++) {
+                PuzzleLine sol = deduceColorsFromSols(oldPuzzleState.rowSolutions[r]);
+                if (sol == null) {
+                    return null;
+                }
 
-	private PuzzleLine[] cloneGrid(PuzzleLine[] oldPuzzle)
-	{
-		PuzzleLine[] newGrid = generateNewGrid();
-		for (int i = 0; i < SIZE; i++)
-		{
-			for (int j = 0; j < SIZE; j++)
-			{
-				newGrid[i].cells[j] = oldPuzzle[i].cells[j];
-			}
-		}
-		return newGrid;
-	}
+                for (int c = 0; c < SIZE; c++) {
+                    if (sol.cells[c] != UNKNOWN_VALUE && oldPuzzleState.grid[r].cells[c] == UNKNOWN_VALUE) {
+                        hasFoundASolution = true;
+                        oldPuzzleState.numberOfGray--;
+                        oldPuzzleState.grid[r].cells[c] = sol.cells[c];
+                        oldPuzzleState.columnSolutions[c] = removeIncorrectSolutions(oldPuzzleState.columnSolutions[c], r, sol.cells[c]);
+                    }
+                }
+            }
+            for (int c = 0; c < SIZE; c++) {
+                PuzzleLine sol = deduceColorsFromSols(oldPuzzleState.columnSolutions[c]);
+                if (sol == null) {
+                    return null;
+                }
 
-	private PuzzleLine[][] cloneSolutions(PuzzleLine[][] oldSolution)
-	{
-		PuzzleLine[][] newSolution = new PuzzleLine[SIZE][];
-		for (int i = 0; i < SIZE; i++)
-		{
-			newSolution[i] = new PuzzleLine[oldSolution[i].length];
-			for (int j = 0; j < oldSolution[i].length; j++)
-			{
-				PuzzleLine newLine = new PuzzleLine(SIZE);
-				for (int k = 0; k < SIZE; k++)
-				{
-					newLine.cells[k] = oldSolution[i][j].cells[k];
-				}
-				newSolution[i][j] = newLine;
-			}
-		}
-		return newSolution;
-	}
+                for (int r = 0; r < SIZE; r++) {
+                    if (sol.cells[r] != UNKNOWN_VALUE && oldPuzzleState.grid[r].cells[c] == UNKNOWN_VALUE) {
+                        hasFoundASolution = true;
+                        oldPuzzleState.numberOfGray--;
+                        oldPuzzleState.grid[r].cells[c] = sol.cells[r];
+                        oldPuzzleState.rowSolutions[r] = removeIncorrectSolutions(oldPuzzleState.rowSolutions[r], c, sol.cells[r]);
+                    }
+                }
+            }
+        }
+        return oldPuzzleState;
+    }
 
-	private PuzzleState cloneState(PuzzleState oldState)
-	{
-		return new PuzzleState(
-			cloneSolutions(oldState.rowSolutions),
-			cloneSolutions(oldState.columnSolutions),
-			cloneGrid(oldState.grid),
-			oldState.numberOfGray);
-	}
+    private PuzzleLine[] removeIncorrectSolutions(PuzzleLine[] oldSolutions, int k, int c) {
+        ArrayList<PuzzleLine> newSolutions = new ArrayList<>();
 
-	private PuzzleLine deduceColorsFromSols(PuzzleLine[] sols)
-	{
-		int numSolutions = sols.length;
+        for (PuzzleLine solution : oldSolutions) {
+            if (solution.cells[k] == c) {
+                newSolutions.add(solution);
+            }
+        }
 
-		if (numSolutions == 0)
-		{
-			return null;
-		}
-		if (numSolutions == 1)
-		{
-			return sols[0];
-		}
-		PuzzleLine c = new PuzzleLine(SIZE);
-		for (int i = 0; i < SIZE; i++)
-		{
-			int acc = 0;
-			for (PuzzleLine sol : sols)
-			{
-				if (sol.cells[i] == FILLED)
-				{
-					acc++;
-				}
-			}
+        return newSolutions.toArray(new PuzzleLine[0]);
+    }
 
-			if (acc == 0)
-			{ /* If no solutions contain this cell */
-				c.cells[i] = EMPTY;
-			}
-			else if (acc == numSolutions)
-			{ /* If all solutions contain this cell */
-				c.cells[i] = FILLED;
-			}
-			else
-			{
-				c.cells[i] = UNKNOWN_VALUE;
-			}
-		}
-		return c;
-	}
+    private PuzzleState newSolveState(int[] rowSums, int[] columnSums) {
+        return new PuzzleState(createAllSolutions(rowSums), createAllSolutions(columnSums), generateNewGrid(), SIZE * SIZE);
+    }
 
+    @Subscribe
+    public void onGameTick(GameTick event) {
+        Widget xAxis = client.getWidget(665, 25);
+        Widget yAxis = client.getWidget(665, 18);
+        if (xAxis != null && yAxis != null && !solving) {
+            solving = true;
 
-	private PuzzleState checkSolutionOverlaps(PuzzleState oldPuzzleState)
-	{
-		boolean hasFoundASolution = true;
+            result = solve();
+        }
+    }
 
-		/* Loop until either we're finished, or are unable to find another change */
-		while (hasFoundASolution && oldPuzzleState.numberOfGray > 0)
-		{
-			hasFoundASolution = false;
-			for (int r = 0; r < SIZE; r++)
-			{
-				PuzzleLine sol = deduceColorsFromSols(oldPuzzleState.rowSolutions[r]);
-				if (sol == null)
-				{
-					return null;
-				}
+    @Override
+    public void makeWidgetOverlayHint(Graphics2D graphics, QuestHelperPlugin plugin) {
+        Widget panels = client.getWidget(665, 32);
+        if (result != null && panels != null) {
+            for (int i = 0; i < result.length; i++) {
+                for (int j = 0; j < result[i].cells.length; j++) {
+                    if (result[i].cells[j] == 2) {
+                        Widget panel = panels.getChild(i * 5 + j);
+                        graphics.setColor(new Color(questHelper.getConfig().targetOverlayColor().getRed(),
+                                questHelper.getConfig().targetOverlayColor().getGreen(),
+                                questHelper.getConfig().targetOverlayColor().getBlue(), 65));
+                        graphics.fill(panel.getBounds());
+                        graphics.setColor(questHelper.getConfig().targetOverlayColor());
+                        graphics.draw(panel.getBounds());
+                    }
+                }
+            }
+        }
+    }
 
-				for (int c = 0; c < SIZE; c++)
-				{
-					if (sol.cells[c] != UNKNOWN_VALUE && oldPuzzleState.grid[r].cells[c] == UNKNOWN_VALUE)
-					{
-						hasFoundASolution = true;
-						oldPuzzleState.numberOfGray--;
-						oldPuzzleState.grid[r].cells[c] = sol.cells[c];
-						oldPuzzleState.columnSolutions[c] = removeIncorrectSolutions(oldPuzzleState.columnSolutions[c], r, sol.cells[c]);
-					}
-				}
-			}
-			for (int c = 0; c < SIZE; c++)
-			{
-				PuzzleLine sol = deduceColorsFromSols(oldPuzzleState.columnSolutions[c]);
-				if (sol == null)
-				{
-					return null;
-				}
+    @Override
+    public void makeWorldOverlayHint(Graphics2D graphics, QuestHelperPlugin plugin) {
+    }
 
-				for (int r = 0; r < SIZE; r++)
-				{
-					if (sol.cells[r] != UNKNOWN_VALUE && oldPuzzleState.grid[r].cells[c] == UNKNOWN_VALUE)
-					{
-						hasFoundASolution = true;
-						oldPuzzleState.numberOfGray--;
-						oldPuzzleState.grid[r].cells[c] = sol.cells[r];
-						oldPuzzleState.rowSolutions[r] = removeIncorrectSolutions(oldPuzzleState.rowSolutions[r], c, sol.cells[r]);
-					}
-				}
-			}
-		}
-		return oldPuzzleState;
-	}
+    @Override
+    public void makeWorldArrowOverlayHint(Graphics2D graphics, QuestHelperPlugin plugin) {
+    }
 
-	private PuzzleLine[] removeIncorrectSolutions(PuzzleLine[] oldSolutions, int k, int c)
-	{
-		ArrayList<PuzzleLine> newSolutions = new ArrayList<>();
+    @Override
+    public void makeOverlayHint(PanelComponent panelComponent, QuestHelperPlugin plugin, Requirement... requirement) {
+        super.makeOverlayHint(panelComponent, plugin, requirement);
+        Widget panels = client.getWidget(665, 32);
+        if (result == null && panels != null) {
+            String text = "Unable to calculate an answer for this puzzle. Good luck!";
+            Color color = Color.RED;
+            panelComponent.getChildren().add(LineComponent.builder()
+                    .left(text)
+                    .leftColor(color)
+                    .build());
+        }
+    }
 
-		for (PuzzleLine solution : oldSolutions)
-		{
-			if (solution.cells[k] == c)
-			{
-				newSolutions.add(solution);
-			}
-		}
+    private PuzzleLine[][] createAllSolutions(int[] goalValues) {
+        HashMap<Integer, PuzzleLine[]> allSolutions = constructSolutions();
+        PuzzleLine[][] solutionsForGoals = new PuzzleLine[SIZE][SIZE];
+        for (int i = 0; i < SIZE; i++) {
+            solutionsForGoals[i] = allSolutions.get(goalValues[i]);
+        }
+        return solutionsForGoals;
+    }
 
-		return newSolutions.toArray(new PuzzleLine[0]);
-	}
+    private PuzzleLine[] generateNewGrid() {
+        PuzzleLine[] g = new PuzzleLine[SIZE];
+        for (int i = 0; i < SIZE; i++) {
+            g[i] = new PuzzleLine(5);
+        }
+        return g;
+    }
 
-	private PuzzleState newSolveState(int[] rowSums, int[] columnSums)
-	{
-		return new PuzzleState(createAllSolutions(rowSums), createAllSolutions(columnSums), generateNewGrid(), SIZE * SIZE);
-	}
+    private HashMap<Integer, PuzzleLine[]> constructSolutions() {
+        HashMap<Integer, PuzzleLine[]> allSolutions = new HashMap<>();
+        allSolutions.put(0, getSolutions(new PuzzleLine(EMPTY, EMPTY, EMPTY, EMPTY, EMPTY)));
+        allSolutions.put(1, getSolutions(new PuzzleLine(FILLED, EMPTY, EMPTY, EMPTY, EMPTY)));
+        allSolutions.put(2, getSolutions(new PuzzleLine(EMPTY, FILLED, EMPTY, EMPTY, EMPTY)));
+        allSolutions.put(3, getSolutions(new PuzzleLine(FILLED, FILLED, EMPTY, EMPTY, EMPTY), new PuzzleLine(EMPTY, EMPTY, FILLED, EMPTY, EMPTY)));
+        allSolutions.put(4, getSolutions(new PuzzleLine(FILLED, EMPTY, FILLED, EMPTY, EMPTY), new PuzzleLine(EMPTY, EMPTY, EMPTY, FILLED, EMPTY)));
+        allSolutions.put(5, getSolutions(new PuzzleLine(EMPTY, FILLED, FILLED, EMPTY, EMPTY), new PuzzleLine(FILLED, EMPTY, EMPTY, FILLED, EMPTY), new PuzzleLine(EMPTY, EMPTY, EMPTY, EMPTY, FILLED)));
+        allSolutions.put(6, getSolutions(new PuzzleLine(FILLED, FILLED, FILLED, EMPTY, EMPTY), new PuzzleLine(EMPTY, FILLED, EMPTY, FILLED, EMPTY), new PuzzleLine(FILLED, EMPTY, EMPTY, EMPTY, FILLED)));
+        allSolutions.put(7, getSolutions(new PuzzleLine(FILLED, FILLED, EMPTY, FILLED, EMPTY), new PuzzleLine(EMPTY, EMPTY, FILLED, FILLED, EMPTY), new PuzzleLine(EMPTY, FILLED, EMPTY, EMPTY, FILLED)));
+        allSolutions.put(8, getSolutions(new PuzzleLine(FILLED, EMPTY, FILLED, FILLED, EMPTY), new PuzzleLine(FILLED, FILLED, EMPTY, EMPTY, FILLED), new PuzzleLine(EMPTY, EMPTY, FILLED, EMPTY, FILLED)));
+        allSolutions.put(9, getSolutions(new PuzzleLine(EMPTY, FILLED, FILLED, FILLED, EMPTY), new PuzzleLine(FILLED, EMPTY, FILLED, EMPTY, FILLED), new PuzzleLine(EMPTY, EMPTY, EMPTY, FILLED, FILLED)));
+        allSolutions.put(10, getSolutions(new PuzzleLine(FILLED, FILLED, FILLED, FILLED, EMPTY), new PuzzleLine(EMPTY, FILLED, FILLED, EMPTY, FILLED), new PuzzleLine(FILLED, EMPTY, EMPTY, FILLED, FILLED)));
+        allSolutions.put(11, getSolutions(new PuzzleLine(FILLED, FILLED, FILLED, EMPTY, FILLED), new PuzzleLine(EMPTY, FILLED, EMPTY, FILLED, FILLED)));
+        allSolutions.put(12, getSolutions(new PuzzleLine(FILLED, FILLED, EMPTY, FILLED, FILLED), new PuzzleLine(EMPTY, EMPTY, FILLED, FILLED, FILLED)));
+        allSolutions.put(13, getSolutions(new PuzzleLine(FILLED, EMPTY, FILLED, FILLED, FILLED)));
+        allSolutions.put(14, getSolutions(new PuzzleLine(EMPTY, FILLED, FILLED, FILLED, FILLED)));
+        allSolutions.put(15, getSolutions(new PuzzleLine(FILLED, FILLED, FILLED, FILLED, FILLED)));
 
-	@Subscribe
-	public void onGameTick(GameTick event)
-	{
-		Widget xAxis = client.getWidget(665, 25);
-		Widget yAxis = client.getWidget(665, 18);
-		if (xAxis != null && yAxis != null && !solving)
-		{
-			solving = true;
+        return allSolutions;
+    }
 
-			result = solve();
-		}
-	}
+    private PuzzleLine[] getSolutions(PuzzleLine... solution) {
 
-	@Override
-	public void makeWidgetOverlayHint(Graphics2D graphics, QuestHelperPlugin plugin)
-	{
-		Widget panels = client.getWidget(665, 32);
-		if (result != null && panels != null)
-		{
-			for (int i = 0; i < result.length; i++)
-			{
-				for (int j = 0; j < result[i].cells.length; j++)
-				{
-					if (result[i].cells[j] == 2)
-					{
-						Widget panel = panels.getChild(i * 5 + j);
-						graphics.setColor(new Color(questHelper.getConfig().targetOverlayColor().getRed(),
-							questHelper.getConfig().targetOverlayColor().getGreen(),
-							questHelper.getConfig().targetOverlayColor().getBlue(), 65));
-						graphics.fill(panel.getBounds());
-						graphics.setColor(questHelper.getConfig().targetOverlayColor());
-						graphics.draw(panel.getBounds());
-					}
-				}
-			}
-		}
-	}
+        return solution;
+    }
 
-	@Override
-	public void makeWorldOverlayHint(Graphics2D graphics, QuestHelperPlugin plugin)
-	{
-	}
+    static class PuzzleLine {
+        public int[] cells;
 
-	@Override
-	public void makeWorldArrowOverlayHint(Graphics2D graphics, QuestHelperPlugin plugin)
-	{
-	}
+        PuzzleLine(int... cells) {
+            this.cells = cells;
+        }
 
-	@Override
-	public void makeOverlayHint(PanelComponent panelComponent, QuestHelperPlugin plugin, Requirement... requirement)
-	{
-		super.makeOverlayHint(panelComponent, plugin, requirement);
-		Widget panels = client.getWidget(665, 32);
-		if (result == null && panels != null)
-		{
-			String text = "Unable to calculate an answer for this puzzle. Good luck!";
-			Color color = Color.RED;
-			panelComponent.getChildren().add(LineComponent.builder()
-				.left(text)
-				.leftColor(color)
-				.build());
-		}
-	}
+        PuzzleLine(int size) {
+            this.cells = new int[size];
+        }
+    }
 
-	private PuzzleLine[][] createAllSolutions(int[] goalValues)
-	{
-		HashMap<Integer, PuzzleLine[]> allSolutions = constructSolutions();
-		PuzzleLine[][] solutionsForGoals = new PuzzleLine[SIZE][SIZE];
-		for (int i = 0; i < SIZE; i++)
-		{
-			solutionsForGoals[i] = allSolutions.get(goalValues[i]);
-		}
-		return solutionsForGoals;
-	}
+    static class PuzzleState {
+        PuzzleLine[][] rowSolutions;
+        PuzzleLine[][] columnSolutions;
+        PuzzleLine[] grid;
+        int numberOfGray;
 
-	private PuzzleLine[] generateNewGrid()
-	{
-		PuzzleLine[] g = new PuzzleLine[SIZE];
-		for (int i = 0; i < SIZE; i++)
-		{
-			g[i] = new PuzzleLine(5);
-		}
-		return g;
-	}
-
-	private HashMap<Integer, PuzzleLine[]> constructSolutions()
-	{
-		HashMap<Integer, PuzzleLine[]> allSolutions = new HashMap<>();
-		allSolutions.put(0, getSolutions(new PuzzleLine(EMPTY, EMPTY, EMPTY, EMPTY, EMPTY)));
-		allSolutions.put(1, getSolutions(new PuzzleLine(FILLED, EMPTY, EMPTY, EMPTY, EMPTY)));
-		allSolutions.put(2, getSolutions(new PuzzleLine(EMPTY, FILLED, EMPTY, EMPTY, EMPTY)));
-		allSolutions.put(3, getSolutions(new PuzzleLine(FILLED, FILLED, EMPTY, EMPTY, EMPTY), new PuzzleLine(EMPTY, EMPTY, FILLED, EMPTY, EMPTY)));
-		allSolutions.put(4, getSolutions(new PuzzleLine(FILLED, EMPTY, FILLED, EMPTY, EMPTY), new PuzzleLine(EMPTY, EMPTY, EMPTY, FILLED, EMPTY)));
-		allSolutions.put(5, getSolutions(new PuzzleLine(EMPTY, FILLED, FILLED, EMPTY, EMPTY), new PuzzleLine(FILLED, EMPTY, EMPTY, FILLED, EMPTY), new PuzzleLine(EMPTY, EMPTY, EMPTY, EMPTY, FILLED)));
-		allSolutions.put(6, getSolutions(new PuzzleLine(FILLED, FILLED, FILLED, EMPTY, EMPTY), new PuzzleLine(EMPTY, FILLED, EMPTY, FILLED, EMPTY), new PuzzleLine(FILLED, EMPTY, EMPTY, EMPTY, FILLED)));
-		allSolutions.put(7, getSolutions(new PuzzleLine(FILLED, FILLED, EMPTY, FILLED, EMPTY), new PuzzleLine(EMPTY, EMPTY, FILLED, FILLED, EMPTY), new PuzzleLine(EMPTY, FILLED, EMPTY, EMPTY, FILLED)));
-		allSolutions.put(8, getSolutions(new PuzzleLine(FILLED, EMPTY, FILLED, FILLED, EMPTY), new PuzzleLine(FILLED, FILLED, EMPTY, EMPTY, FILLED), new PuzzleLine(EMPTY, EMPTY, FILLED, EMPTY, FILLED)));
-		allSolutions.put(9, getSolutions(new PuzzleLine(EMPTY, FILLED, FILLED, FILLED, EMPTY), new PuzzleLine(FILLED, EMPTY, FILLED, EMPTY, FILLED), new PuzzleLine(EMPTY, EMPTY, EMPTY, FILLED, FILLED)));
-		allSolutions.put(10, getSolutions(new PuzzleLine(FILLED, FILLED, FILLED, FILLED, EMPTY), new PuzzleLine(EMPTY, FILLED, FILLED, EMPTY, FILLED), new PuzzleLine(FILLED, EMPTY, EMPTY, FILLED, FILLED)));
-		allSolutions.put(11, getSolutions(new PuzzleLine(FILLED, FILLED, FILLED, EMPTY, FILLED), new PuzzleLine(EMPTY, FILLED, EMPTY, FILLED, FILLED)));
-		allSolutions.put(12, getSolutions(new PuzzleLine(FILLED, FILLED, EMPTY, FILLED, FILLED), new PuzzleLine(EMPTY, EMPTY, FILLED, FILLED, FILLED)));
-		allSolutions.put(13, getSolutions(new PuzzleLine(FILLED, EMPTY, FILLED, FILLED, FILLED)));
-		allSolutions.put(14, getSolutions(new PuzzleLine(EMPTY, FILLED, FILLED, FILLED, FILLED)));
-		allSolutions.put(15, getSolutions(new PuzzleLine(FILLED, FILLED, FILLED, FILLED, FILLED)));
-
-		return allSolutions;
-	}
-
-
-	private PuzzleLine[] getSolutions(PuzzleLine... solution)
-	{
-
-		return solution;
-	}
+        PuzzleState(PuzzleLine[][] row, PuzzleLine[][] column, PuzzleLine[] grid, int numberOfGray) {
+            this.rowSolutions = row;
+            this.columnSolutions = column;
+            this.grid = grid;
+            this.numberOfGray = numberOfGray;
+        }
+    }
 }

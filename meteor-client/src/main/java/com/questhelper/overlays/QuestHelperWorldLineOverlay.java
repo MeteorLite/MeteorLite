@@ -26,36 +26,32 @@
 package com.questhelper.overlays;
 
 import com.questhelper.QuestHelperPlugin;
-import java.awt.Dimension;
-import java.awt.Graphics2D;
-import javax.inject.Inject;
 import com.questhelper.questhelpers.QuestHelper;
 import meteor.ui.overlay.Overlay;
 import meteor.ui.overlay.OverlayLayer;
 import meteor.ui.overlay.OverlayPosition;
 
-public class QuestHelperWorldLineOverlay extends Overlay
-{
-	private final QuestHelperPlugin plugin;
+import javax.inject.Inject;
+import java.awt.*;
 
-	@Inject
-	public QuestHelperWorldLineOverlay(QuestHelperPlugin plugin)
-	{
-		setPosition(OverlayPosition.DYNAMIC);
-		setLayer(OverlayLayer.ABOVE_SCENE);
-		this.plugin = plugin;
-	}
+public class QuestHelperWorldLineOverlay extends Overlay {
+    private final QuestHelperPlugin plugin;
 
-	@Override
-	public Dimension render(Graphics2D graphics)
-	{
-		QuestHelper quest = plugin.getSelectedQuest();
+    @Inject
+    public QuestHelperWorldLineOverlay(QuestHelperPlugin plugin) {
+        setPosition(OverlayPosition.DYNAMIC);
+        setLayer(OverlayLayer.ABOVE_SCENE);
+        this.plugin = plugin;
+    }
 
-		if (quest != null && quest.getCurrentStep() != null)
-		{
-			quest.getCurrentStep().makeWorldLineOverlayHint(graphics, plugin);
-		}
+    @Override
+    public Dimension render(Graphics2D graphics) {
+        QuestHelper quest = plugin.getSelectedQuest();
 
-		return null;
-	}
+        if (quest != null && quest.getCurrentStep() != null) {
+            quest.getCurrentStep().makeWorldLineOverlayHint(graphics, plugin);
+        }
+
+        return null;
+    }
 }

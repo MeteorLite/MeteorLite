@@ -33,33 +33,29 @@ import net.runelite.api.Prayer;
 /**
  * Requirement that checks if a specified {@link Prayer} is active
  */
-public class PrayerRequirement extends AbstractRequirement
-{
-	private final Prayer prayer;
-	private final String text;
+public class PrayerRequirement extends AbstractRequirement {
+    private final Prayer prayer;
+    private final String text;
 
-	/**
-	 * Checks if the {@link Prayer} is currently active.
-	 *
-	 * @param text the display text
-	 * @param prayer the {@link Prayer} to check
-	 */
-	public PrayerRequirement(String text, Prayer prayer)
-	{
-		this.prayer = prayer;
-		this.text = text;
-	}
+    /**
+     * Checks if the {@link Prayer} is currently active.
+     *
+     * @param text   the display text
+     * @param prayer the {@link Prayer} to check
+     */
+    public PrayerRequirement(String text, Prayer prayer) {
+        this.prayer = prayer;
+        this.text = text;
+    }
 
-	@Override
-	public boolean check(Client client)
-	{
-		int currentPrayer = client.getVar(prayer.getVarbit());
-		return currentPrayer == 1;
-	}
+    @Override
+    public boolean check(Client client) {
+        int currentPrayer = client.getVar(prayer.getVarbit());
+        return currentPrayer == 1;
+    }
 
-	@Override
-	public String getDisplayText()
-	{
-		return text;
-	}
+    @Override
+    public String getDisplayText() {
+        return text;
+    }
 }

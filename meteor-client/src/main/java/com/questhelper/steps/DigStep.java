@@ -26,80 +26,72 @@ package com.questhelper.steps;
 
 import com.questhelper.QuestHelperPlugin;
 import com.questhelper.questhelpers.QuestHelper;
-import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.Requirement;
+import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.util.InventorySlots;
-import java.awt.Graphics2D;
-import java.awt.image.BufferedImage;
-import java.util.function.Predicate;
+import meteor.eventbus.Subscribe;
+import meteor.ui.overlay.OverlayUtil;
 import net.runelite.api.Item;
 import net.runelite.api.ItemID;
 import net.runelite.api.Player;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.GameTick;
-import meteor.eventbus.Subscribe;
-import meteor.ui.overlay.OverlayUtil;
 
-public class DigStep extends DetailedQuestStep
-{
-	private final ItemRequirement SPADE = new ItemRequirement("Spade", ItemID.SPADE);
-	private Predicate<Item> expectedItemPredicate = i -> i.getId() == -1;
-	private boolean hasExpectedItem = false;
-	public DigStep(QuestHelper questHelper, WorldPoint worldPoint, String text, Requirement... requirements)
-	{
-		super(questHelper, worldPoint, text, requirements);
-		this.getRequirements().add(SPADE);
-	}
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.util.function.Predicate;
 
-	public void setExpectedItem(int itemID)
-	{
-		setExpectedItem(i -> i.getId() == itemID);
-	}
+public class DigStep extends DetailedQuestStep {
+    private final ItemRequirement SPADE = new ItemRequirement("Spade", ItemID.SPADE);
+    private Predicate<Item> expectedItemPredicate = i -> i.getId() == -1;
+    private boolean hasExpectedItem = false;
 
-	public void setExpectedItem(Predicate<Item> predicate)
-	{
-		this.expectedItemPredicate = predicate == null ? i -> true : predicate;
-	}
+    public DigStep(QuestHelper questHelper, WorldPoint worldPoint, String text, Requirement... requirements) {
+        super(questHelper, worldPoint, text, requirements);
+        this.getRequirements().add(SPADE);
+    }
 
-	@Subscribe
-	public void onGameTick(GameTick event)
-	{
-		hasExpectedItem = InventorySlots.INVENTORY_SLOTS.contains(client, expectedItemPredicate);
-		if (!hasExpectedItem)
-		{
-			Player player = client.getLocalPlayer();
-			if (player == null) {
-				return;
-			}
-			WorldPoint targetLocation = worldPoint;
-			boolean shouldHighlightSpade = targetLocation.isInScene(client);
-			SPADE.setHighlightInInventory(shouldHighlightSpade);
-		}
-	}
+    public void setExpectedItem(int itemID) {
+        setExpectedItem(i -> i.getId() == itemID);
+    }
 
-	@Override
-	public void makeWorldOverlayHint(Graphics2D graphics, QuestHelperPlugin plugin)
-	{
-		super.makeWorldOverlayHint(graphics, plugin);
+    public void setExpectedItem(Predicate<Item> predicate) {
+        this.expectedItemPredicate = predicate == null ? i -> true : predicate;
+    }
 
-		if (inCutscene)
-		{
-			return;
-		}
+    @Subscribe
+    public void onGameTick(GameTick event) {
+        hasExpectedItem = InventorySlots.INVENTORY_SLOTS.contains(client, expectedItemPredicate);
+        if (!hasExpectedItem) {
+            Player player = client.getLocalPlayer();
+            if (player == null) {
+                return;
+            }
+            WorldPoint targetLocation = worldPoint;
+            boolean shouldHighlightSpade = targetLocation.isInScene(client);
+            SPADE.setHighlightInInventory(shouldHighlightSpade);
+        }
+    }
 
-		LocalPoint localLocation = LocalPoint.fromWorld(client, worldPoint);
+    @Override
+    public void makeWorldOverlayHint(Graphics2D graphics, QuestHelperPlugin plugin) {
+        super.makeWorldOverlayHint(graphics, plugin);
 
-		if (localLocation == null)
-		{
-			return;
-		}
+        if (inCutscene) {
+            return;
+        }
 
-		OverlayUtil.renderTileOverlay(client, graphics, localLocation, getSpadeImage(), questHelper.getConfig().targetOverlayColor());
-	}
+        LocalPoint localLocation = LocalPoint.fromWorld(client, worldPoint);
 
-	private BufferedImage getSpadeImage()
-	{
-		return itemManager.getImage(ItemID.SPADE);
-	}
+        if (localLocation == null) {
+            return;
+        }
+
+        OverlayUtil.renderTileOverlay(client, graphics, localLocation, getSpadeImage(), questHelper.getConfig().targetOverlayColor());
+    }
+
+    private BufferedImage getSpadeImage() {
+        return itemManager.getImage(ItemID.SPADE);
+    }
 }

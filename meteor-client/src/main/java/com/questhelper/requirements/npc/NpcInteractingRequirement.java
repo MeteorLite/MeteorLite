@@ -28,26 +28,23 @@
 package com.questhelper.requirements.npc;
 
 import com.questhelper.requirements.SimpleRequirement;
-import com.questhelper.requirements.conditional.ConditionForStep;
-import java.util.Arrays;
-import java.util.List;
 import net.runelite.api.Client;
 
-public class NpcInteractingRequirement extends SimpleRequirement
-{
-	final List<Integer> npcIDs;
+import java.util.Arrays;
+import java.util.List;
 
-	public NpcInteractingRequirement(Integer... npcID)
-	{
-		this.npcIDs = Arrays.asList(npcID);
-	}
+public class NpcInteractingRequirement extends SimpleRequirement {
+    final List<Integer> npcIDs;
 
-	@Override
-	public boolean check(Client client)
-	{
-		return client.getNpcs().stream()
-			.filter(npc -> npc.getInteracting() != null)
-			.filter(npc -> npc.getInteracting() == client.getLocalPlayer())
-			.anyMatch(npc -> npcIDs.contains(npc.getId()));
-	}
+    public NpcInteractingRequirement(Integer... npcID) {
+        this.npcIDs = Arrays.asList(npcID);
+    }
+
+    @Override
+    public boolean check(Client client) {
+        return client.getNpcs().stream()
+                .filter(npc -> npc.getInteracting() != null)
+                .filter(npc -> npc.getInteracting() == client.getLocalPlayer())
+                .anyMatch(npc -> npcIDs.contains(npc.getId()));
+    }
 }

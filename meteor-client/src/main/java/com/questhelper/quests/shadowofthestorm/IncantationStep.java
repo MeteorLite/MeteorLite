@@ -27,131 +27,115 @@ package com.questhelper.quests.shadowofthestorm;
 import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.steps.DetailedQuestStep;
-import java.util.Collections;
+import meteor.eventbus.Subscribe;
 import net.runelite.api.ItemID;
 import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetID;
-
-import java.util.HashMap;
 import net.runelite.api.widgets.WidgetInfo;
-import meteor.eventbus.Subscribe;
 import org.apache.commons.lang3.ArrayUtils;
 
-public class IncantationStep extends DetailedQuestStep
-{
-	private final HashMap<Integer, String> words = new HashMap<Integer, String>()
-	{{
-		put(0, "Caldar");
-		put(1, "Nahudu");
-		put(2, "Agrith-Naar");
-		put(3, "Camerinthum");
-		put(4, "Tarren");
-	}};
+import java.util.Collections;
+import java.util.HashMap;
 
-	private final boolean reverse;
-	private String[] incantationOrder;
-	private int incantationPosition = 0;
+public class IncantationStep extends DetailedQuestStep {
+    private final HashMap<Integer, String> words = new HashMap<Integer, String>() {{
+        put(0, "Caldar");
+        put(1, "Nahudu");
+        put(2, "Agrith-Naar");
+        put(3, "Camerinthum");
+        put(4, "Tarren");
+    }};
 
-	public IncantationStep(QuestHelper questHelper, boolean reverse)
-	{
-		super(questHelper, "Click the demonic sigil and read the incantation.");
-		ItemRequirement sigilHighlighted = new ItemRequirement("Demonic sigil", ItemID.DEMONIC_SIGIL);
-		sigilHighlighted.setHighlightInInventory(true);
-		this.addItemRequirements(Collections.singletonList(sigilHighlighted));
-		this.reverse = reverse;
-	}
+    private final boolean reverse;
+    private String[] incantationOrder;
+    private int incantationPosition = 0;
 
-	@Override
-	public void startUp()
-	{
-		super.startUp();
-		updateHints();
-	}
+    public IncantationStep(QuestHelper questHelper, boolean reverse) {
+        super(questHelper, "Click the demonic sigil and read the incantation.");
+        ItemRequirement sigilHighlighted = new ItemRequirement("Demonic sigil", ItemID.DEMONIC_SIGIL);
+        sigilHighlighted.setHighlightInInventory(true);
+        this.addItemRequirements(Collections.singletonList(sigilHighlighted));
+        this.reverse = reverse;
+    }
 
-	@Override
-	public void onWidgetLoaded(WidgetLoaded event)
-	{
-		int groupId = event.getGroupId();
-		if (groupId == WidgetID.DIALOG_OPTION_GROUP_ID)
-		{
-			clientThread.invokeLater(this::updateChoiceIfRequired);
-		}
+    @Override
+    public void startUp() {
+        super.startUp();
+        updateHints();
+    }
 
-		super.onWidgetLoaded(event);
-	}
+    @Override
+    public void onWidgetLoaded(WidgetLoaded event) {
+        int groupId = event.getGroupId();
+        if (groupId == WidgetID.DIALOG_OPTION_GROUP_ID) {
+            clientThread.invokeLater(this::updateChoiceIfRequired);
+        }
 
-	/**
-	 * This checks for the demonic sigil being clicked, indicating the start of the incantation.
-	 */
-	@Subscribe
-	public void onMenuOptionClicked(MenuOptionClicked event)
-	{
-		if(event.getWidgetId() == WidgetInfo.INVENTORY.getPackedId() && event.getMenuOption().equals("Chant"))
-		{
-			incantationPosition = 0;
-		}
-	}
+        super.onWidgetLoaded(event);
+    }
 
-	/**
-	 * Updates the choices highlighted as the incantation progresses.
-	 */
-	private void updateChoiceIfRequired()
-	{
-		if (!shouldUpdateChoice())
-		{
-			return;
-		}
+    /**
+     * This checks for the demonic sigil being clicked, indicating the start of the incantation.
+     */
+    @Subscribe
+    public void onMenuOptionClicked(MenuOptionClicked event) {
+        if (event.getWidgetId() == WidgetInfo.INVENTORY.getId() && event.getMenuOption().equals("Chant")) {
+            incantationPosition = 0;
+        }
+    }
 
-		// As the incantations have all the same dialogs we want to reset the choices after each dialog
-		// as we want only the correct one to be highlighted
-		choices.resetChoices();
-		addDialogStep(incantationOrder[incantationPosition]);
-		incantationPosition++;
-	}
+    /**
+     * Updates the choices highlighted as the incantation progresses.
+     */
+    private void updateChoiceIfRequired() {
+        if (!shouldUpdateChoice()) {
+            return;
+        }
 
-	private boolean shouldUpdateChoice()
-	{
-		Widget widget = client.getWidget(WidgetID.DIALOG_OPTION_GROUP_ID, 1);
-		if (widget == null)
-		{
-			return false;
-		}
+        // As the incantations have all the same dialogs we want to reset the choices after each dialog
+        // as we want only the correct one to be highlighted
+        choices.resetChoices();
+        addDialogStep(incantationOrder[incantationPosition]);
+        incantationPosition++;
+    }
 
-		Widget[] children = widget.getChildren();
-		if (children == null || children.length < 3)
-		{
-			return false;
-		}
+    private boolean shouldUpdateChoice() {
+        Widget widget = client.getWidget(WidgetID.DIALOG_OPTION_GROUP_ID, 1);
+        if (widget == null) {
+            return false;
+        }
 
-		Widget childWidget = widget.getChild(2);
-		return childWidget != null && "Nahudu".equals(childWidget.getText());
-	}
+        Widget[] children = widget.getChildren();
+        if (children == null || children.length < 3) {
+            return false;
+        }
 
-	/**
-	 * {@inheritDoc}
-	 */
-	protected void updateHints()
-	{
-		if (incantationOrder != null || (client.getVarbitValue(1374) == 0 && client.getVarbitValue(1375) == 0))
-		{
-			return;
-		}
-		incantationOrder = new String[]{
-			words.get(client.getVarbitValue(1373)),
-			words.get(client.getVarbitValue(1374)),
-			words.get(client.getVarbitValue(1375)),
-			words.get(client.getVarbitValue(1376)),
-			words.get(client.getVarbitValue(1377))
-		};
-		if (reverse)
-		{
-			ArrayUtils.reverse(incantationOrder);
-		}
-		String incantString = "Say the following in order: " + String.join(", ", incantationOrder);
+        Widget childWidget = widget.getChild(2);
+        return childWidget != null && "Nahudu".equals(childWidget.getText());
+    }
 
-		setText("Click the demonic sigil and read the incantation.");
-		addText(incantString);
-	}
+    /**
+     * {@inheritDoc}
+     */
+    protected void updateHints() {
+        if (incantationOrder != null || (client.getVarbitValue(1374) == 0 && client.getVarbitValue(1375) == 0)) {
+            return;
+        }
+        incantationOrder = new String[]{
+                words.get(client.getVarbitValue(1373)),
+                words.get(client.getVarbitValue(1374)),
+                words.get(client.getVarbitValue(1375)),
+                words.get(client.getVarbitValue(1376)),
+                words.get(client.getVarbitValue(1377))
+        };
+        if (reverse) {
+            ArrayUtils.reverse(incantationOrder);
+        }
+        String incantString = "Say the following in order: " + String.join(", ", incantationOrder);
+
+        setText("Click the demonic sigil and read the incantation.");
+        addText(incantString);
+    }
 }

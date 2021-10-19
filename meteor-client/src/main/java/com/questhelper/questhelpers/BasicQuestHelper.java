@@ -26,57 +26,48 @@ package com.questhelper.questhelpers;
 
 import com.questhelper.QuestHelperConfig;
 import com.questhelper.requirements.Requirement;
-import com.questhelper.requirements.conditional.ConditionForStep;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.util.LogicType;
-import com.questhelper.steps.ConditionalStep;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
 import com.questhelper.steps.QuestStep;
 
-public abstract class BasicQuestHelper extends QuestHelper
-{
-	protected Map<Integer, QuestStep> steps;
-	protected int var;
+import java.util.Map;
 
-	@Override
-	public void startUp(QuestHelperConfig config)
-	{
-		this.config = config;
-		if(steps == null)
-		{
-			steps = loadSteps();
-			instantiateSteps(steps.values());
-			var = getVar();
-			startUpStep(steps.get(var));
-		}
-	}
+public abstract class BasicQuestHelper extends QuestHelper {
+    protected Map<Integer, QuestStep> steps;
+    protected int var;
 
-	@Override
-	public void shutDown()
-	{
-		steps = null;
-		shutDownStep();
-	}
+    @Override
+    public void startUp(QuestHelperConfig config) {
+        this.config = config;
+        if (steps == null) {
+            steps = loadSteps();
+            instantiateSteps(steps.values());
+            var = getVar();
+            startUpStep(steps.get(var));
+        }
+    }
 
-	@Override
-	public boolean updateQuest()
-	{
-		if (var < getVar())
-		{
-			var = getVar();
-			shutDownStep();
-			startUpStep(steps.get(var));
-			return true;
-		}
-		return false;
-	}
+    @Override
+    public void shutDown() {
+        steps = null;
+        shutDownStep();
+    }
 
-	public abstract Map<Integer, QuestStep> loadSteps();
+    @Override
+    public boolean updateQuest() {
+        if (var < getVar()) {
+            var = getVar();
+            shutDownStep();
+            startUpStep(steps.get(var));
+            return true;
+        }
+        return false;
+    }
 
-	protected Requirement nor(Requirement... condition)
-	{
-		return new Conditions(LogicType.NOR, condition);
-	}
+
+    public abstract Map<Integer, QuestStep> loadSteps();
+
+    protected Requirement nor(Requirement... condition) {
+        return new Conditions(LogicType.NOR, condition);
+    }
 }

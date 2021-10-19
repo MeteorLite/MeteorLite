@@ -28,101 +28,99 @@
 package com.questhelper.requirements;
 
 import com.questhelper.QuestHelperConfig;
-import java.awt.Color;
-import java.util.ArrayList;
-import java.util.List;
+import meteor.ui.overlay.components.LineComponent;
+import net.runelite.api.Client;
+
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import net.runelite.api.Client;
-import meteor.ui.overlay.components.LineComponent;
+import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A requirement that must be passed.
  * This is used in both rendering overlays and quest logic.<br>
  * All {@link Requirement}s are run on the {@link meteor.callback.ClientThread}.
  */
-public interface Requirement
-{
-	/**
-	 * Check the {@link Client} that it meets this requirement.
-	 * @param client client to check
-	 * @return true if the client meets this requirement
-	 */
-	boolean check(Client client);
+public interface Requirement {
+    /**
+     * Check the {@link Client} that it meets this requirement.
+     *
+     * @param client client to check
+     * @return true if the client meets this requirement
+     */
+    boolean check(Client client);
 
-	/**
-	 * @return whether the requirement should be considered for filtering in the sidebar
-	 */
-	default boolean shouldConsiderForFilter()
-	{
-		return false;
-	}
+    /**
+     * @return whether the requirement should be considered for filtering in the sidebar
+     */
+    default boolean shouldConsiderForFilter() {
+        return false;
+    }
 
-	/**
-	 * @return display text to be used for rendering either on overlays or panels. Cannot be null.
-	 */
-	@Nonnull
-	String getDisplayText();
+    /**
+     * @return display text to be used for rendering either on overlays or panels. Cannot be null.
+     */
+    @Nonnull
+    String getDisplayText();
 
-	/**
-	 * The {@link Color} used to render the {@link #getDisplayText()} depending on what {@link #check(Client)}
-	 * returns.<br>
-	 * By default, if {@link #check(Client)} returns true, {@link Color#GREEN} is used, otherwise {@link Color#RED}.
-	 *
-	 * @param client client to check
-	 * @return the {@link Color} to use
-	 */
-	default Color getColor(Client client, QuestHelperConfig config)
-	{
-		return check(client) ? config.passColour() : config.failColour();
-	}
+    /**
+     * The {@link Color} used to render the {@link #getDisplayText()} depending on what {@link #check(Client)}
+     * returns.<br>
+     * By default, if {@link #check(Client)} returns true, {@link Color#GREEN} is used, otherwise {@link Color#RED}.
+     *
+     * @param client client to check
+     * @return the {@link Color} to use
+     */
+    default Color getColor(Client client, QuestHelperConfig config) {
+        return check(client) ? config.passColour() : config.failColour();
+    }
 
-	/**
-	 * If this requirement will be displayed on a quest's side panels they can have tooltips to
-	 * give extra information.
-	 *
-	 * @return the tooltip text to display
-	 */
-	@Nullable
-	default String getTooltip()
-	{
-		return null;
-	}
+    /**
+     * If this requirement will be displayed on a quest's side panels they can have tooltips to
+     * give extra information.
+     *
+     * @return the tooltip text to display
+     */
+    @Nullable
+    default String getTooltip() {
+        return null;
+    }
 
-	/**
-	 * Set the tooltip for this requirement
-	 *
-	 * @param tooltip the new tooltip
-	 */
-	default void setTooltip(@Nullable String tooltip) {}
+    /**
+     * Set the tooltip for this requirement
+     *
+     * @param tooltip the new tooltip
+     */
+    default void setTooltip(@Nullable String tooltip) {
+    }
 
-	default List<LineComponent> getDisplayTextWithChecks(Client client, QuestHelperConfig config)
-	{
-		List<LineComponent> lines = new ArrayList<>();
+    default List<LineComponent> getDisplayTextWithChecks(Client client, QuestHelperConfig config) {
+        List<LineComponent> lines = new ArrayList<>();
 
-		String text = getDisplayText();
-		Color color = getColor(client, config);
+        String text = getDisplayText();
+        Color color = getColor(client, config);
 
-		lines.add(LineComponent.builder()
-				.left(text)
-				.leftColor(color)
-				.build());
+        lines.add(LineComponent.builder()
+                .left(text)
+                .leftColor(color)
+                .build());
 
-		return lines;
-	}
+        return lines;
+    }
 
-	/**
-	 * @return If not null, this requirement will be displayed if this requirement fails during checks
-	 */
-	default Requirement getOverlayReplacement()
-	{
-		return null;
-	}
+    /**
+     * @return If not null, this requirement will be displayed if this requirement fails during checks
+     */
+    default Requirement getOverlayReplacement() {
+        return null;
+    }
 
-	/**
-	 * Set the new {@link Requirement} to display if this one fails
-	 *
-	 * @param requirement the new requirement
-	 */
-	default void setOverlayReplacement(Requirement requirement) {}
+    /**
+     * Set the new {@link Requirement} to display if this one fails
+     *
+     * @param requirement the new requirement
+     */
+    default void setOverlayReplacement(Requirement requirement) {
+    }
 }

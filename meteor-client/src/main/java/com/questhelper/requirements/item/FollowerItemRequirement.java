@@ -26,34 +26,30 @@
  */
 package com.questhelper.requirements.item;
 
-import com.questhelper.requirements.item.ItemRequirement;
-import java.util.List;
 import net.runelite.api.Client;
 import net.runelite.api.Item;
 
-public class FollowerItemRequirement extends ItemRequirement
-{
-	private final List<Integer> followerIDs;
+import java.util.List;
 
-	public FollowerItemRequirement(String name, List<Integer> itemIDs, List<Integer> followerIDs)
-	{
-		super(name, itemIDs);
-		this.followerIDs = followerIDs;
-	}
+public class FollowerItemRequirement extends ItemRequirement {
+    private final List<Integer> followerIDs;
 
-	@Override
-	public boolean check(Client client, boolean checkConsideringSlotRestrictions, List<Item> items)
-	{
-		boolean match = client.getNpcs().stream()
-			.filter(npc -> npc.getInteracting() != null) // we need this check because Client#getLocalPlayer is Nullable
-			.filter(npc -> npc.getInteracting() == client.getLocalPlayer())
-			.anyMatch(npc -> followerIDs.contains(npc.getId()));
+    public FollowerItemRequirement(String name, List<Integer> itemIDs, List<Integer> followerIDs) {
+        super(name, itemIDs);
+        this.followerIDs = followerIDs;
+    }
 
-		if (match)
-		{
-			return true;
-		}
+    @Override
+    public boolean check(Client client, boolean checkConsideringSlotRestrictions, List<Item> items) {
+        boolean match = client.getNpcs().stream()
+                .filter(npc -> npc.getInteracting() != null) // we need this check because Client#getLocalPlayer is Nullable
+                .filter(npc -> npc.getInteracting() == client.getLocalPlayer())
+                .anyMatch(npc -> followerIDs.contains(npc.getId()));
 
-		return super.check(client, checkConsideringSlotRestrictions, items);
-	}
+        if (match) {
+            return true;
+        }
+
+        return super.check(client, checkConsideringSlotRestrictions, items);
+    }
 }

@@ -28,21 +28,17 @@ import com.questhelper.QuestDescriptor;
 import com.questhelper.QuestHelperQuest;
 import com.questhelper.QuestVarbits;
 import com.questhelper.questhelpers.BasicQuestHelper;
-import com.questhelper.requirements.item.ItemRequirement;
-import com.questhelper.requirements.item.ItemRequirements;
-import com.questhelper.requirements.quest.QuestRequirement;
 import com.questhelper.requirements.Requirement;
+import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.player.SkillRequirement;
+import com.questhelper.requirements.quest.QuestRequirement;
+import com.questhelper.rewards.QuestPointReward;
+import com.questhelper.rewards.UnlockReward;
 import com.questhelper.steps.ConditionalStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 import net.runelite.api.Client;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
@@ -51,103 +47,111 @@ import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 @QuestDescriptor(
-	quest = QuestHelperQuest.RECIPE_FOR_DISASTER_START
+        quest = QuestHelperQuest.RECIPE_FOR_DISASTER_START
 )
-public class RFDStart extends BasicQuestHelper
-{
-	//Items Required
-	ItemRequirement eyeOfNewt, greenmansAle, rottenTomato, fruitBlast, ashes, ashesHighlighted, fruitBlastHighlighted, dirtyBlast;
+public class RFDStart extends BasicQuestHelper {
+    //Items Required
+    ItemRequirement eyeOfNewt, greenmansAle, rottenTomato, fruitBlast, ashes, ashesHighlighted, fruitBlastHighlighted, dirtyBlast;
 
-	QuestStep talkToCook, useAshesOnFruitBlast, talkToCookAgain, enterDiningRoom;
+    QuestStep talkToCook, useAshesOnFruitBlast, talkToCookAgain, enterDiningRoom;
 
-	@Override
-	public Map<Integer, QuestStep> loadSteps()
-	{
-		setupRequirements();
-		setupConditions();
-		setupSteps();
-		Map<Integer, QuestStep> steps = new HashMap<>();
+    @Override
+    public Map<Integer, QuestStep> loadSteps() {
+        setupRequirements();
+        setupConditions();
+        setupSteps();
+        Map<Integer, QuestStep> steps = new HashMap<>();
 
-		steps.put(0, talkToCook);
+        steps.put(0, talkToCook);
 
-		ConditionalStep goGiveCookItems = new ConditionalStep(this, useAshesOnFruitBlast);
-		goGiveCookItems.addStep(dirtyBlast.alsoCheckBank(questBank), talkToCookAgain);
-		steps.put(1, goGiveCookItems);
+        ConditionalStep goGiveCookItems = new ConditionalStep(this, useAshesOnFruitBlast);
+        goGiveCookItems.addStep(dirtyBlast.alsoCheckBank(questBank), talkToCookAgain);
+        steps.put(1, goGiveCookItems);
 
-		steps.put(2, enterDiningRoom);
+        steps.put(2, enterDiningRoom);
 
-		return steps;
-	}
+        return steps;
+    }
 
-	public void setupRequirements()
-	{
-		eyeOfNewt = new ItemRequirement("Eye of newt", ItemID.EYE_OF_NEWT);
-		greenmansAle = new ItemRequirement("Greenman's ale", ItemID.GREENMANS_ALE);
-		rottenTomato = new ItemRequirement("Rotten tomato", ItemID.ROTTEN_TOMATO);
-		fruitBlast = new ItemRequirement("Fruit blast", ItemID.FRUIT_BLAST);
-		ashes = new ItemRequirement("Ashes", ItemID.ASHES);
-		ashesHighlighted = new ItemRequirement("Ashes", ItemID.ASHES);
-		ashesHighlighted.setHighlightInInventory(true);
-		fruitBlastHighlighted = new ItemRequirement("Fruit blast", ItemID.FRUIT_BLAST);
-		fruitBlastHighlighted.setHighlightInInventory(true);
-		dirtyBlast = new ItemRequirement("Dirty blast", ItemID.DIRTY_BLAST);
-	}
+    public void setupRequirements() {
+        eyeOfNewt = new ItemRequirement("Eye of newt", ItemID.EYE_OF_NEWT);
+        greenmansAle = new ItemRequirement("Greenman's ale", ItemID.GREENMANS_ALE);
+        rottenTomato = new ItemRequirement("Rotten tomato", ItemID.ROTTEN_TOMATO);
+        fruitBlast = new ItemRequirement("Fruit blast", ItemID.FRUIT_BLAST);
+        ashes = new ItemRequirement("Ashes", ItemID.ASHES);
+        ashesHighlighted = new ItemRequirement("Ashes", ItemID.ASHES);
+        ashesHighlighted.setHighlightInInventory(true);
+        fruitBlastHighlighted = new ItemRequirement("Fruit blast", ItemID.FRUIT_BLAST);
+        fruitBlastHighlighted.setHighlightInInventory(true);
+        dirtyBlast = new ItemRequirement("Dirty blast", ItemID.DIRTY_BLAST);
+    }
 
-	public void setupConditions()
-	{
-		// 4606 0->1
+    public void setupConditions() {
+        // 4606 0->1
 
-		// 1850 = 2->3
-		// 1858-66 0->1
-	}
+        // 1850 = 2->3
+        // 1858-66 0->1
+    }
 
-	public void setupSteps()
-	{
-		talkToCook = new NpcStep(this, NpcID.COOK_4626, new WorldPoint(3209, 3215, 0),
-			"Talk to the Lumbridge Cook.", eyeOfNewt, greenmansAle, rottenTomato, ashes, fruitBlast);
-		talkToCook.addDialogStep("Do you have any other quests for me?");
-		talkToCook.addDialogSteps("Angry! It makes me angry!", "I don't really care to be honest.");
-		talkToCook.addDialogStep("What seems to be the problem?");
-		talkToCook.addDialogStep("YES");
+    public void setupSteps() {
+        talkToCook = new NpcStep(this, NpcID.COOK_4626, new WorldPoint(3209, 3215, 0),
+                "Talk to the Lumbridge Cook.", eyeOfNewt, greenmansAle, rottenTomato, ashes, fruitBlast);
+        talkToCook.addDialogStep("Do you have any other quests for me?");
+        talkToCook.addDialogSteps("Angry! It makes me angry!", "I don't really care to be honest.");
+        talkToCook.addDialogStep("What seems to be the problem?");
+        talkToCook.addDialogStep("YES");
 
-		useAshesOnFruitBlast = new DetailedQuestStep(this, "Use ashes on the fruit blast.", ashesHighlighted, fruitBlastHighlighted);
+        useAshesOnFruitBlast = new DetailedQuestStep(this, "Use ashes on the fruit blast.", ashesHighlighted, fruitBlastHighlighted);
 
-		talkToCookAgain = new NpcStep(this, NpcID.COOK_4626, new WorldPoint(3209, 3215, 0),
-			"Talk to the Lumbridge Cook with the required items.", eyeOfNewt, greenmansAle, rottenTomato, dirtyBlast);
+        talkToCookAgain = new NpcStep(this, NpcID.COOK_4626, new WorldPoint(3209, 3215, 0),
+                "Talk to the Lumbridge Cook with the required items.", eyeOfNewt, greenmansAle, rottenTomato, dirtyBlast);
 
-		enterDiningRoom = new ObjectStep(this, ObjectID.DOOR_12348, new WorldPoint(3207, 3217, 0), "Enter the Lumbridge Castle dining room.");
-	}
+        enterDiningRoom = new ObjectStep(this, ObjectID.DOOR_12348, new WorldPoint(3207, 3217, 0), "Enter the Lumbridge Castle dining room.");
+    }
 
-	@Override
-	public List<ItemRequirement> getItemRequirements()
-	{
-		return Arrays.asList(eyeOfNewt, greenmansAle, rottenTomato, ashes, fruitBlast);
-	}
+    @Override
+    public List<ItemRequirement> getItemRequirements() {
+        return Arrays.asList(eyeOfNewt, greenmansAle, rottenTomato, ashes, fruitBlast);
+    }
 
-	@Override
-	public List<Requirement> getGeneralRequirements()
-	{
-		ArrayList<Requirement> req = new ArrayList<>();
-		req.add(new QuestRequirement(QuestHelperQuest.COOKS_ASSISTANT, QuestState.FINISHED));
-		req.add(new SkillRequirement(Skill.COOKING, 10));
-		return req;
-	}
+    @Override
+    public List<Requirement> getGeneralRequirements() {
+        ArrayList<Requirement> req = new ArrayList<>();
+        req.add(new QuestRequirement(QuestHelperQuest.COOKS_ASSISTANT, QuestState.FINISHED));
+        req.add(new SkillRequirement(Skill.COOKING, 10));
+        return req;
+    }
 
-	@Override
-	public QuestState getState(Client client)
-	{
-		int questState = client.getVarbitValue(QuestVarbits.QUEST_RECIPE_FOR_DISASTER.getId());
-		if (questState >= 3)
-		{
-			return QuestState.FINISHED;
-		}
-		return getQuest().getState(client);
-	}
+    @Override
+    public QuestPointReward getQuestPointReward() {
+        return new QuestPointReward(1);
+    }
 
-	@Override
-	public boolean isCompleted()
-	{
-		return (client.getVarbitValue(QuestVarbits.QUEST_RECIPE_FOR_DISASTER.getId()) >= 3);
-	}
+    @Override
+    public List<UnlockReward> getUnlockRewards() {
+        return Collections.singletonList(new UnlockReward("Access to the Culinaromancer's Chest"));
+    }
+
+
+    @Override
+    public QuestState getState(Client client) {
+        int questState = client.getVarbitValue(QuestVarbits.QUEST_RECIPE_FOR_DISASTER.getId());
+        if (questState >= 3) {
+            return QuestState.FINISHED;
+        }
+        return getQuest().getState(client);
+    }
+
+    @Override
+    public boolean isCompleted() {
+        return (client.getVarbitValue(QuestVarbits.QUEST_RECIPE_FOR_DISASTER.getId()) >= 3);
+    }
 }

@@ -28,24 +28,20 @@ import com.questhelper.requirements.AbstractRequirement;
 import net.runelite.api.Client;
 import net.runelite.api.Skill;
 
-public class WarriorsGuildAccessRequirement extends AbstractRequirement
-{
-	public WarriorsGuildAccessRequirement()
-	{
-		shouldCountForFilter = true;
-	}
+public class WarriorsGuildAccessRequirement extends AbstractRequirement {
+    public WarriorsGuildAccessRequirement() {
+        shouldCountForFilter = true;
+    }
 
-	@Override
-	public boolean check(Client client)
-	{
-		int attLevel = client.getRealSkillLevel(Skill.ATTACK);
-		int strLevel = client.getRealSkillLevel(Skill.STRENGTH);
-		return attLevel == 99 || strLevel == 99 || attLevel + strLevel >= 130;
-	}
+    @Override
+    public boolean check(Client client) {
+        int attLevel = client.getRealSkillLevel(Skill.ATTACK);
+        int strLevel = client.getRealSkillLevel(Skill.STRENGTH);
+        return attLevel == 99 || strLevel == 99 || attLevel + strLevel >= 130;
+    }
 
-	@Override
-	public String getDisplayText()
-	{
-		return "Can access the Warriors' Guild (combined Attack + Strength level of 130, or 99 in Attack or Strength)";
-	}
+    @Override
+    public String getDisplayText() {
+        return "Can access the Warriors' Guild (combined Attack + Strength level of 130, or 99 in Attack or Strength)";
+    }
 }

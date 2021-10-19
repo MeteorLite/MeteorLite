@@ -25,112 +25,90 @@
 package com.questhelper.requirements.conditional;
 
 import com.questhelper.Zone;
-import java.util.ArrayList;
 import net.runelite.api.Client;
 import net.runelite.api.NPC;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.NpcChanged;
 
-public class NpcCondition extends ConditionForStep
-{
-	private final int npcID;
-	private final ArrayList<NPC> npcs = new ArrayList<>();
-	private boolean npcInScene = false;
-	private final Zone zone;
+import java.util.ArrayList;
 
-	public NpcCondition(int npcID)
-	{
-		this.npcID = npcID;
-		this.zone = null;
-	}
+public class NpcCondition extends ConditionForStep {
+    private final int npcID;
+    private final ArrayList<NPC> npcs = new ArrayList<>();
+    private final Zone zone;
+    private boolean npcInScene = false;
 
-	public NpcCondition(int npcID, WorldPoint worldPoint)
-	{
-		this.npcID = npcID;
-		this.zone = new Zone(worldPoint, worldPoint);
-	}
+    public NpcCondition(int npcID) {
+        this.npcID = npcID;
+        this.zone = null;
+    }
 
-	public NpcCondition(int npcID, Zone zone)
-	{
-		this.npcID = npcID;
-		this.zone = zone;
-	}
+    public NpcCondition(int npcID, WorldPoint worldPoint) {
+        this.npcID = npcID;
+        this.zone = new Zone(worldPoint, worldPoint);
+    }
 
-	@Override
-	public void initialize(Client client)
-	{
-		for (NPC npc : client.getNpcs())
-		{
-			if (npcID == npc.getId())
-			{
-				this.npcs.add(npc);
-				npcInScene = true;
-			}
-		}
-	}
+    public NpcCondition(int npcID, Zone zone) {
+        this.npcID = npcID;
+        this.zone = zone;
+    }
 
-	public boolean check(Client client)
-	{
-		if (zone != null)
-		{
-			for (NPC npc : npcs)
-			{
-				if (npc != null)
-				{
-					WorldPoint wp = WorldPoint.fromLocalInstance(client, npc.getLocalLocation());
-					if (wp != null)
-					{
-						if (zone.contains(wp))
-						{
-							return true;
-						}
-					}
-				}
-			}
-			return false;
-		}
-		else
-		{
-			return npcInScene;
-		}
-	}
+    @Override
+    public void initialize(Client client) {
+        for (NPC npc : client.getNpcs()) {
+            if (npcID == npc.getId()) {
+                this.npcs.add(npc);
+                npcInScene = true;
+            }
+        }
+    }
 
-	public void checkNpcSpawned(NPC npc)
-	{
-		if (npc.getId() == this.npcID)
-		{
-			npcs.add(npc);
-			npcInScene = true;
-		}
-	}
+    public boolean check(Client client) {
+        if (zone != null) {
+            for (NPC npc : npcs) {
+                if (npc != null) {
+                    WorldPoint wp = WorldPoint.fromLocalInstance(client, npc.getLocalLocation());
+                    if (wp != null) {
+                        if (zone.contains(wp)) {
+                            return true;
+                        }
+                    }
+                }
+            }
+            return false;
+        } else {
+            return npcInScene;
+        }
+    }
 
-	public void checkNpcDespawned(NPC npc)
-	{
-		if (npcs.contains(npc))
-		{
-			npcs.remove(npc);
-			npcInScene = false;
-		}
-	}
+    public void checkNpcSpawned(NPC npc) {
+        if (npc.getId() == this.npcID) {
+            npcs.add(npc);
+            npcInScene = true;
+        }
+    }
 
-	public void checkNpcChanged(NpcChanged npcChanged)
-	{
-		if (npcs.contains(npcChanged.getNpc()) && npcChanged.getNpc().getId() != this.npcID)
-		{
-			this.npcs.remove(npcChanged.getNpc());
-			npcInScene = false;
-		}
+    public void checkNpcDespawned(NPC npc) {
+        if (npcs.contains(npc)) {
+            npcs.remove(npc);
+            npcInScene = false;
+        }
+    }
 
-		if (npcChanged.getNpc().getId() == this.npcID)
-		{
-			this.npcs.add(npcChanged.getNpc());
-			npcInScene = true;
-		}
-	}
+    public void checkNpcChanged(NpcChanged npcChanged) {
+        if (npcs.contains(npcChanged.getNpc()) && npcChanged.getNpc().getId() != this.npcID) {
+            this.npcs.remove(npcChanged.getNpc());
+            npcInScene = false;
+        }
 
-	@Override
-	public void updateHandler()
-	{
-		npcInScene = false;
-	}
+        if (npcChanged.getNpc().getId() == this.npcID) {
+            this.npcs.add(npcChanged.getNpc());
+            npcInScene = true;
+        }
+    }
+
+    @Override
+    public void updateHandler() {
+        npcInScene = false;
+    }
 }

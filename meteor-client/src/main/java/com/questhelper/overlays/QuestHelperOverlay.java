@@ -28,44 +28,38 @@
 package com.questhelper.overlays;
 
 import com.questhelper.QuestHelperPlugin;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Graphics2D;
-import javax.inject.Inject;
 import com.questhelper.questhelpers.QuestHelper;
 import meteor.ui.overlay.OverlayLayer;
 import meteor.ui.overlay.OverlayPanel;
 import meteor.ui.overlay.OverlayPriority;
 
-public class QuestHelperOverlay extends OverlayPanel
-{
-	public static final Color TITLED_CONTENT_COLOR = new Color(190, 190, 190);
+import javax.inject.Inject;
+import java.awt.*;
 
-	private final QuestHelperPlugin plugin;
+public class QuestHelperOverlay extends OverlayPanel {
+    public static final Color TITLED_CONTENT_COLOR = new Color(190, 190, 190);
 
-	@Inject
-	public QuestHelperOverlay(QuestHelperPlugin plugin)
-	{
-		this.plugin = plugin;
-		setLayer(OverlayLayer.ALWAYS_ON_TOP);
-		setPriority(OverlayPriority.HIGHEST);
-	}
+    private final QuestHelperPlugin plugin;
 
-	@Override
-	public Dimension render(Graphics2D graphics)
-	{
-		if (!plugin.getConfig().showOverlay())
-		{
-			return super.render(graphics);
-		}
-		QuestHelper questHelper = plugin.getSelectedQuest();
+    @Inject
+    public QuestHelperOverlay(QuestHelperPlugin plugin) {
+        this.plugin = plugin;
+        setLayer(OverlayLayer.ALWAYS_ON_TOP);
+        setPriority(OverlayPriority.HIGHEST);
+    }
 
-		if (questHelper == null || questHelper.getCurrentStep() == null)
-		{
-			return null;
-		}
-		questHelper.getCurrentStep().makeOverlayHint(panelComponent, plugin);
+    @Override
+    public Dimension render(Graphics2D graphics) {
+        if (!plugin.getConfig().showOverlay()) {
+            return super.render(graphics);
+        }
+        QuestHelper questHelper = plugin.getSelectedQuest();
 
-		return super.render(graphics);
-	}
+        if (questHelper == null || questHelper.getCurrentStep() == null) {
+            return null;
+        }
+        questHelper.getCurrentStep().makeOverlayHint(panelComponent, plugin);
+
+        return super.render(graphics);
+    }
 }

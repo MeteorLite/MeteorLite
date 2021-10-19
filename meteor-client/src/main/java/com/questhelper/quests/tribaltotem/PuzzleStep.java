@@ -28,14 +28,14 @@ package com.questhelper.quests.tribaltotem;
 import com.questhelper.QuestHelperPlugin;
 import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.steps.QuestStep;
+import meteor.eventbus.Subscribe;
+import meteor.ui.FontManager;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.widgets.Widget;
-import meteor.eventbus.Subscribe;
 
 import java.awt.*;
 import java.util.HashMap;
 import java.util.Map;
-import meteor.ui.FontManager;
 
 public class PuzzleStep extends QuestStep {
 
@@ -61,7 +61,7 @@ public class PuzzleStep extends QuestStep {
     private final int COMPLETE = 55;
 
     private final HashMap<Integer, Integer> highlightButtons = new HashMap<>();
-	private final HashMap<Integer, Integer> distance = new HashMap<>();
+    private final HashMap<Integer, Integer> distance = new HashMap<>();
 
     public PuzzleStep(QuestHelper questHelper) {
         super(questHelper, "Click the highlighted arrows to move the slots to the solution 'KURT'.");
@@ -70,87 +70,83 @@ public class PuzzleStep extends QuestStep {
         highlightButtons.put(3, ARROW_THREE_RIGHT);
         highlightButtons.put(4, ARROW_FOUR_RIGHT);
 
-		distance.put(1, 0);
-		distance.put(2, 0);
-		distance.put(3, 0);
-		distance.put(4, 0);
+        distance.put(1, 0);
+        distance.put(2, 0);
+        distance.put(3, 0);
+        distance.put(4, 0);
     }
 
     @Subscribe
-    public void onGameTick(GameTick gameTick)
-    {
+    public void onGameTick(GameTick gameTick) {
         updateSolvedPositionState();
     }
 
-    private void updateSolvedPositionState()
-    {
+    private void updateSolvedPositionState() {
         highlightButtons.replace(1, matchStateToSolution(SLOT_ONE, ENTRY_ONE, ARROW_ONE_RIGHT, ARROW_ONE_LEFT));
         highlightButtons.replace(2, matchStateToSolution(SLOT_TWO, ENTRY_TWO, ARROW_TWO_RIGHT, ARROW_TWO_LEFT));
         highlightButtons.replace(3, matchStateToSolution(SLOT_THREE, ENTRY_THREE, ARROW_THREE_RIGHT, ARROW_THREE_LEFT));
-        highlightButtons.replace(4, matchStateToSolution(SLOT_FOUR, ENTRY_FOUR,ARROW_FOUR_RIGHT, ARROW_FOUR_LEFT));
+        highlightButtons.replace(4, matchStateToSolution(SLOT_FOUR, ENTRY_FOUR, ARROW_FOUR_RIGHT, ARROW_FOUR_LEFT));
 
-		distance.replace(1, matchStateToDistance(SLOT_ONE, ENTRY_ONE.charAt(0)));
-		distance.replace(2, matchStateToDistance(SLOT_TWO, ENTRY_TWO.charAt(0)));
-		distance.replace(3, matchStateToDistance(SLOT_THREE, ENTRY_THREE.charAt(0)));
-		distance.replace(4, matchStateToDistance(SLOT_FOUR, ENTRY_FOUR.charAt(0)));
+        distance.replace(1, matchStateToDistance(SLOT_ONE, ENTRY_ONE.charAt(0)));
+        distance.replace(2, matchStateToDistance(SLOT_TWO, ENTRY_TWO.charAt(0)));
+        distance.replace(3, matchStateToDistance(SLOT_THREE, ENTRY_THREE.charAt(0)));
+        distance.replace(4, matchStateToDistance(SLOT_FOUR, ENTRY_FOUR.charAt(0)));
 
 
-		if (highlightButtons.get(1) + highlightButtons.get(2) + highlightButtons.get(3) + highlightButtons.get(4) == 0)
-        {
+        if (highlightButtons.get(1) + highlightButtons.get(2) + highlightButtons.get(3) + highlightButtons.get(4) == 0) {
             highlightButtons.put(5, COMPLETE);
         } else {
             highlightButtons.put(5, 0);
         }
     }
 
-    private int matchStateToSolution(int slot, String target, int arrowRightId, int arrowLeftId)
-    {
+    private int matchStateToSolution(int slot, String target, int arrowRightId, int arrowLeftId) {
         Widget widget = client.getWidget(369, slot);
-        if (widget == null) return 0;
+        if (widget == null) {
+            return 0;
+        }
         char current = widget.getText().charAt(0);
-        int currentPos = (int)current - (int)'A';
+        int currentPos = (int) current - (int) 'A';
         int id = Math.floorMod(currentPos - target.charAt(0), 26) < Math.floorMod(target.charAt(0) - currentPos, 26) ? arrowRightId : arrowLeftId;
-        if(current != target.charAt(0)) return id;
+        if (current != target.charAt(0)) {
+            return id;
+        }
         return 0;
     }
 
-	private int matchStateToDistance(int slot, Character target)
-	{
-		Widget widget = client.getWidget(285, slot);
-		if (widget == null) return 0;
-		char current = widget.getText().charAt(0);
-		return Math.min(Math.floorMod(current - target, 26), Math.floorMod(target - current, 26));
-	}
+    private int matchStateToDistance(int slot, Character target) {
+        Widget widget = client.getWidget(285, slot);
+        if (widget == null) {
+            return 0;
+        }
+        char current = widget.getText().charAt(0);
+        return Math.min(Math.floorMod(current - target, 26), Math.floorMod(target - current, 26));
+    }
 
     @Override
-    public void makeWidgetOverlayHint(Graphics2D graphics, QuestHelperPlugin plugin)
-    {
+    public void makeWidgetOverlayHint(Graphics2D graphics, QuestHelperPlugin plugin) {
         super.makeWidgetOverlayHint(graphics, plugin);
-        for (Map.Entry<Integer, Integer> entry : highlightButtons.entrySet())
-        {
-            if (entry.getValue() == 0)
-            {
+        for (Map.Entry<Integer, Integer> entry : highlightButtons.entrySet()) {
+            if (entry.getValue() == 0) {
                 continue;
             }
 
             Widget widget = client.getWidget(369, entry.getValue());
-            if (widget != null)
-            {
-				graphics.setColor(new Color(questHelper.getConfig().targetOverlayColor().getRed(),
-					questHelper.getConfig().targetOverlayColor().getGreen(),
-					questHelper.getConfig().targetOverlayColor().getBlue(), 65));
+            if (widget != null) {
+                graphics.setColor(new Color(questHelper.getConfig().targetOverlayColor().getRed(),
+                        questHelper.getConfig().targetOverlayColor().getGreen(),
+                        questHelper.getConfig().targetOverlayColor().getBlue(), 65));
                 graphics.fill(widget.getBounds());
                 graphics.setColor(questHelper.getConfig().targetOverlayColor());
                 graphics.draw(widget.getBounds());
 
-				if (distance.get(entry.getKey()) != null)
-				{
-					int widgetX = widget.getCanvasLocation().getX() + (widget.getWidth() / 2) - 4;
-					int widgetY = widget.getCanvasLocation().getY() + (widget.getHeight() / 2) + 4;
-					Font font = FontManager.getRunescapeFont().deriveFont(Font.BOLD, 16);
-					graphics.setFont(font);
-					graphics.drawString(Integer.toString(distance.get(entry.getKey())), widgetX, widgetY);
-				}
+                if (distance.get(entry.getKey()) != null) {
+                    int widgetX = widget.getCanvasLocation().getX() + (widget.getWidth() / 2) - 4;
+                    int widgetY = widget.getCanvasLocation().getY() + (widget.getHeight() / 2) + 4;
+                    Font font = FontManager.getRunescapeFont().deriveFont(Font.BOLD, 16);
+                    graphics.setFont(font);
+                    graphics.drawString(Integer.toString(distance.get(entry.getKey())), widgetX, widgetY);
+                }
             }
         }
     }

@@ -36,46 +36,41 @@ import net.runelite.api.VarPlayer;
 /**
  * Requirement that checks if a player has a required number of quest points.
  */
-public class QuestPointRequirement extends AbstractRequirement
-{
-	@Getter
-	private int requiredQuestPoints;
-	private Operation operation;
+public class QuestPointRequirement extends AbstractRequirement {
+    @Getter
+    private final int requiredQuestPoints;
+    private final Operation operation;
 
-	/**
-	 * Checks if a player has a required number of quest points.
-	 * By default, it uses {@link Operation#GREATER_EQUAL}.
-	 *
-	 * @param requiredQuestPoints the required number of quest points
-	 */
-	public QuestPointRequirement(int requiredQuestPoints)
-	{
-		this.requiredQuestPoints = requiredQuestPoints;
-		this.operation = Operation.GREATER_EQUAL;
-		shouldCountForFilter = true;
-	}
+    /**
+     * Checks if a player has a required number of quest points.
+     * By default, it uses {@link Operation#GREATER_EQUAL}.
+     *
+     * @param requiredQuestPoints the required number of quest points
+     */
+    public QuestPointRequirement(int requiredQuestPoints) {
+        this.requiredQuestPoints = requiredQuestPoints;
+        this.operation = Operation.GREATER_EQUAL;
+        shouldCountForFilter = true;
+    }
 
-	/**
-	 * Checks if a player has a required number of quest points.
-	 *
-	 * @param requiredQuestPoints the required number of quest points
-	 * @param operation           the {@link Operation} to use.
-	 */
-	public QuestPointRequirement(int requiredQuestPoints, Operation operation)
-	{
-		this.requiredQuestPoints = requiredQuestPoints;
-		this.operation = operation;
-	}
+    /**
+     * Checks if a player has a required number of quest points.
+     *
+     * @param requiredQuestPoints the required number of quest points
+     * @param operation           the {@link Operation} to use.
+     */
+    public QuestPointRequirement(int requiredQuestPoints, Operation operation) {
+        this.requiredQuestPoints = requiredQuestPoints;
+        this.operation = operation;
+    }
 
-	@Override
-	public boolean check(Client client)
-	{
-		return operation.check(client.getVar(VarPlayer.QUEST_POINTS), requiredQuestPoints);
-	}
+    @Override
+    public boolean check(Client client) {
+        return operation.check(client.getVar(VarPlayer.QUEST_POINTS), requiredQuestPoints);
+    }
 
-	@Override
-	public String getDisplayText()
-	{
-		return getRequiredQuestPoints() + " Quest Points";
-	}
+    @Override
+    public String getDisplayText() {
+        return getRequiredQuestPoints() + " Quest Points";
+    }
 }

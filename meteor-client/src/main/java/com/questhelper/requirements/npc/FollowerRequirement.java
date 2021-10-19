@@ -27,42 +27,38 @@
 package com.questhelper.requirements.npc;
 
 import com.questhelper.requirements.AbstractRequirement;
+import net.runelite.api.Client;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import net.runelite.api.Client;
 
-public class FollowerRequirement extends AbstractRequirement
-{
-	List<Integer> followers;
-	String text;
+public class FollowerRequirement extends AbstractRequirement {
+    List<Integer> followers;
+    String text;
 
-	public FollowerRequirement(String text, Integer... followers)
-	{
-		this.text = text;
-		this.followers = new ArrayList<>();
-		Collections.addAll(this.followers, followers);
-	}
+    public FollowerRequirement(String text, Integer... followers) {
+        this.text = text;
+        this.followers = new ArrayList<>();
+        Collections.addAll(this.followers, followers);
+    }
 
-	public FollowerRequirement(String text, List<Integer> followers)
-	{
-		this.text = text;
-		this.followers = followers;
-	}
+    public FollowerRequirement(String text, List<Integer> followers) {
+        this.text = text;
+        this.followers = followers;
+    }
 
-	@Override
-	public boolean check(Client client)
-	{
-		return client.getNpcs()
-			.stream()
-			.filter(npc -> npc.getInteracting() != null) // we need this check because Client#getLocalPlayer is Nullable
-			.filter(npc -> npc.getInteracting() == client.getLocalPlayer())
-			.anyMatch(npc -> followers.contains(npc.getId()));
-	}
+    @Override
+    public boolean check(Client client) {
+        return client.getNpcs()
+                .stream()
+                .filter(npc -> npc.getInteracting() != null) // we need this check because Client#getLocalPlayer is Nullable
+                .filter(npc -> npc.getInteracting() == client.getLocalPlayer())
+                .anyMatch(npc -> followers.contains(npc.getId()));
+    }
 
-	@Override
-	public String getDisplayText()
-	{
-		return text;
-	}
+    @Override
+    public String getDisplayText() {
+        return text;
+    }
 }

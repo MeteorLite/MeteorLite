@@ -30,25 +30,21 @@ import com.questhelper.requirements.AbstractRequirement;
 import com.questhelper.requirements.util.Spellbook;
 import net.runelite.api.Client;
 
-public class SpellbookRequirement extends AbstractRequirement
-{
-	private static final int SPELLBOOK_VARBIT = 4070;
-	private final Spellbook spellBook;
+public class SpellbookRequirement extends AbstractRequirement {
+    private static final int SPELLBOOK_VARBIT = 4070;
+    private final Spellbook spellBook;
 
-	public SpellbookRequirement(Spellbook spellBook)
-	{
-		this.spellBook = spellBook;
-	}
+    public SpellbookRequirement(Spellbook spellBook) {
+        this.spellBook = spellBook;
+    }
 
-	@Override
-	public boolean check(Client client)
-	{
-		return spellBook.check(client, SPELLBOOK_VARBIT);
-	}
+    @Override
+    public boolean check(Client client) {
+        return spellBook.check(client, SPELLBOOK_VARBIT);
+    }
 
-	@Override
-	public String getDisplayText()
-	{
-		return "You must be on the " + spellBook.getName() + " spellbook.";
-	}
+    @Override
+    public String getDisplayText() {
+        return "You must be on the " + spellBook.getName() + " spellbook.";
+    }
 }

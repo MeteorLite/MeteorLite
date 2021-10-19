@@ -30,12 +30,11 @@ import net.runelite.api.Client;
 import java.util.ArrayList;
 import java.util.Collections;
 
-public class DialogChoiceSteps
-{
+public class DialogChoiceSteps {
     @Getter
     final private ArrayList<DialogChoiceStep> choices = new ArrayList<>();
 
-	public DialogChoiceSteps(DialogChoiceStep... choices) {
+    public DialogChoiceSteps(DialogChoiceStep... choices) {
         Collections.addAll(this.choices, choices);
     }
 
@@ -43,17 +42,15 @@ public class DialogChoiceSteps
         choices.add(choice);
     }
 
-    public void addDialogChoiceWithExclusion(DialogChoiceStep choice, String exclusionString)
-	{
-		choice.addExclusion(219, 1, exclusionString);
-		addChoice(choice);
-	}
+    public void addDialogChoiceWithExclusion(DialogChoiceStep choice, String exclusionString) {
+        choice.addExclusion(219, 1, exclusionString);
+        addChoice(choice);
+    }
 
-	public void addDialogChoiceWithExclusions(DialogChoiceStep choice, String... exclusionStrings)
-	{
-		choice.addExclusions(219, 1, exclusionStrings);
-		addChoice(choice);
-	}
+    public void addDialogChoiceWithExclusions(DialogChoiceStep choice, String... exclusionStrings) {
+        choice.addExclusions(219, 1, exclusionStrings);
+        addChoice(choice);
+    }
 
     public void checkChoices(Client client) {
         if (choices.size() == 0) {
@@ -61,7 +58,7 @@ public class DialogChoiceSteps
         }
 
         for (DialogChoiceStep currentChoice : choices) {
-			currentChoice.highlightChoice(client);
+            currentChoice.highlightChoice(client);
         }
     }
 
@@ -69,6 +66,6 @@ public class DialogChoiceSteps
      * Clears all choices previously set for this dialogs step.
      */
     public void resetChoices() {
-	    choices.clear();
+        choices.clear();
     }
 }

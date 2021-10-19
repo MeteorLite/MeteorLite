@@ -27,54 +27,50 @@
 package com.questhelper.questhelpers;
 
 import com.questhelper.QuestHelperQuest;
+
 import java.util.function.Predicate;
 
-public interface Quest
-{
-	public static boolean showCompletedQuests(QuestHelper quest)
-	{
-		return quest.getConfig().showCompletedQuests() && quest.isCompleted() || !quest.isCompleted();
-	}
+public interface Quest {
+    static boolean showCompletedQuests(QuestHelper quest) {
+        return quest.getConfig().showCompletedQuests() && quest.isCompleted() || !quest.isCompleted();
+    }
 
-	/**
-	 * Describes the difficulty of a {@link QuestHelperQuest}
-	 */
-	public enum Difficulty implements Predicate<QuestHelper>
-	{
-		ALL,
-		NOVICE,
-		INTERMEDIATE,
-		EXPERIENCED,
-		MASTER,
-		GRANDMASTER,
-		MINIQUEST,
-		ACHIEVEMENT_DIARY,
-		GENERIC,
-		;
+    /**
+     * Describes the difficulty of a {@link QuestHelperQuest}
+     */
+    enum Difficulty implements Predicate<QuestHelper> {
+        ALL,
+        NOVICE,
+        INTERMEDIATE,
+        EXPERIENCED,
+        MASTER,
+        GRANDMASTER,
+        MINIQUEST,
+        ACHIEVEMENT_DIARY,
+        GENERIC,
+        ;
 
-		@Override
-		public boolean test(QuestHelper quest) {
-			return quest.getQuest().getDifficulty() == this || this == ALL;
-		}
-	}
+        @Override
+        public boolean test(QuestHelper quest) {
+            return quest.getQuest().getDifficulty() == this || this == ALL;
+        }
+    }
 
-	/**
-	 * Describes if the quest is free-to-play (F2P), pay-to-play(P2P),
-	 * or a miniquest.
-	 */
-	public enum Type implements Predicate<QuestHelper>
-	{
-		F2P,
-		P2P,
-		MINIQUEST,
-		ACHIEVEMENT_DIARY,
-		GENERIC,
-		;
+    /**
+     * Describes if the quest is free-to-play (F2P), pay-to-play(P2P),
+     * or a miniquest.
+     */
+    enum Type implements Predicate<QuestHelper> {
+        F2P,
+        P2P,
+        MINIQUEST,
+        ACHIEVEMENT_DIARY,
+        GENERIC,
+        ;
 
-		@Override
-		public boolean test(QuestHelper quest)
-		{
-			return quest.getQuest().getQuestType() == this;
-		}
-	}
+        @Override
+        public boolean test(QuestHelper quest) {
+            return quest.getQuest().getQuestType() == this;
+        }
+    }
 }

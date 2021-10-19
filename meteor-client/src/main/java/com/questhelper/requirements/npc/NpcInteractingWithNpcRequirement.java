@@ -27,29 +27,22 @@
 package com.questhelper.requirements.npc;
 
 import com.questhelper.requirements.SimpleRequirement;
-import com.questhelper.requirements.conditional.ConditionForStep;
-import java.util.Arrays;
-import java.util.List;
 import net.runelite.api.Client;
-import net.runelite.api.NPC;
 
-public class NpcInteractingWithNpcRequirement extends SimpleRequirement
-{
-	final Integer npcID;
-	final String npcName2;
+public class NpcInteractingWithNpcRequirement extends SimpleRequirement {
+    final Integer npcID;
+    final String npcName2;
 
-	public NpcInteractingWithNpcRequirement(Integer npcID, String npcName2)
-	{
-		this.npcID = npcID;
-		this.npcName2 = npcName2;
-	}
+    public NpcInteractingWithNpcRequirement(Integer npcID, String npcName2) {
+        this.npcID = npcID;
+        this.npcName2 = npcName2;
+    }
 
-	@Override
-	public boolean check(Client client)
-	{
-		return client.getNpcs().stream()
-			.filter(npc -> npc.getInteracting() != null)
-			.filter(npc -> npc.getInteracting().getName().equals(npcName2))
-			.anyMatch(npc -> npc.getInteracting().getInteracting() == npc);
-	}
+    @Override
+    public boolean check(Client client) {
+        return client.getNpcs().stream()
+                .filter(npc -> npc.getInteracting() != null)
+                .filter(npc -> npc.getInteracting().getName().equals(npcName2))
+                .anyMatch(npc -> npc.getInteracting().getInteracting() == npc);
+    }
 }

@@ -25,10 +25,8 @@
  */
 package com.questhelper;
 
-public class QuestInstantiationException extends Exception
-{
-	public QuestInstantiationException(Throwable cause)
-	{
-		super(cause);
-	}
+public class QuestInstantiationException extends Exception {
+    public QuestInstantiationException(Throwable cause) {
+        super(cause);
+    }
 }

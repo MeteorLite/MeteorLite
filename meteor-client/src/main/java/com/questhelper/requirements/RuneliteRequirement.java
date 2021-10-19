@@ -24,76 +24,62 @@
  */
 package com.questhelper.requirements;
 
-import net.runelite.api.Client;
 import meteor.config.ConfigManager;
+import net.runelite.api.Client;
 
-public class RuneliteRequirement extends AbstractRequirement
-{
-	private final String CONFIG_GROUP = "questhelpervars";
+public class RuneliteRequirement extends AbstractRequirement {
+    private final String CONFIG_GROUP = "questhelpervars";
+    private final String runeliteIdentifier;
+    private final String expectedValue;
+    private final ConfigManager configManager;
+    private String displayText;
 
-	private String displayText;
-	private String runeliteIdentifier;
-	private String expectedValue;
-	private ConfigManager configManager;
+    public RuneliteRequirement(ConfigManager configManager, String id, String expectedValue, String text) {
+        this.configManager = configManager;
+        this.runeliteIdentifier = id;
+        this.displayText = text;
+        this.expectedValue = expectedValue;
+    }
 
-	public RuneliteRequirement(ConfigManager configManager, String id, String expectedValue, String text)
-	{
-		this.configManager = configManager;
-		this.runeliteIdentifier = id;
-		this.displayText = text;
-		this.expectedValue = expectedValue;
-	}
+    public RuneliteRequirement(ConfigManager configManager, String id, String expectedValue) {
+        this.configManager = configManager;
+        this.runeliteIdentifier = id;
+        this.expectedValue = expectedValue;
+    }
 
-	public RuneliteRequirement(ConfigManager configManager, String id, String expectedValue)
-	{
-		this.configManager = configManager;
-		this.runeliteIdentifier = id;
-		this.expectedValue = expectedValue;
-	}
+    @Override
+    public boolean check(Client client) {
+        return getConfigValue().equals(expectedValue);
+    }
 
-	@Override
-	public boolean check(Client client)
-	{
-		return getConfigValue().equals(expectedValue);
-	}
+    @Override
+    public String getDisplayText() {
+        String returnText;
+        if (displayText != null) {
+            returnText = displayText;
+        } else {
+            returnText = "You need " + runeliteIdentifier;
+        }
 
-	@Override
-	public String getDisplayText()
-	{
-		String returnText;
-		if (displayText != null)
-		{
-			returnText = displayText;
-		}
-		else
-		{
-			returnText = "You need " + runeliteIdentifier;
-		}
+        return returnText;
+    }
 
-		return returnText;
-	}
+    public String getConfigValue() {
+        return configManager.getConfiguration(CONFIG_GROUP, runeliteIdentifier);
+    }
 
-	public String getConfigValue()
-	{
-		return configManager.getConfiguration(CONFIG_GROUP, runeliteIdentifier);
-	}
+    public void setConfigValue(String obj) {
+        configManager.getConfiguration(CONFIG_GROUP, runeliteIdentifier, obj);
+    }
 
-	public void setConfigValue(String obj)
-	{
-		configManager.setConfiguration(CONFIG_GROUP, runeliteIdentifier, obj);
-	}
+    public boolean configExists() {
+        return configManager.getConfiguration(CONFIG_GROUP, runeliteIdentifier) != null;
+    }
 
-	public boolean configExists()
-	{
-		return configManager.getConfiguration(CONFIG_GROUP, runeliteIdentifier) != null;
-	}
-
-	public void initWithValue(String value)
-	{
-		if (!configExists())
-		{
-			setConfigValue(value);
-		}
-	}
+    public void initWithValue(String value) {
+        if (!configExists()) {
+            setConfigValue(value);
+        }
+    }
 }
 

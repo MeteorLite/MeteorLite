@@ -27,214 +27,193 @@ package com.questhelper.quests.recipefordisaster;
 import com.questhelper.ItemCollections;
 import com.questhelper.NpcCollections;
 import com.questhelper.Zone;
-import com.questhelper.requirements.item.FollowerItemRequirement;
-import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.ZoneRequirement;
+import com.questhelper.requirements.item.FollowerItemRequirement;
+import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.steps.DetailedOwnerStep;
 import com.questhelper.steps.DetailedQuestStep;
 import com.questhelper.steps.NpcStep;
 import com.questhelper.steps.ObjectStep;
 import com.questhelper.steps.QuestStep;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
+import meteor.eventbus.Subscribe;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
 import net.runelite.api.ObjectID;
 import net.runelite.api.Varbits;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.GameTick;
-import meteor.eventbus.Subscribe;
 
-public class MakeEvilStew extends DetailedOwnerStep
-{
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 
-	DetailedQuestStep catchRats, enterBasement, useStewOnEvilDave, restart;
+public class MakeEvilStew extends DetailedOwnerStep {
 
-	Requirement inEvilDaveRoom;
+    DetailedQuestStep catchRats, enterBasement, useStewOnEvilDave, restart;
 
-	Zone evilDaveRoom;
+    Requirement inEvilDaveRoom;
 
-	ItemRequirement redSpice, orangeSpice, brownSpice, yellowSpice, evilStewHighlighted, evilStew, stew;
+    Zone evilDaveRoom;
 
-	Requirement cat;
+    ItemRequirement redSpice, orangeSpice, brownSpice, yellowSpice, evilStewHighlighted, evilStew, stew;
 
-	public MakeEvilStew(QuestHelper questHelper)
-	{
-		super(questHelper);
-	}
+    Requirement cat;
 
-	@Subscribe
-	public void onGameTick(GameTick event)
-	{
-		updateSteps();
-	}
+    public MakeEvilStew(QuestHelper questHelper) {
+        super(questHelper);
+    }
 
-	@Override
-	protected void updateSteps()
-	{
-		int redNeeded = client.getVarbitValue(1883);
-		int yellowNeeded = client.getVarbitValue(1884);
-		int brownNeeded = client.getVarbitValue(1885);
-		int orangeNeeded = client.getVarbitValue(1886);
+    @Subscribe
+    public void onGameTick(GameTick event) {
+        updateSteps();
+    }
 
-		int redInStew = client.getVar(Varbits.SPICY_STEW_RED_SPICES);
-		int yellowInStew = client.getVar(Varbits.SPICY_STEW_YELLOW_SPICES);
-		int brownInStew = client.getVar(Varbits.SPICY_STEW_BROWN_SPICES);
-		int orangeInStew = client.getVar(Varbits.SPICY_STEW_ORANGE_SPICES);
+    @Override
+    protected void updateSteps() {
+        int redNeeded = client.getVarbitValue(1883);
+        int yellowNeeded = client.getVarbitValue(1884);
+        int brownNeeded = client.getVarbitValue(1885);
+        int orangeNeeded = client.getVarbitValue(1886);
 
-		int numRedStillNeeded = redNeeded - redInStew;
-		int numOrangeStillNeeded = orangeNeeded - orangeInStew;
-		int numBrownStillNeeded = brownNeeded - brownInStew;
-		int numYellowStillNeeded = yellowNeeded - yellowInStew;
+        int redInStew = client.getVar(Varbits.SPICY_STEW_RED_SPICES);
+        int yellowInStew = client.getVar(Varbits.SPICY_STEW_YELLOW_SPICES);
+        int brownInStew = client.getVar(Varbits.SPICY_STEW_BROWN_SPICES);
+        int orangeInStew = client.getVar(Varbits.SPICY_STEW_ORANGE_SPICES);
 
-		if (numRedStillNeeded == 0
-			&& numOrangeStillNeeded == 0
-			&& numBrownStillNeeded == 0
-			&& numYellowStillNeeded == 0)
-		{
-			if (inEvilDaveRoom.check(client))
-			{
-				startUpStep(useStewOnEvilDave);
-			}
-			else
-			{
-				startUpStep(enterBasement);
-			}
-			return;
-		}
+        int numRedStillNeeded = redNeeded - redInStew;
+        int numOrangeStillNeeded = orangeNeeded - orangeInStew;
+        int numBrownStillNeeded = brownNeeded - brownInStew;
+        int numYellowStillNeeded = yellowNeeded - yellowInStew;
 
-		if (numBrownStillNeeded < 0
-			|| numOrangeStillNeeded < 0
-			|| numRedStillNeeded < 0
-			|| numYellowStillNeeded < 0)
-		{
-			startUpStep(restart);
-			return;
-		}
+        if (numRedStillNeeded == 0
+                && numOrangeStillNeeded == 0
+                && numBrownStillNeeded == 0
+                && numYellowStillNeeded == 0) {
+            if (inEvilDaveRoom.check(client)) {
+                startUpStep(useStewOnEvilDave);
+            } else {
+                startUpStep(enterBasement);
+            }
+            return;
+        }
 
-		catchRats.setRequirements(Collections.singletonList(cat));
-		catchRats.setText("Have your cat catch Hell-Rats for spices, and add them " +
-			"to your stew. You still need to add:");
+        if (numBrownStillNeeded < 0
+                || numOrangeStillNeeded < 0
+                || numRedStillNeeded < 0
+                || numYellowStillNeeded < 0) {
+            startUpStep(restart);
+            return;
+        }
 
-		if (redInStew == 0
-			&& brownInStew == 0
-			&& orangeInStew == 0
-			&& yellowInStew == 0)
-		{
-			catchRats.addRequirement(stew);
-		}
-		else
-		{
-			catchRats.addRequirement(evilStewHighlighted);
-		}
+        catchRats.setRequirements(Collections.singletonList(cat));
+        catchRats.setText("Have your cat catch Hell-Rats for spices, and add them " +
+                "to your stew. You still need to add:");
 
-		if (numRedStillNeeded > 0)
-		{
-			redSpice.setQuantity(numRedStillNeeded);
-			catchRats.addText(" " + numRedStillNeeded + " red spice.");
-			catchRats.addRequirement(redSpice);
-		}
+        if (redInStew == 0
+                && brownInStew == 0
+                && orangeInStew == 0
+                && yellowInStew == 0) {
+            catchRats.addRequirement(stew);
+        } else {
+            catchRats.addRequirement(evilStewHighlighted);
+        }
 
-		if (numOrangeStillNeeded > 0)
-		{
-			orangeSpice.setQuantity(numOrangeStillNeeded);
-			catchRats.addText(" " + numOrangeStillNeeded + " orange spice.");
-			catchRats.addRequirement(orangeSpice);
-		}
+        if (numRedStillNeeded > 0) {
+            redSpice.setQuantity(numRedStillNeeded);
+            catchRats.addText(" " + numRedStillNeeded + " red spice.");
+            catchRats.addRequirement(redSpice);
+        }
 
-		if (numBrownStillNeeded > 0)
-		{
-			brownSpice.setQuantity(numBrownStillNeeded);
-			catchRats.addText(" " + numBrownStillNeeded + " brown spice.");
-			catchRats.addRequirement(brownSpice);
-		}
+        if (numOrangeStillNeeded > 0) {
+            orangeSpice.setQuantity(numOrangeStillNeeded);
+            catchRats.addText(" " + numOrangeStillNeeded + " orange spice.");
+            catchRats.addRequirement(orangeSpice);
+        }
 
-		if (numYellowStillNeeded > 0)
-		{
-			yellowSpice.setQuantity(numYellowStillNeeded);
-			catchRats.addText(" " + numYellowStillNeeded + " yellow spice.");
-			catchRats.addRequirement(yellowSpice);
-		}
+        if (numBrownStillNeeded > 0) {
+            brownSpice.setQuantity(numBrownStillNeeded);
+            catchRats.addText(" " + numBrownStillNeeded + " brown spice.");
+            catchRats.addRequirement(brownSpice);
+        }
 
-		startUpStep(catchRats);
+        if (numYellowStillNeeded > 0) {
+            yellowSpice.setQuantity(numYellowStillNeeded);
+            catchRats.addText(" " + numYellowStillNeeded + " yellow spice.");
+            catchRats.addRequirement(yellowSpice);
+        }
 
-	}
+        startUpStep(catchRats);
 
-	@Override
-	protected void setupSteps()
-	{
-		setupRequirements();
-		setupZones();
-		setupConditions();
+    }
 
-		catchRats = new DetailedQuestStep(getQuestHelper(), "Have your cat catch Hell-Rats for spices, and add them " +
-			"to your stew to match the required quantities.");
+    @Override
+    protected void setupSteps() {
+        setupRequirements();
+        setupZones();
+        setupConditions();
 
-		restart = new DetailedQuestStep(getQuestHelper(), "You've added too much of a spice. Eat your spicy stew and " +
-			"start again.", evilStewHighlighted);
+        catchRats = new DetailedQuestStep(getQuestHelper(), "Have your cat catch Hell-Rats for spices, and add them " +
+                "to your stew to match the required quantities.");
 
-		enterBasement = new ObjectStep(getQuestHelper(), ObjectID.TRAPDOOR_12267, new WorldPoint(3077, 3493, 0),
-			"Go back down to Evil Dave.");
-		((ObjectStep) enterBasement).addAlternateObjects(ObjectID.OPEN_TRAPDOOR);
+        restart = new DetailedQuestStep(getQuestHelper(), "You've added too much of a spice. Eat your spicy stew and " +
+                "start again.", evilStewHighlighted);
 
-		catchRats.addSubSteps(restart, enterBasement);
+        enterBasement = new ObjectStep(getQuestHelper(), ObjectID.TRAPDOOR_12267, new WorldPoint(3077, 3493, 0),
+                "Go back down to Evil Dave.");
+        ((ObjectStep) enterBasement).addAlternateObjects(ObjectID.OPEN_TRAPDOOR);
 
-		useStewOnEvilDave = new NpcStep(getQuestHelper(), NpcID.EVIL_DAVE_4806, new WorldPoint(3080, 9889, 0),
-			"Use the spicy stew on Evil Dave.", evilStewHighlighted);
-	}
+        catchRats.addSubSteps(restart, enterBasement);
 
-	protected void setupRequirements()
-	{
-		redSpice = new ItemRequirement("Red spice", ItemID.RED_SPICE_1);
-		redSpice.addAlternates(ItemID.RED_SPICE_2, ItemID.RED_SPICE_3, ItemID.RED_SPICE_4);
-		redSpice.setHighlightInInventory(true);
+        useStewOnEvilDave = new NpcStep(getQuestHelper(), NpcID.EVIL_DAVE_4806, new WorldPoint(3080, 9889, 0),
+                "Use the spicy stew on Evil Dave.", evilStewHighlighted);
+    }
 
-		orangeSpice = new ItemRequirement("Orange spice", ItemID.ORANGE_SPICE_1);
-		orangeSpice.addAlternates(ItemID.ORANGE_SPICE_2, ItemID.ORANGE_SPICE_3, ItemID.ORANGE_SPICE_4);
-		orangeSpice.setHighlightInInventory(true);
+    protected void setupRequirements() {
+        redSpice = new ItemRequirement("Red spice", ItemID.RED_SPICE_1);
+        redSpice.addAlternates(ItemID.RED_SPICE_2, ItemID.RED_SPICE_3, ItemID.RED_SPICE_4);
+        redSpice.setHighlightInInventory(true);
 
-		yellowSpice = new ItemRequirement("Yellow spice", ItemID.YELLOW_SPICE_1);
-		yellowSpice.addAlternates(ItemID.YELLOW_SPICE_2, ItemID.YELLOW_SPICE_3, ItemID.YELLOW_SPICE_4);
-		yellowSpice.setHighlightInInventory(true);
+        orangeSpice = new ItemRequirement("Orange spice", ItemID.ORANGE_SPICE_1);
+        orangeSpice.addAlternates(ItemID.ORANGE_SPICE_2, ItemID.ORANGE_SPICE_3, ItemID.ORANGE_SPICE_4);
+        orangeSpice.setHighlightInInventory(true);
 
-		brownSpice = new ItemRequirement("Brown spice", ItemID.BROWN_SPICE_1);
-		brownSpice.addAlternates(ItemID.BROWN_SPICE_2, ItemID.BROWN_SPICE_3, ItemID.BROWN_SPICE_4);
-		brownSpice.setHighlightInInventory(true);
+        yellowSpice = new ItemRequirement("Yellow spice", ItemID.YELLOW_SPICE_1);
+        yellowSpice.addAlternates(ItemID.YELLOW_SPICE_2, ItemID.YELLOW_SPICE_3, ItemID.YELLOW_SPICE_4);
+        yellowSpice.setHighlightInInventory(true);
 
-		evilStew = new ItemRequirement("Spicy stew", ItemID.SPICY_STEW);
-		evilStewHighlighted = new ItemRequirement("Spicy stew", ItemID.SPICY_STEW);
-		evilStewHighlighted.setHighlightInInventory(true);
+        brownSpice = new ItemRequirement("Brown spice", ItemID.BROWN_SPICE_1);
+        brownSpice.addAlternates(ItemID.BROWN_SPICE_2, ItemID.BROWN_SPICE_3, ItemID.BROWN_SPICE_4);
+        brownSpice.setHighlightInInventory(true);
 
-		stew = new ItemRequirement("Stew", ItemID.STEW);
-		stew.setHighlightInInventory(true);
+        evilStew = new ItemRequirement("Spicy stew", ItemID.SPICY_STEW);
+        evilStewHighlighted = new ItemRequirement("Spicy stew", ItemID.SPICY_STEW);
+        evilStewHighlighted.setHighlightInInventory(true);
 
-		cat = new FollowerItemRequirement("A non-overgrown cat for catching rats",
-			ItemCollections.getHuntingCats(),
-			NpcCollections.getHuntingCats());
-	}
+        stew = new ItemRequirement("Stew", ItemID.STEW);
+        stew.setHighlightInInventory(true);
 
-	public void setupZones()
-	{
-		evilDaveRoom = new Zone(new WorldPoint(3068, 9874, 0), new WorldPoint(3086, 9904, 0));
-	}
+        cat = new FollowerItemRequirement("A non-overgrown cat for catching rats",
+                ItemCollections.getHuntingCats(),
+                NpcCollections.getHuntingCats());
+    }
 
-	public void setupConditions()
-	{
-		inEvilDaveRoom = new ZoneRequirement(evilDaveRoom);
-	}
+    public void setupZones() {
+        evilDaveRoom = new Zone(new WorldPoint(3068, 9874, 0), new WorldPoint(3086, 9904, 0));
+    }
 
-	@Override
-	public Collection<QuestStep> getSteps()
-	{
-		return Arrays.asList(catchRats, enterBasement, useStewOnEvilDave, restart);
-	}
+    public void setupConditions() {
+        inEvilDaveRoom = new ZoneRequirement(evilDaveRoom);
+    }
 
-	public List<QuestStep> getDisplaySteps()
-	{
-		return Arrays.asList(catchRats, useStewOnEvilDave);
-	}
+    @Override
+    public Collection<QuestStep> getSteps() {
+        return Arrays.asList(catchRats, enterBasement, useStewOnEvilDave, restart);
+    }
+
+    public List<QuestStep> getDisplaySteps() {
+        return Arrays.asList(catchRats, useStewOnEvilDave);
+    }
 }

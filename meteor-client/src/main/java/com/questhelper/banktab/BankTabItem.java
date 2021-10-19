@@ -25,49 +25,42 @@
 package com.questhelper.banktab;
 
 import com.questhelper.requirements.item.ItemRequirement;
-import java.util.Collections;
-import java.util.List;
 import lombok.Getter;
 import lombok.Setter;
 
-public class BankTabItem
-{
-	@Getter
-	private final int quantity;
+import java.util.Collections;
+import java.util.List;
 
-	@Getter
-	@Setter
-	private String text;
+public class BankTabItem {
+    @Getter
+    private final int quantity;
+    @Getter
+    private final List<Integer> itemIDs;
+    @Getter
+    private final Integer displayID;
+    @Getter
+    private final String details;
+    @Getter
+    @Setter
+    private String text;
 
-	@Getter
-	private final List<Integer> itemIDs;
+    public BankTabItem(int quantity, String text, int itemID, String details) {
+        this.quantity = quantity;
+        this.text = text;
+        this.itemIDs = Collections.singletonList(itemID);
+        this.details = details;
+        this.displayID = null;
+    }
 
-	@Getter
-	private final Integer displayID;
+    public BankTabItem(int quantity, String text, int itemID, String details, int displayID) {
+        this.quantity = quantity;
+        this.text = text;
+        this.itemIDs = Collections.singletonList(itemID);
+        this.details = details;
+        this.displayID = displayID;
+    }
 
-	@Getter
-	private final String details;
-
-	public BankTabItem(int quantity, String text, int itemID, String details)
-	{
-		this.quantity = quantity;
-		this.text = text;
-		this.itemIDs =  Collections.singletonList(itemID);
-		this.details = details;
-		this.displayID = null;
-	}
-
-	public BankTabItem(int quantity, String text, int itemID, String details, int displayID)
-	{
-		this.quantity = quantity;
-		this.text = text;
-		this.itemIDs = Collections.singletonList(itemID);
-		this.details = details;
-		this.displayID = displayID;
-	}
-
-	public BankTabItem(ItemRequirement item)
-	{
-		this(item.getQuantity(), item.getName(), item.getId(), item.getTooltip(), item.getDisplayItemId());
-	}
+    public BankTabItem(ItemRequirement item) {
+        this(item.getQuantity(), item.getName(), item.getId(), item.getTooltip(), item.getDisplayItemId());
+    }
 }

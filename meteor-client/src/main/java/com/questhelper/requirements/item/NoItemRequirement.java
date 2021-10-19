@@ -28,47 +28,43 @@ package com.questhelper.requirements.item;
 
 import com.questhelper.QuestHelperConfig;
 import com.questhelper.requirements.util.ItemSlots;
-import java.awt.Color;
-import java.util.Objects;
-import javax.annotation.Nonnull;
 import net.runelite.api.Client;
+
+import javax.annotation.Nonnull;
+import java.awt.*;
+import java.util.Objects;
 
 /**
  * Requirement that checks if a player has no item in a specified {@link ItemSlots}.
  */
-public class NoItemRequirement extends ItemRequirement
-{
-	private final ItemSlots slot;
-	private final int matchingItemID;
+public class NoItemRequirement extends ItemRequirement {
+    private final ItemSlots slot;
+    private final int matchingItemID;
 
-	/**
-	 * Checks if a player has no items in a given {@link ItemSlots}
-	 *
-	 * @param text display text
-	 * @param slot the slot to check
-	 */
-	public NoItemRequirement(String text, @Nonnull ItemSlots slot)
-	{
-		super(text, -1, -1);
-		this.slot = slot;
-		matchingItemID = -1;
-	}
+    /**
+     * Checks if a player has no items in a given {@link ItemSlots}
+     *
+     * @param text display text
+     * @param slot the slot to check
+     */
+    public NoItemRequirement(String text, @Nonnull ItemSlots slot) {
+        super(text, -1, -1);
+        this.slot = slot;
+        matchingItemID = -1;
+    }
 
-	@Override
-	public boolean check(Client client)
-	{
-		return slot.checkInventory(client, Objects::isNull);
-	}
+    @Override
+    public boolean check(Client client) {
+        return slot.checkInventory(client, Objects::isNull);
+    }
 
-	@Override
-	public Color getColor(Client client, QuestHelperConfig config)
-	{
-		return check(client) ? config.passColour() : config.failColour();
-	}
+    @Override
+    public Color getColor(Client client, QuestHelperConfig config) {
+        return check(client) ? config.passColour() : config.failColour();
+    }
 
-	@Override
-	public String getDisplayText()
-	{
-		return "Nothing in your " + slot.getName();
-	}
+    @Override
+    public String getDisplayText() {
+        return "Nothing in your " + slot.getName();
+    }
 }

@@ -27,19 +27,32 @@
 package com.questhelper.questhelpers;
 
 import com.questhelper.QuestHelperPlugin;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-
 import meteor.ui.overlay.components.PanelComponent;
 
-public interface QuestDebugRenderer
-{
-	/** Used to render overlay's like quest steps. */
-	default void renderDebugOverlay(Graphics graphics, QuestHelperPlugin plugin, PanelComponent panelComponent) {}
+import java.awt.*;
 
-	/** Used to render an overlay similar to how fishing spot overlays work. */
-	default void renderDebugWorldOverlayHint(Graphics2D graphics, QuestHelperPlugin plugin, QuestHelper quest, PanelComponent panelComponent) {}
+public interface QuestDebugRenderer {
+    /**
+     * Used to render overlay's like quest steps.
+     */
+    default void renderDebugOverlay(Graphics graphics, QuestHelperPlugin plugin, PanelComponent panelComponent) {
+    }
 
-	/** Used to render overlays on widgets */
-	default void renderDebugWidgetOverlayHint(Graphics2D graphics, QuestHelperPlugin plugin, QuestHelper quest, PanelComponent panelComponent) {}
+    /**
+     * Used to render an overlay similar to how fishing spot overlays work.
+     */
+    default void renderDebugWorldOverlayHint(Graphics2D graphics,
+                                             QuestHelperPlugin plugin,
+                                             QuestHelper quest,
+                                             PanelComponent panelComponent) {
+    }
+
+    /**
+     * Used to render overlays on widgets
+     */
+    default void renderDebugWidgetOverlayHint(Graphics2D graphics,
+                                              QuestHelperPlugin plugin,
+                                              QuestHelper quest,
+                                              PanelComponent panelComponent) {
+    }
 }

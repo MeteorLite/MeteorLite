@@ -28,7 +28,7 @@ import lombok.Value;
 import net.runelite.http.api.worlds.WorldResult;
 
 /**
- * Fired when the @{link net.runelite.client.game.WorldService} refreshes the world list
+ * Fired when the @{link meteor.game.WorldService} refreshes the world list
  */
 @Value
 public class WorldsFetch
