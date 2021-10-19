@@ -13,7 +13,7 @@ public class Timer {
   }
 
   public int getMilliseconds() {
-    return getSecondsFromStart() % 1000;
+    return (int) (getMilliecondsFromStart() % 1000);
   }
 
   public int getSecondsFromStart() {

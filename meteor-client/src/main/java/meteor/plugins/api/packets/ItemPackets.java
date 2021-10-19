@@ -1,13 +1,13 @@
 package meteor.plugins.api.packets;
 
-import com.questhelper.steps.WidgetDetails;
 import meteor.plugins.api.game.Game;
 import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
+import net.runelite.api.TileObject;
+import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.packets.PacketBufferNode;
 import net.runelite.api.packets.PacketWriter;
 import net.runelite.api.widgets.WidgetInfo;
-import osrs.*;
 
 import java.util.List;
 
@@ -54,6 +54,10 @@ public class ItemPackets {
 		queueItemOnItemPacket(item.getId(), item.getSlot(), item2.getId(), item2.getSlot());
 	}
 
+	public static void useItemOnTileObject(Item item, TileObject object) {
+		WorldPoint wp = object.getWorldLocation();
+		queueItemUseOnTileObjectPacket(object.getId(), wp.getX(), wp.getY(), item.getSlot(), item.getId(), item.getWidgetId(), 0);
+	}
 	public static void queueBankItemActionPacket(int inventoryID, int itemID, int itemSlot){
 		PacketWriter writer = Game.getClient().getPacketWriter();
 		PacketBufferNode packet = Game.getClient().preparePacket(Game.getClient().getBankItemActionPacket(), writer.getIsaacCipher());
@@ -62,7 +66,7 @@ public class ItemPackets {
 		packet.getPacketBuffer().writeShort$api(itemID);
 		writer.queuePacket(packet);
 	}
-	public static void queueItemUseOnGameObjectPacket(int objectID,int objectX, int objectY, int itemSlot, int itemID, int inventoryID,int ctrlDown){
+	public static void queueItemUseOnTileObjectPacket(int objectID, int objectX, int objectY, int itemSlot, int itemID, int itemWidgetID, int ctrlDown){
 		PacketWriter writer = Game.getClient().getPacketWriter();
 		PacketBufferNode packet = Game.getClient().preparePacket(Game.getClient().getItemUseOnGameObjectPacket(), writer.getIsaacCipher());
 		packet.getPacketBuffer().writeShort01A$api(objectID);
@@ -70,7 +74,7 @@ public class ItemPackets {
 		packet.getPacketBuffer().writeByte01$api(ctrlDown);
 		packet.getPacketBuffer().writeShort01$api(objectY);
 		packet.getPacketBuffer().writeShort$api(objectX);
-		packet.getPacketBuffer().writeIntME$api(inventoryID);
+		packet.getPacketBuffer().writeIntME$api(itemWidgetID);
 		packet.getPacketBuffer().writeShort$api(itemSlot);
 		writer.queuePacket(packet);
 	}
