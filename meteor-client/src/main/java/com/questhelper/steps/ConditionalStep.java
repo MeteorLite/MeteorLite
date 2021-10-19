@@ -32,6 +32,7 @@ import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.conditional.InitializableRequirement;
 import com.questhelper.requirements.conditional.NpcCondition;
+import lombok.Getter;
 import meteor.eventbus.EventBus;
 import meteor.eventbus.Subscribe;
 import meteor.ui.overlay.components.PanelComponent;
@@ -53,6 +54,7 @@ import java.util.List;
 import java.util.Objects;
 
 /* Conditions are checked in the order they were added */
+@Getter
 public class ConditionalStep extends QuestStep implements OwnerStep {
     protected final LinkedHashMap<Requirement, QuestStep> steps;
     protected final List<ChatMessageRequirement> chatConditions = new ArrayList<>();

@@ -29,6 +29,7 @@ import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.steps.overlay.DirectionArrow;
 import com.questhelper.steps.tools.QuestPerspective;
+import lombok.Getter;
 import meteor.eventbus.Subscribe;
 import meteor.ui.overlay.OverlayUtil;
 import net.runelite.api.GameObject;
@@ -61,6 +62,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
+@Getter
 public class ObjectStep extends DetailedQuestStep {
     private final int objectID;
     private final ArrayList<Integer> alternateObjectIDs = new ArrayList<>();

@@ -4,6 +4,7 @@ import com.questhelper.QuestHelperPlugin;
 import com.questhelper.QuestHelperWorldMapPoint;
 import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.requirements.Requirement;
+import lombok.Getter;
 import meteor.ui.overlay.OverlayUtil;
 import net.runelite.api.Perspective;
 import net.runelite.api.coords.LocalPoint;
@@ -11,6 +12,7 @@ import net.runelite.api.coords.WorldPoint;
 
 import java.awt.*;
 
+@Getter
 public class TileStep extends DetailedQuestStep {
     private final WorldPoint worldPoint;
 

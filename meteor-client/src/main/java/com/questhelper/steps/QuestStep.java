@@ -63,6 +63,7 @@ import java.util.List;
 
 import static com.questhelper.overlays.QuestHelperOverlay.TITLED_CONTENT_COLOR;
 
+@Getter
 public abstract class QuestStep implements Module {
     @Getter
     protected final QuestHelper questHelper;

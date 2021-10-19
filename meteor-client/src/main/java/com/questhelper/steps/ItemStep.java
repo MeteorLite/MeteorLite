@@ -3,12 +3,14 @@ package com.questhelper.steps;
 import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.steps.overlay.DirectionArrow;
+import lombok.Getter;
 import net.runelite.api.Perspective;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
 
 import java.awt.*;
 
+@Getter
 public class ItemStep extends DetailedQuestStep {
     public ItemStep(QuestHelper questHelper, WorldPoint worldPoint, String text, Requirement... requirements) {
         super(questHelper, worldPoint, text, requirements);

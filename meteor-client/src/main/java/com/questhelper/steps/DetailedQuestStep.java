@@ -69,6 +69,7 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+@Getter
 public class DetailedQuestStep extends QuestStep {
     protected static final int MAX_DISTANCE = 2350;
     @Getter

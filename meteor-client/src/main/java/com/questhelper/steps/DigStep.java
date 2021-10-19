@@ -29,6 +29,7 @@ import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.item.ItemRequirement;
 import com.questhelper.requirements.util.InventorySlots;
+import lombok.Getter;
 import meteor.eventbus.Subscribe;
 import meteor.ui.overlay.OverlayUtil;
 import net.runelite.api.Item;
@@ -42,6 +43,7 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.function.Predicate;
 
+@Getter
 public class DigStep extends DetailedQuestStep {
     private final ItemRequirement SPADE = new ItemRequirement("Spade", ItemID.SPADE);
     private Predicate<Item> expectedItemPredicate = i -> i.getId() == -1;

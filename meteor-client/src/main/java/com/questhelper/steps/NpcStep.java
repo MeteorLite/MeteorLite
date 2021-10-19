@@ -30,6 +30,7 @@ import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.steps.overlay.DirectionArrow;
 import com.questhelper.steps.tools.QuestPerspective;
+import lombok.Getter;
 import lombok.Setter;
 import meteor.eventbus.Subscribe;
 import meteor.ui.overlay.OverlayUtil;
@@ -52,6 +53,7 @@ import java.util.List;
 
 import static com.questhelper.overlays.QuestHelperWorldOverlay.IMAGE_Z_OFFSET;
 
+@Getter
 public class NpcStep extends DetailedQuestStep {
     private final int npcID;
     private final ArrayList<Integer> alternateNpcIDs = new ArrayList<>();

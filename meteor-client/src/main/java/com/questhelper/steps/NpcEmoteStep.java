@@ -29,6 +29,7 @@ import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.steps.emote.QuestEmote;
 import com.questhelper.steps.overlay.IconOverlay;
+import lombok.Getter;
 import net.runelite.api.ScriptID;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.widgets.Widget;
@@ -37,6 +38,7 @@ import net.runelite.api.widgets.WidgetInfo;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
+@Getter
 public class NpcEmoteStep extends NpcStep {
     private final QuestEmote emote;
     private boolean hasScrolled;

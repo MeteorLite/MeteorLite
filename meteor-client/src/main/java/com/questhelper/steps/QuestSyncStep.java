@@ -27,12 +27,14 @@ package com.questhelper.steps;
 import com.questhelper.QuestHelperPlugin;
 import com.questhelper.QuestHelperQuest;
 import com.questhelper.questhelpers.QuestHelper;
+import lombok.Getter;
 import net.runelite.api.ScriptID;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 
 import java.awt.*;
 
+@Getter
 public class QuestSyncStep extends QuestStep {
     private final QuestHelperQuest quest;
     private boolean hasScrolled;

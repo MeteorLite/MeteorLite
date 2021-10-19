@@ -3,6 +3,7 @@ package com.questhelper.steps;
 import com.questhelper.QuestHelperPlugin;
 import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.requirements.Requirement;
+import lombok.Getter;
 import meteor.eventbus.Subscribe;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.widgets.Widget;
@@ -10,6 +11,7 @@ import net.runelite.api.widgets.Widget;
 import java.awt.*;
 import java.util.HashSet;
 
+@Getter
 public class PuzzleStep extends DetailedQuestStep {
 
     ButtonHighlighCalculator highlightCalculator;

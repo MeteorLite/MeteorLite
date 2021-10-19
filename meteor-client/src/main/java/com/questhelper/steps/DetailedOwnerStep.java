@@ -28,6 +28,7 @@ import com.google.inject.Inject;
 import com.questhelper.QuestHelperPlugin;
 import com.questhelper.questhelpers.QuestHelper;
 import com.questhelper.requirements.Requirement;
+import lombok.Getter;
 import meteor.eventbus.EventBus;
 import meteor.ui.overlay.components.PanelComponent;
 import net.runelite.api.Client;
@@ -37,6 +38,7 @@ import java.awt.*;
 import java.util.Collection;
 import java.util.List;
 
+@Getter
 public class DetailedOwnerStep extends QuestStep implements OwnerStep {
     protected QuestStep currentStep;
 
