@@ -23,9 +23,10 @@ public class Category extends TitledPane {
     private final FilteredList<PluginListCell> filteredPlugins;
 
     public Category(String name) {
-        // Needs styling for title bar
         setText(name);
-        setBackground(new Background(new BackgroundFill(MeteorConstants.LIGHT_GRAY, null, null)));
+        setBackground(new Background(new BackgroundFill(MeteorConstants.GRAY, null, null)));
+
+        getStylesheets().add("css/plugins/jfx-titledpane.css");
 
         plugins = FXCollections.observableArrayList();
 

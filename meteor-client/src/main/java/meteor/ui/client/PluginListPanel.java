@@ -21,7 +21,10 @@ import javafx.scene.control.ToolBar;
 import javafx.scene.input.ContextMenuEvent;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
+import javafx.scene.layout.Border;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.BorderStroke;
+import javafx.scene.layout.BorderStrokeStyle;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.paint.Color;
@@ -95,10 +98,10 @@ public class PluginListPanel extends BorderPane {
         scrollPane.setFitToHeight(true);
         scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
         scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.ALWAYS);
-        scrollPane.setBackground(new Background(new BackgroundFill(MeteorConstants.LIGHT_GRAY, null, null)));
+        scrollPane.setBackground(new Background(new BackgroundFill(MeteorConstants.GRAY, null, null)));
 
         Accordion accordion = new Accordion();
-        accordion.setBackground(new Background(new BackgroundFill(MeteorConstants.LIGHT_GRAY, null, null)));
+        accordion.setBackground(new Background(new BackgroundFill(MeteorConstants.GRAY, null, null)));
 
         scrollPane.setContent(accordion);
 
