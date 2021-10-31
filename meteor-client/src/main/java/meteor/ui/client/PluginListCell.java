@@ -17,72 +17,79 @@ import meteor.util.MeteorConstants;
 
 public class PluginListCell extends AnchorPane {
 
-	@Getter
-	private final String pluginName;
-	@Getter
-	private PluginToggleButton toggleButton;
+    @Getter
+    private final Plugin plugin;
+    @Getter
+    private final String pluginName;
+    @Getter
+    private PluginToggleButton toggleButton;
 
-	public PluginListCell(Plugin plugin, ConfigManager configManager) {
-		setBackground(new Background(new BackgroundFill(MeteorConstants.LIGHT_GRAY, null, null)));
-		pluginName = plugin.getName();
-		ContextMenu contextMenu = new ContextMenu();
-		contextMenu.setStyle("-fx-background-color: #121212;");
-		if (!plugin.getClass().getAnnotation(PluginDescriptor.class).cantDisable()) {
-			toggleButton = new PluginToggleButton(plugin);
-			AnchorPane.setTopAnchor(toggleButton, 6.0);
-			AnchorPane.setRightAnchor(toggleButton, 8.0);
+    public PluginListCell(Plugin plugin, ConfigManager configManager) {
+        setBackground(new Background(new BackgroundFill(MeteorConstants.LIGHT_GRAY, null, null)));
+        this.plugin = plugin;
+        pluginName = plugin.getName();
+        ContextMenu contextMenu = new ContextMenu();
+        contextMenu.setStyle("-fx-background-color: #121212;");
+        if (!plugin.getClass().getAnnotation(PluginDescriptor.class).cantDisable()) {
+            toggleButton = new PluginToggleButton(plugin);
+            AnchorPane.setTopAnchor(toggleButton, 6.0);
+            AnchorPane.setRightAnchor(toggleButton, 8.0);
 
-			toggleButton.selectedProperty().addListener((options, oldValue, newValue) -> {
-				if (newValue == plugin.isEnabled()) {
-					return;
-				}
-				plugin.toggle();
-			});
+            toggleButton.selectedProperty().addListener((options, oldValue, newValue) -> {
+                if (newValue == plugin.isEnabled()) {
+                    return;
+                }
+                plugin.toggle();
+            });
 
-			toggleButton.setSelected(Boolean.parseBoolean(configManager.getConfiguration(plugin.getClass().getSimpleName(), "pluginEnabled")));
-		}
+            toggleButton.setSelected(Boolean.parseBoolean(configManager.getConfiguration(plugin.getClass().getSimpleName(), "pluginEnabled")));
+        }
 
-		if (toggleButton != null) {
-			toggleButton.selectedProperty().addListener((options, oldValue, newValue) -> {
-				configManager.setConfiguration(plugin.getClass().getSimpleName(), "pluginEnabled", newValue);
-			});
-		}
+        if (toggleButton != null) {
+            toggleButton.selectedProperty().addListener((options, oldValue, newValue) -> {
+                configManager.setConfiguration(plugin.getClass().getSimpleName(), "pluginEnabled", newValue);
+            });
+        }
 
-		MeteorText pluginName = new MeteorText(plugin);
-		pluginName.setFill(Paint.valueOf("WHITE"));
+        MeteorText pluginName = new MeteorText(plugin);
+        pluginName.setFill(Paint.valueOf("WHITE"));
 
-		AnchorPane.setLeftAnchor(pluginName, 2.0);
-		AnchorPane.setTopAnchor(pluginName, 0.0);
+        AnchorPane.setLeftAnchor(pluginName, 2.0);
+        AnchorPane.setTopAnchor(pluginName, 0.0);
 
-		if (plugin.getClass().getAnnotation(PluginDescriptor.class).description().length() > 0) {
-			JFXTooltip tooltip = new JFXTooltip();
-			tooltip.setText(plugin.getClass().getAnnotation(PluginDescriptor.class).description());
+        if (plugin.getClass().getAnnotation(PluginDescriptor.class).description().length() > 0) {
+            JFXTooltip tooltip = new JFXTooltip();
+            tooltip.setText(plugin.getClass().getAnnotation(PluginDescriptor.class).description());
 
-			pluginName.addEventHandler(MouseEvent.MOUSE_ENTERED, (e) -> {
-				tooltip.showOnAnchors(pluginName, 0, -50);
-			});
+            pluginName.addEventHandler(MouseEvent.MOUSE_ENTERED, (e) -> {
+                tooltip.showOnAnchors(pluginName, 0, -50);
+            });
 
-			pluginName.addEventHandler(MouseEvent.MOUSE_EXITED, (e) -> {
-				tooltip.hide();
-			});
-		}
+            pluginName.addEventHandler(MouseEvent.MOUSE_EXITED, (e) -> {
+                tooltip.hide();
+            });
+        }
 
-		PluginConfigButton configButton = new PluginConfigButton(plugin);
-		Config pluginConfig = plugin.getConfig(configManager);
-		if (pluginConfig != null && pluginConfig.getClass().getDeclaredMethods().length > 4) {
-			configButton.setVisible(true);
-		}
+        PluginConfigButton configButton = new PluginConfigButton(plugin);
+        Config pluginConfig = plugin.getConfig(configManager);
+        if (pluginConfig != null && pluginConfig.getClass().getDeclaredMethods().length > 4) {
+            configButton.setVisible(true);
+        }
 
-		getChildren().addAll(pluginName, configButton);
+        getChildren().addAll(pluginName, configButton);
 
-		if (toggleButton != null) {
-			getChildren().add(toggleButton);
-		}
+        if (toggleButton != null) {
+            getChildren().add(toggleButton);
+        }
 
-		pluginName.setOnContextMenuRequested(e -> {
-			contextMenu.show(pluginName, e.getScreenX(), e.getScreenY());
-		});
+        pluginName.setOnContextMenuRequested(e -> {
+            contextMenu.show(pluginName, e.getScreenX(), e.getScreenY());
+        });
 
+    }
 
-	}
+    public PluginListCell copy(final ConfigManager configManager) {
+        return new PluginListCell(this.plugin, configManager);
+    }
+
 }

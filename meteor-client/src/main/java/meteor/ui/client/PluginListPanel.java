@@ -4,7 +4,6 @@ import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.collections.transformation.FilteredList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -41,7 +40,6 @@ import javax.inject.Inject;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -49,10 +47,9 @@ public class PluginListPanel extends BorderPane {
 
     private static final String MAIN_CATEGORY_NAME = "Plugins";
     private static final String EXTERNAL_CATEGORY_NAME = "Externals";
-
-    private final Category main;
-    private final Category externals;
-    private final ObservableList<PluginListCell> plugins;
+    private final ObservableList<Plugin> plugins;
+    private Category main;
+    private Category externals;
     private ObservableList<TitledPane> categories;
 
     @Inject
@@ -73,8 +70,6 @@ public class PluginListPanel extends BorderPane {
         refreshPlugins();
 
         ToolBar toolBar = initSearchBar();
-        main = createCategory(MAIN_CATEGORY_NAME);
-        externals = createCategory(EXTERNAL_CATEGORY_NAME);
         ScrollPane pluginListPane = initPluginListPane();
 
         initCategories();
@@ -93,10 +88,10 @@ public class PluginListPanel extends BorderPane {
 
         for (Plugin p : pluginManager.getPlugins()) {
             if (p != null) {
-                addPlugin(p);
+                plugins.add(p);
             }
         }
-        plugins.sort(Comparator.comparing(plugin -> plugin.getPluginName().toLowerCase()));
+        plugins.sort(Comparator.comparing(pl -> pl.getName().toLowerCase()));
     }
 
     private ScrollPane initPluginListPane() {
@@ -114,12 +109,6 @@ public class PluginListPanel extends BorderPane {
         scrollPane.setContent(accordion);
 
         categories = accordion.getPanes();
-
-        plugins.forEach(main::addPlugin);
-        categories.add(main);
-        categories.add(externals);
-
-        saveCategories();
 
         return scrollPane;
     }
@@ -168,47 +157,48 @@ public class PluginListPanel extends BorderPane {
         return toolBar;
     }
 
-    private void addPlugin(Plugin p) {
+    private PluginListCell createPluginListCell(Plugin p) {
         PluginListCell panel = new PluginListCell(p, configManager);
         panel.setOnContextMenuRequested(new EventHandler<ContextMenuEvent>() {
             @Override
             public void handle(ContextMenuEvent event) {
                 if (categories.size() > 2) {
-					ContextMenu contextMenu = new ContextMenu();
-					Menu addToCategory = new Menu("Add to Category");
-					categories.stream()
-							.filter(cat -> !cat.getText().equalsIgnoreCase(MAIN_CATEGORY_NAME) && !cat.getText().equalsIgnoreCase(EXTERNAL_CATEGORY_NAME))
-							.forEach(cat -> {
-								MenuItem add = new MenuItem(cat.getText());
-								add.setOnAction(new EventHandler<ActionEvent>() {
-									@Override
-									public void handle(ActionEvent event) {
-										if (panel.getParent() instanceof Category cat) {
-                                            System.out.println("Here");
-											cat.addPlugin(panel);
-										}
-									}
-								});
-								addToCategory.getItems().add(add);
-							});
+                    ContextMenu contextMenu = new ContextMenu();
+                    Menu addToCategory = new Menu("Add to Category");
+                    categories.stream()
+                            .filter(cat -> !cat.getText().equalsIgnoreCase(MAIN_CATEGORY_NAME) && !cat.getText().equalsIgnoreCase(EXTERNAL_CATEGORY_NAME))
+                            .forEach(cat -> {
+                                MenuItem add = new MenuItem(cat.getText());
+                                add.setOnAction(new EventHandler<ActionEvent>() {
+                                    @Override
+                                    public void handle(ActionEvent event) {
+                                        if (cat instanceof Category c) {
+                                            c.addPlugin(createPluginListCell(p));
+                                            saveCategories();
+                                        }
+                                    }
+                                });
+                                addToCategory.getItems().add(add);
+                            });
 
-					Menu removeFromCategory = new Menu("Remove from Category");
-					categories.stream()
-							.filter(cat -> !cat.getText().equalsIgnoreCase(MAIN_CATEGORY_NAME) && !cat.getText().equalsIgnoreCase(EXTERNAL_CATEGORY_NAME))
-							.forEach(cat -> {
-								MenuItem remove = new MenuItem(cat.getText());
-								remove.setOnAction(new EventHandler<ActionEvent>() {
-									@Override
-									public void handle(ActionEvent event) {
-										if (panel.getParent() instanceof Category cat) {
-											cat.removePlugin(panel);
-										}
-									}
-								});
-								removeFromCategory.getItems().add(remove);
-							});
+                    Menu removeFromCategory = new Menu("Remove from Category");
+                    categories.stream()
+                            .filter(cat -> !cat.getText().equalsIgnoreCase(MAIN_CATEGORY_NAME) && !cat.getText().equalsIgnoreCase(EXTERNAL_CATEGORY_NAME))
+                            .forEach(cat -> {
+                                MenuItem remove = new MenuItem(cat.getText());
+                                remove.setOnAction(new EventHandler<ActionEvent>() {
+                                    @Override
+                                    public void handle(ActionEvent event) {
+                                        if (cat instanceof Category c) {
+                                            c.removePlugin(panel);
+                                            saveCategories();
+                                        }
+                                    }
+                                });
+                                removeFromCategory.getItems().add(remove);
+                            });
 
-					contextMenu.getItems().addAll(addToCategory, removeFromCategory);
+                    contextMenu.getItems().addAll(addToCategory, removeFromCategory);
                     contextMenu.show(panel, event.getScreenX(), event.getScreenY());
                 }
             }
@@ -219,7 +209,8 @@ public class PluginListPanel extends BorderPane {
         if (tb != null) {
             eventBus.register(panel.getToggleButton());
         }
-        plugins.add(panel);
+
+        return panel;
     }
 
     public Category createCategory(String name) {
@@ -287,7 +278,9 @@ public class PluginListPanel extends BorderPane {
                     String[] categoryPlugins = categoryPluginsConfig.split(",");
                     for (String s : categoryPlugins) {
                         if (!s.equals("")) {
-                            getPlugin(s).ifPresent(category::addPlugin);
+                            getPlugin(s).ifPresent(plugin -> {
+                                category.addPlugin(createPluginListCell(plugin));
+                            });
                         }
                     }
                 }
@@ -295,6 +288,45 @@ public class PluginListPanel extends BorderPane {
                 categories.add(category);
             }
         }
+
+        categories.stream()
+                .filter(cat -> cat.getText().equals(MAIN_CATEGORY_NAME)).findFirst().ifPresentOrElse(cat -> {
+                            if (cat instanceof Category c) {
+                                main = c;
+                                plugins.forEach(pl -> {
+                                    main.addPlugin(createPluginListCell(pl));
+                                });
+                            }
+                        },
+                        () -> {
+                            main = createCategory(MAIN_CATEGORY_NAME);
+                            plugins.forEach(pl -> {
+                                main.addPlugin(createPluginListCell(pl));
+                            });
+                            categories.add(0, main);
+                        });
+
+        categories.stream()
+                .filter(cat -> cat.getText().equals(EXTERNAL_CATEGORY_NAME)).findFirst().ifPresentOrElse(cat -> {
+                            if (cat instanceof Category c) {
+                                externals = c;
+                                plugins.forEach(pl -> {
+                                    if (pl.isExternal()) {
+                                        externals.addPlugin(createPluginListCell(pl));
+                                    }
+                                });
+                            }
+                        },
+                        () -> {
+                            externals = createCategory(EXTERNAL_CATEGORY_NAME);
+                            plugins.forEach(pl -> {
+                                if (pl.isExternal()) {
+                                    externals.addPlugin(createPluginListCell(pl));
+                                }
+                            });
+                            categories.add(1, externals);
+                        });
+
         saveCategories();
     }
 
@@ -310,18 +342,11 @@ public class PluginListPanel extends BorderPane {
                                     .collect(Collectors.joining(",")));
                 }
             }
-
         });
 
         configManager.setConfiguration("meteorlite", "categories",
                 categories.stream()
-                        .map(cat -> {
-                            if (cat instanceof Category c) {
-                                return c.getText();
-                            }
-                            return null;
-                        }).filter(Objects::nonNull)
-                        .filter(txt -> !txt.equals(MAIN_CATEGORY_NAME) && !txt.equals(EXTERNAL_CATEGORY_NAME))
+                        .map(TitledPane::getText)
                         .distinct()
                         .collect(Collectors.joining(",")));
         configManager.saveProperties(true);
@@ -342,6 +367,7 @@ public class PluginListPanel extends BorderPane {
     }
 
     public void createCategoryDialog() {
+        // Needs styling
         TextInputDialog dialog = new TextInputDialog("Name");
 
         dialog.setHeaderText(null);
@@ -375,8 +401,8 @@ public class PluginListPanel extends BorderPane {
         return categories.stream().filter(cat -> cat.getText().equalsIgnoreCase(name)).map(cat -> (Category) cat).findFirst();
     }
 
-    private Optional<PluginListCell> getPlugin(String name) {
-        return plugins.stream().filter(pluginListCell -> pluginListCell.getPluginName().equalsIgnoreCase(name)).findFirst();
+    private Optional<Plugin> getPlugin(String name) {
+        return plugins.stream().filter(plugin -> plugin.getName().equalsIgnoreCase(name)).findFirst();
     }
 
     @Subscribe
