@@ -55,6 +55,8 @@ public class PluginListPanel extends BorderPane {
 		plugins = FXCollections.observableArrayList();
 		categories = FXCollections.observableArrayList();
 
+		refreshPlugins();
+
 		ToolBar toolBar = initSearchBar();
 		ScrollPane pluginListPane = initPluginListPane();
 
@@ -85,23 +87,22 @@ public class PluginListPanel extends BorderPane {
 //			}
 //		});
 		setTop(toolBar);
-
-		VBox pluginListView = new VBox();
-		pluginListView.setBackground(new Background(new BackgroundFill(MeteorConstants.LIGHT_GRAY, null, null)));
-
-		filteredData.addListener((ListChangeListener.Change<? extends PluginListCell> c) -> {
-			pluginListView.getChildren().clear();
-			pluginListView.getChildren().addAll(filteredData);
-		});
-
-		pluginListPane.setContent(pluginListView);
 		setCenter(pluginListPane);
+
+//		VBox pluginListView = new VBox();
+//		pluginListView.setBackground(new Background(new BackgroundFill(MeteorConstants.LIGHT_GRAY, null, null)));
+//
+//		filteredData.addListener((ListChangeListener.Change<? extends PluginListCell> c) -> {
+//			pluginListView.getChildren().clear();
+//			pluginListView.getChildren().addAll(filteredData);
+//		});
+//
+//		pluginListPane.setContent(pluginListView);
+//		setCenter(pluginListPane);
 
 //		addCategory.addEventHandler(MouseEvent.MOUSE_CLICKED, (e) -> {
 //			refreshPlugins();
 //		});
-
-		refreshPlugins();
 	}
 
 	public void refreshPlugins() {
@@ -137,6 +138,15 @@ public class PluginListPanel extends BorderPane {
 		accordion.setBackground(new Background(new BackgroundFill(MeteorConstants.LIGHT_GRAY, null, null)));
 
 		scrollPane.setContent(accordion);
+
+		categories.addListener((ListChangeListener.Change<? extends Category> c) -> {
+			accordion.getPanes().clear();
+			accordion.getPanes().addAll(categories);
+		});
+
+		Category main = new Category("Plugins");
+		plugins.forEach(main::addPlugin);
+		categories.add(main);
 
 		return scrollPane;
 	}
