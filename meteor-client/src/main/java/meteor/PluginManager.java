@@ -22,8 +22,10 @@ import meteor.config.ConfigManager;
 import meteor.eventbus.EventBus;
 import meteor.eventbus.Subscribe;
 import meteor.eventbus.events.PluginChanged;
+import meteor.events.ExternalsReloaded;
 import meteor.plugins.ExternalPluginClassLoader;
 import meteor.plugins.PluginDescriptor;
+import meteor.plugins.api.game.Game;
 import meteor.plugins.banktaglayouts.BankTagLayoutsPlugin;
 import meteor.plugins.cettitutorial.CettiTutorialPlugin;
 import meteor.plugins.nexus.NexusMapPlugin;
@@ -464,20 +466,17 @@ public class PluginManager {
 			plugin.toggle();
 	}
 
+
 	public void startExternals() {
 		List<Plugin> externals = loadPluginsFromDir(EXTERNALS_DIR);
 		plugins.stream().filter(Plugin::isExternal).forEach(Plugin::unload);
 		plugins.removeIf(Plugin::isExternal);
-//		Category category = PluginListPanel.INSTANCE.findOrCreateCategory(PluginListPanel.EXTERNAL_CATEGORY_NAME);
 
 		for (Plugin external : externals) {
-//			if (!category.plugins.contains(external.getName())) {
-//				category.plugins.add(0, external.getName());
-//			}
-
 			plugins.add(external);
 			startPlugin(external);
 		}
+		Game.getClient().getCallbacks().post(new ExternalsReloaded());
 	}
 
 	private List<Plugin> loadPluginsFromDir(File dir) {

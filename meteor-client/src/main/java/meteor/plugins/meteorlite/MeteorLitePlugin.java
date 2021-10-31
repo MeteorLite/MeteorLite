@@ -5,7 +5,6 @@ import meteor.config.ConfigManager;
 import meteor.config.MeteorLiteConfig;
 import meteor.eventbus.Subscribe;
 import meteor.eventbus.events.ConfigChanged;
-import meteor.events.ExternalsReloaded;
 import meteor.input.MouseManager;
 import meteor.plugins.Plugin;
 import meteor.plugins.PluginDescriptor;
@@ -58,10 +57,6 @@ public class MeteorLitePlugin extends Plugin {
         eventBus.register(interactionManager);
         eventBus.register(meteorLiteLoginScreen);
 
-        if (config.externalsLoadOnStartup()) {
-            Game.getClient().getCallbacks().post(new ExternalsReloaded());
-        }
-
         if (config.meteorLoginScreen()) {
             meteorLiteLoginScreen.setCustom();
         } else {
@@ -80,10 +75,6 @@ public class MeteorLitePlugin extends Plugin {
     public void onConfigButtonClicked(ConfigButtonClicked event) {
         if (!event.getGroup().equals(MeteorLiteConfig.GROUP_NAME)) {
             return;
-        }
-
-        if (event.getKey().equals("reloadExternals")) {
-            Game.getClient().getCallbacks().post(new ExternalsReloaded());
         }
     }
 

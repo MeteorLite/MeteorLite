@@ -3,9 +3,6 @@ package meteor.ui;
 import com.google.inject.Inject;
 import javafx.application.Platform;
 import javafx.scene.Parent;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Dialog;
-import javafx.scene.control.TextInputDialog;
 import lombok.Getter;
 import meteor.PluginManager;
 import meteor.config.ConfigManager;
@@ -14,7 +11,6 @@ import meteor.eventbus.EventBus;
 import meteor.eventbus.Subscribe;
 import meteor.eventbus.events.ClientShutdown;
 import meteor.eventbus.events.ConfigChanged;
-import meteor.events.ExternalsReloaded;
 import meteor.plugins.api.game.Game;
 import meteor.ui.client.PluginListPanel;
 import meteor.ui.client.RightPanel;
@@ -44,7 +40,6 @@ import java.net.URL;
 import java.security.InvalidParameterException;
 import java.util.Enumeration;
 import java.util.Iterator;
-import java.util.Optional;
 
 import static meteor.MeteorLiteClientModule.parameters;
 import static meteor.MeteorLiteClientModule.properties;
@@ -101,6 +96,10 @@ public class MeteorUI extends ContainableFrame implements AppletStub, AppletCont
 
 		configManager.load();
 		pluginManager.startInternalPlugins();
+
+		if (config.externalsLoadOnStartup()) {
+			pluginManager.startExternals();
+		}
 
 		setupJavaFXComponents(applet);
 
@@ -411,6 +410,10 @@ public class MeteorUI extends ContainableFrame implements AppletStub, AppletCont
 			return;
 		}
 
+		if (event.getKey().equals("reloadExternals")) {
+			pluginManager.startExternals();
+		}
+
 		if (event.getKey().equals("toolbarPosition")) {
 			SwingUtilities.invokeLater(() -> {
 				rootPanel.remove(toolbar);
@@ -433,11 +436,6 @@ public class MeteorUI extends ContainableFrame implements AppletStub, AppletCont
 		}
 
 		SwingUtilities.invokeLater(() -> updateFrameConfig(event.getKey().equals("lockWindowSize")));
-	}
-
-	@Subscribe
-	public void onExternalsReloaded(ExternalsReloaded e) {
-		pluginManager.startExternals();
 	}
 
 	@Subscribe

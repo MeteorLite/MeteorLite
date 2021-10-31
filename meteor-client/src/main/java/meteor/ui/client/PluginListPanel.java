@@ -67,7 +67,7 @@ public class PluginListPanel extends BorderPane {
 
         plugins = FXCollections.observableArrayList();
 
-        refreshPlugins();
+        loadPlugins();
 
         ToolBar toolBar = initSearchBar();
         ScrollPane pluginListPane = initPluginListPane();
@@ -83,14 +83,8 @@ public class PluginListPanel extends BorderPane {
         setCenter(pluginListPane);
     }
 
-    public void refreshPlugins() {
-        plugins.clear();
-
-        for (Plugin p : pluginManager.getPlugins()) {
-            if (p != null) {
-                plugins.add(p);
-            }
-        }
+    public void loadPlugins() {
+        plugins.setAll(pluginManager.getPlugins());
         plugins.sort(Comparator.comparing(pl -> pl.getName().toLowerCase()));
     }
 
@@ -140,7 +134,6 @@ public class PluginListPanel extends BorderPane {
 
         addCategoryButton.setOnMouseClicked((e) -> {
             createCategoryDialog();
-            refreshPlugins();
         });
 
         searchBar.textProperty().addListener(obs -> {
@@ -407,6 +400,11 @@ public class PluginListPanel extends BorderPane {
 
     @Subscribe
     public void onExternalsReloaded(ExternalsReloaded e) {
-        refreshPlugins();
+        loadPlugins();
+        plugins.forEach(pl -> {
+            if (pl.isExternal()) {
+                externals.addPlugin(createPluginListCell(pl));
+            }
+        });
     }
 }
