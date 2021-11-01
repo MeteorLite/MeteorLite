@@ -70,7 +70,7 @@ public class class244 {
 			}
 
 			if (var1 == 326) {
-				PacketBufferNode var4 = LoginScreenAnimation.getPacketBufferNode(ClientPacket.field2675, Client.packetWriter.isaacCipher);
+				PacketBufferNode var4 = LoginScreenAnimation.getPacketBufferNode(ClientPacket.UNKNOWN30, Client.packetWriter.isaacCipher);
 				Client.playerAppearance.write(var4.packetBuffer);
 				Client.packetWriter.addNode(var4);
 				return true;

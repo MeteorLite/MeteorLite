@@ -1497,139 +1497,139 @@ public interface RSClient extends RSGameEngine, Client {
   @Override
   RSPacketBufferNode preparePacket(ClientPacket packet, IsaacCipher isaac);
 
-  @Import("Packet_nameInput")
+  @Import("RESUME_P_NAMEDIALOG")
   @Override
   RSClientPacket getNameInputPacket();
 
-  @Import("Packet_itemAction")
+  @Import("OPHELD1")
   @Override
   RSClientPacket getItemActionPacket();
 
-  @Import("Packet_itemUseOnGameObjectPacket")
+  @Import("OPLOCU")
   @Override
   RSClientPacket getItemUseOnGameObjectPacket();
 
-  @Import("Packet_gameObjectActionPacket")
+  @Import("OPLOC1")
   @Override
   RSClientPacket getGameObjectActionPacket();
 
-  @Import("Packet_gameObjectAction3Packet")
+  @Import("OPLOC3")
   @Override
   RSClientPacket getGameObjectAction3Packet();
 
-  @Import("Packet_gameObjectAction4Packet")
+  @Import("OPLOC4")
   @Override
   RSClientPacket getGameObjectAction4Packet();
 
-  @Import("Packet_gameObjectAction5Packet")
+  @Import("OPLOC5")
   @Override
   RSClientPacket getGameObjectAction5Packet();
 
-  @Import("Packet_interfaceClosePacket")
+  @Import("CLOSE_MODAL")
   @Override
   RSClientPacket getInterfaceClosePacket();
 
-  @Import("Packet_NPCAction3Packet")
+  @Import("OPNPC3")
   @Override
   RSClientPacket getNPCAction3Packet();
 
-  @Import("Packet_gameObjectAction2Packet")
+  @Import("OPLOC2")
   @Override
   RSClientPacket getGameObjectAction2Packet();
 
-  @Import("Packet_NPCActionPacket")
+  @Import("OPNPC1")
   @Override
   RSClientPacket getNPCActionPacket();
 
-  @Import("Packet_NPCAction2Packet")
+  @Import("OPNPC2")
   @Override
   RSClientPacket getNPCAction2Packet();
 
-  @Import("Packet_NPCAction4Packet")
+  @Import("OPNPC4")
   @Override
   RSClientPacket getNPCAction4Packet();
 
-  @Import("Packet_NPCAction5Packet")
+  @Import("OPNPC5")
   @Override
   RSClientPacket getNPCAction5Packet();
 
-  @Import("Packet_spellOnItem")
+  @Import("OPHELDT")
   @Override
   RSClientPacket getSpellOnItemPacket();
 
-  @Import("Packet_numberInput")
+  @Import("RESUME_P_COUNTDIALOG")
   @Override
   RSClientPacket getNumberInputPacket();
 
-  @Import("Packet_textInput")
+  @Import("RESUME_P_COUNTDIALOG")
   @Override
   RSClientPacket getTextInputPacket();
 
-  @Import("Packet_widgetActionPacket")
+  @Import("IF_BUTTON1")
   @Override
   RSClientPacket getWidgetActionPacket();
 
-  @Import("Packet_widgetAction2Packet")
+  @Import("IF_BUTTON2")
   @Override
   RSClientPacket getWidgetAction2Packet();
 
-  @Import("Packet_widgetAction3Packet")
+  @Import("IF_BUTTON3")
   @Override
   RSClientPacket getWidgetAction3Packet();
 
-  @Import("Packet_widgetAction4Packet")
+  @Import("IF_BUTTON4")
   @Override
   RSClientPacket getWidgetAction4Packet();
 
-  @Import("Packet_widgetAction5Packet")
+  @Import("IF_BUTTON5")
   @Override
   RSClientPacket getWidgetAction5Packet();
 
-  @Import("Packet_widgetAction6Packet")
+  @Import("IF_BUTTON6")
   @Override
   RSClientPacket getWidgetAction6Packet();
 
-  @Import("Packet_widgetAction7Packet")
+  @Import("IF_BUTTON7")
   @Override
   RSClientPacket getWidgetAction7Packet();
 
-  @Import("Packet_widgetAction8Packet")
+  @Import("IF_BUTTON8")
   @Override
   RSClientPacket getWidgetAction8Packet();
 
-  @Import("Packet_widgetAction10Packet")
+  @Import("IF_BUTTON10")
   @Override
   RSClientPacket getWidgetAction10Packet();
 
-  @Import("Packet_clickPacket")
+  @Import("EVENT_MOUSE_CLICK")
   @Override
   RSClientPacket getClickPacket();
 
-  @Import("Packet_itemAction2Packet")
+  @Import("OPHELD2")
   @Override
   RSClientPacket getItemAction2Packet();
 
-  @Import("Packet_itemAction3Packet")
+  @Import("OPHELD3")
   @Override
   RSClientPacket getItemAction3Packet();
 
-  @Import("Packet_itemAction4Packet")
+  @Import("OPHELD4")
   @Override
   RSClientPacket getItemAction4Packet();
 
-  @Import("Packet_itemAction5Packet")
+  @Import("OPHELD5")
   @Override
   RSClientPacket getItemAction5Packet();
 
-  @Import("Packet_itemOnItemPacket")
+  @Import("OPHELDU")
   @Override
   RSClientPacket getItemOnItemPacket();
 
-  @Import("Packet_bankItemActionPacket")
+  @Import("IF_BUTTON9")
   @Override
   RSClientPacket getBankItemActionPacket();
 
-  @Import("Packet_walkPacket")
+  @Import("MOVE_GAMECLICK")
   @Override
   RSClientPacket getWalkPacket();
 

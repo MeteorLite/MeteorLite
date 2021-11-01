@@ -1050,7 +1050,7 @@ public class WorldMapLabelSize {
 				ObjectComposition.ObjectDefinition_cachedModelData.clear();
 				PacketBufferNode var77;
 				if (class21.client.hasFrame()) {
-					var77 = LoginScreenAnimation.getPacketBufferNode(ClientPacket.field2723, Client.packetWriter.isaacCipher);
+					var77 = LoginScreenAnimation.getPacketBufferNode(ClientPacket.DETECT_MODIFIED_CLIENT, Client.packetWriter.isaacCipher);
 					var77.packetBuffer.writeInt(1057001181);
 					Client.packetWriter.addNode(var77);
 				}
@@ -1074,7 +1074,7 @@ public class WorldMapLabelSize {
 				UserList.updateGameState(30);
 				class356.playPcmPlayers();
 				SecureRandomCallable.method2036();
-				var77 = LoginScreenAnimation.getPacketBufferNode(ClientPacket.field2680, Client.packetWriter.isaacCipher);
+				var77 = LoginScreenAnimation.getPacketBufferNode(ClientPacket.MAP_BUILD_COMPLETE, Client.packetWriter.isaacCipher);
 				Client.packetWriter.addNode(var77);
 				LoginPacket.clock.mark();
 
@@ -1097,7 +1097,7 @@ public class WorldMapLabelSize {
 		garbageValue = "-220787387"
 	)
 	static final void method3445() {
-		PacketBufferNode var0 = LoginScreenAnimation.getPacketBufferNode(ClientPacket.Packet_interfaceClosePacket, Client.packetWriter.isaacCipher);
+		PacketBufferNode var0 = LoginScreenAnimation.getPacketBufferNode(ClientPacket.CLOSE_MODAL, Client.packetWriter.isaacCipher);
 		Client.packetWriter.addNode(var0);
 
 		for (InterfaceParent var1 = (InterfaceParent)Client.interfaceParents.first(); var1 != null; var1 = (InterfaceParent)Client.interfaceParents.next()) {

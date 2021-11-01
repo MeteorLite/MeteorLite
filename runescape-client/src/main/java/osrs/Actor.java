@@ -713,7 +713,7 @@ public abstract class Actor extends Renderable {
 		garbageValue = "-466966431"
 	)
 	static final void method2152(String var0) {
-		PacketBufferNode var1 = LoginScreenAnimation.getPacketBufferNode(ClientPacket.field2725, Client.packetWriter.isaacCipher);
+		PacketBufferNode var1 = LoginScreenAnimation.getPacketBufferNode(ClientPacket.IGNORELIST_ADD, Client.packetWriter.isaacCipher);
 		var1.packetBuffer.writeByte(class113.stringCp1252NullTerminatedByteSize(var0));
 		var1.packetBuffer.writeStringCp1252NullTerminated(var0);
 		Client.packetWriter.addNode(var1);

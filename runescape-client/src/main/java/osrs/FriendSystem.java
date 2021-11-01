@@ -242,7 +242,7 @@ public class FriendSystem {
 			if (var2.hasCleanName()) {
 				if (this.friendsList.removeByUsername(var2)) {
 					HealthBarDefinition.method2980();
-					PacketBufferNode var3 = LoginScreenAnimation.getPacketBufferNode(ClientPacket.field2687, Client.packetWriter.isaacCipher);
+					PacketBufferNode var3 = LoginScreenAnimation.getPacketBufferNode(ClientPacket.FRIENDLIST_DEL, Client.packetWriter.isaacCipher);
 					var3.packetBuffer.writeByte(class113.stringCp1252NullTerminatedByteSize(var1));
 					var3.packetBuffer.writeStringCp1252NullTerminated(var1);
 					Client.packetWriter.addNode(var3);
@@ -265,7 +265,7 @@ public class FriendSystem {
 			if (var2.hasCleanName()) {
 				if (this.ignoreList.removeByUsername(var2)) {
 					HealthBarDefinition.method2980();
-					PacketBufferNode var3 = LoginScreenAnimation.getPacketBufferNode(ClientPacket.field2746, Client.packetWriter.isaacCipher);
+					PacketBufferNode var3 = LoginScreenAnimation.getPacketBufferNode(ClientPacket.IGNORELIST_DEL, Client.packetWriter.isaacCipher);
 					var3.packetBuffer.writeByte(class113.stringCp1252NullTerminatedByteSize(var1));
 					var3.packetBuffer.writeStringCp1252NullTerminated(var1);
 					Client.packetWriter.addNode(var3);

@@ -183,7 +183,7 @@ public class class275 {
 			if (var3.rank == -1) {
 				String var4 = var3.username.getName();
 				PacketWriter var5 = Client.packetWriter;
-				PacketBufferNode var6 = LoginScreenAnimation.getPacketBufferNode(ClientPacket.field2694, var5.isaacCipher);
+				PacketBufferNode var6 = LoginScreenAnimation.getPacketBufferNode(ClientPacket.CLANCHANNEL_KICKUSER, var5.isaacCipher);
 				var6.packetBuffer.writeByte(3 + class113.stringCp1252NullTerminatedByteSize(var4));
 				var6.packetBuffer.writeByte(var0);
 				var6.packetBuffer.writeShort(var1);

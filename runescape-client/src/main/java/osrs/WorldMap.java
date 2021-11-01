@@ -475,7 +475,7 @@ public class WorldMap {
 					}
 
 					if (var9) {
-						PacketBufferNode var12 = LoginScreenAnimation.getPacketBufferNode(ClientPacket.field2737, Client.packetWriter.isaacCipher);
+						PacketBufferNode var12 = LoginScreenAnimation.getPacketBufferNode(ClientPacket.CLICKWORLDMAP, Client.packetWriter.isaacCipher);
 						var12.packetBuffer.writeInt2(this.mouseCoord.packed());
 						Client.packetWriter.addNode(var12);
 						this.field4165 = 0L;

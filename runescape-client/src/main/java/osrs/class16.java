@@ -140,7 +140,7 @@ public class class16 implements ThreadFactory {
 		garbageValue = "677326358"
 	)
 	static final void method207(String var0, int var1) {
-		PacketBufferNode var2 = LoginScreenAnimation.getPacketBufferNode(ClientPacket.field2665, Client.packetWriter.isaacCipher);
+		PacketBufferNode var2 = LoginScreenAnimation.getPacketBufferNode(ClientPacket.FRIEND_SETRANK, Client.packetWriter.isaacCipher);
 		var2.packetBuffer.writeByte(class113.stringCp1252NullTerminatedByteSize(var0) + 1);
 		var2.packetBuffer.writeStringCp1252NullTerminated(var0);
 		var2.packetBuffer.writeByte01(var1);

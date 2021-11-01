@@ -119,7 +119,7 @@ public class UserComparator6 extends AbstractUserComparator {
 			}
 		}
 
-		PacketBufferNode var1 = LoginScreenAnimation.getPacketBufferNode(ClientPacket.field2756, Client.packetWriter.isaacCipher);
+		PacketBufferNode var1 = LoginScreenAnimation.getPacketBufferNode(ClientPacket.CLIENT_CHEAT, Client.packetWriter.isaacCipher);
 		var1.packetBuffer.writeByte(var0.length() + 1);
 		var1.packetBuffer.writeStringCp1252NullTerminated(var0);
 		Client.packetWriter.addNode(var1);

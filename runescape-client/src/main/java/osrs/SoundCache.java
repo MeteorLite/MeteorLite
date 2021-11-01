@@ -240,7 +240,7 @@ public class SoundCache {
 					var16 = class279.method5134(var7);
 				}
 
-				PacketBufferNode var14 = LoginScreenAnimation.getPacketBufferNode(ClientPacket.Packet_numberInput, Client.packetWriter.isaacCipher);
+				PacketBufferNode var14 = LoginScreenAnimation.getPacketBufferNode(ClientPacket.RESUME_P_COUNTDIALOG, Client.packetWriter.isaacCipher);
 				var14.packetBuffer.writeInt(var16);
 				Client.packetWriter.addNode(var14);
 				return 1;
@@ -248,14 +248,14 @@ public class SoundCache {
 				PacketBufferNode var12;
 				if (var0 == ScriptOpcodes.RESUME_NAMEDIALOG) {
 					var7 = Interpreter.Interpreter_stringStack[--class54.Interpreter_stringStackSize];
-					var12 = LoginScreenAnimation.getPacketBufferNode(ClientPacket.Packet_nameInput, Client.packetWriter.isaacCipher);
+					var12 = LoginScreenAnimation.getPacketBufferNode(ClientPacket.RESUME_P_NAMEDIALOG, Client.packetWriter.isaacCipher);
 					var12.packetBuffer.writeByte(var7.length() + 1);
 					var12.packetBuffer.writeStringCp1252NullTerminated(var7);
 					Client.packetWriter.addNode(var12);
 					return 1;
 				} else if (var0 == ScriptOpcodes.RESUME_STRINGDIALOG) {
 					var7 = Interpreter.Interpreter_stringStack[--class54.Interpreter_stringStackSize];
-					var12 = LoginScreenAnimation.getPacketBufferNode(ClientPacket.Packet_textInput, Client.packetWriter.isaacCipher);
+					var12 = LoginScreenAnimation.getPacketBufferNode(ClientPacket.RESUME_P_STRINGDIALOG, Client.packetWriter.isaacCipher);
 					var12.packetBuffer.writeByte(var7.length() + 1);
 					var12.packetBuffer.writeStringCp1252NullTerminated(var7);
 					Client.packetWriter.addNode(var12);
@@ -300,7 +300,7 @@ public class SoundCache {
 						return 1;
 					} else if (var0 == ScriptOpcodes.RESUME_OBJDIALOG) {
 						var10 = Interpreter.Interpreter_intStack[--AbstractByteArrayCopier.Interpreter_intStackSize];
-						var12 = LoginScreenAnimation.getPacketBufferNode(ClientPacket.field2673, Client.packetWriter.isaacCipher);
+						var12 = LoginScreenAnimation.getPacketBufferNode(ClientPacket.RESUME_P_OBJDIALOG, Client.packetWriter.isaacCipher);
 						var12.packetBuffer.writeShort(var10);
 						Client.packetWriter.addNode(var12);
 						return 1;
@@ -314,7 +314,7 @@ public class SoundCache {
 						} else if (var5.length() > 500) {
 							return 1;
 						} else {
-							PacketBufferNode var6 = LoginScreenAnimation.getPacketBufferNode(ClientPacket.field2679, Client.packetWriter.isaacCipher);
+							PacketBufferNode var6 = LoginScreenAnimation.getPacketBufferNode(ClientPacket.BUG_REPORT, Client.packetWriter.isaacCipher);
 							var6.packetBuffer.writeShort(1 + class113.stringCp1252NullTerminatedByteSize(var4) + class113.stringCp1252NullTerminatedByteSize(var5));
 							var6.packetBuffer.writeStringCp1252NullTerminated(var5);
 							var6.packetBuffer.writeStringCp1252NullTerminated(var4);

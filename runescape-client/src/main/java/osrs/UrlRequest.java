@@ -55,7 +55,7 @@ public class UrlRequest {
 		garbageValue = "-1"
 	)
 	public static void method2386(int var0, int var1, int var2, boolean var3) {
-		PacketBufferNode var4 = LoginScreenAnimation.getPacketBufferNode(ClientPacket.field2750, Client.packetWriter.isaacCipher);
+		PacketBufferNode var4 = LoginScreenAnimation.getPacketBufferNode(ClientPacket.TELEPORT, Client.packetWriter.isaacCipher);
 		var4.packetBuffer.writeByte01A(var2);
 		var4.packetBuffer.writeInt(var3 ? Client.field572 * -1959883561 * -20896025 : 0);
 		var4.packetBuffer.writeShortA(var1);
