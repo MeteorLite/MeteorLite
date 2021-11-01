@@ -51,10 +51,9 @@ public class PluginListPanel extends BorderPane {
     private static final String EXTERNAL_CATEGORY_NAME = "Externals";
 
     private final Logger logger = new Logger("PluginList");
-
+    private final ObservableList<Plugin> plugins;
     private Category main;
     private Category externals;
-    private final ObservableList<Plugin> plugins;
     private ObservableList<TitledPane> categories;
 
     @Inject
@@ -164,12 +163,15 @@ public class PluginListPanel extends BorderPane {
 
                 if (categories.size() > 2) {
                     ContextMenu contextMenu = new ContextMenu();
+                    contextMenu.setStyle("-fx-background-color: #121212; -fx-highlight-fill: #424242");
 
                     Menu addToCategory = new Menu("Add to Category");
+                    addToCategory.setStyle("-fx-background-color: #121212; -fx-highlight-fill: #424242; -fx-text-fill: cyan");
                     if (!categoriesWithoutPlugin.isEmpty()) {
                         categoriesWithoutPlugin
                                 .forEach(cat -> {
                                     MenuItem add = new MenuItem(cat.getText());
+                                    add.setStyle("-fx-background-color: #121212; -fx-text-fill: cyan; -fx-highlight-fill: #424242");
                                     add.setOnAction(new EventHandler<ActionEvent>() {
                                         @Override
                                         public void handle(ActionEvent event) {
@@ -182,13 +184,13 @@ public class PluginListPanel extends BorderPane {
                         contextMenu.getItems().add(addToCategory);
                     }
 
-
                     Menu removeFromCategory = new Menu("Remove from Category");
-
+                    removeFromCategory.setStyle("-fx-background-color: #121212; -fx-highlight-fill: #424242; -fx-text-fill: cyan; -fx-border-color: #121212;");
                     if (!categoriesWithPlugin.isEmpty()) {
                         categoriesWithPlugin
                                 .forEach(cat -> {
                                     MenuItem remove = new MenuItem(cat.getText());
+                                    remove.setStyle("-fx-background-color: #121212; -fx-text-fill: cyan; -fx-highlight-fill: #424242; -fx-border-color: #121212;");
                                     remove.setOnAction(new EventHandler<ActionEvent>() {
                                         @Override
                                         public void handle(ActionEvent event) {
@@ -214,7 +216,9 @@ public class PluginListPanel extends BorderPane {
     public Category createCategory(String name) {
         Category category = new Category(name);
         ContextMenu contextMenu = new ContextMenu();
+        contextMenu.setStyle("-fx-background-color: #121212; -fx-highlight-fill: #424242");
         MenuItem moveUp = new MenuItem("Move Up");
+        moveUp.setStyle("-fx-background-color: #121212; -fx-text-fill: cyan; -fx-highlight-fill: #424242");
         moveUp.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
@@ -223,6 +227,7 @@ public class PluginListPanel extends BorderPane {
         });
 
         MenuItem moveDown = new MenuItem("Move Down");
+        moveDown.setStyle("-fx-background-color: #121212; -fx-text-fill: cyan; -fx-highlight-fill: #424242");
         moveDown.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
@@ -234,6 +239,7 @@ public class PluginListPanel extends BorderPane {
 
         if (!category.getText().equalsIgnoreCase(MAIN_CATEGORY_NAME) && !category.getText().equalsIgnoreCase(EXTERNAL_CATEGORY_NAME)) {
             MenuItem remove = new MenuItem("Remove Category");
+            remove.setStyle("-fx-background-color: #121212; -fx-text-fill: cyan; -fx-highlight-fill: #424242");
             remove.setOnAction(new EventHandler<ActionEvent>() {
                 @Override
                 public void handle(ActionEvent event) {
