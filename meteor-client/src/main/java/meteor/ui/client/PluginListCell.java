@@ -10,6 +10,7 @@ import javafx.scene.paint.Paint;
 import lombok.Getter;
 import meteor.config.Config;
 import meteor.config.ConfigManager;
+import meteor.eventbus.EventBus;
 import meteor.plugins.Plugin;
 import meteor.plugins.PluginDescriptor;
 import meteor.ui.components.MeteorText;
@@ -24,7 +25,7 @@ public class PluginListCell extends AnchorPane {
     @Getter
     private PluginToggleButton toggleButton;
 
-    public PluginListCell(Plugin plugin, ConfigManager configManager) {
+    public PluginListCell(Plugin plugin, ConfigManager configManager, EventBus eventBus) {
         setBackground(new Background(new BackgroundFill(MeteorConstants.LIGHT_GRAY, null, null)));
         this.plugin = plugin;
         pluginName = plugin.getName();
@@ -80,16 +81,13 @@ public class PluginListCell extends AnchorPane {
 
         if (toggleButton != null) {
             getChildren().add(toggleButton);
+            eventBus.register(toggleButton);
         }
 
         pluginName.setOnContextMenuRequested(e -> {
             contextMenu.show(pluginName, e.getScreenX(), e.getScreenY());
         });
 
-    }
-
-    public PluginListCell copy(final ConfigManager configManager) {
-        return new PluginListCell(this.plugin, configManager);
     }
 
 }

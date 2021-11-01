@@ -1,5 +1,6 @@
 package meteor.plugins.meteorlite;
 
+import meteor.PluginManager;
 import meteor.config.Config;
 import meteor.config.ConfigManager;
 import meteor.config.MeteorLiteConfig;
@@ -45,6 +46,9 @@ public class MeteorLitePlugin extends Plugin {
     @Inject
     private ConfigManager configManager;
 
+    @Inject
+    private PluginManager pluginManager;
+
     @Override
     public void updateConfig() {
         Logger.setDebugEnabled(config.debugEnabled());
@@ -75,6 +79,10 @@ public class MeteorLitePlugin extends Plugin {
     public void onConfigButtonClicked(ConfigButtonClicked event) {
         if (!event.getGroup().equals(MeteorLiteConfig.GROUP_NAME)) {
             return;
+        }
+
+        if (event.getKey().equals("reloadExternals")) {
+            pluginManager.startExternals();
         }
     }
 

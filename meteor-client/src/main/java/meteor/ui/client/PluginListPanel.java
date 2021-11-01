@@ -21,10 +21,7 @@ import javafx.scene.control.ToolBar;
 import javafx.scene.input.ContextMenuEvent;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
-import javafx.scene.layout.Border;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.BorderStroke;
-import javafx.scene.layout.BorderStrokeStyle;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.paint.Color;
@@ -38,29 +35,32 @@ import meteor.plugins.Plugin;
 import meteor.ui.components.Category;
 import meteor.util.MeteorConstants;
 import org.controlsfx.control.textfield.CustomTextField;
+import org.sponge.util.Logger;
 
 import javax.inject.Inject;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 public class PluginListPanel extends BorderPane {
 
     private static final String MAIN_CATEGORY_NAME = "Plugins";
     private static final String EXTERNAL_CATEGORY_NAME = "Externals";
-    private final ObservableList<Plugin> plugins;
+
+    private final Logger logger = new Logger("PluginList");
+
     private Category main;
     private Category externals;
+    private final ObservableList<Plugin> plugins;
     private ObservableList<TitledPane> categories;
 
     @Inject
     private ConfigManager configManager;
-
     @Inject
     private PluginManager pluginManager;
-
     @Inject
     private EventBus eventBus;
 
@@ -98,10 +98,10 @@ public class PluginListPanel extends BorderPane {
         scrollPane.setFitToHeight(true);
         scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
         scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.ALWAYS);
-        scrollPane.setBackground(new Background(new BackgroundFill(MeteorConstants.GRAY, null, null)));
+        scrollPane.setBackground(new Background(new BackgroundFill(MeteorConstants.LIGHT_GRAY, null, null)));
 
         Accordion accordion = new Accordion();
-        accordion.setBackground(new Background(new BackgroundFill(MeteorConstants.GRAY, null, null)));
+        accordion.setBackground(new Background(new BackgroundFill(MeteorConstants.LIGHT_GRAY, null, null)));
 
         scrollPane.setContent(accordion);
 
@@ -112,7 +112,7 @@ public class PluginListPanel extends BorderPane {
 
     private ToolBar initSearchBar() {
         ToolBar toolBar = new ToolBar();
-        toolBar.setBackground(new Background(new BackgroundFill(MeteorConstants.GRAY, null, null)));
+        toolBar.setBackground(new Background(new BackgroundFill(MeteorConstants.LIGHT_GRAY, null, null)));
 
         CustomTextField searchBar = new CustomTextField();
         searchBar.setStyle("-fx-text-inner-color: white;");
@@ -145,6 +145,7 @@ public class PluginListPanel extends BorderPane {
                 main.getFilteredPlugins().setPredicate(s -> true);
             } else {
                 main.getFilteredPlugins().setPredicate(s -> s.getPluginName().toLowerCase().contains(filter));
+                main.setExpanded(true);
             }
         });
 
@@ -153,58 +154,59 @@ public class PluginListPanel extends BorderPane {
         return toolBar;
     }
 
-    private PluginListCell createPluginListCell(Plugin p) {
-        PluginListCell panel = new PluginListCell(p, configManager);
+    private PluginListCell createPluginListCell(Plugin plugin) {
+        PluginListCell panel = new PluginListCell(plugin, configManager, eventBus);
         panel.setOnContextMenuRequested(new EventHandler<ContextMenuEvent>() {
             @Override
             public void handle(ContextMenuEvent event) {
+                List<Category> categoriesWithPlugin = getCategoriesWithPlugin(plugin);
+                List<Category> categoriesWithoutPlugin = getCategoriesWithoutPlugin(plugin);
+
                 if (categories.size() > 2) {
                     ContextMenu contextMenu = new ContextMenu();
+
                     Menu addToCategory = new Menu("Add to Category");
-                    categories.stream()
-                            .filter(cat -> !cat.getText().equalsIgnoreCase(MAIN_CATEGORY_NAME) && !cat.getText().equalsIgnoreCase(EXTERNAL_CATEGORY_NAME))
-                            .forEach(cat -> {
-                                MenuItem add = new MenuItem(cat.getText());
-                                add.setOnAction(new EventHandler<ActionEvent>() {
-                                    @Override
-                                    public void handle(ActionEvent event) {
-                                        if (cat instanceof Category c) {
-                                            c.addPlugin(createPluginListCell(p));
+                    if (!categoriesWithoutPlugin.isEmpty()) {
+                        categoriesWithoutPlugin
+                                .forEach(cat -> {
+                                    MenuItem add = new MenuItem(cat.getText());
+                                    add.setOnAction(new EventHandler<ActionEvent>() {
+                                        @Override
+                                        public void handle(ActionEvent event) {
+                                            cat.addPlugin(createPluginListCell(plugin));
                                             saveCategories();
                                         }
-                                    }
+                                    });
+                                    addToCategory.getItems().add(add);
                                 });
-                                addToCategory.getItems().add(add);
-                            });
+                        contextMenu.getItems().add(addToCategory);
+                    }
+
 
                     Menu removeFromCategory = new Menu("Remove from Category");
-                    categories.stream()
-                            .filter(cat -> !cat.getText().equalsIgnoreCase(MAIN_CATEGORY_NAME) && !cat.getText().equalsIgnoreCase(EXTERNAL_CATEGORY_NAME))
-                            .forEach(cat -> {
-                                MenuItem remove = new MenuItem(cat.getText());
-                                remove.setOnAction(new EventHandler<ActionEvent>() {
-                                    @Override
-                                    public void handle(ActionEvent event) {
-                                        if (cat instanceof Category c) {
-                                            c.removePlugin(panel);
+
+                    if (!categoriesWithPlugin.isEmpty()) {
+                        categoriesWithPlugin
+                                .forEach(cat -> {
+                                    MenuItem remove = new MenuItem(cat.getText());
+                                    remove.setOnAction(new EventHandler<ActionEvent>() {
+                                        @Override
+                                        public void handle(ActionEvent event) {
+                                            cat.removePlugin(panel);
                                             saveCategories();
                                         }
-                                    }
+                                    });
+                                    removeFromCategory.getItems().add(remove);
                                 });
-                                removeFromCategory.getItems().add(remove);
-                            });
+                        contextMenu.getItems().add(removeFromCategory);
+                    }
 
-                    contextMenu.getItems().addAll(addToCategory, removeFromCategory);
-                    contextMenu.show(panel, event.getScreenX(), event.getScreenY());
+                    if (contextMenu.getItems().size() > 0) {
+                        contextMenu.show(panel, event.getScreenX(), event.getScreenY());
+                    }
                 }
             }
         });
-
-
-        PluginToggleButton tb = panel.getToggleButton();
-        if (tb != null) {
-            eventBus.register(panel.getToggleButton());
-        }
 
         return panel;
     }
@@ -332,7 +334,7 @@ public class PluginListPanel extends BorderPane {
                 if (!c.getText().equals(MAIN_CATEGORY_NAME) && !c.getText().equals(EXTERNAL_CATEGORY_NAME)) {
                     configManager.setConfiguration("category",
                             c.getText(),
-                            c.getPlugins().stream()
+                            c.getPluginListCells().stream()
                                     .map(PluginListCell::getPluginName)
                                     .distinct()
                                     .collect(Collectors.joining(",")));
@@ -394,18 +396,46 @@ public class PluginListPanel extends BorderPane {
     }
 
     private Optional<Category> getCategory(String name) {
-        return categories.stream().filter(cat -> cat.getText().equalsIgnoreCase(name)).map(cat -> (Category) cat).findFirst();
+        return categories.stream()
+                .filter(Category.class::isInstance)
+                .map(Category.class::cast)
+                .filter(cat -> cat.getText().equalsIgnoreCase(name))
+                .findFirst();
     }
 
     private Optional<Plugin> getPlugin(String name) {
-        return plugins.stream().filter(plugin -> plugin.getName().equalsIgnoreCase(name)).findFirst();
+        return plugins.stream()
+                .filter(plugin -> plugin.getName().equalsIgnoreCase(name))
+                .findFirst();
+    }
+
+    private List<Category> getCategoriesWithoutPlugin(Plugin plugin) {
+        List<Category> pluginCategories = getCategoriesWithPlugin(plugin);
+        return categories.stream()
+                .filter(Category.class::isInstance)
+                .map(Category.class::cast)
+                .filter(cat -> !cat.getText().equalsIgnoreCase(MAIN_CATEGORY_NAME) && !cat.getText().equalsIgnoreCase(EXTERNAL_CATEGORY_NAME))
+                .filter(Predicate.not(pluginCategories::contains))
+                .collect(Collectors.toList());
+    }
+
+    private List<Category> getCategoriesWithPlugin(Plugin plugin) {
+        return categories.stream()
+                .filter(Category.class::isInstance)
+                .map(Category.class::cast)
+                .filter(cat -> !cat.getText().equalsIgnoreCase(MAIN_CATEGORY_NAME) && !cat.getText().equalsIgnoreCase(EXTERNAL_CATEGORY_NAME))
+                .filter(cat -> cat.getPlugins().contains(plugin))
+                .collect(Collectors.toList());
     }
 
     @Subscribe
     public void onExternalsReloaded(ExternalsReloaded e) {
         loadPlugins();
+        main.clearExternals();
+        externals.clearExternals();
         plugins.forEach(pl -> {
             if (pl.isExternal()) {
+                main.addPlugin(createPluginListCell(pl));
                 externals.addPlugin(createPluginListCell(pl));
             }
         });

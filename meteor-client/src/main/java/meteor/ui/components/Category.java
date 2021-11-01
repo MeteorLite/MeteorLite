@@ -9,15 +9,17 @@ import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.VBox;
 import lombok.Getter;
+import meteor.plugins.Plugin;
 import meteor.ui.client.PluginListCell;
 import meteor.util.MeteorConstants;
 
 public class Category extends TitledPane {
 
-    private final VBox pluginList;
+    @Getter
+    private final ObservableList<Plugin> plugins;
 
     @Getter
-    private final ObservableList<PluginListCell> plugins;
+    private final ObservableList<PluginListCell> pluginListCells;
 
     @Getter
     private final FilteredList<PluginListCell> filteredPlugins;
@@ -29,29 +31,34 @@ public class Category extends TitledPane {
         getStylesheets().add("css/plugins/jfx-titledpane.css");
 
         plugins = FXCollections.observableArrayList();
+        pluginListCells = FXCollections.observableArrayList();
 
-        pluginList = new VBox();
+        VBox pluginList = new VBox();
         pluginList.setBackground(new Background(new BackgroundFill(MeteorConstants.LIGHT_GRAY, null, null)));
-        filteredPlugins = new FilteredList<>(plugins, s -> true);
+        filteredPlugins = new FilteredList<>(pluginListCells, s -> true);
 
         setContent(pluginList);
 
         filteredPlugins.addListener((ListChangeListener.Change<? extends PluginListCell> c) -> {
             pluginList.getChildren().setAll(filteredPlugins);
-            if (c.getList().size() > 0) {
-                setExpanded(true);
-            }
         });
     }
 
+    public void clearExternals() {
+        plugins.removeIf(Plugin::isExternal);
+        pluginListCells.removeIf(plc -> plc.getPlugin().isExternal());
+    }
+
     public void addPlugin(PluginListCell plugin) {
-        if (plugins.stream().noneMatch(plc -> plc.getPluginName().equalsIgnoreCase(plugin.getPluginName()))) {
-            plugins.add(plugin);
+        if (pluginListCells.stream().noneMatch(plc -> plc.getPluginName().equalsIgnoreCase(plugin.getPluginName()))) {
+            pluginListCells.add(plugin);
+            plugins.add(plugin.getPlugin());
         }
     }
 
     public void removePlugin(PluginListCell plugin) {
-        plugins.remove(plugin);
+        pluginListCells.remove(plugin);
+        plugins.remove(plugin.getPlugin());
     }
 
 }

@@ -410,10 +410,6 @@ public class MeteorUI extends ContainableFrame implements AppletStub, AppletCont
 			return;
 		}
 
-		if (event.getKey().equals("reloadExternals")) {
-			pluginManager.startExternals();
-		}
-
 		if (event.getKey().equals("toolbarPosition")) {
 			SwingUtilities.invokeLater(() -> {
 				rootPanel.remove(toolbar);
