@@ -395,7 +395,7 @@ public class HitSplatDefinition extends DualNode {
 		garbageValue = "1268577977"
 	)
 	public static PacketBufferNode method3197(int var0, String var1, Language var2, int var3) {
-		PacketBufferNode var4 = LoginScreenAnimation.getPacketBufferNode(ClientPacket.field2754, Client.packetWriter.isaacCipher);
+		PacketBufferNode var4 = LoginScreenAnimation.getPacketBufferNode(ClientPacket.MESSAGE_PUBLIC, Client.packetWriter.isaacCipher);
 		var4.packetBuffer.writeByte(0);
 		int var5 = var4.packetBuffer.offset;
 		var4.packetBuffer.writeByte(var0);

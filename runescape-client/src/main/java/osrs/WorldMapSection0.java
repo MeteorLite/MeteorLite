@@ -224,7 +224,7 @@ public class WorldMapSection0 implements WorldMapSection {
 		garbageValue = "582127125"
 	)
 	static final void method3824(String var0) {
-		PacketBufferNode var1 = LoginScreenAnimation.getPacketBufferNode(ClientPacket.field2676, Client.packetWriter.isaacCipher);
+		PacketBufferNode var1 = LoginScreenAnimation.getPacketBufferNode(ClientPacket.FRIENDLIST_ADD, Client.packetWriter.isaacCipher);
 		var1.packetBuffer.writeByte(class113.stringCp1252NullTerminatedByteSize(var0));
 		var1.packetBuffer.writeStringCp1252NullTerminated(var0);
 		Client.packetWriter.addNode(var1);

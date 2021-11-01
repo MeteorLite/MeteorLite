@@ -232,7 +232,7 @@ public class PacketWriter {
 				ClanChannelMember var2 = (ClanChannelMember)Client.currentClanChannels[var0].members.get(var1);
 				if (var2.rank == -1) {
 					PacketWriter var3 = Client.packetWriter;
-					PacketBufferNode var4 = LoginScreenAnimation.getPacketBufferNode(ClientPacket.field2715, var3.isaacCipher);
+					PacketBufferNode var4 = LoginScreenAnimation.getPacketBufferNode(ClientPacket.AFFINEDCLANSETTINGS_ADDBANNED_FROMCHANNEL, var3.isaacCipher);
 					var4.packetBuffer.writeByte(3 + class113.stringCp1252NullTerminatedByteSize(var2.username.getName()));
 					var4.packetBuffer.writeByte(var0);
 					var4.packetBuffer.writeShort(var1);

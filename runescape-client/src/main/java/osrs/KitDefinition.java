@@ -450,7 +450,7 @@ public class KitDefinition extends DualNode {
 		garbageValue = "-736812823"
 	)
 	static void method2956() {
-		Client.packetWriter.addNode(LoginScreenAnimation.getPacketBufferNode(ClientPacket.field2697, Client.packetWriter.isaacCipher));
+		Client.packetWriter.addNode(LoginScreenAnimation.getPacketBufferNode(ClientPacket.EXIT_FREECAM, Client.packetWriter.isaacCipher));
 		Client.oculusOrbState = 0;
 	}
 

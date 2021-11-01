@@ -150,7 +150,7 @@ public class class392 implements MouseWheel {
 		}
 
 		if (Client.gameState >= 25) {
-			PacketBufferNode var1 = LoginScreenAnimation.getPacketBufferNode(ClientPacket.field2718, Client.packetWriter.isaacCipher);
+			PacketBufferNode var1 = LoginScreenAnimation.getPacketBufferNode(ClientPacket.WINDOW_STATUS, Client.packetWriter.isaacCipher);
 			var1.packetBuffer.writeByte(class12.getWindowedMode());
 			var1.packetBuffer.writeShort(Huffman.canvasWidth);
 			var1.packetBuffer.writeShort(MouseRecorder.canvasHeight);

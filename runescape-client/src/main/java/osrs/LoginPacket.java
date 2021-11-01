@@ -127,7 +127,7 @@ public class LoginPacket implements class238 {
 			}
 
 			Client.tradeChatMode = Interpreter.Interpreter_intStack[AbstractByteArrayCopier.Interpreter_intStackSize + 2];
-			PacketBufferNode var13 = LoginScreenAnimation.getPacketBufferNode(ClientPacket.field2749, Client.packetWriter.isaacCipher);
+			PacketBufferNode var13 = LoginScreenAnimation.getPacketBufferNode(ClientPacket.SET_CHATFILTERSETTINGS, Client.packetWriter.isaacCipher);
 			var13.packetBuffer.writeByte(Client.publicChatMode);
 			var13.packetBuffer.writeByte(MusicPatchNode2.privateChatMode.field4414);
 			var13.packetBuffer.writeByte(Client.tradeChatMode);
@@ -143,7 +143,7 @@ public class LoginPacket implements class238 {
 				AbstractByteArrayCopier.Interpreter_intStackSize -= 2;
 				var7 = Interpreter.Interpreter_intStack[AbstractByteArrayCopier.Interpreter_intStackSize];
 				var9 = Interpreter.Interpreter_intStack[AbstractByteArrayCopier.Interpreter_intStackSize + 1];
-				var6 = LoginScreenAnimation.getPacketBufferNode(ClientPacket.field2758, Client.packetWriter.isaacCipher);
+				var6 = LoginScreenAnimation.getPacketBufferNode(ClientPacket.SEND_SNAPSHOT, Client.packetWriter.isaacCipher);
 				var6.packetBuffer.writeByte(class113.stringCp1252NullTerminatedByteSize(var8) + 2);
 				var6.packetBuffer.writeStringCp1252NullTerminated(var8);
 				var6.packetBuffer.writeByte(var7 - 1);
@@ -217,7 +217,7 @@ public class LoginPacket implements class238 {
 							class54.Interpreter_stringStackSize -= 2;
 							var8 = Interpreter.Interpreter_stringStack[class54.Interpreter_stringStackSize];
 							String var11 = Interpreter.Interpreter_stringStack[class54.Interpreter_stringStackSize + 1];
-							var12 = LoginScreenAnimation.getPacketBufferNode(ClientPacket.field2735, Client.packetWriter.isaacCipher);
+							var12 = LoginScreenAnimation.getPacketBufferNode(ClientPacket.MESSAGE_PRIVATE, Client.packetWriter.isaacCipher);
 							var12.packetBuffer.writeShort(0);
 							int var10 = var12.packetBuffer.offset;
 							var12.packetBuffer.writeStringCp1252NullTerminated(var8);

@@ -210,7 +210,7 @@ public class PlatformInfo extends Node {
 			Client.mouseCrossState = 0;
 			Client.destinationX = var0;
 			Client.destinationY = var1;
-			var8 = LoginScreenAnimation.getPacketBufferNode(ClientPacket.Packet_itemUseOnGameObjectPacket, Client.packetWriter.isaacCipher);
+			var8 = LoginScreenAnimation.getPacketBufferNode(ClientPacket.OPLOCU, Client.packetWriter.isaacCipher);
 			var8.packetBuffer.writeShort01A(var3);
 			var8.packetBuffer.writeShort01A(PacketBufferNode.selectedItemId);
 			var8.packetBuffer.writeByte01(KeyHandler.KeyHandler_pressedKeys[82] ? 1 : 0);
@@ -226,7 +226,7 @@ public class PlatformInfo extends Node {
 			Client.mouseCrossState = 0;
 			Client.destinationX = var0;
 			Client.destinationY = var1;
-			var8 = LoginScreenAnimation.getPacketBufferNode(ClientPacket.field2728, Client.packetWriter.isaacCipher);
+			var8 = LoginScreenAnimation.getPacketBufferNode(ClientPacket.OPLOCT, Client.packetWriter.isaacCipher);
 			var8.packetBuffer.writeShortA(Client.field647);
 			var8.packetBuffer.writeInt2(ModelData0.selectedSpellWidget);
 			var8.packetBuffer.writeShortA(var0 + WorldMapSectionType.baseX);
@@ -242,7 +242,7 @@ public class PlatformInfo extends Node {
 			Client.mouseCrossState = 0;
 			Client.destinationX = var0;
 			Client.destinationY = var1;
-			var8 = LoginScreenAnimation.getPacketBufferNode(ClientPacket.Packet_gameObjectActionPacket, Client.packetWriter.isaacCipher);
+			var8 = LoginScreenAnimation.getPacketBufferNode(ClientPacket.OPLOC1, Client.packetWriter.isaacCipher);
 			var8.packetBuffer.writeShort01A(var3);
 			var8.packetBuffer.writeByte01A(KeyHandler.KeyHandler_pressedKeys[82] ? 1 : 0);
 			var8.packetBuffer.writeShort01A(PlayerComposition.baseY + var1);
@@ -255,7 +255,7 @@ public class PlatformInfo extends Node {
 			Client.mouseCrossState = 0;
 			Client.destinationX = var0;
 			Client.destinationY = var1;
-			var8 = LoginScreenAnimation.getPacketBufferNode(ClientPacket.Packet_gameObjectAction2Packet, Client.packetWriter.isaacCipher);
+			var8 = LoginScreenAnimation.getPacketBufferNode(ClientPacket.OPLOC2, Client.packetWriter.isaacCipher);
 			var8.packetBuffer.writeShort01A(PlayerComposition.baseY + var1);
 			var8.packetBuffer.writeShortA(var0 + WorldMapSectionType.baseX);
 			var8.packetBuffer.writeByte(KeyHandler.KeyHandler_pressedKeys[82] ? 1 : 0);
@@ -268,7 +268,7 @@ public class PlatformInfo extends Node {
 			Client.mouseCrossState = 0;
 			Client.destinationX = var0;
 			Client.destinationY = var1;
-			var8 = LoginScreenAnimation.getPacketBufferNode(ClientPacket.Packet_gameObjectAction3Packet, Client.packetWriter.isaacCipher);
+			var8 = LoginScreenAnimation.getPacketBufferNode(ClientPacket.OPLOC3, Client.packetWriter.isaacCipher);
 			var8.packetBuffer.writeShort01(PlayerComposition.baseY + var1);
 			var8.packetBuffer.writeByte(KeyHandler.KeyHandler_pressedKeys[82] ? 1 : 0);
 			var8.packetBuffer.writeShort01A(var0 + WorldMapSectionType.baseX);
@@ -281,7 +281,7 @@ public class PlatformInfo extends Node {
 			Client.mouseCrossState = 0;
 			Client.destinationX = var0;
 			Client.destinationY = var1;
-			var8 = LoginScreenAnimation.getPacketBufferNode(ClientPacket.Packet_gameObjectAction4Packet, Client.packetWriter.isaacCipher);
+			var8 = LoginScreenAnimation.getPacketBufferNode(ClientPacket.OPLOC4, Client.packetWriter.isaacCipher);
 			var8.packetBuffer.writeShortA(PlayerComposition.baseY + var1);
 			var8.packetBuffer.writeShortA(var0 + WorldMapSectionType.baseX);
 			var8.packetBuffer.writeByte01A(KeyHandler.KeyHandler_pressedKeys[82] ? 1 : 0);
@@ -299,7 +299,7 @@ public class PlatformInfo extends Node {
 					Client.mouseCrossState = 0;
 					Client.destinationX = var0;
 					Client.destinationY = var1;
-					var9 = LoginScreenAnimation.getPacketBufferNode(ClientPacket.field2717, Client.packetWriter.isaacCipher);
+					var9 = LoginScreenAnimation.getPacketBufferNode(ClientPacket.OPNPCU, Client.packetWriter.isaacCipher);
 					var9.packetBuffer.writeInt2(UserComparator6.selectedItemWidget);
 					var9.packetBuffer.writeShortA(var3);
 					var9.packetBuffer.writeByte(KeyHandler.KeyHandler_pressedKeys[82] ? 1 : 0);
@@ -316,7 +316,7 @@ public class PlatformInfo extends Node {
 					Client.mouseCrossState = 0;
 					Client.destinationX = var0;
 					Client.destinationY = var1;
-					var9 = LoginScreenAnimation.getPacketBufferNode(ClientPacket.field2747, Client.packetWriter.isaacCipher);
+					var9 = LoginScreenAnimation.getPacketBufferNode(ClientPacket.OPNPCT, Client.packetWriter.isaacCipher);
 					var9.packetBuffer.writeShort01(Client.selectedSpellChildIndex);
 					var9.packetBuffer.writeShort01A(var3);
 					var9.packetBuffer.writeInt0123(ModelData0.selectedSpellWidget);
@@ -333,7 +333,7 @@ public class PlatformInfo extends Node {
 					Client.mouseCrossState = 0;
 					Client.destinationX = var0;
 					Client.destinationY = var1;
-					var9 = LoginScreenAnimation.getPacketBufferNode(ClientPacket.Packet_NPCActionPacket, Client.packetWriter.isaacCipher);
+					var9 = LoginScreenAnimation.getPacketBufferNode(ClientPacket.OPNPC1, Client.packetWriter.isaacCipher);
 					var9.packetBuffer.writeByteA(KeyHandler.KeyHandler_pressedKeys[82] ? 1 : 0);
 					var9.packetBuffer.writeShort(var3);
 					Client.packetWriter.addNode(var9);
@@ -347,7 +347,7 @@ public class PlatformInfo extends Node {
 					Client.mouseCrossState = 0;
 					Client.destinationX = var0;
 					Client.destinationY = var1;
-					var9 = LoginScreenAnimation.getPacketBufferNode(ClientPacket.Packet_NPCAction2Packet, Client.packetWriter.isaacCipher);
+					var9 = LoginScreenAnimation.getPacketBufferNode(ClientPacket.OPNPC2, Client.packetWriter.isaacCipher);
 					var9.packetBuffer.writeByte01(KeyHandler.KeyHandler_pressedKeys[82] ? 1 : 0);
 					var9.packetBuffer.writeShortA(var3);
 					Client.packetWriter.addNode(var9);
@@ -361,7 +361,7 @@ public class PlatformInfo extends Node {
 					Client.mouseCrossState = 0;
 					Client.destinationX = var0;
 					Client.destinationY = var1;
-					var9 = LoginScreenAnimation.getPacketBufferNode(ClientPacket.Packet_NPCAction3Packet, Client.packetWriter.isaacCipher);
+					var9 = LoginScreenAnimation.getPacketBufferNode(ClientPacket.OPNPC3, Client.packetWriter.isaacCipher);
 					var9.packetBuffer.writeByte(KeyHandler.KeyHandler_pressedKeys[82] ? 1 : 0);
 					var9.packetBuffer.writeShort01(var3);
 					Client.packetWriter.addNode(var9);
@@ -375,7 +375,7 @@ public class PlatformInfo extends Node {
 					Client.mouseCrossState = 0;
 					Client.destinationX = var0;
 					Client.destinationY = var1;
-					var9 = LoginScreenAnimation.getPacketBufferNode(ClientPacket.Packet_NPCAction4Packet, Client.packetWriter.isaacCipher);
+					var9 = LoginScreenAnimation.getPacketBufferNode(ClientPacket.OPNPC4, Client.packetWriter.isaacCipher);
 					var9.packetBuffer.writeByteA(KeyHandler.KeyHandler_pressedKeys[82] ? 1 : 0);
 					var9.packetBuffer.writeShort(var3);
 					Client.packetWriter.addNode(var9);
@@ -389,7 +389,7 @@ public class PlatformInfo extends Node {
 					Client.mouseCrossState = 0;
 					Client.destinationX = var0;
 					Client.destinationY = var1;
-					var9 = LoginScreenAnimation.getPacketBufferNode(ClientPacket.Packet_NPCAction5Packet, Client.packetWriter.isaacCipher);
+					var9 = LoginScreenAnimation.getPacketBufferNode(ClientPacket.OPNPC5, Client.packetWriter.isaacCipher);
 					var9.packetBuffer.writeShortA(var3);
 					var9.packetBuffer.writeByte01A(KeyHandler.KeyHandler_pressedKeys[82] ? 1 : 0);
 					Client.packetWriter.addNode(var9);
@@ -405,7 +405,7 @@ public class PlatformInfo extends Node {
 						Client.mouseCrossState = 0;
 						Client.destinationX = var0;
 						Client.destinationY = var1;
-						var9 = LoginScreenAnimation.getPacketBufferNode(ClientPacket.field2753, Client.packetWriter.isaacCipher);
+						var9 = LoginScreenAnimation.getPacketBufferNode(ClientPacket.OPPLAYERU, Client.packetWriter.isaacCipher);
 						var9.packetBuffer.writeShortA(ArchiveDiskAction.selectedItemSlot);
 						var9.packetBuffer.writeByteA(KeyHandler.KeyHandler_pressedKeys[82] ? 1 : 0);
 						var9.packetBuffer.writeInt0123(UserComparator6.selectedItemWidget);
@@ -422,7 +422,7 @@ public class PlatformInfo extends Node {
 						Client.mouseCrossState = 0;
 						Client.destinationX = var0;
 						Client.destinationY = var1;
-						var9 = LoginScreenAnimation.getPacketBufferNode(ClientPacket.field2764, Client.packetWriter.isaacCipher);
+						var9 = LoginScreenAnimation.getPacketBufferNode(ClientPacket.OPPLAYERT, Client.packetWriter.isaacCipher);
 						var9.packetBuffer.writeByteA(KeyHandler.KeyHandler_pressedKeys[82] ? 1 : 0);
 						var9.packetBuffer.writeInt2(ModelData0.selectedSpellWidget);
 						var9.packetBuffer.writeShortA(var3);
@@ -437,7 +437,7 @@ public class PlatformInfo extends Node {
 					Client.mouseCrossState = 0;
 					Client.destinationX = var0;
 					Client.destinationY = var1;
-					var8 = LoginScreenAnimation.getPacketBufferNode(ClientPacket.field2681, Client.packetWriter.isaacCipher);
+					var8 = LoginScreenAnimation.getPacketBufferNode(ClientPacket.OPOBJU, Client.packetWriter.isaacCipher);
 					var8.packetBuffer.writeByte(KeyHandler.KeyHandler_pressedKeys[82] ? 1 : 0);
 					var8.packetBuffer.writeShortA(var3);
 					var8.packetBuffer.writeShort(PacketBufferNode.selectedItemId);
@@ -453,7 +453,7 @@ public class PlatformInfo extends Node {
 					Client.mouseCrossState = 0;
 					Client.destinationX = var0;
 					Client.destinationY = var1;
-					var8 = LoginScreenAnimation.getPacketBufferNode(ClientPacket.field2672, Client.packetWriter.isaacCipher);
+					var8 = LoginScreenAnimation.getPacketBufferNode(ClientPacket.OPOBJT, Client.packetWriter.isaacCipher);
 					var8.packetBuffer.writeShort01(PlayerComposition.baseY + var1);
 					var8.packetBuffer.writeShort01(var3);
 					var8.packetBuffer.writeByteA(KeyHandler.KeyHandler_pressedKeys[82] ? 1 : 0);
@@ -469,7 +469,7 @@ public class PlatformInfo extends Node {
 					Client.mouseCrossState = 0;
 					Client.destinationX = var0;
 					Client.destinationY = var1;
-					var8 = LoginScreenAnimation.getPacketBufferNode(ClientPacket.field2683, Client.packetWriter.isaacCipher);
+					var8 = LoginScreenAnimation.getPacketBufferNode(ClientPacket.OPOBJ1, Client.packetWriter.isaacCipher);
 					var8.packetBuffer.writeByte(KeyHandler.KeyHandler_pressedKeys[82] ? 1 : 0);
 					var8.packetBuffer.writeShort01(PlayerComposition.baseY + var1);
 					var8.packetBuffer.writeShort(var0 + WorldMapSectionType.baseX);
@@ -482,7 +482,7 @@ public class PlatformInfo extends Node {
 					Client.mouseCrossState = 0;
 					Client.destinationX = var0;
 					Client.destinationY = var1;
-					var8 = LoginScreenAnimation.getPacketBufferNode(ClientPacket.field2692, Client.packetWriter.isaacCipher);
+					var8 = LoginScreenAnimation.getPacketBufferNode(ClientPacket.OPOBJ2, Client.packetWriter.isaacCipher);
 					var8.packetBuffer.writeShort(var3);
 					var8.packetBuffer.writeShort01A(var0 + WorldMapSectionType.baseX);
 					var8.packetBuffer.writeByte(KeyHandler.KeyHandler_pressedKeys[82] ? 1 : 0);
@@ -495,7 +495,7 @@ public class PlatformInfo extends Node {
 					Client.mouseCrossState = 0;
 					Client.destinationX = var0;
 					Client.destinationY = var1;
-					var8 = LoginScreenAnimation.getPacketBufferNode(ClientPacket.field2707, Client.packetWriter.isaacCipher);
+					var8 = LoginScreenAnimation.getPacketBufferNode(ClientPacket.OPOBJ3, Client.packetWriter.isaacCipher);
 					var8.packetBuffer.writeShort01(PlayerComposition.baseY + var1);
 					var8.packetBuffer.writeShort(var0 + WorldMapSectionType.baseX);
 					var8.packetBuffer.writeByte(KeyHandler.KeyHandler_pressedKeys[82] ? 1 : 0);
@@ -508,7 +508,7 @@ public class PlatformInfo extends Node {
 					Client.mouseCrossState = 0;
 					Client.destinationX = var0;
 					Client.destinationY = var1;
-					var8 = LoginScreenAnimation.getPacketBufferNode(ClientPacket.field2663, Client.packetWriter.isaacCipher);
+					var8 = LoginScreenAnimation.getPacketBufferNode(ClientPacket.OPOBJ4, Client.packetWriter.isaacCipher);
 					var8.packetBuffer.writeShort01A(var3);
 					var8.packetBuffer.writeByte01A(KeyHandler.KeyHandler_pressedKeys[82] ? 1 : 0);
 					var8.packetBuffer.writeShortA(var0 + WorldMapSectionType.baseX);
@@ -521,7 +521,7 @@ public class PlatformInfo extends Node {
 					Client.mouseCrossState = 0;
 					Client.destinationX = var0;
 					Client.destinationY = var1;
-					var8 = LoginScreenAnimation.getPacketBufferNode(ClientPacket.field2736, Client.packetWriter.isaacCipher);
+					var8 = LoginScreenAnimation.getPacketBufferNode(ClientPacket.OPOBJ5, Client.packetWriter.isaacCipher);
 					var8.packetBuffer.writeByte01A(KeyHandler.KeyHandler_pressedKeys[82] ? 1 : 0);
 					var8.packetBuffer.writeShort(var0 + WorldMapSectionType.baseX);
 					var8.packetBuffer.writeShort(var3);
@@ -544,7 +544,7 @@ public class PlatformInfo extends Node {
 						}
 
 						if (var12) {
-							var11 = LoginScreenAnimation.getPacketBufferNode(ClientPacket.field2739, Client.packetWriter.isaacCipher);
+							var11 = LoginScreenAnimation.getPacketBufferNode(ClientPacket.BUTTON_CLICK, Client.packetWriter.isaacCipher);
 							var11.packetBuffer.writeInt(var1);
 							Client.packetWriter.addNode(var11);
 						}
@@ -576,7 +576,7 @@ public class PlatformInfo extends Node {
 							int var10;
 							Widget var14;
 							if (var2 == 28) {
-								var8 = LoginScreenAnimation.getPacketBufferNode(ClientPacket.field2739, Client.packetWriter.isaacCipher);
+								var8 = LoginScreenAnimation.getPacketBufferNode(ClientPacket.BUTTON_CLICK, Client.packetWriter.isaacCipher);
 								var8.packetBuffer.writeInt(var1);
 								Client.packetWriter.addNode(var8);
 								var14 = HealthBarUpdate.getWidget(var1);
@@ -586,7 +586,7 @@ public class PlatformInfo extends Node {
 									NetSocket.changeGameOptions(var10);
 								}
 							} else if (var2 == 29) {
-								var8 = LoginScreenAnimation.getPacketBufferNode(ClientPacket.field2739, Client.packetWriter.isaacCipher);
+								var8 = LoginScreenAnimation.getPacketBufferNode(ClientPacket.BUTTON_CLICK, Client.packetWriter.isaacCipher);
 								var8.packetBuffer.writeInt(var1);
 								Client.packetWriter.addNode(var8);
 								var14 = HealthBarUpdate.getWidget(var1);
@@ -604,7 +604,7 @@ public class PlatformInfo extends Node {
 									class16.invalidateWidget(Client.meslayerContinueWidget);
 								}
 							} else if (var2 == 31) {
-								var8 = LoginScreenAnimation.getPacketBufferNode(ClientPacket.Packet_itemOnItemPacket, Client.packetWriter.isaacCipher);
+								var8 = LoginScreenAnimation.getPacketBufferNode(ClientPacket.OPHELDU, Client.packetWriter.isaacCipher);
 								var8.packetBuffer.writeShort(PacketBufferNode.selectedItemId);
 								var8.packetBuffer.writeInt0123(var1);
 								var8.packetBuffer.writeShort(ArchiveDiskAction.selectedItemSlot);
@@ -616,7 +616,7 @@ public class PlatformInfo extends Node {
 								class7.field31 = HealthBarUpdate.getWidget(var1);
 								Client.field597 = var0;
 							} else if (var2 == 32) {
-								var8 = LoginScreenAnimation.getPacketBufferNode(ClientPacket.Packet_spellOnItem, Client.packetWriter.isaacCipher);
+								var8 = LoginScreenAnimation.getPacketBufferNode(ClientPacket.OPHELDT, Client.packetWriter.isaacCipher);
 								//item slot var 0
 								//Inventory id var1
 								//item id var 3
@@ -630,7 +630,7 @@ public class PlatformInfo extends Node {
 								class7.field31 = HealthBarUpdate.getWidget(var1);
 								Client.field597 = var0;
 							} else if (var2 == 33) {
-								var8 = LoginScreenAnimation.getPacketBufferNode(ClientPacket.Packet_itemAction, Client.packetWriter.isaacCipher);
+								var8 = LoginScreenAnimation.getPacketBufferNode(ClientPacket.OPHELD1, Client.packetWriter.isaacCipher);
 								var8.packetBuffer.writeInt0123(var1);
 								var8.packetBuffer.writeShort01(var0);
 								var8.packetBuffer.writeShort(var3);
@@ -639,7 +639,7 @@ public class PlatformInfo extends Node {
 								class7.field31 = HealthBarUpdate.getWidget(var1);
 								Client.field597 = var0;
 							} else if (var2 == 34) {
-								var8 = LoginScreenAnimation.getPacketBufferNode(ClientPacket.Packet_itemAction2Packet, Client.packetWriter.isaacCipher);
+								var8 = LoginScreenAnimation.getPacketBufferNode(ClientPacket.OPHELD2, Client.packetWriter.isaacCipher);
 								var8.packetBuffer.writeShort01A(var0);
 								var8.packetBuffer.writeShort01(var3);
 								var8.packetBuffer.writeIntME(var1);
@@ -648,7 +648,7 @@ public class PlatformInfo extends Node {
 								class7.field31 = HealthBarUpdate.getWidget(var1);
 								Client.field597 = var0;
 							} else if (var2 == 35) {
-								var8 = LoginScreenAnimation.getPacketBufferNode(ClientPacket.Packet_itemAction3Packet, Client.packetWriter.isaacCipher);
+								var8 = LoginScreenAnimation.getPacketBufferNode(ClientPacket.OPHELD3, Client.packetWriter.isaacCipher);
 								var8.packetBuffer.writeShortA(var3);
 								var8.packetBuffer.writeInt0123(var1);
 								var8.packetBuffer.writeShortA(var0);
@@ -657,7 +657,7 @@ public class PlatformInfo extends Node {
 								class7.field31 = HealthBarUpdate.getWidget(var1);
 								Client.field597 = var0;
 							} else if (var2 == 36) {
-								var8 = LoginScreenAnimation.getPacketBufferNode(ClientPacket.Packet_itemAction4Packet, Client.packetWriter.isaacCipher);
+								var8 = LoginScreenAnimation.getPacketBufferNode(ClientPacket.OPHELD4, Client.packetWriter.isaacCipher);
 								var8.packetBuffer.writeShortA(var0);
 								var8.packetBuffer.writeShort01A(var3);
 								var8.packetBuffer.writeInt2(var1);
@@ -666,7 +666,7 @@ public class PlatformInfo extends Node {
 								class7.field31 = HealthBarUpdate.getWidget(var1);
 								Client.field597 = var0;
 							} else if (var2 == 37) {
-								var8 = LoginScreenAnimation.getPacketBufferNode(ClientPacket.Packet_itemAction5Packet, Client.packetWriter.isaacCipher);
+								var8 = LoginScreenAnimation.getPacketBufferNode(ClientPacket.OPHELD5, Client.packetWriter.isaacCipher);
 								var8.packetBuffer.writeShort01(var3);
 								var8.packetBuffer.writeInt2(var1);
 								var8.packetBuffer.writeShort(var0);
@@ -692,7 +692,7 @@ public class PlatformInfo extends Node {
 								}
 
 								if (var2 == 39) {
-									var8 = LoginScreenAnimation.getPacketBufferNode(ClientPacket.field2726, Client.packetWriter.isaacCipher);
+									var8 = LoginScreenAnimation.getPacketBufferNode(ClientPacket.IF1_BUTTON1, Client.packetWriter.isaacCipher);
 									var8.packetBuffer.writeInt2(var1);
 									var8.packetBuffer.writeShortA(var3);
 									var8.packetBuffer.writeShort01(var0);
@@ -701,7 +701,7 @@ public class PlatformInfo extends Node {
 									class7.field31 = HealthBarUpdate.getWidget(var1);
 									Client.field597 = var0;
 								} else if (var2 == 40) {
-									var8 = LoginScreenAnimation.getPacketBufferNode(ClientPacket.field2677, Client.packetWriter.isaacCipher);
+									var8 = LoginScreenAnimation.getPacketBufferNode(ClientPacket.IF1_BUTTON2, Client.packetWriter.isaacCipher);
 									var8.packetBuffer.writeShortA(var3);
 									var8.packetBuffer.writeIntME(var1);
 									var8.packetBuffer.writeShort(var0);
@@ -710,7 +710,7 @@ public class PlatformInfo extends Node {
 									class7.field31 = HealthBarUpdate.getWidget(var1);
 									Client.field597 = var0;
 								} else if (var2 == 41) {
-									var8 = LoginScreenAnimation.getPacketBufferNode(ClientPacket.field2699, Client.packetWriter.isaacCipher);
+									var8 = LoginScreenAnimation.getPacketBufferNode(ClientPacket.IF1_BUTTON3, Client.packetWriter.isaacCipher);
 									var8.packetBuffer.writeIntME(var1);
 									var8.packetBuffer.writeShort01(var0);
 									var8.packetBuffer.writeShort(var3);
@@ -719,7 +719,7 @@ public class PlatformInfo extends Node {
 									class7.field31 = HealthBarUpdate.getWidget(var1);
 									Client.field597 = var0;
 								} else if (var2 == 42) {
-									var8 = LoginScreenAnimation.getPacketBufferNode(ClientPacket.field2722, Client.packetWriter.isaacCipher);
+									var8 = LoginScreenAnimation.getPacketBufferNode(ClientPacket.IF1_BUTTON4, Client.packetWriter.isaacCipher);
 									var8.packetBuffer.writeInt0123(var1);
 									var8.packetBuffer.writeShort01A(var3);
 									var8.packetBuffer.writeShortA(var0);
@@ -728,7 +728,7 @@ public class PlatformInfo extends Node {
 									class7.field31 = HealthBarUpdate.getWidget(var1);
 									Client.field597 = var0;
 								} else if (var2 == 43) {
-									var8 = LoginScreenAnimation.getPacketBufferNode(ClientPacket.field2689, Client.packetWriter.isaacCipher);
+									var8 = LoginScreenAnimation.getPacketBufferNode(ClientPacket.IF1_BUTTON5, Client.packetWriter.isaacCipher);
 									var8.packetBuffer.writeShort01A(var3);
 									var8.packetBuffer.writeShort(var0);
 									var8.packetBuffer.writeInt(var1);
@@ -745,7 +745,7 @@ public class PlatformInfo extends Node {
 										Client.mouseCrossState = 0;
 										Client.destinationX = var0;
 										Client.destinationY = var1;
-										var9 = LoginScreenAnimation.getPacketBufferNode(ClientPacket.field2740, Client.packetWriter.isaacCipher);
+										var9 = LoginScreenAnimation.getPacketBufferNode(ClientPacket.OPPLAYER1, Client.packetWriter.isaacCipher);
 										var9.packetBuffer.writeByte(KeyHandler.KeyHandler_pressedKeys[82] ? 1 : 0);
 										var9.packetBuffer.writeShort01(var3);
 										Client.packetWriter.addNode(var9);
@@ -759,7 +759,7 @@ public class PlatformInfo extends Node {
 										Client.mouseCrossState = 0;
 										Client.destinationX = var0;
 										Client.destinationY = var1;
-										var9 = LoginScreenAnimation.getPacketBufferNode(ClientPacket.field2761, Client.packetWriter.isaacCipher);
+										var9 = LoginScreenAnimation.getPacketBufferNode(ClientPacket.OPPLAYER2, Client.packetWriter.isaacCipher);
 										var9.packetBuffer.writeByteA(KeyHandler.KeyHandler_pressedKeys[82] ? 1 : 0);
 										var9.packetBuffer.writeShortA(var3);
 										Client.packetWriter.addNode(var9);
@@ -773,7 +773,7 @@ public class PlatformInfo extends Node {
 										Client.mouseCrossState = 0;
 										Client.destinationX = var0;
 										Client.destinationY = var1;
-										var9 = LoginScreenAnimation.getPacketBufferNode(ClientPacket.field2664, Client.packetWriter.isaacCipher);
+										var9 = LoginScreenAnimation.getPacketBufferNode(ClientPacket.OPPLAYER3, Client.packetWriter.isaacCipher);
 										var9.packetBuffer.writeShortA(var3);
 										var9.packetBuffer.writeByte(KeyHandler.KeyHandler_pressedKeys[82] ? 1 : 0);
 										Client.packetWriter.addNode(var9);
@@ -787,7 +787,7 @@ public class PlatformInfo extends Node {
 										Client.mouseCrossState = 0;
 										Client.destinationX = var0;
 										Client.destinationY = var1;
-										var9 = LoginScreenAnimation.getPacketBufferNode(ClientPacket.field2682, Client.packetWriter.isaacCipher);
+										var9 = LoginScreenAnimation.getPacketBufferNode(ClientPacket.OPPLAYER4, Client.packetWriter.isaacCipher);
 										var9.packetBuffer.writeShortA(var3);
 										var9.packetBuffer.writeByte01(KeyHandler.KeyHandler_pressedKeys[82] ? 1 : 0);
 										Client.packetWriter.addNode(var9);
@@ -801,7 +801,7 @@ public class PlatformInfo extends Node {
 										Client.mouseCrossState = 0;
 										Client.destinationX = var0;
 										Client.destinationY = var1;
-										var9 = LoginScreenAnimation.getPacketBufferNode(ClientPacket.field2678, Client.packetWriter.isaacCipher);
+										var9 = LoginScreenAnimation.getPacketBufferNode(ClientPacket.OPPLAYER5, Client.packetWriter.isaacCipher);
 										var9.packetBuffer.writeShort01(var3);
 										var9.packetBuffer.writeByte(KeyHandler.KeyHandler_pressedKeys[82] ? 1 : 0);
 										Client.packetWriter.addNode(var9);
@@ -815,7 +815,7 @@ public class PlatformInfo extends Node {
 										Client.mouseCrossState = 0;
 										Client.destinationX = var0;
 										Client.destinationY = var1;
-										var9 = LoginScreenAnimation.getPacketBufferNode(ClientPacket.field2695, Client.packetWriter.isaacCipher);
+										var9 = LoginScreenAnimation.getPacketBufferNode(ClientPacket.OPPLAYER6, Client.packetWriter.isaacCipher);
 										var9.packetBuffer.writeByte01(KeyHandler.KeyHandler_pressedKeys[82] ? 1 : 0);
 										var9.packetBuffer.writeShort01(var3);
 										Client.packetWriter.addNode(var9);
@@ -829,7 +829,7 @@ public class PlatformInfo extends Node {
 										Client.mouseCrossState = 0;
 										Client.destinationX = var0;
 										Client.destinationY = var1;
-										var9 = LoginScreenAnimation.getPacketBufferNode(ClientPacket.field2709, Client.packetWriter.isaacCipher);
+										var9 = LoginScreenAnimation.getPacketBufferNode(ClientPacket.OPPLAYER7, Client.packetWriter.isaacCipher);
 										var9.packetBuffer.writeByteA(KeyHandler.KeyHandler_pressedKeys[82] ? 1 : 0);
 										var9.packetBuffer.writeShort01A(var3);
 										Client.packetWriter.addNode(var9);
@@ -843,7 +843,7 @@ public class PlatformInfo extends Node {
 										Client.mouseCrossState = 0;
 										Client.destinationX = var0;
 										Client.destinationY = var1;
-										var9 = LoginScreenAnimation.getPacketBufferNode(ClientPacket.field2662, Client.packetWriter.isaacCipher);
+										var9 = LoginScreenAnimation.getPacketBufferNode(ClientPacket.OPPLAYER8, Client.packetWriter.isaacCipher);
 										var9.packetBuffer.writeShort01A(var3);
 										var9.packetBuffer.writeByte(KeyHandler.KeyHandler_pressedKeys[82] ? 1 : 0);
 										Client.packetWriter.addNode(var9);
@@ -854,7 +854,7 @@ public class PlatformInfo extends Node {
 											if (var2 == 58) {
 												var16 = ViewportMouse.getWidgetChild(var1, var0);
 												if (var16 != null) {
-													var9 = LoginScreenAnimation.getPacketBufferNode(ClientPacket.field2671, Client.packetWriter.isaacCipher);
+													var9 = LoginScreenAnimation.getPacketBufferNode(ClientPacket.IF_BUTTONT, Client.packetWriter.isaacCipher);
 													var9.packetBuffer.writeInt2(ModelData0.selectedSpellWidget);
 													var9.packetBuffer.writeInt2(var1);
 													var9.packetBuffer.writeShortA(var16.itemId);
@@ -873,7 +873,7 @@ public class PlatformInfo extends Node {
 												Client.mouseCrossState = 0;
 												Client.destinationX = var0;
 												Client.destinationY = var1;
-												var8 = LoginScreenAnimation.getPacketBufferNode(ClientPacket.Packet_gameObjectAction5Packet, Client.packetWriter.isaacCipher);
+												var8 = LoginScreenAnimation.getPacketBufferNode(ClientPacket.OPLOC5, Client.packetWriter.isaacCipher);
 												var8.packetBuffer.writeShort01(var3);
 												var8.packetBuffer.writeShort01(PlayerComposition.baseY + var1);
 												var8.packetBuffer.writeShort01(var0 + WorldMapSectionType.baseX);
@@ -887,7 +887,7 @@ public class PlatformInfo extends Node {
 												Client.mouseCrossY = var7;
 												Client.mouseCrossColor = 2;
 												Client.mouseCrossState = 0;
-												var8 = LoginScreenAnimation.getPacketBufferNode(ClientPacket.field2693, Client.packetWriter.isaacCipher);
+												var8 = LoginScreenAnimation.getPacketBufferNode(ClientPacket.OPLOC6, Client.packetWriter.isaacCipher);
 												var8.packetBuffer.writeShort01A(var3);
 												Client.packetWriter.addNode(var8);
 												break label638;
@@ -906,7 +906,7 @@ public class PlatformInfo extends Node {
 													}
 
 													if (var17 != null) {
-														var11 = LoginScreenAnimation.getPacketBufferNode(ClientPacket.field2759, Client.packetWriter.isaacCipher);
+														var11 = LoginScreenAnimation.getPacketBufferNode(ClientPacket.OPNPC6, Client.packetWriter.isaacCipher);
 														var11.packetBuffer.writeShortA(var17.id);
 														Client.packetWriter.addNode(var11);
 													}
@@ -919,7 +919,7 @@ public class PlatformInfo extends Node {
 												Client.mouseCrossY = var7;
 												Client.mouseCrossColor = 2;
 												Client.mouseCrossState = 0;
-												var8 = LoginScreenAnimation.getPacketBufferNode(ClientPacket.field2751, Client.packetWriter.isaacCipher);
+												var8 = LoginScreenAnimation.getPacketBufferNode(ClientPacket.OPOBJ6, Client.packetWriter.isaacCipher);
 												var8.packetBuffer.writeShort01(var3);
 												Client.packetWriter.addNode(var8);
 												break label638;
@@ -930,7 +930,7 @@ public class PlatformInfo extends Node {
 												if (var16 != null && var16.itemQuantities[var0] >= 100000) {
 													GraphicsDefaults.addGameMessage(27, "", var16.itemQuantities[var0] + " x " + class87.ItemDefinition_get(var3).name);
 												} else {
-													var9 = LoginScreenAnimation.getPacketBufferNode(ClientPacket.field2751, Client.packetWriter.isaacCipher);
+													var9 = LoginScreenAnimation.getPacketBufferNode(ClientPacket.OPOBJ6, Client.packetWriter.isaacCipher);
 													var9.packetBuffer.writeShort01(var3);
 													Client.packetWriter.addNode(var9);
 												}

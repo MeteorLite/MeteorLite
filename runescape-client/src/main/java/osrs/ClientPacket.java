@@ -13,532 +13,532 @@ public class ClientPacket implements class238 {
 	@ObfuscatedSignature(
 		descriptor = "Liz;"
 	)
-	public static final ClientPacket field2706;
+	public static final ClientPacket NO_TIMEOUT;
 	@ObfuscatedName("q")
 	@ObfuscatedSignature(
 		descriptor = "Liz;"
 	)
-	public static final ClientPacket field2660;
+	public static final ClientPacket CLAN_JOINCHAT_LEAVECHAT;
 	@ObfuscatedName("f")
 	@ObfuscatedSignature(
 		descriptor = "Liz;"
 	)
-	public static final ClientPacket field2737;
+	public static final ClientPacket CLICKWORLDMAP;
 	@ObfuscatedName("j")
 	@ObfuscatedSignature(
 		descriptor = "Liz;"
 	)
-	public static final ClientPacket field2662;
+	public static final ClientPacket OPPLAYER8;
 	@ObfuscatedName("m")
 	@ObfuscatedSignature(
 		descriptor = "Liz;"
 	)
-	public static final ClientPacket field2663;
+	public static final ClientPacket OPOBJ4;
 	@ObfuscatedName("k")
 	@ObfuscatedSignature(
 		descriptor = "Liz;"
 	)
-	public static final ClientPacket field2664;
+	public static final ClientPacket OPPLAYER3;
 	@ObfuscatedName("t")
 	@ObfuscatedSignature(
 		descriptor = "Liz;"
 	)
-	public static final ClientPacket field2665;
+	public static final ClientPacket FRIEND_SETRANK;
 	@ObfuscatedName("a")
 	@ObfuscatedSignature(
 		descriptor = "Liz;"
 	)
-	public static final ClientPacket field2689;
+	public static final ClientPacket IF1_BUTTON5;
 	@ObfuscatedName("e")
 	@ObfuscatedSignature(
 		descriptor = "Liz;"
 	)
-	public static final ClientPacket field2667;
+	public static final ClientPacket EVENT_KEYBOARD;
 	@ObfuscatedName("i")
 	@ObfuscatedSignature(
 		descriptor = "Liz;"
 	)
-	public static final ClientPacket Packet_itemAction;
+	public static final ClientPacket OPHELD1;
 	@ObfuscatedName("y")
 	@ObfuscatedSignature(
 		descriptor = "Liz;"
 	)
-	public static final ClientPacket field2690;
+	public static final ClientPacket EVENT_APPLET_FOCUS;
 	@ObfuscatedName("w")
 	@ObfuscatedSignature(
 		descriptor = "Liz;"
 	)
-	public static final ClientPacket field2672;
+	public static final ClientPacket OPOBJT;
 	@ObfuscatedName("g")
 	@ObfuscatedSignature(
 		descriptor = "Liz;"
 	)
-	public static final ClientPacket Packet_NPCAction3Packet;
+	public static final ClientPacket OPNPC3;
 	@ObfuscatedName("v")
 	@ObfuscatedSignature(
 		descriptor = "Liz;"
 	)
-	public static final ClientPacket field2699;
+	public static final ClientPacket IF1_BUTTON3;
 	@ObfuscatedName("s")
 	@ObfuscatedSignature(
 		descriptor = "Liz;"
 	)
-	public static final ClientPacket field2673;
+	public static final ClientPacket RESUME_P_OBJDIALOG;
 	@ObfuscatedName("c")
 	@ObfuscatedSignature(
 		descriptor = "Liz;"
 	)
-	public static final ClientPacket Packet_widgetAction8Packet;
+	public static final ClientPacket IF_BUTTON8;
 	@ObfuscatedName("b")
 	@ObfuscatedSignature(
 		descriptor = "Liz;"
 	)
-	public static final ClientPacket field2727;
+	public static final ClientPacket IDLE_LOGOUT;
 	@ObfuscatedName("x")
 	@ObfuscatedSignature(
 		descriptor = "Liz;"
 	)
-	public static final ClientPacket field2676;
+	public static final ClientPacket FRIENDLIST_ADD;
 	@ObfuscatedName("p")
 	@ObfuscatedSignature(
 		descriptor = "Liz;"
 	)
-	public static final ClientPacket field2677;
+	public static final ClientPacket IF1_BUTTON2;
 	@ObfuscatedName("z")
 	@ObfuscatedSignature(
 		descriptor = "Liz;"
 	)
-	public static final ClientPacket field2694;
+	public static final ClientPacket CLANCHANNEL_KICKUSER;
 	@ObfuscatedName("h")
 	@ObfuscatedSignature(
 		descriptor = "Liz;"
 	)
-	public static final ClientPacket Packet_widgetAction6Packet;
+	public static final ClientPacket IF_BUTTON6;
 	@ObfuscatedName("o")
 	@ObfuscatedSignature(
 		descriptor = "Liz;"
 	)
-	public static final ClientPacket field2680;
+	public static final ClientPacket MAP_BUILD_COMPLETE;
 	@ObfuscatedName("r")
 	@ObfuscatedSignature(
 		descriptor = "Liz;"
 	)
-	public static final ClientPacket field2681;
+	public static final ClientPacket OPOBJU;
 	@ObfuscatedName("n")
 	@ObfuscatedSignature(
 		descriptor = "Liz;"
 	)
-	public static final ClientPacket field2682;
+	public static final ClientPacket OPPLAYER4;
 	@ObfuscatedName("u")
 	@ObfuscatedSignature(
 		descriptor = "Liz;"
 	)
-	public static final ClientPacket Packet_widgetActionPacket;
+	public static final ClientPacket IF_BUTTON1;
 	@ObfuscatedName("d")
 	@ObfuscatedSignature(
 		descriptor = "Liz;"
 	)
-	public static final ClientPacket field2684;
+	public static final ClientPacket IF_BUTTOND;
 	@ObfuscatedName("ab")
 	@ObfuscatedSignature(
 		descriptor = "Liz;"
 	)
-	public static final ClientPacket field2758;
+	public static final ClientPacket SEND_SNAPSHOT;
 	@ObfuscatedName("ad")
 	@ObfuscatedSignature(
 		descriptor = "Liz;"
 	)
-	public static final ClientPacket field2686;
+	public static final ClientPacket EVENT_MOUSE_MOVE;
 	@ObfuscatedName("as")
 	@ObfuscatedSignature(
 		descriptor = "Liz;"
 	)
-	public static final ClientPacket field2687;
+	public static final ClientPacket FRIENDLIST_DEL;
 	@ObfuscatedName("ak")
 	@ObfuscatedSignature(
 		descriptor = "Liz;"
 	)
-	public static final ClientPacket field2692;
+	public static final ClientPacket OPOBJ2;
 	@ObfuscatedName("ah")
 	@ObfuscatedSignature(
 		descriptor = "Liz;"
 	)
-	public static final ClientPacket field2675;
+	public static final ClientPacket UNKNOWN30;
 	@ObfuscatedName("ay")
 	@ObfuscatedSignature(
 		descriptor = "Liz;"
 	)
-	public static final ClientPacket field2696;
+	public static final ClientPacket AFFINEDCLANSETTINGS_SETMUTED_FROMCHANNEL;
 	@ObfuscatedName("al")
 	@ObfuscatedSignature(
 		descriptor = "Liz;"
 	)
-	public static final ClientPacket Packet_itemAction4Packet;
+	public static final ClientPacket OPHELD4;
 	@ObfuscatedName("ao")
 	@ObfuscatedSignature(
 		descriptor = "Liz;"
 	)
-	public static final ClientPacket field2707;
+	public static final ClientPacket OPOBJ3;
 	@ObfuscatedName("au")
 	@ObfuscatedSignature(
 		descriptor = "Liz;"
 	)
-	static final ClientPacket field2748;
+	static final ClientPacket UNKNOWN34;
 	@ObfuscatedName("aa")
 	@ObfuscatedSignature(
 		descriptor = "Liz;"
 	)
-	public static final ClientPacket Packet_NPCAction4Packet;
+	public static final ClientPacket OPNPC4;
 	@ObfuscatedName("ag")
 	@ObfuscatedSignature(
 		descriptor = "Liz;"
 	)
-	public static final ClientPacket field2693;
+	public static final ClientPacket OPLOC6;
 	@ObfuscatedName("aq")
 	@ObfuscatedSignature(
 		descriptor = "Liz;"
 	)
-	public static final ClientPacket field2679;
+	public static final ClientPacket BUG_REPORT;
 	@ObfuscatedName("ar")
 	@ObfuscatedSignature(
 		descriptor = "Liz;"
 	)
-	public static final ClientPacket field2697;
+	public static final ClientPacket EXIT_FREECAM;
 	@ObfuscatedName("ac")
 	@ObfuscatedSignature(
 		descriptor = "Liz;"
 	)
-	public static final ClientPacket field2759;
+	public static final ClientPacket OPNPC6;
 	@ObfuscatedName("at")
 	@ObfuscatedSignature(
 		descriptor = "Liz;"
 	)
-	public static final ClientPacket field2713;
+	public static final ClientPacket CLAN_KICKUSER;
 	@ObfuscatedName("ax")
 	@ObfuscatedSignature(
 		descriptor = "Liz;"
 	)
-	public static final ClientPacket Packet_gameObjectAction4Packet;
+	public static final ClientPacket OPLOC4;
 	@ObfuscatedName("an")
 	@ObfuscatedSignature(
 		descriptor = "Liz;"
 	)
-	public static final ClientPacket Packet_gameObjectAction5Packet;
+	public static final ClientPacket OPLOC5;
 	@ObfuscatedName("av")
 	@ObfuscatedSignature(
 		descriptor = "Liz;"
 	)
-	static final ClientPacket field2702;
+	static final ClientPacket UNKNOWN43;
 	@ObfuscatedName("ap")
 	@ObfuscatedSignature(
 		descriptor = "Liz;"
 	)
-	public static final ClientPacket Packet_walkPacket;
+	public static final ClientPacket MOVE_GAMECLICK;
 	@ObfuscatedName("aj")
 	@ObfuscatedSignature(
 		descriptor = "Liz;"
 	)
-	public static final ClientPacket field2704;
+	public static final ClientPacket REFLECTION_CHECK_REPLY;
 	@ObfuscatedName("am")
 	@ObfuscatedSignature(
 		descriptor = "Liz;"
 	)
-	public static final ClientPacket field2671;
+	public static final ClientPacket IF_BUTTONT;
 	@ObfuscatedName("aw")
 	@ObfuscatedSignature(
 		descriptor = "Liz;"
 	)
-	public static final ClientPacket field2750;
+	public static final ClientPacket TELEPORT;
 	@ObfuscatedName("az")
 	@ObfuscatedSignature(
 		descriptor = "Liz;"
 	)
-	public static final ClientPacket Packet_numberInput;
+	public static final ClientPacket RESUME_P_COUNTDIALOG;
 	@ObfuscatedName("ae")
 	@ObfuscatedSignature(
 		descriptor = "Liz;"
 	)
-	public static final ClientPacket Packet_gameObjectAction2Packet;
+	public static final ClientPacket OPLOC2;
 	@ObfuscatedName("ai")
 	@ObfuscatedSignature(
 		descriptor = "Liz;"
 	)
-	public static final ClientPacket field2709;
+	public static final ClientPacket OPPLAYER7;
 	@ObfuscatedName("af")
 	@ObfuscatedSignature(
 		descriptor = "Liz;"
 	)
-	public static final ClientPacket Packet_clickPacket;
+	public static final ClientPacket EVENT_MOUSE_CLICK;
 	@ObfuscatedName("bz")
 	@ObfuscatedSignature(
 		descriptor = "Liz;"
 	)
-	public static final ClientPacket field2683;
+	public static final ClientPacket OPOBJ1;
 	@ObfuscatedName("bt")
 	@ObfuscatedSignature(
 		descriptor = "Liz;"
 	)
-	public static final ClientPacket Packet_gameObjectAction3Packet;
+	public static final ClientPacket OPLOC3;
 	@ObfuscatedName("bg")
 	@ObfuscatedSignature(
 		descriptor = "Liz;"
 	)
-	public static final ClientPacket Packet_spellOnItem;
+	public static final ClientPacket OPHELDT;
 	@ObfuscatedName("bf")
 	@ObfuscatedSignature(
 		descriptor = "Liz;"
 	)
-	public static final ClientPacket Packet_itemAction3Packet;
+	public static final ClientPacket OPHELD3;
 	@ObfuscatedName("bj")
 	@ObfuscatedSignature(
 		descriptor = "Liz;"
 	)
-	public static final ClientPacket Packet_bankItemActionPacket;
+	public static final ClientPacket IF_BUTTON9;
 	@ObfuscatedName("bo")
 	@ObfuscatedSignature(
 		descriptor = "Liz;"
 	)
-	public static final ClientPacket Packet_itemOnItemPacket;
+	public static final ClientPacket OPHELDU;
 	@ObfuscatedName("bx")
 	@ObfuscatedSignature(
 		descriptor = "Liz;"
 	)
-	public static final ClientPacket field2717;
+	public static final ClientPacket OPNPCU;
 	@ObfuscatedName("bu")
 	@ObfuscatedSignature(
 		descriptor = "Liz;"
 	)
-	public static final ClientPacket field2718;
+	public static final ClientPacket WINDOW_STATUS;
 	@ObfuscatedName("bc")
 	@ObfuscatedSignature(
 		descriptor = "Liz;"
 	)
-	public static final ClientPacket Packet_nameInput;
+	public static final ClientPacket RESUME_P_NAMEDIALOG;
 	@ObfuscatedName("ba")
 	@ObfuscatedSignature(
 		descriptor = "Liz;"
 	)
-	public static final ClientPacket field2720;
+	public static final ClientPacket EVENT_CAMERA_POSITION;
 	@ObfuscatedName("bm")
 	@ObfuscatedSignature(
 		descriptor = "Liz;"
 	)
-	public static final ClientPacket field2695;
+	public static final ClientPacket OPPLAYER6;
 	@ObfuscatedName("bv")
 	@ObfuscatedSignature(
 		descriptor = "Liz;"
 	)
-	public static final ClientPacket field2722;
+	public static final ClientPacket IF1_BUTTON4;
 	@ObfuscatedName("bs")
 	@ObfuscatedSignature(
 		descriptor = "Liz;"
 	)
-	public static final ClientPacket field2723;
+	public static final ClientPacket DETECT_MODIFIED_CLIENT;
 	@ObfuscatedName("bd")
 	@ObfuscatedSignature(
 		descriptor = "Liz;"
 	)
-	public static final ClientPacket field2724;
+	public static final ClientPacket LOGIN_STATISTICS;
 	@ObfuscatedName("bb")
 	@ObfuscatedSignature(
 		descriptor = "Liz;"
 	)
-	public static final ClientPacket field2725;
+	public static final ClientPacket IGNORELIST_ADD;
 	@ObfuscatedName("bh")
 	@ObfuscatedSignature(
 		descriptor = "Liz;"
 	)
-	public static final ClientPacket Packet_interfaceClosePacket;
+	public static final ClientPacket CLOSE_MODAL;
 	@ObfuscatedName("bi")
 	@ObfuscatedSignature(
 		descriptor = "Liz;"
 	)
-	public static final ClientPacket Packet_NPCAction2Packet;
+	public static final ClientPacket OPNPC2;
 	@ObfuscatedName("bq")
 	@ObfuscatedSignature(
 		descriptor = "Liz;"
 	)
-	public static final ClientPacket field2728;
+	public static final ClientPacket OPLOCT;
 	@ObfuscatedName("by")
 	@ObfuscatedSignature(
 		descriptor = "Liz;"
 	)
-	public static final ClientPacket Packet_NPCActionPacket;
+	public static final ClientPacket OPNPC1;
 	@ObfuscatedName("be")
 	@ObfuscatedSignature(
 		descriptor = "Liz;"
 	)
-	public static final ClientPacket Packet_widgetAction7Packet;
+	public static final ClientPacket IF_BUTTON7;
 	@ObfuscatedName("bw")
 	@ObfuscatedSignature(
 		descriptor = "Liz;"
 	)
-	public static final ClientPacket Packet_itemAction2Packet;
+	public static final ClientPacket OPHELD2;
 	@ObfuscatedName("bn")
 	@ObfuscatedSignature(
 		descriptor = "Liz;"
 	)
-	public static final ClientPacket field2732;
+	public static final ClientPacket SEND_PING_REPLY;
 	@ObfuscatedName("bl")
 	@ObfuscatedSignature(
 		descriptor = "Liz;"
 	)
-	public static final ClientPacket Packet_NPCAction5Packet;
+	public static final ClientPacket OPNPC5;
 	@ObfuscatedName("bk")
 	@ObfuscatedSignature(
 		descriptor = "Liz;"
 	)
-	public static final ClientPacket field2734;
+	public static final ClientPacket RESUME_PAUSEBUTTON;
 	@ObfuscatedName("bp")
 	@ObfuscatedSignature(
 		descriptor = "Liz;"
 	)
-	public static final ClientPacket field2735;
+	public static final ClientPacket MESSAGE_PRIVATE;
 	@ObfuscatedName("br")
 	@ObfuscatedSignature(
 		descriptor = "Liz;"
 	)
-	public static final ClientPacket field2736;
+	public static final ClientPacket OPOBJ5;
 	@ObfuscatedName("ca")
 	@ObfuscatedSignature(
 		descriptor = "Liz;"
 	)
-	public static final ClientPacket field2678;
+	public static final ClientPacket OPPLAYER5;
 	@ObfuscatedName("ct")
 	@ObfuscatedSignature(
 		descriptor = "Liz;"
 	)
-	static final ClientPacket field2661;
+	static final ClientPacket UNKNOWN79;
 	@ObfuscatedName("cy")
 	@ObfuscatedSignature(
 		descriptor = "Liz;"
 	)
-	public static final ClientPacket field2739;
+	public static final ClientPacket BUTTON_CLICK;
 	@ObfuscatedName("cg")
 	@ObfuscatedSignature(
 		descriptor = "Liz;"
 	)
-	public static final ClientPacket field2740;
+	public static final ClientPacket OPPLAYER1;
 	@ObfuscatedName("ci")
 	@ObfuscatedSignature(
 		descriptor = "Liz;"
 	)
-	public static final ClientPacket Packet_textInput;
+	public static final ClientPacket RESUME_P_STRINGDIALOG;
 	@ObfuscatedName("cx")
 	@ObfuscatedSignature(
 		descriptor = "Liz;"
 	)
-	public static final ClientPacket Packet_widgetAction4Packet;
+	public static final ClientPacket IF_BUTTON4;
 	@ObfuscatedName("cd")
 	@ObfuscatedSignature(
 		descriptor = "Liz;"
 	)
-	public static final ClientPacket Packet_widgetAction5Packet;
+	public static final ClientPacket IF_BUTTON5;
 	@ObfuscatedName("cp")
 	@ObfuscatedSignature(
 		descriptor = "Liz;"
 	)
-	static final ClientPacket field2674;
+	static final ClientPacket UNKNOWN85;
 	@ObfuscatedName("cl")
 	@ObfuscatedSignature(
 		descriptor = "Liz;"
 	)
-	public static final ClientPacket field2745;
+	public static final ClientPacket MOVE_MINIMAPCLICK;
 	@ObfuscatedName("cr")
 	@ObfuscatedSignature(
 		descriptor = "Liz;"
 	)
-	public static final ClientPacket field2746;
+	public static final ClientPacket IGNORELIST_DEL;
 	@ObfuscatedName("cq")
 	@ObfuscatedSignature(
 		descriptor = "Liz;"
 	)
-	public static final ClientPacket field2747;
+	public static final ClientPacket OPNPCT;
 	@ObfuscatedName("cs")
 	@ObfuscatedSignature(
 		descriptor = "Liz;"
 	)
-	public static final ClientPacket field2726;
+	public static final ClientPacket IF1_BUTTON1;
 	@ObfuscatedName("cw")
 	@ObfuscatedSignature(
 		descriptor = "Liz;"
 	)
-	public static final ClientPacket field2749;
+	public static final ClientPacket SET_CHATFILTERSETTINGS;
 	@ObfuscatedName("ce")
 	@ObfuscatedSignature(
 		descriptor = "Liz;"
 	)
-	public static final ClientPacket field2755;
+	public static final ClientPacket IF1_BUTTOND;
 	@ObfuscatedName("cz")
 	@ObfuscatedSignature(
 		descriptor = "Liz;"
 	)
-	public static final ClientPacket field2751;
+	public static final ClientPacket OPOBJ6;
 	@ObfuscatedName("cu")
 	@ObfuscatedSignature(
 		descriptor = "Liz;"
 	)
-	public static final ClientPacket Packet_widgetAction3Packet;
+	public static final ClientPacket IF_BUTTON3;
 	@ObfuscatedName("cv")
 	@ObfuscatedSignature(
 		descriptor = "Liz;"
 	)
-	public static final ClientPacket field2753;
+	public static final ClientPacket OPPLAYERU;
 	@ObfuscatedName("cn")
 	@ObfuscatedSignature(
 		descriptor = "Liz;"
 	)
-	public static final ClientPacket field2754;
+	public static final ClientPacket MESSAGE_PUBLIC;
 	@ObfuscatedName("cf")
 	@ObfuscatedSignature(
 		descriptor = "Liz;"
 	)
-	public static final ClientPacket Packet_widgetAction10Packet;
+	public static final ClientPacket IF_BUTTON10;
 	@ObfuscatedName("ch")
 	@ObfuscatedSignature(
 		descriptor = "Liz;"
 	)
-	public static final ClientPacket field2756;
+	public static final ClientPacket CLIENT_CHEAT;
 	@ObfuscatedName("cc")
 	@ObfuscatedSignature(
 		descriptor = "Liz;"
 	)
-	static final ClientPacket field2757;
+	static final ClientPacket UNKNOWN98;
 	@ObfuscatedName("cj")
 	@ObfuscatedSignature(
 		descriptor = "Liz;"
 	)
-	public static final ClientPacket Packet_itemAction5Packet;
+	public static final ClientPacket OPHELD5;
 	@ObfuscatedName("co")
 	@ObfuscatedSignature(
 		descriptor = "Liz;"
 	)
-	public static final ClientPacket field2715;
+	public static final ClientPacket AFFINEDCLANSETTINGS_ADDBANNED_FROMCHANNEL;
 	@ObfuscatedName("ck")
 	@ObfuscatedSignature(
 		descriptor = "Liz;"
 	)
-	public static final ClientPacket Packet_widgetAction2Packet;
+	public static final ClientPacket IF_BUTTON2;
 	@ObfuscatedName("cb")
 	@ObfuscatedSignature(
 		descriptor = "Liz;"
 	)
-	public static final ClientPacket field2761;
+	public static final ClientPacket OPPLAYER2;
 	@ObfuscatedName("cm")
 	@ObfuscatedSignature(
 		descriptor = "Liz;"
 	)
-	public static final ClientPacket Packet_gameObjectActionPacket;
+	public static final ClientPacket OPLOC1;
 	@ObfuscatedName("db")
 	@ObfuscatedSignature(
 		descriptor = "Liz;"
 	)
-	public static final ClientPacket Packet_itemUseOnGameObjectPacket;
+	public static final ClientPacket OPLOCU;
 	@ObfuscatedName("dx")
 	@ObfuscatedSignature(
 		descriptor = "Liz;"
 	)
-	public static final ClientPacket field2764;
+	public static final ClientPacket OPPLAYERT;
 	@ObfuscatedName("dd")
 	@ObfuscatedGetter(
 		intValue = 1537742509
@@ -553,112 +553,112 @@ public class ClientPacket implements class238 {
 	final int length;
 
 	static {
-		field2706 = new ClientPacket(0, 0);
-		field2660 = new ClientPacket(1, -1);
-		field2737 = new ClientPacket(2, 4);
-		field2662 = new ClientPacket(3, 3);
-		field2663 = new ClientPacket(4, 7);
-		field2664 = new ClientPacket(5, 3);
-		field2665 = new ClientPacket(6, -1);
-		field2689 = new ClientPacket(7, 8);
-		field2667 = new ClientPacket(8, -2);
-		Packet_itemAction = new ClientPacket(9, 8);
-		field2690 = new ClientPacket(10, 1);
-		field2672 = new ClientPacket(11, 15);
-		Packet_NPCAction3Packet = new ClientPacket(12, 3);
-		field2699 = new ClientPacket(13, 8);
-		field2673 = new ClientPacket(14, 2);
-		Packet_widgetAction8Packet = new ClientPacket(15, 8);
-		field2727 = new ClientPacket(16, 0);
-		field2676 = new ClientPacket(17, -1);
-		field2677 = new ClientPacket(18, 8);
-		field2694 = new ClientPacket(19, -1);
-		Packet_widgetAction6Packet = new ClientPacket(20, 8);
-		field2680 = new ClientPacket(21, 0);
-		field2681 = new ClientPacket(22, 15);
-		field2682 = new ClientPacket(23, 3);
-		Packet_widgetActionPacket = new ClientPacket(24, 8);
-		field2684 = new ClientPacket(25, 16);
-		field2758 = new ClientPacket(26, -1);
-		field2686 = new ClientPacket(27, -1);
-		field2687 = new ClientPacket(28, -1);
-		field2692 = new ClientPacket(29, 7);
-		field2675 = new ClientPacket(30, 13);
-		field2696 = new ClientPacket(31, -1);
-		Packet_itemAction4Packet = new ClientPacket(32, 8);
-		field2707 = new ClientPacket(33, 7);
-		field2748 = new ClientPacket(34, -1);
-		Packet_NPCAction4Packet = new ClientPacket(35, 3);
-		field2693 = new ClientPacket(36, 2);
-		field2679 = new ClientPacket(37, -2);
-		field2697 = new ClientPacket(38, 0);
-		field2759 = new ClientPacket(39, 2);
-		field2713 = new ClientPacket(40, -1);
-		Packet_gameObjectAction4Packet = new ClientPacket(41, 7);
-		Packet_gameObjectAction5Packet = new ClientPacket(42, 7);
-		field2702 = new ClientPacket(43, 7);
-		Packet_walkPacket = new ClientPacket(44, -1);
-		field2704 = new ClientPacket(45, -1);
-		field2671 = new ClientPacket(46, 16);
-		field2750 = new ClientPacket(47, 9);
-		Packet_numberInput = new ClientPacket(48, 4);
-		Packet_gameObjectAction2Packet = new ClientPacket(49, 7);
-		field2709 = new ClientPacket(50, 3);
-		Packet_clickPacket = new ClientPacket(51, 6);
-		field2683 = new ClientPacket(52, 7);
-		Packet_gameObjectAction3Packet = new ClientPacket(53, 7);
-		Packet_spellOnItem = new ClientPacket(54, 14);
-		Packet_itemAction3Packet = new ClientPacket(55, 8);
-		Packet_bankItemActionPacket = new ClientPacket(56, 8);
-		Packet_itemOnItemPacket = new ClientPacket(57, 16);
-		field2717 = new ClientPacket(58, 11);
-		field2718 = new ClientPacket(59, 5);
-		Packet_nameInput = new ClientPacket(60, -1);
-		field2720 = new ClientPacket(61, 4);
-		field2695 = new ClientPacket(62, 3);
-		field2722 = new ClientPacket(63, 8);
-		field2723 = new ClientPacket(64, 4);
-		field2724 = new ClientPacket(65, -1);
-		field2725 = new ClientPacket(66, -1);
-		Packet_interfaceClosePacket = new ClientPacket(67, 0);
-		Packet_NPCAction2Packet = new ClientPacket(68, 3);
-		field2728 = new ClientPacket(69, 15);
-		Packet_NPCActionPacket = new ClientPacket(70, 3);
-		Packet_widgetAction7Packet = new ClientPacket(71, 8);
-		Packet_itemAction2Packet = new ClientPacket(72, 8);
-		field2732 = new ClientPacket(73, 10);
-		Packet_NPCAction5Packet = new ClientPacket(74, 3);
-		field2734 = new ClientPacket(75, 6);
-		field2735 = new ClientPacket(76, -2);
-		field2736 = new ClientPacket(77, 7);
-		field2678 = new ClientPacket(78, 3);
-		field2661 = new ClientPacket(79, -1);
-		field2739 = new ClientPacket(80, 4);
-		field2740 = new ClientPacket(81, 3);
-		Packet_textInput = new ClientPacket(82, -1);
-		Packet_widgetAction4Packet = new ClientPacket(83, 8);
-		Packet_widgetAction5Packet = new ClientPacket(84, 8);
-		field2674 = new ClientPacket(85, -1);
-		field2745 = new ClientPacket(86, -1);
-		field2746 = new ClientPacket(87, -1);
-		field2747 = new ClientPacket(88, 11);
-		field2726 = new ClientPacket(89, 8);
-		field2749 = new ClientPacket(90, 3);
-		field2755 = new ClientPacket(91, 9);
-		field2751 = new ClientPacket(92, 2);
-		Packet_widgetAction3Packet = new ClientPacket(93, 8);
-		field2753 = new ClientPacket(94, 11);
-		field2754 = new ClientPacket(95, -1);
-		Packet_widgetAction10Packet = new ClientPacket(96, 8);
-		field2756 = new ClientPacket(97, -1);
-		field2757 = new ClientPacket(98, 2);
-		Packet_itemAction5Packet = new ClientPacket(99, 8);
-		field2715 = new ClientPacket(100, -1);
-		Packet_widgetAction2Packet = new ClientPacket(101, 8);
-		field2761 = new ClientPacket(102, 3);
-		Packet_gameObjectActionPacket = new ClientPacket(103, 7);
-		Packet_itemUseOnGameObjectPacket = new ClientPacket(104, 15);
-		field2764 = new ClientPacket(105, 11);
+		NO_TIMEOUT = new ClientPacket(0, 0);
+		CLAN_JOINCHAT_LEAVECHAT = new ClientPacket(1, -1);
+		CLICKWORLDMAP = new ClientPacket(2, 4);
+		OPPLAYER8 = new ClientPacket(3, 3);
+		OPOBJ4 = new ClientPacket(4, 7);
+		OPPLAYER3 = new ClientPacket(5, 3);
+		FRIEND_SETRANK = new ClientPacket(6, -1);
+		IF1_BUTTON5 = new ClientPacket(7, 8);
+		EVENT_KEYBOARD = new ClientPacket(8, -2);
+		OPHELD1 = new ClientPacket(9, 8);
+		EVENT_APPLET_FOCUS = new ClientPacket(10, 1);
+		OPOBJT = new ClientPacket(11, 15);
+		OPNPC3 = new ClientPacket(12, 3);
+		IF1_BUTTON3 = new ClientPacket(13, 8);
+		RESUME_P_OBJDIALOG = new ClientPacket(14, 2);
+		IF_BUTTON8 = new ClientPacket(15, 8);
+		IDLE_LOGOUT = new ClientPacket(16, 0);
+		FRIENDLIST_ADD = new ClientPacket(17, -1);
+		IF1_BUTTON2 = new ClientPacket(18, 8);
+		CLANCHANNEL_KICKUSER = new ClientPacket(19, -1);
+		IF_BUTTON6 = new ClientPacket(20, 8);
+		MAP_BUILD_COMPLETE = new ClientPacket(21, 0);
+		OPOBJU = new ClientPacket(22, 15);
+		OPPLAYER4 = new ClientPacket(23, 3);
+		IF_BUTTON1 = new ClientPacket(24, 8);
+		IF_BUTTOND = new ClientPacket(25, 16);
+		SEND_SNAPSHOT = new ClientPacket(26, -1);
+		EVENT_MOUSE_MOVE = new ClientPacket(27, -1);
+		FRIENDLIST_DEL = new ClientPacket(28, -1);
+		OPOBJ2 = new ClientPacket(29, 7);
+		UNKNOWN30 = new ClientPacket(30, 13);
+		AFFINEDCLANSETTINGS_SETMUTED_FROMCHANNEL = new ClientPacket(31, -1);
+		OPHELD4 = new ClientPacket(32, 8);
+		OPOBJ3 = new ClientPacket(33, 7);
+		UNKNOWN34 = new ClientPacket(34, -1); //unused
+		OPNPC4 = new ClientPacket(35, 3);
+		OPLOC6 = new ClientPacket(36, 2);
+		BUG_REPORT = new ClientPacket(37, -2);
+		EXIT_FREECAM = new ClientPacket(38, 0);
+		OPNPC6 = new ClientPacket(39, 2);
+		CLAN_KICKUSER = new ClientPacket(40, -1);
+		OPLOC4 = new ClientPacket(41, 7);
+		OPLOC5 = new ClientPacket(42, 7);
+		UNKNOWN43 = new ClientPacket(43, 7);
+		MOVE_GAMECLICK = new ClientPacket(44, -1);
+		REFLECTION_CHECK_REPLY = new ClientPacket(45, -1);
+		IF_BUTTONT = new ClientPacket(46, 16);
+		TELEPORT = new ClientPacket(47, 9);
+		RESUME_P_COUNTDIALOG = new ClientPacket(48, 4);
+		OPLOC2 = new ClientPacket(49, 7);
+		OPPLAYER7 = new ClientPacket(50, 3);
+		EVENT_MOUSE_CLICK = new ClientPacket(51, 6);
+		OPOBJ1 = new ClientPacket(52, 7);
+		OPLOC3 = new ClientPacket(53, 7);
+		OPHELDT = new ClientPacket(54, 14);
+		OPHELD3 = new ClientPacket(55, 8);
+		IF_BUTTON9 = new ClientPacket(56, 8);
+		OPHELDU = new ClientPacket(57, 16);
+		OPNPCU = new ClientPacket(58, 11);
+		WINDOW_STATUS = new ClientPacket(59, 5);
+		RESUME_P_NAMEDIALOG = new ClientPacket(60, -1);
+		EVENT_CAMERA_POSITION = new ClientPacket(61, 4);
+		OPPLAYER6 = new ClientPacket(62, 3);
+		IF1_BUTTON4 = new ClientPacket(63, 8);
+		DETECT_MODIFIED_CLIENT = new ClientPacket(64, 4);
+		LOGIN_STATISTICS = new ClientPacket(65, -1);
+		IGNORELIST_ADD = new ClientPacket(66, -1);
+		CLOSE_MODAL = new ClientPacket(67, 0);
+		OPNPC2 = new ClientPacket(68, 3);
+		OPLOCT = new ClientPacket(69, 15);
+		OPNPC1 = new ClientPacket(70, 3);
+		IF_BUTTON7 = new ClientPacket(71, 8);
+		OPHELD2 = new ClientPacket(72, 8);
+		SEND_PING_REPLY = new ClientPacket(73, 10);
+		OPNPC5 = new ClientPacket(74, 3);
+		RESUME_PAUSEBUTTON = new ClientPacket(75, 6);
+		MESSAGE_PRIVATE = new ClientPacket(76, -2);
+		OPOBJ5 = new ClientPacket(77, 7);
+		OPPLAYER5 = new ClientPacket(78, 3);
+		UNKNOWN79 = new ClientPacket(79, -1);
+		BUTTON_CLICK = new ClientPacket(80, 4);
+		OPPLAYER1 = new ClientPacket(81, 3);
+		RESUME_P_STRINGDIALOG = new ClientPacket(82, -1);
+		IF_BUTTON4 = new ClientPacket(83, 8);
+		IF_BUTTON5 = new ClientPacket(84, 8);
+		UNKNOWN85 = new ClientPacket(85, -1);
+		MOVE_MINIMAPCLICK = new ClientPacket(86, -1);
+		IGNORELIST_DEL = new ClientPacket(87, -1);
+		OPNPCT = new ClientPacket(88, 11);
+		IF1_BUTTON1 = new ClientPacket(89, 8);
+		SET_CHATFILTERSETTINGS = new ClientPacket(90, 3);
+		IF1_BUTTOND = new ClientPacket(91, 9);
+		OPOBJ6 = new ClientPacket(92, 2);
+		IF_BUTTON3 = new ClientPacket(93, 8);
+		OPPLAYERU = new ClientPacket(94, 11);
+		MESSAGE_PUBLIC = new ClientPacket(95, -1);
+		IF_BUTTON10 = new ClientPacket(96, 8);
+		CLIENT_CHEAT = new ClientPacket(97, -1);
+		UNKNOWN98 = new ClientPacket(98, 2);
+		OPHELD5 = new ClientPacket(99, 8);
+		AFFINEDCLANSETTINGS_ADDBANNED_FROMCHANNEL = new ClientPacket(100, -1);
+		IF_BUTTON2 = new ClientPacket(101, 8);
+		OPPLAYER2 = new ClientPacket(102, 3);
+		OPLOC1 = new ClientPacket(103, 7);
+		OPLOCU = new ClientPacket(104, 15);
+		OPPLAYERT = new ClientPacket(105, 11);
 	}
 
 	ClientPacket(int var1, int var2) {

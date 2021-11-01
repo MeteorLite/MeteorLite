@@ -261,7 +261,7 @@ public class Decimator {
 	)
 	@Export("resumePauseWidget")
 	static void resumePauseWidget(int var0, int var1) {
-		PacketBufferNode var2 = LoginScreenAnimation.getPacketBufferNode(ClientPacket.field2734, Client.packetWriter.isaacCipher);
+		PacketBufferNode var2 = LoginScreenAnimation.getPacketBufferNode(ClientPacket.RESUME_PAUSEBUTTON, Client.packetWriter.isaacCipher);
 		var2.packetBuffer.writeShort01(var1);
 		var2.packetBuffer.writeInt(var0);
 		Client.packetWriter.addNode(var2);

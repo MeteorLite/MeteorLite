@@ -110,7 +110,7 @@ final class GrandExchangeOfferTotalQuantityComparator implements Comparator {
 	)
 	@Export("Clan_leaveChat")
 	static final void Clan_leaveChat() {
-		PacketBufferNode var0 = LoginScreenAnimation.getPacketBufferNode(ClientPacket.field2660, Client.packetWriter.isaacCipher);
+		PacketBufferNode var0 = LoginScreenAnimation.getPacketBufferNode(ClientPacket.CLAN_JOINCHAT_LEAVECHAT, Client.packetWriter.isaacCipher);
 		var0.packetBuffer.writeByte(0);
 		Client.packetWriter.addNode(var0);
 	}

@@ -124,7 +124,7 @@ public class ReflectionCheck extends Node {
 				if (class138.method2756(WorldMapRegion.getWidgetFlags(var5), var0 - 1)) {
 					PacketBufferNode var7;
 					if (var0 == 1) {
-						var7 = LoginScreenAnimation.getPacketBufferNode(ClientPacket.Packet_widgetActionPacket, Client.packetWriter.isaacCipher);
+						var7 = LoginScreenAnimation.getPacketBufferNode(ClientPacket.IF_BUTTON1, Client.packetWriter.isaacCipher);
 						var7.packetBuffer.writeInt(var1);
 						var7.packetBuffer.writeShort(var2);
 						var7.packetBuffer.writeShort(var3);
@@ -132,7 +132,7 @@ public class ReflectionCheck extends Node {
 					}
 
 					if (var0 == 2) {
-						var7 = LoginScreenAnimation.getPacketBufferNode(ClientPacket.Packet_widgetAction2Packet, Client.packetWriter.isaacCipher);
+						var7 = LoginScreenAnimation.getPacketBufferNode(ClientPacket.IF_BUTTON2, Client.packetWriter.isaacCipher);
 						var7.packetBuffer.writeInt(var1);
 						var7.packetBuffer.writeShort(var2);
 						var7.packetBuffer.writeShort(var3);
@@ -140,7 +140,7 @@ public class ReflectionCheck extends Node {
 					}
 
 					if (var0 == 3) {
-						var7 = LoginScreenAnimation.getPacketBufferNode(ClientPacket.Packet_widgetAction3Packet, Client.packetWriter.isaacCipher);
+						var7 = LoginScreenAnimation.getPacketBufferNode(ClientPacket.IF_BUTTON3, Client.packetWriter.isaacCipher);
 						var7.packetBuffer.writeInt(var1);
 						var7.packetBuffer.writeShort(var2);
 						var7.packetBuffer.writeShort(var3);
@@ -148,7 +148,7 @@ public class ReflectionCheck extends Node {
 					}
 
 					if (var0 == 4) {
-						var7 = LoginScreenAnimation.getPacketBufferNode(ClientPacket.Packet_widgetAction4Packet, Client.packetWriter.isaacCipher);
+						var7 = LoginScreenAnimation.getPacketBufferNode(ClientPacket.IF_BUTTON4, Client.packetWriter.isaacCipher);
 						var7.packetBuffer.writeInt(var1);
 						var7.packetBuffer.writeShort(var2);
 						var7.packetBuffer.writeShort(var3);
@@ -156,7 +156,7 @@ public class ReflectionCheck extends Node {
 					}
 
 					if (var0 == 5) {
-						var7 = LoginScreenAnimation.getPacketBufferNode(ClientPacket.Packet_widgetAction5Packet, Client.packetWriter.isaacCipher);
+						var7 = LoginScreenAnimation.getPacketBufferNode(ClientPacket.IF_BUTTON5, Client.packetWriter.isaacCipher);
 						var7.packetBuffer.writeInt(var1);
 						var7.packetBuffer.writeShort(var2);
 						var7.packetBuffer.writeShort(var3);
@@ -164,7 +164,7 @@ public class ReflectionCheck extends Node {
 					}
 
 					if (var0 == 6) {
-						var7 = LoginScreenAnimation.getPacketBufferNode(ClientPacket.Packet_widgetAction6Packet, Client.packetWriter.isaacCipher);
+						var7 = LoginScreenAnimation.getPacketBufferNode(ClientPacket.IF_BUTTON6, Client.packetWriter.isaacCipher);
 						var7.packetBuffer.writeInt(var1);
 						var7.packetBuffer.writeShort(var2);
 						var7.packetBuffer.writeShort(var3);
@@ -172,7 +172,7 @@ public class ReflectionCheck extends Node {
 					}
 
 					if (var0 == 7) {
-						var7 = LoginScreenAnimation.getPacketBufferNode(ClientPacket.Packet_widgetAction7Packet, Client.packetWriter.isaacCipher);
+						var7 = LoginScreenAnimation.getPacketBufferNode(ClientPacket.IF_BUTTON7, Client.packetWriter.isaacCipher);
 						var7.packetBuffer.writeInt(var1);
 						var7.packetBuffer.writeShort(var2);
 						var7.packetBuffer.writeShort(var3);
@@ -180,7 +180,7 @@ public class ReflectionCheck extends Node {
 					}
 
 					if (var0 == 8) {
-						var7 = LoginScreenAnimation.getPacketBufferNode(ClientPacket.Packet_widgetAction8Packet, Client.packetWriter.isaacCipher);
+						var7 = LoginScreenAnimation.getPacketBufferNode(ClientPacket.IF_BUTTON8, Client.packetWriter.isaacCipher);
 						var7.packetBuffer.writeInt(var1);
 						var7.packetBuffer.writeShort(var2);
 						var7.packetBuffer.writeShort(var3);
@@ -188,7 +188,7 @@ public class ReflectionCheck extends Node {
 					}
 
 					if (var0 == 9) {
-						var7 = LoginScreenAnimation.getPacketBufferNode(ClientPacket.Packet_bankItemActionPacket, Client.packetWriter.isaacCipher);
+						var7 = LoginScreenAnimation.getPacketBufferNode(ClientPacket.IF_BUTTON9, Client.packetWriter.isaacCipher);
 						var7.packetBuffer.writeInt(var1);
 						var7.packetBuffer.writeShort(var2);
 						var7.packetBuffer.writeShort(var3);
@@ -196,7 +196,7 @@ public class ReflectionCheck extends Node {
 					}
 
 					if (var0 == 10) {
-						var7 = LoginScreenAnimation.getPacketBufferNode(ClientPacket.Packet_widgetAction10Packet, Client.packetWriter.isaacCipher);
+						var7 = LoginScreenAnimation.getPacketBufferNode(ClientPacket.IF_BUTTON10, Client.packetWriter.isaacCipher);
 						var7.packetBuffer.writeInt(var1);
 						var7.packetBuffer.writeShort(var2);
 						var7.packetBuffer.writeShort(var3);

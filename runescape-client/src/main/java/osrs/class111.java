@@ -15,7 +15,7 @@ public class class111 implements class110 {
 			if (var1 >= 0 && var1 < Client.currentClanChannels[var0].method2729()) {
 				ClanChannelMember var3 = (ClanChannelMember)Client.currentClanChannels[var0].members.get(var1);
 				PacketWriter var4 = Client.packetWriter;
-				PacketBufferNode var5 = LoginScreenAnimation.getPacketBufferNode(ClientPacket.field2696, var4.isaacCipher);
+				PacketBufferNode var5 = LoginScreenAnimation.getPacketBufferNode(ClientPacket.AFFINEDCLANSETTINGS_SETMUTED_FROMCHANNEL, var4.isaacCipher);
 				var5.packetBuffer.writeByte(4 + class113.stringCp1252NullTerminatedByteSize(var3.username.getName()));
 				var5.packetBuffer.writeByte(var0);
 				var5.packetBuffer.writeShort(var1);

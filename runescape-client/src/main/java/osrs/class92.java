@@ -309,7 +309,7 @@ public class class92 {
 					int var10 = var5 * var8 - var7 * var4 >> 11;
 					int var11 = var9 + class67.localPlayer.x >> 7;
 					int var12 = class67.localPlayer.y - var10 >> 7;
-					PacketBufferNode var13 = LoginScreenAnimation.getPacketBufferNode(ClientPacket.field2745, Client.packetWriter.isaacCipher);
+					PacketBufferNode var13 = LoginScreenAnimation.getPacketBufferNode(ClientPacket.MOVE_MINIMAPCLICK, Client.packetWriter.isaacCipher);
 					var13.packetBuffer.writeByte(18);
 					var13.packetBuffer.writeShort01A(var11 + WorldMapSectionType.baseX);
 					var13.packetBuffer.writeShortA(var12 + PlayerComposition.baseY);
