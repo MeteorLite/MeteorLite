@@ -1557,7 +1557,7 @@ public interface RSClient extends RSGameEngine, Client {
   @Override
   RSClientPacket getSpellOnItemPacket();
 
-  @Import("Packet_numberInput")
+  @Import("RESUME_P_COUNTDIALOG")
   @Override
   RSClientPacket getNumberInputPacket();
 
