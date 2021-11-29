@@ -255,18 +255,18 @@ public class GauntletPlugin extends Plugin
 	}
 
 	private void resetVars() {
-        inGauntlet = false;
-        inHunllef = false;
+        	inGauntlet = false;
+        	inHunllef = false;
 
-        hunllef = null;
-        missile = null;
-        wrongAttackStyle = false;
-        switchWeapon = false;
+        	hunllef = null;
+        	missile = null;
+        	wrongAttackStyle = false;
+        	switchWeapon = false;
 
-        overlayTimer.reset();
-        resourceManager.reset();
+        	overlayTimer.reset();
+        	resourceManager.reset();
 
-        entitySets.forEach(Set::clear);
+        	entitySets.forEach(Set::clear);
 	}
 
 	@Subscribe
