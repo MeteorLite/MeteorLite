@@ -251,18 +251,22 @@ public class GauntletPlugin extends Plugin
 	{
 		overlays.forEach(o -> overlayManager.remove(o));
 
-		inGauntlet = false;
-		inHunllef = false;
+		resetVars();
+	}
 
-		hunllef = null;
-		missile = null;
-		wrongAttackStyle = false;
-		switchWeapon = false;
+	private void resetVars() {
+        inGauntlet = false;
+        inHunllef = false;
 
-		overlayTimer.reset();
-		resourceManager.reset();
+        hunllef = null;
+        missile = null;
+        wrongAttackStyle = false;
+        switchWeapon = false;
 
-		entitySets.forEach(Set::clear);
+        overlayTimer.reset();
+        resourceManager.reset();
+
+        entitySets.forEach(Set::clear);
 	}
 
 	@Subscribe
@@ -275,7 +279,7 @@ public class GauntletPlugin extends Plugin
 
 		switch (event.getKey())
 		{
-			case "resourceIconSize":
+			case "resourcreIconSize":
 				if (!resources.isEmpty())
 				{
 					resources.forEach(r -> r.setIconSize(config.resourceIconSize()));
@@ -515,6 +519,9 @@ public class GauntletPlugin extends Plugin
 
 		if (type == ChatMessageType.SPAM || type == ChatMessageType.GAMEMESSAGE)
 		{
+			if(event.getMessage().equals("You leave the Gauntlet.") || event.getMessage().equals("Your reward awaits you in the nearby chest.") || event.getMessage().equals("Oh dear, you are dead!")){
+				resetVars();
+			}
 			resourceManager.parseChatMessage(event.getMessage());
 		}
 	}
