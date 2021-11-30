@@ -279,7 +279,7 @@ public class GauntletPlugin extends Plugin
 
 		switch (event.getKey())
 		{
-			case "resourcreIconSize":
+			case "resourceIconSize":
 				if (!resources.isEmpty())
 				{
 					resources.forEach(r -> r.setIconSize(config.resourceIconSize()));
