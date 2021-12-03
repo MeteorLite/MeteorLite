@@ -105,35 +105,35 @@ class UI: AppletStub, AppletContext {
         return this
     }
 
-    override fun getAudioClip(url: URL?): AudioClip {
-        TODO("Not yet implemented")
+    override fun getAudioClip(url: URL): AudioClip {
+      throw UnsupportedOperationException()
     }
 
-    override fun getImage(url: URL?): Image {
-        TODO("Not yet implemented")
+    override fun getImage(url: URL): Image {
+        throw UnsupportedOperationException()
     }
 
-    override fun getApplet(name: String?): Applet {
-        TODO("Not yet implemented")
+    override fun getApplet(name: String): Applet {
+        throw UnsupportedOperationException()
     }
 
     override fun getApplets(): Enumeration<Applet> {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException()
     }
 
-    override fun showStatus(status: String?) {
-        TODO("Not yet implemented")
+    override fun showStatus(status: String) {
+        throw UnsupportedOperationException()
     }
 
-    override fun setStream(key: String?, stream: InputStream?) {
-        TODO("Not yet implemented")
+    override fun setStream(key: String, stream: InputStream) {
+        throw UnsupportedOperationException()
     }
 
-    override fun getStream(key: String?): InputStream {
-        TODO("Not yet implemented")
+    override fun getStream(key: String): InputStream {
+        throw UnsupportedOperationException()
     }
 
     override fun getStreamKeys(): MutableIterator<String> {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException()
     }
 }
