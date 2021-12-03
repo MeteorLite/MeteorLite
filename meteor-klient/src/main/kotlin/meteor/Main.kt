@@ -12,6 +12,7 @@ import org.koin.core.component.KoinComponent
 import org.koin.core.component.get
 import org.koin.core.component.inject
 import org.koin.core.context.startKoin
+import themes.MeteorliteTheme
 
 object Main: KoinComponent {
     private val ui: UI by inject()
@@ -25,7 +26,7 @@ object Main: KoinComponent {
         EventBus.subscribe(onAppletLoaded()) {
             it is AppletLoaded
         }
-
+        MeteorliteTheme.install()
         AppletConfiguration.init()
         ui.init()
         client = UI.getClient(applet)

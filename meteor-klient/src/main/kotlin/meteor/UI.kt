@@ -3,6 +3,7 @@ package meteor
 import meteor.eventbus.EventBus
 import meteor.events.AppletLoaded
 import net.runelite.api.Client
+import themes.MeteorliteTheme
 import java.applet.Applet
 import java.applet.AppletContext
 import java.applet.AppletStub
@@ -13,6 +14,7 @@ import java.awt.Image
 import java.io.InputStream
 import java.net.URL
 import java.util.*
+import javax.swing.ImageIcon
 import javax.swing.JFrame
 
 class UI: AppletStub, AppletContext {
@@ -23,14 +25,17 @@ class UI: AppletStub, AppletContext {
             return applet as Client
         }
     }
+    var icon = ImageIcon(UI::class.java.getResource("/Meteor_icon.png")).image
     private var properties: Map<String, String> = AppletConfiguration.properties
     private var parameters: Map<String, String> = AppletConfiguration.parameters
     private var frame: JFrame = JFrame("Meteor Klient")
 
 
     fun init() {
+
         applet = configureApplet()
         frame.add(applet)
+        frame.iconImage = icon
         applet.size = applet.minimumSize
         frame.size = applet.minimumSize
         frame.isVisible = true
