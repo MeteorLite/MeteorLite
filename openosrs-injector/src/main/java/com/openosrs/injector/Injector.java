@@ -62,40 +62,44 @@ public class Injector extends InjectData implements InjectTaskHandler {
     OptionSet options = parser.parse(args);
     oprsVer = "1.0-SNAPSHOT";
 
-    log.info("Injecting Client");
+    File clientMixins = new File("../runelite-mixins/build/libs/runelite-mixins-" + oprsVer + ".jar");
+    if (clientMixins.exists()) {
+      log.info("Injecting Client");
 
-    injector.vanilla = load(
-        new File("../runescape-client/build/libs/runescape-client-" + oprsVer + ".jar"));
-    injector.deobfuscated = load(
-        new File("../runescape-client/build/libs/runescape-client-" + oprsVer + ".jar"));
-    injector.rsApi = new RSApi(Objects.requireNonNull(
-        new File("../runescape-api/build/classes/java/main/net/runelite/rs/api/")
-            .listFiles()));
-    injector.mixins = load(
-        new File("../runelite-mixins/build/libs/runelite-mixins-" + oprsVer + ".jar"));
+      injector.vanilla = load(
+              new File("../runescape-client/build/libs/runescape-client-" + oprsVer + ".jar"));
+      injector.deobfuscated = load(
+              new File("../runescape-client/build/libs/runescape-client-" + oprsVer + ".jar"));
+      injector.rsApi = new RSApi(Objects.requireNonNull(
+              new File("../runescape-api/build/classes/java/main/net/runelite/rs/api/")
+                      .listFiles()));
+      injector.mixins = load(clientMixins);
 
-    injector.initToVanilla();
-    injector.injectVanilla();
-    save(injector.getVanilla(), new File("./build/injected/injected-client.jar"),
-        options.valueOf(outModeOption));
+      injector.initToVanilla();
+      injector.injectVanilla();
+      save(injector.getVanilla(), new File("./build/injected/injected-client.jar"),
+              options.valueOf(outModeOption));
+    }
 
-    log.info("Injecting Klient");
-    HOOKS = "meteor/Hooks";
+    File klientMixins = new File("../klient-mixins/build/libs/klient-mixins-" + oprsVer + ".jar");
+    if (klientMixins.exists()) {
+      log.info("Injecting Klient");
+      HOOKS = "meteor/Hooks";
 
-    injector.vanilla = load(
-            new File("../runescape-client/build/libs/runescape-client-" + oprsVer + ".jar"));
-    injector.deobfuscated = load(
-            new File("../runescape-client/build/libs/runescape-client-" + oprsVer + ".jar"));
-    injector.rsApi = new RSApi(Objects.requireNonNull(
-            new File("../runescape-api/build/classes/java/main/net/runelite/rs/api/")
-                    .listFiles()));
-    injector.mixins = load(
-            new File("../klient-mixins/build/libs/klient-mixins-" + oprsVer + ".jar"));
+      injector.vanilla = load(
+              new File("../runescape-client/build/libs/runescape-client-" + oprsVer + ".jar"));
+      injector.deobfuscated = load(
+              new File("../runescape-client/build/libs/runescape-client-" + oprsVer + ".jar"));
+      injector.rsApi = new RSApi(Objects.requireNonNull(
+              new File("../runescape-api/build/classes/java/main/net/runelite/rs/api/")
+                      .listFiles()));
+      injector.mixins = load(klientMixins);
 
-    injector.initToVanilla();
-    injector.injectVanilla();
-    save(injector.getVanilla(), new File("./build/injected/injected-klient.jar"),
-            options.valueOf(outModeOption));
+      injector.initToVanilla();
+      injector.injectVanilla();
+      save(injector.getVanilla(), new File("./build/injected/injected-klient.jar"),
+              options.valueOf(outModeOption));
+    }
   }
 
   private static void save(ClassGroup group, File output, OutputMode mode) {

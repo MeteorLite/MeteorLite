@@ -184,6 +184,7 @@ tasks {
 }
 
 processResources {
+    delete("${buildDir}/scripts")
     dependsOn(":runelite-script-assembler:assembleScripts")
     from("${buildDir}/scripts")
 }

@@ -1,5 +1,6 @@
 package meteor.plugins.banksetups;
 
+import com.google.gson.reflect.TypeToken;
 import dev.hoot.api.commons.FileUtil;
 import dev.hoot.api.game.GameThread;
 import dev.hoot.api.items.Bank;
@@ -42,7 +43,7 @@ public class BankSetupsRefactored extends Plugin {
     @Inject
     ItemManager itemManager;
     int dialogCloseTickCounter;
-    ArrayList<BankSetupObject> bankSetups = new ArrayList<>();
+    List<BankSetupObject> bankSetups = new ArrayList<>();
 
     @Inject
     private ChatboxPanelManager chatboxPanelManager;
@@ -56,7 +57,7 @@ public class BankSetupsRefactored extends Plugin {
         if (!FileUtil.exists(this, "bankSetups.json")) {
             FileUtil.writeJson(this, "bankSetups.json", bankSetups);
         } else {
-            bankSetups = FileUtil.readJson(this, "bankSetups.json", bankSetups.getClass());
+            bankSetups = FileUtil.readJson(this, "bankSetups.json", new TypeToken<>() {});
         }
     }
 
