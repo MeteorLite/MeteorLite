@@ -2,10 +2,9 @@ package dev.hoot.api.packets;
 
 import dev.hoot.api.game.Game;
 import dev.hoot.api.game.GameThread;
-import osrs.Client;
-import osrs.ClientPacket;
-
-import static osrs.Client.packetWriter;
+import net.runelite.api.Client;
+import net.runelite.api.packets.ClientPacket;
+import net.runelite.api.packets.PacketBufferNode;
 
 public class DialogPackets {
 
@@ -14,26 +13,32 @@ public class DialogPackets {
 	}
 
 	public static void sendNumberInput(int number, boolean closeDialog) {
-		osrs.PacketBufferNode var14 = (osrs.PacketBufferNode) Game.getClient().preparePacket(ClientPacket.RESUME_P_COUNTDIALOG, packetWriter.isaacCipher);
-		var14.packetBuffer.writeInt(number);
-		Client.packetWriter.addNode(var14);
+		Client client = Game.getClient();
+		ClientPacket clientPacket = Game.getClientPacket();
+		PacketBufferNode var14 = Game.getClient().preparePacket(clientPacket.RESUME_P_COUNTDIALOG(), client.getPacketWriter().getIsaacCipher());
+		var14.getPacketBuffer().writeInt(number);
+		client.getPacketWriter().queuePacket(var14);
 		if(closeDialog)
 			GameThread.invoke(() -> Game.getClient().runScript(138)); // closes the input dialog
 	}
 
 	public static void sendTextInput(String text) {
-		osrs.PacketBufferNode var12 = (osrs.PacketBufferNode) Game.getClient().preparePacket(ClientPacket.RESUME_P_STRINGDIALOG, packetWriter.isaacCipher);
-		var12.packetBuffer.writeByte(text.length()+1);
-		var12.packetBuffer.writeStringCp1252NullTerminated(text);
-		Client.packetWriter.addNode(var12);
+		Client client = Game.getClient();
+		ClientPacket clientPacket = Game.getClientPacket();
+		PacketBufferNode var12 = Game.getClient().preparePacket(clientPacket.RESUME_P_STRINGDIALOG(), client.getPacketWriter().getIsaacCipher());
+		var12.getPacketBuffer().writeByte(text.length()+1);
+		var12.getPacketBuffer().writeStringCp1252NullTerminated(text);
+		client.getPacketWriter().queuePacket(var12);
 		GameThread.invoke(() -> Game.getClient().runScript(138));
 	}
 
 	public static void sendNameInput(String name) {
-		osrs.PacketBufferNode var12 = (osrs.PacketBufferNode) Game.getClient().preparePacket(ClientPacket.RESUME_P_NAMEDIALOG, packetWriter.isaacCipher);
-		var12.packetBuffer.writeByte(name.length() + 1);
-		var12.packetBuffer.writeStringCp1252NullTerminated(name);
-		Client.packetWriter.addNode(var12);
+		Client client = Game.getClient();
+		ClientPacket clientPacket = Game.getClientPacket();
+		PacketBufferNode var12 = Game.getClient().preparePacket(clientPacket.RESUME_P_NAMEDIALOG(), client.getPacketWriter().getIsaacCipher());
+		var12.getPacketBuffer().writeByte(name.length() + 1);
+		var12.getPacketBuffer().writeStringCp1252NullTerminated(name);
+		client.getPacketWriter().queuePacket(var12);
 		GameThread.invoke(() -> Game.getClient().runScript(138));
 	}
 	public static void closeInterface(){

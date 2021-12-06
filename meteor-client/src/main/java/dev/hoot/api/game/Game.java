@@ -4,8 +4,10 @@ import dev.hoot.api.movement.pathfinder.GlobalCollisionMap;
 import dev.hoot.api.widgets.Tab;
 import dev.hoot.api.widgets.Tabs;
 import dev.hoot.api.widgets.Widgets;
+import lombok.Getter;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
+import net.runelite.api.packets.ClientPacket;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetID;
 import net.runelite.api.widgets.WidgetInfo;
@@ -21,10 +23,17 @@ public class Game {
     private static Client client;
 
     @Inject
+    private static ClientPacket clientPacket;
+
+    @Inject
     private static GlobalCollisionMap globalCollisionMap;
 
     public static Client getClient() {
         return client;
+    }
+
+    public static ClientPacket getClientPacket() {
+        return clientPacket;
     }
 
     public static boolean isLoggedIn() {

@@ -9,6 +9,13 @@ import net.runelite.mapping.ObfuscatedSignature;
 @ObfuscatedName("ik")
 @Implements("ClientPacket")
 public class ClientPacket implements class238 {
+
+   // Allows us to create instance and provide in module
+   public ClientPacket() {
+      id = -1;
+      length = -1;
+   }
+
    @ObfuscatedName("i")
    @ObfuscatedSignature(
       descriptor = "Lik;"

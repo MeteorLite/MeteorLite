@@ -31,7 +31,6 @@ dependencies {
     implementation(project(":meteor-logger"))
     implementation(project(":http-api"))
     implementation(project(":runelite-annotations"))
-    implementation(files("../openosrs-injector/build/injected/injected-client.jar"))
     implementation group: 'de.jensd', name: 'fontawesomefx-commons', version: '_'
     implementation group: 'de.jensd', name: 'fontawesomefx-fontawesome', version: '_'
     implementation 'de.jensd:fontawesomefx-materialicons:2.2.0-9.1.2'

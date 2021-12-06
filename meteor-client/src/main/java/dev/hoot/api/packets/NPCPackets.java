@@ -1,46 +1,57 @@
 package dev.hoot.api.packets;
 
 import dev.hoot.api.game.Game;
+import net.runelite.api.Client;
 import net.runelite.api.NPC;
-import osrs.Client;
-import osrs.ClientPacket;
+import net.runelite.api.packets.ClientPacket;
+import net.runelite.api.packets.PacketBufferNode;
 
 import java.util.List;
 
 public class NPCPackets {
     public static void queueNPCActionPacket(int NPCIndex, int ctrlDown) {
-        osrs.PacketBufferNode var9 = (osrs.PacketBufferNode) Game.getClient().preparePacket(ClientPacket.OPNPC1, Client.packetWriter.isaacCipher);
-        var9.packetBuffer.write2(ctrlDown);
-        var9.packetBuffer.writeByteB0(NPCIndex);
-        Client.packetWriter.addNode(var9);
+        Client client = Game.getClient();
+        ClientPacket clientPacket = Game.getClientPacket();
+        PacketBufferNode var9 = Game.getClient().preparePacket(clientPacket.OPNPC1(), client.getPacketWriter().getIsaacCipher());
+        var9.getPacketBuffer().write2(ctrlDown);
+        var9.getPacketBuffer().writeByteB0(NPCIndex);
+        client.getPacketWriter().queuePacket(var9);
     }
 
     public static void queueNPCAction2Packet(int NPCIndex, int ctrlDown) {
-        osrs.PacketBufferNode var9 = (osrs.PacketBufferNode) Game.getClient().preparePacket(ClientPacket.OPNPC2, Client.packetWriter.isaacCipher);
-        var9.packetBuffer.writeByteB0(NPCIndex);
-        var9.packetBuffer.writeByte(ctrlDown);
-        Client.packetWriter.addNode(var9);
+        Client client = Game.getClient();
+        ClientPacket clientPacket = Game.getClientPacket();
+        PacketBufferNode var9 = Game.getClient().preparePacket(clientPacket.OPNPC2(), client.getPacketWriter().getIsaacCipher());
+        var9.getPacketBuffer().writeByteB0(NPCIndex);
+        var9.getPacketBuffer().writeByte(ctrlDown);
+        client.getPacketWriter().queuePacket(var9);
     }
 
     public static void queueNPCAction3Packet(int NPCIndex, int ctrlDown) {
-        osrs.PacketBufferNode var9 = (osrs.PacketBufferNode) Game.getClient().preparePacket(ClientPacket.OPNPC3, Client.packetWriter.isaacCipher);
-        var9.packetBuffer.write2(ctrlDown);
-        var9.packetBuffer.writeByteA(NPCIndex);
-        Client.packetWriter.addNode(var9);
+        Client client = Game.getClient();
+        ClientPacket clientPacket = Game.getClientPacket();
+        PacketBufferNode var9 = Game.getClient().preparePacket(clientPacket.OPNPC3(), client.getPacketWriter().getIsaacCipher());
+        var9.getPacketBuffer().write2(ctrlDown);
+        var9.getPacketBuffer().writeByteA(NPCIndex);
+        client.getPacketWriter().queuePacket(var9);
     }
 
     public static void queueNPCAction4Packet(int NPCIndex, int ctrlDown) {
-        osrs.PacketBufferNode var9 = (osrs.PacketBufferNode) Game.getClient().preparePacket(ClientPacket.OPNPC4, Client.packetWriter.isaacCipher);
-        var9.packetBuffer.writeByteB0(NPCIndex);
-        var9.packetBuffer.writeByteB(ctrlDown);
-        Client.packetWriter.addNode(var9);
+        Client client = Game.getClient();
+        ClientPacket clientPacket = Game.getClientPacket();
+        PacketBufferNode var9 = Game.getClient().preparePacket(clientPacket.OPNPC4(), client.getPacketWriter().getIsaacCipher());
+        var9.getPacketBuffer().writeByteB0(NPCIndex);
+        var9.getPacketBuffer().writeByteB(ctrlDown);
+        client.getPacketWriter().queuePacket(var9);
     }
 
     public static void queueNPCAction5Packet(int NPCIndex, int ctrlDown) {
-        osrs.PacketBufferNode var9 = (osrs.PacketBufferNode) Game.getClient().preparePacket(ClientPacket.OPNPC5, Client.packetWriter.isaacCipher);
-        var9.packetBuffer.write1(ctrlDown);
-        var9.packetBuffer.writeShort(NPCIndex);
-        Client.packetWriter.addNode(var9);
+        Client client = Game.getClient();
+        ClientPacket clientPacket = Game.getClientPacket();
+        PacketBufferNode var9 = Game.getClient().preparePacket(clientPacket.OPNPC5(), client.getPacketWriter().getIsaacCipher());
+        var9.getPacketBuffer().write1(ctrlDown);
+        var9.getPacketBuffer().writeShort(NPCIndex);
+        client.getPacketWriter().queuePacket(var9);
     }
     public static void npcFirstOption(NPC npc, int ctrlDown) {
         queueNPCActionPacket(npc.getIndex(),ctrlDown);

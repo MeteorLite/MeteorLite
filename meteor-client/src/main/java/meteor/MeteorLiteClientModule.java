@@ -32,6 +32,7 @@ import meteor.util.ExecutorServiceExceptionLogger;
 import meteor.util.NonScheduledExecutorServiceExceptionLogger;
 import net.runelite.api.Client;
 import net.runelite.api.hooks.Callbacks;
+import net.runelite.api.packets.ClientPacket;
 import net.runelite.http.api.chat.ChatClient;
 import okhttp3.OkHttpClient;
 import org.sponge.util.Logger;
@@ -94,6 +95,9 @@ public class MeteorLiteClientModule extends AbstractModule {
 
   @Inject
   private DiscordService discordService;
+
+  @Inject
+  private ClientPacket clientPacket;
 
   public static Map<String, String> properties;
   public static Map<String, String> parameters;
@@ -225,6 +229,17 @@ public class MeteorLiteClientModule extends AbstractModule {
   Applet provideApplet() {
     try {
       return (Applet) ClassLoader.getSystemClassLoader().loadClass("osrs.Client").newInstance();
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+    return null;
+  }
+
+  @Provides
+  @Singleton
+  ClientPacket provideClientPacket() {
+    try {
+      return (ClientPacket) ClassLoader.getSystemClassLoader().loadClass("osrs.ClientPacket").newInstance();
     } catch (Exception e) {
       e.printStackTrace();
     }
