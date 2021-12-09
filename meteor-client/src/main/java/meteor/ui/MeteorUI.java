@@ -468,7 +468,11 @@ public class MeteorUI extends ContainableFrame implements AppletStub, AppletCont
 	@Override
 	public void showDocument(URL url) {
 		try {
-			Desktop.getDesktop().browse(url.toURI());
+			if (Desktop.getDesktop().isSupported(Desktop.Action.BROWSE)) {
+				Desktop.getDesktop().browse(url.toURI());
+			} else {
+				Runtime.getRuntime().exec("xdg-open " + url)
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
