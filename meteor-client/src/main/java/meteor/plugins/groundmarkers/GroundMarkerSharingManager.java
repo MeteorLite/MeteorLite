@@ -47,13 +47,13 @@ import net.runelite.api.Client;
 import net.runelite.api.events.WidgetMenuOptionClicked;
 
 import static net.runelite.api.widgets.WidgetInfo.MINIMAP_WORLDMAP_OPTIONS;
-import static osrs.Client.logger;
 import meteor.chat.ChatMessageManager;
 import meteor.chat.QueuedMessage;
 import meteor.eventbus.Subscribe;
 import meteor.game.chatbox.ChatboxPanelManager;
 import meteor.menus.MenuManager;
 import meteor.menus.WidgetMenuOption;
+import org.sponge.util.Logger;
 
 class GroundMarkerSharingManager
 {
@@ -67,6 +67,7 @@ class GroundMarkerSharingManager
 	private final ChatMessageManager chatMessageManager;
 	private final ChatboxPanelManager chatboxPanelManager;
 	private final Gson gson;
+	private final Logger logger = new Logger(getClass().getName());
 
 	@Inject
 	private GroundMarkerSharingManager(sGroundMarkerPlugin plugin, Client client, MenuManager menuManager,

@@ -6,130 +6,92 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("kt")
+@ObfuscatedName("kj")
 @Implements("GrandExchangeEvent")
 public class GrandExchangeEvent {
-   @ObfuscatedName("i")
-   @ObfuscatedGetter(
-      intValue = 1932555191
-   )
-   @Export("world")
-   public final int world;
-   @ObfuscatedName("w")
-   @ObfuscatedGetter(
-      longValue = -3074264375035497163L
-   )
-   @Export("age")
-   public final long age;
-   @ObfuscatedName("s")
-   @ObfuscatedSignature(
-      descriptor = "Lkh;"
-   )
-   @Export("grandExchangeOffer")
-   public final GrandExchangeOffer grandExchangeOffer;
-   @ObfuscatedName("a")
-   @Export("offerName")
-   String offerName;
-   @ObfuscatedName("o")
-   @Export("previousOfferName")
-   String previousOfferName;
+	@ObfuscatedName("c")
+	@ObfuscatedGetter(
+		intValue = -613018659
+	)
+	@Export("world")
+	public final int world;
+	@ObfuscatedName("b")
+	@ObfuscatedGetter(
+		longValue = -97265200533879513L
+	)
+	@Export("age")
+	public final long age;
+	@ObfuscatedName("p")
+	@ObfuscatedSignature(
+		descriptor = "Lkb;"
+	)
+	@Export("grandExchangeOffer")
+	public final GrandExchangeOffer grandExchangeOffer;
+	@ObfuscatedName("m")
+	@Export("offerName")
+	String offerName;
+	@ObfuscatedName("t")
+	@Export("previousOfferName")
+	String previousOfferName;
 
-   @ObfuscatedSignature(
-      descriptor = "(Lop;BI)V"
-   )
-   GrandExchangeEvent(Buffer var1, byte var2, int var3) {
-      this.offerName = var1.readStringCp1252NullTerminated();
-      this.previousOfferName = var1.readStringCp1252NullTerminated();
-      this.world = var1.readUnsignedShort();
-      this.age = var1.readLong();
-      int var4 = var1.readInt();
-      int var5 = var1.readInt();
-      this.grandExchangeOffer = new GrandExchangeOffer();
-      this.grandExchangeOffer.method5454(2);
-      this.grandExchangeOffer.method5455(var2);
-      this.grandExchangeOffer.unitPrice = var4;
-      this.grandExchangeOffer.totalQuantity = var5;
-      this.grandExchangeOffer.currentQuantity = 0;
-      this.grandExchangeOffer.currentPrice = 0;
-      this.grandExchangeOffer.id = var3;
-   }
+	@ObfuscatedSignature(
+		descriptor = "(Lpi;BI)V"
+	)
+	GrandExchangeEvent(Buffer var1, byte var2, int var3) {
+		this.offerName = var1.readStringCp1252NullTerminated(); // L: 111
+		this.previousOfferName = var1.readStringCp1252NullTerminated(); // L: 112
+		this.world = var1.readUnsignedShort(); // L: 113
+		this.age = var1.readLong(); // L: 114
+		int var4 = var1.readInt(); // L: 115
+		int var5 = var1.readInt(); // L: 116
+		this.grandExchangeOffer = new GrandExchangeOffer(); // L: 117
+		this.grandExchangeOffer.method5765(2); // L: 118
+		this.grandExchangeOffer.method5766(var2); // L: 119
+		this.grandExchangeOffer.unitPrice = var4; // L: 120
+		this.grandExchangeOffer.totalQuantity = var5; // L: 121
+		this.grandExchangeOffer.currentQuantity = 0; // L: 122
+		this.grandExchangeOffer.currentPrice = 0; // L: 123
+		this.grandExchangeOffer.id = var3; // L: 124
+	} // L: 125
 
-   @ObfuscatedName("i")
-   @ObfuscatedSignature(
-      descriptor = "(I)Ljava/lang/String;",
-      garbageValue = "-1492995549"
-   )
-   @Export("getOfferName")
-   public String getOfferName() {
-      return this.offerName;
-   }
+	@ObfuscatedName("c")
+	@ObfuscatedSignature(
+		descriptor = "(B)Ljava/lang/String;",
+		garbageValue = "0"
+	)
+	@Export("getOfferName")
+	public String getOfferName() {
+		return this.offerName; // L: 128
+	}
 
-   @ObfuscatedName("w")
-   @ObfuscatedSignature(
-      descriptor = "(I)Ljava/lang/String;",
-      garbageValue = "-681990835"
-   )
-   @Export("getPreviousOfferName")
-   public String getPreviousOfferName() {
-      return this.previousOfferName;
-   }
+	@ObfuscatedName("b")
+	@ObfuscatedSignature(
+		descriptor = "(I)Ljava/lang/String;",
+		garbageValue = "442226804"
+	)
+	@Export("getPreviousOfferName")
+	public String getPreviousOfferName() {
+		return this.previousOfferName; // L: 132
+	}
 
-   @ObfuscatedName("e")
-   @ObfuscatedSignature(
-      descriptor = "(IIZI)Ljava/lang/String;",
-      garbageValue = "1279033906"
-   )
-   static String method5448(int var0, int var1, boolean var2) {
-      if (var1 >= 2 && var1 <= 36) {
-         if (var2 && var0 >= 0) {
-            int var3 = 2;
+	@ObfuscatedName("c")
+	@ObfuscatedSignature(
+		descriptor = "(S)V",
+		garbageValue = "3161"
+	)
+	static void method5760() {
+		for (ObjectSound var0 = (ObjectSound) ObjectSound.objectSounds.last(); var0 != null; var0 = (ObjectSound) ObjectSound.objectSounds.previous()) { // L: 30
+			if (var0.stream1 != null) { // L: 31
+				class281.pcmStreamMixer.removeSubStream(var0.stream1); // L: 32
+				var0.stream1 = null; // L: 33
+			}
 
-            for(int var4 = var0 / var1; var4 != 0; ++var3) {
-               var4 /= var1;
-            }
+			if (var0.stream2 != null) { // L: 35
+				class281.pcmStreamMixer.removeSubStream(var0.stream2); // L: 36
+				var0.stream2 = null; // L: 37
+			}
+		}
 
-            char[] var5 = new char[var3];
-            var5[0] = '+';
-
-            for(int var6 = var3 - 1; var6 > 0; --var6) {
-               int var7 = var0;
-               var0 /= var1;
-               int var8 = var7 - var0 * var1;
-               if (var8 >= 10) {
-                  var5[var6] = (char)(var8 + 87);
-               } else {
-                  var5[var6] = (char)(var8 + 48);
-               }
-            }
-
-            return new String(var5);
-         } else {
-            return Integer.toString(var0, var1);
-         }
-      } else {
-         throw new IllegalArgumentException("" + var1);
-      }
-   }
-
-   @ObfuscatedName("iu")
-   @ObfuscatedSignature(
-      descriptor = "(Ljava/lang/String;Ljf;I)Ljava/lang/String;",
-      garbageValue = "-1477810111"
-   )
-   static String method5449(String var0, Widget var1) {
-      if (var0.indexOf("%") != -1) {
-         for(int var2 = 1; var2 <= 5; ++var2) {
-            while(true) {
-               int var3 = var0.indexOf("%" + var2);
-               if (var3 == -1) {
-                  break;
-               }
-
-               var0 = var0.substring(0, var3) + WorldMapLabelSize.method3534(class113.method2532(var1, var2 - 1)) + var0.substring(var3 + 2);
-            }
-         }
-      }
-
-      return var0;
-   }
+		ObjectSound.objectSounds.clear(); // L: 40
+	} // L: 41
 }

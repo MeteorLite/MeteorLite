@@ -5,56 +5,57 @@ import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 
-@ObfuscatedName("hg")
+@ObfuscatedName("gk")
 @Implements("SceneTilePaint")
 public final class SceneTilePaint {
-   @ObfuscatedName("i")
-   @ObfuscatedGetter(
-      intValue = -1142629297
-   )
-   @Export("swColor")
-   int swColor;
-   @ObfuscatedName("w")
-   @ObfuscatedGetter(
-      intValue = -1241248513
-   )
-   @Export("seColor")
-   int seColor;
-   @ObfuscatedName("s")
-   @ObfuscatedGetter(
-      intValue = -601544489
-   )
-   @Export("neColor")
-   int neColor;
-   @ObfuscatedName("a")
-   @ObfuscatedGetter(
-      intValue = -714792091
-   )
-   @Export("nwColor")
-   int nwColor;
-   @ObfuscatedName("o")
-   @ObfuscatedGetter(
-      intValue = 1463497725
-   )
-   @Export("texture")
-   int texture;
-   @ObfuscatedName("g")
-   @Export("isFlat")
-   boolean isFlat = true;
-   @ObfuscatedName("e")
-   @ObfuscatedGetter(
-      intValue = 969353043
-   )
-   @Export("rgb")
-   int rgb;
+	@ObfuscatedName("c")
+	@ObfuscatedGetter(
+		intValue = -1849890093
+	)
+	@Export("swColor")
+	int swColor;
+	@ObfuscatedName("b")
+	@ObfuscatedGetter(
+		intValue = 325904735
+	)
+	@Export("seColor")
+	int seColor;
+	@ObfuscatedName("p")
+	@ObfuscatedGetter(
+		intValue = -79551477
+	)
+	@Export("neColor")
+	int neColor;
+	@ObfuscatedName("m")
+	@ObfuscatedGetter(
+		intValue = -378888485
+	)
+	@Export("nwColor")
+	int nwColor;
+	@ObfuscatedName("t")
+	@ObfuscatedGetter(
+		intValue = 1880581479
+	)
+	@Export("texture")
+	int texture;
+	@ObfuscatedName("s")
+	@Export("isFlat")
+	boolean isFlat;
+	@ObfuscatedName("j")
+	@ObfuscatedGetter(
+		intValue = 1789996375
+	)
+	@Export("rgb")
+	int rgb;
 
-   SceneTilePaint(int var1, int var2, int var3, int var4, int var5, int var6, boolean var7) {
-      this.swColor = var1;
-      this.seColor = var2;
-      this.neColor = var3;
-      this.nwColor = var4;
-      this.texture = var5;
-      this.rgb = var6;
-      this.isFlat = var7;
-   }
+	SceneTilePaint(int var1, int var2, int var3, int var4, int var5, int var6, boolean var7) {
+		this.isFlat = true; // L: 9
+		this.swColor = var1; // L: 13
+		this.seColor = var2; // L: 14
+		this.neColor = var3; // L: 15
+		this.nwColor = var4; // L: 16
+		this.texture = var5; // L: 17
+		this.rgb = var6; // L: 18
+		this.isFlat = var7; // L: 19
+	} // L: 20
 }

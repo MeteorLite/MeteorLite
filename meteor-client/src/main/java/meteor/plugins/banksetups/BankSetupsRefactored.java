@@ -1,10 +1,7 @@
 package meteor.plugins.banksetups;
 
-import com.google.common.reflect.TypeToken;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import dev.hoot.api.commons.Time;
-import dev.hoot.api.game.Game;
+import com.google.gson.reflect.TypeToken;
+import dev.hoot.api.commons.FileUtil;
 import dev.hoot.api.game.GameThread;
 import dev.hoot.api.items.Bank;
 import dev.hoot.api.items.Equipment;
@@ -24,6 +21,7 @@ import net.runelite.api.Item;
 import net.runelite.api.KeyCode;
 import net.runelite.api.Point;
 import net.runelite.api.events.ClientTick;
+import net.runelite.api.events.GameTick;
 import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.queries.BankItemQuery;
 import net.runelite.api.widgets.Widget;
@@ -31,17 +29,12 @@ import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.api.widgets.WidgetItem;
 
 import javax.inject.Inject;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.Reader;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-@PluginDescriptor(name = "Bank Setups",description = "Allows saving and loading bank setups. Hold shift to remove setups. Not yet working with noted items :(")
+@PluginDescriptor(name = "Bank Setups", description = "Allows saving and loading bank setups. Hold shift to remove setups. Not yet working with noted items :(")
 public class BankSetupsRefactored extends Plugin {
     @Inject
     private OverlayManager overlayManager;
@@ -49,122 +42,105 @@ public class BankSetupsRefactored extends Plugin {
     private BankSetupsOverlay overlay;
     @Inject
     ItemManager itemManager;
-    GsonBuilder builder;
-    boolean shouldClose;
-    Gson gson;
-    Reader reader=null;
-    ArrayList<BankSetupObject> bankSetups;
+    int dialogCloseTickCounter;
+    List<BankSetupObject> bankSetups = new ArrayList<>();
 
     @Inject
     private ChatboxPanelManager chatboxPanelManager;
     private ExecutorService executor;
 
     @Override
-    public void startup(){
+    public void startup() {
         executor = Executors.newSingleThreadExecutor();
         overlayManager.add(overlay);
-        builder = new GsonBuilder();
-        gson = builder.create();
-        try {
-            if (!Files.exists(Paths.get("bankSetups.json"))) {
-                Files.createFile(Paths.get("bankSetups.json"));
-            }
-            reader = Files.newBufferedReader(Paths.get("bankSetups.json"));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        bankSetups = gson.fromJson(reader, new TypeToken<ArrayList<BankSetupObject>>() {}.getType());
-        if(bankSetups ==null){
-            bankSetups = new ArrayList<BankSetupObject>();
+
+        if (!FileUtil.exists(this, "bankSetups.json")) {
+            FileUtil.writeJson(this, "bankSetups.json", bankSetups);
+        } else {
+            bankSetups = FileUtil.readJson(this, "bankSetups.json", new TypeToken<>() {});
         }
     }
+
     @Override
-    public void shutdown(){
+    public void shutdown() {
         executor.shutdown();
         overlayManager.remove(overlay);
-        try {
-            reader.close();
-        }catch(Exception e){
-            e.printStackTrace();
-        }
     }
-    public void closeWithdrawX(int timer){
-        shouldClose=true;
-        Time.sleep(timer);
-        shouldClose=false;
-    }
+
     @Subscribe
-    public void onMenuOptionClicked(MenuOptionClicked e){
-        if(e.getMenuOption().equals("save-current")){
+    public void onMenuOptionClicked(MenuOptionClicked e) {
+        if (e.getMenuOption().equals("save-current")) {
             e.consume();
             List<int[]> invent = getInvent();
             nameInput(invent, null);
         }
-        if(e.getMenuOption().equals("save-current+equipment")){
+
+        if (e.getMenuOption().equals("save-current+equipment")) {
             e.consume();
             List<int[]> invent = getInvent();
             List<int[]> equipment = getEquipment();
             nameInput(invent, equipment);
         }
-        if(e.getMenuOption().contains("Gear: ")){
+
+        if (e.getMenuOption().contains("Gear: ")) {
             e.consume();
+            int numActions = 0;
             BankSetupObject setup = bankSetups.get(e.getId());
-            if(setup.equipment!=null){
+            if (setup.equipment != null) {
                 int firstFree = getFirstEmptySlot();
                 for (int[] equipment : setup.equipment) {
                     Widget item = getBankItemWidget(equipment[0]);
-                    if(item==null){
+                    if (item == null) {
                         int y = itemManager.canonicalize(equipment[0]);
                         item = getBankItemWidget(y);
-                        if(item==null) {
+                        if (item == null) {
                             continue;
                         }
                     }
-                    MousePackets.queueClickPacket(0,0);
-                    if(equipment[1]!=1){
-                        WidgetPackets.widgetAction(item,"Withdraw-X");
+
+                    MousePackets.queueClickPacket(0, 0);
+                    if (equipment[1] != 1) {
+                        WidgetPackets.widgetAction(item, "Withdraw-X");
                         DialogPackets.sendNumberInput(equipment[1]);
-                        MousePackets.queueClickPacket(0,0);
+                        MousePackets.queueClickPacket(0, 0);
                         ItemPackets.queueBankItemActionPacket(WidgetInfo.BANK_INVENTORY_ITEMS_CONTAINER.getPackedId(), item.getItemId(), firstFree);
+                        numActions += 3;
                         continue;
                     }
-                    WidgetPackets.widgetAction(item,"Withdraw-1");
-                    MousePackets.queueClickPacket(0,0);
+
+                    WidgetPackets.widgetAction(item, "Withdraw-1");
+                    MousePackets.queueClickPacket(0, 0);
                     ItemPackets.queueBankItemActionPacket(WidgetInfo.BANK_INVENTORY_ITEMS_CONTAINER.getPackedId(), item.getItemId(), firstFree);
+                    numActions += 2;
                 }
             }
+
             for (int[] ints : setup.inventory) {
                 Widget item = getBankItemWidget(ints[0]);
-                if(item==null){
+                if (item == null) {
                     continue;
                 }
-                MousePackets.queueClickPacket(0,0);
-                if(ints[1]!=1){
-                    WidgetPackets.widgetAction(item,"Withdraw-X");
+
+                MousePackets.queueClickPacket(0, 0);
+                if (ints[1] != 1) {
+                    WidgetPackets.widgetAction(item, "Withdraw-X");
                     DialogPackets.sendNumberInput(ints[1]);
+                    numActions += 2;
                     continue;
                 }
-                WidgetPackets.widgetAction(item,"Withdraw-1");
+
+                WidgetPackets.widgetAction(item, "Withdraw-1");
+                numActions += 1;
             }
-            int timeout = 0;
-            if(setup.equipment!=null){
-                timeout+=setup.equipment.size()/5;
-            }
-            timeout+=setup.inventory.size()/5;
-            timeout*=650;
-            int finalTimeout = timeout;
-            executor.submit(()-> closeWithdrawX(finalTimeout));
+
+            int numTicks = ((int) Math.ceil(numActions / 10.0)) + 1;
+            dialogCloseTickCounter = numTicks;
         }
-        if(e.getMenuOption().contains("Remove: ")){
+
+        if (e.getMenuOption().contains("Remove: ")) {
             e.consume();
             bankSetups.remove(e.getId());
-            try {
-                FileWriter writer = new FileWriter("bankSetups.json",false);
-                writer.write(gson.toJson(bankSetups));
-                writer.flush();
-            } catch (IOException ex) {
-                ex.printStackTrace();
-            }
+            FileUtil.writeJson(this, "bankSetups.json", bankSetups);
         }
     }
 
@@ -173,33 +149,38 @@ public class BankSetupsRefactored extends Plugin {
                 .value("")
                 .onDone((input) ->
                 {
-                    input=input.strip();
-                    bankSetups.add(new BankSetupObject(input,invent,equipment));
-                    try {
-                        FileWriter writer = new FileWriter("bankSetups.json",false);
-                        writer.write(gson.toJson(bankSetups));
-                        writer.flush();
-                    } catch (IOException ex) {
-                        ex.printStackTrace();
-                    }
+                    input = input.strip();
+                    bankSetups.add(new BankSetupObject(input, invent, equipment));
+                    FileUtil.writeJson(this, "bankSetups.json", bankSetups);
                 })
                 .build();
     }
 
     @Subscribe
-    public void onClientTick(ClientTick e){
-        if(Dialog.isEnterInputOpen()&&shouldClose){
-            GameThread.invoke(() -> Game.getClient().runScript(138));
+    public void onGameTick(GameTick e) {
+        if (dialogCloseTickCounter > 0) {
+            dialogCloseTickCounter--;
         }
+    }
+
+    @Subscribe
+    public void onClientTick(ClientTick e) {
+        if (dialogCloseTickCounter > 0) {
+            if (Dialog.isEnterInputOpen()) {
+                GameThread.invoke(() -> client.runScript(138));
+            }
+        }
+
         Widget incinerator = client.getWidget(WidgetInfo.BANK_INCINERATOR);
         if (incinerator != null) {
             if (!incinerator.isHidden()) {
                 Point p = incinerator.getCanvasLocation();
                 int x = p.getX();
                 int y = p.getY();
-                overlay.setPreferredLocation(new java.awt.Point(x,y-(incinerator.getHeight()+10)));
+                overlay.setPreferredLocation(new java.awt.Point(x, y - (incinerator.getHeight() + 10)));
             }
         }
+
         Point mousePoint = client.getMouseCanvasPosition();
         if (overlay.getBounds().contains(mousePoint.getX(), mousePoint.getY())) {
             client.insertMenuItem("save-current", "", 10000000, 10000, 0, 0, false);
@@ -213,37 +194,44 @@ public class BankSetupsRefactored extends Plugin {
             }
         }
     }
-    public List<int[]> getInvent(){
-        List<Item> items= Inventory.getAll();
+
+    public List<int[]> getInvent() {
+        List<Item> items = Inventory.getAll();
         return getItems(items);
     }
-    public List<int[]> getEquipment(){
-        List<Item> items= Equipment.getAll();
+
+    public List<int[]> getEquipment() {
+        List<Item> items = Equipment.getAll();
         return getItems(items);
     }
-    public List<int[]> getItems(List<Item> items){
-        List<int[]> retItems= new ArrayList<int[]>();
-        int currItemID=-1;
-        int currQuantity=-1;
+
+    public List<int[]> getItems(List<Item> items) {
+        List<int[]> retItems = new ArrayList<int[]>();
+        int currItemID = -1;
+        int currQuantity = -1;
         for (Item item : items) {
-            if(item.getId()!=currItemID){
-                if(currItemID!=-1) {
-                    retItems.add(new int[]{currItemID,currQuantity});
+            if (item.getId() != currItemID) {
+                if (currItemID != -1) {
+                    retItems.add(new int[]{currItemID, currQuantity});
                 }
-                currItemID=item.getId();
-                currQuantity=item.getQuantity();
-                if(items.size()-1==items.indexOf(item)){
-                    retItems.add(new int[]{currItemID,currQuantity});
+
+                currItemID = item.getId();
+                currQuantity = item.getQuantity();
+                if (items.size() - 1 == items.indexOf(item)) {
+                    retItems.add(new int[]{currItemID, currQuantity});
                 }
+
                 continue;
             }
+
             currQuantity++;
-            if(items.size()-1==items.indexOf(item)){
-                retItems.add(new int[]{currItemID,currQuantity});
+            if (items.size() - 1 == items.indexOf(item)) {
+                retItems.add(new int[]{currItemID, currQuantity});
             }
         }
         return retItems;
     }
+
     public Widget getBankItemWidget(int id) {
         WidgetItem bankItem = new BankItemQuery().idEquals(id).result(client).first();
         if (bankItem != null) {
@@ -252,21 +240,25 @@ public class BankSetupsRefactored extends Plugin {
             return null;
         }
     }
+
     private int getFirstEmptySlot() {
-        List<Item> items = Bank.getInventory(x->true);
-        int lastIndex=0;
-        if(items.size()==0){
+        List<Item> items = Bank.getInventory(x -> true);
+        int lastIndex = 0;
+        if (items.size() == 0) {
             return lastIndex;
         }
+
         for (Item item : items) {
-            if((item.getSlot()-1)>lastIndex){
-                return lastIndex+1;
+            if ((item.getSlot() - 1) > lastIndex) {
+                return lastIndex + 1;
             }
-            lastIndex=item.getSlot();
+            lastIndex = item.getSlot();
         }
-        if(lastIndex!=27){
-            return lastIndex+1;
+
+        if (lastIndex != 27) {
+            return lastIndex + 1;
         }
+
         return -1;
     }
 }

@@ -5,212 +5,186 @@ import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
-import net.runelite.rs.ScriptOpcodes;
 
 @ObfuscatedName("bw")
 @Implements("World")
 public class World {
-   @ObfuscatedName("g")
-   @ObfuscatedGetter(
-      intValue = -219608595
-   )
-   @Export("World_count")
-   static int World_count = 0;
-   @ObfuscatedName("e")
-   @ObfuscatedGetter(
-      intValue = -1277834635
-   )
-   @Export("World_listCount")
-   static int World_listCount = 0;
-   @ObfuscatedName("p")
-   @Export("World_sortOption2")
-   static int[] World_sortOption2 = new int[]{1, 1, 1, 1};
-   @ObfuscatedName("j")
-   @Export("World_sortOption1")
-   static int[] World_sortOption1 = new int[]{0, 1, 2, 3};
-   @ObfuscatedName("x")
-   @ObfuscatedGetter(
-      intValue = 695076639
-   )
-   @Export("id")
-   int id;
-   @ObfuscatedName("y")
-   @ObfuscatedGetter(
-      intValue = 1588910771
-   )
-   @Export("properties")
-   int properties;
-   @ObfuscatedName("k")
-   @ObfuscatedGetter(
-      intValue = 284961543
-   )
-   @Export("population")
-   int population;
-   @ObfuscatedName("t")
-   @Export("host")
-   String host;
-   @ObfuscatedName("l")
-   @Export("activity")
-   String activity;
-   @ObfuscatedName("u")
-   @ObfuscatedGetter(
-      intValue = 1851136007
-   )
-   @Export("location")
-   int location;
-   @ObfuscatedName("n")
-   @ObfuscatedGetter(
-      intValue = -942792527
-   )
-   @Export("index")
-   int index;
+	@ObfuscatedName("s")
+	@ObfuscatedGetter(
+		intValue = 63855855
+	)
+	@Export("World_count")
+	static int World_count;
+	@ObfuscatedName("j")
+	@ObfuscatedGetter(
+		intValue = -951276337
+	)
+	@Export("World_listCount")
+	static int World_listCount;
+	@ObfuscatedName("w")
+	@Export("World_sortOption2")
+	static int[] World_sortOption2;
+	@ObfuscatedName("n")
+	@Export("World_sortOption1")
+	static int[] World_sortOption1;
+	@ObfuscatedName("k")
+	@Export("ByteArrayPool_arrays")
+	public static byte[][][] ByteArrayPool_arrays;
+	@ObfuscatedName("ai")
+	@Export("hasFocus")
+	protected static boolean hasFocus;
+	@ObfuscatedName("ip")
+	@ObfuscatedSignature(
+		descriptor = "[Lpa;"
+	)
+	@Export("modIconSprites")
+	static IndexedSprite[] modIconSprites;
+	@ObfuscatedName("o")
+	@ObfuscatedGetter(
+		intValue = 402163899
+	)
+	@Export("id")
+	int id;
+	@ObfuscatedName("v")
+	@ObfuscatedGetter(
+		intValue = 967201023
+	)
+	@Export("properties")
+	int properties;
+	@ObfuscatedName("d")
+	@ObfuscatedGetter(
+		intValue = 1525969609
+	)
+	@Export("population")
+	int population;
+	@ObfuscatedName("h")
+	@Export("host")
+	String host;
+	@ObfuscatedName("g")
+	@Export("activity")
+	String activity;
+	@ObfuscatedName("e")
+	@ObfuscatedGetter(
+		intValue = -102724797
+	)
+	@Export("location")
+	int location;
+	@ObfuscatedName("a")
+	@ObfuscatedGetter(
+		intValue = 742286855
+	)
+	@Export("index")
+	int index;
 
-   @ObfuscatedName("j")
-   @ObfuscatedSignature(
-      descriptor = "(B)Z",
-      garbageValue = "62"
-   )
-   @Export("isMembersOnly")
-   boolean isMembersOnly() {
-      return (1 & this.properties) != 0;
-   }
+	static {
+		World_count = 0; // L: 14
+		World_listCount = 0; // L: 15
+		World_sortOption2 = new int[]{1, 1, 1, 1}; // L: 16
+		World_sortOption1 = new int[]{0, 1, 2, 3}; // L: 17
+	}
 
-   @ObfuscatedName("b")
-   @ObfuscatedSignature(
-      descriptor = "(I)Z",
-      garbageValue = "2012442922"
-   )
-   boolean method1649() {
-      return (2 & this.properties) != 0;
-   }
+	World() {
+	} // L: 27
 
-   @ObfuscatedName("x")
-   @ObfuscatedSignature(
-      descriptor = "(B)Z",
-      garbageValue = "71"
-   )
-   @Export("isPvp")
-   boolean isPvp() {
-      return (4 & this.properties) != 0;
-   }
+	@ObfuscatedName("r")
+	@ObfuscatedSignature(
+		descriptor = "(B)Z",
+		garbageValue = "16"
+	)
+	@Export("isMembersOnly")
+	boolean isMembersOnly() {
+		return (1 & this.properties) != 0; // L: 247
+	}
 
-   @ObfuscatedName("y")
-   @ObfuscatedSignature(
-      descriptor = "(I)Z",
-      garbageValue = "-1239609040"
-   )
-   boolean method1681() {
-      return (8 & this.properties) != 0;
-   }
+	@ObfuscatedName("o")
+	@ObfuscatedSignature(
+		descriptor = "(I)Z",
+		garbageValue = "-624791914"
+	)
+	boolean method1696() {
+		return (2 & this.properties) != 0; // L: 251
+	}
 
-   @ObfuscatedName("k")
-   @ObfuscatedSignature(
-      descriptor = "(B)Z",
-      garbageValue = "40"
-   )
-   @Export("isDeadman")
-   boolean isDeadman() {
-      return (536870912 & this.properties) != 0;
-   }
+	@ObfuscatedName("v")
+	@ObfuscatedSignature(
+		descriptor = "(I)Z",
+		garbageValue = "1709463484"
+	)
+	@Export("isPvp")
+	boolean isPvp() {
+		return (4 & this.properties) != 0; // L: 255
+	}
 
-   @ObfuscatedName("t")
-   @ObfuscatedSignature(
-      descriptor = "(I)Z",
-      garbageValue = "1502884763"
-   )
-   @Export("isBeta")
-   boolean isBeta() {
-      return (33554432 & this.properties) != 0;
-   }
+	@ObfuscatedName("d")
+	@ObfuscatedSignature(
+		descriptor = "(I)Z",
+		garbageValue = "-1754892594"
+	)
+	boolean method1676() {
+		return (8 & this.properties) != 0; // L: 259
+	}
 
-   @ObfuscatedName("l")
-   @ObfuscatedSignature(
-      descriptor = "(B)Z",
-      garbageValue = "0"
-   )
-   boolean method1652() {
-      return (1073741824 & this.properties) != 0;
-   }
+	@ObfuscatedName("h")
+	@ObfuscatedSignature(
+		descriptor = "(B)Z",
+		garbageValue = "-24"
+	)
+	@Export("isDeadman")
+	boolean isDeadman() {
+		return (536870912 & this.properties) != 0; // L: 263
+	}
 
-   @ObfuscatedName("h")
-   @ObfuscatedSignature(
-      descriptor = "(ILbp;ZI)I",
-      garbageValue = "-654094649"
-   )
-   static int method1668(int var0, Script var1, boolean var2) {
-      int var3;
-      int var6;
-      int var9;
-      if (var0 == ScriptOpcodes.ENUM_STRING) {
-         class14.Interpreter_intStackSize -= 2;
-         var3 = Interpreter.Interpreter_intStack[class14.Interpreter_intStackSize];
-         var9 = Interpreter.Interpreter_intStack[class14.Interpreter_intStackSize + 1];
-         EnumComposition var10 = FloorOverlayDefinition.getEnum(var3);
-         if (var10.outputType != 's') {
-            ;
-         }
+	@ObfuscatedName("g")
+	@ObfuscatedSignature(
+		descriptor = "(I)Z",
+		garbageValue = "-126940607"
+	)
+	@Export("isBeta")
+	boolean isBeta() {
+		return (33554432 & this.properties) != 0; // L: 267
+	}
 
-         for(var6 = 0; var6 < var10.outputCount; ++var6) {
-            if (var9 == var10.keys[var6]) {
-               Interpreter.Interpreter_stringStack[++class295.Interpreter_stringStackSize - 1] = var10.strVals[var6];
-               var10 = null;
-               break;
-            }
-         }
+	@ObfuscatedName("e")
+	@ObfuscatedSignature(
+		descriptor = "(B)Z",
+		garbageValue = "-98"
+	)
+	boolean method1679() {
+		return (1073741824 & this.properties) != 0; // L: 271
+	}
 
-         if (var10 != null) {
-            Interpreter.Interpreter_stringStack[++class295.Interpreter_stringStackSize - 1] = var10.defaultStr;
-         }
+	@ObfuscatedName("n")
+	@ObfuscatedSignature(
+		descriptor = "(Ljm;I[B[BI)V",
+		garbageValue = "-1955457060"
+	)
+	@Export("Widget_setKey")
+	static final void Widget_setKey(Widget var0, int var1, byte[] var2, byte[] var3) {
+		if (var0.field3300 == null) { // L: 972
+			if (var2 == null) { // L: 973
+				return; // L: 979
+			}
 
-         return 1;
-      } else if (var0 != ScriptOpcodes.ENUM) {
-         if (var0 == ScriptOpcodes.ENUM_GETOUTPUTCOUNT) {
-            var3 = Interpreter.Interpreter_intStack[--class14.Interpreter_intStackSize];
-            EnumComposition var4 = FloorOverlayDefinition.getEnum(var3);
-            Interpreter.Interpreter_intStack[++class14.Interpreter_intStackSize - 1] = var4.size();
-            return 1;
-         } else {
-            return 2;
-         }
-      } else {
-         class14.Interpreter_intStackSize -= 4;
-         var3 = Interpreter.Interpreter_intStack[class14.Interpreter_intStackSize];
-         var9 = Interpreter.Interpreter_intStack[class14.Interpreter_intStackSize + 1];
-         int var5 = Interpreter.Interpreter_intStack[class14.Interpreter_intStackSize + 2];
-         var6 = Interpreter.Interpreter_intStack[class14.Interpreter_intStackSize + 3];
-         EnumComposition var7 = FloorOverlayDefinition.getEnum(var5);
-         if (var3 == var7.inputType && var9 == var7.outputType) {
-            for(int var8 = 0; var8 < var7.outputCount; ++var8) {
-               if (var6 == var7.keys[var8]) {
-                  if (var9 == 115) {
-                     Interpreter.Interpreter_stringStack[++class295.Interpreter_stringStackSize - 1] = var7.strVals[var8];
-                  } else {
-                     Interpreter.Interpreter_intStack[++class14.Interpreter_intStackSize - 1] = var7.intVals[var8];
-                  }
+			var0.field3300 = new byte[11][]; // L: 974
+			var0.field3301 = new byte[11][]; // L: 975
+			var0.field3302 = new int[11]; // L: 976
+			var0.field3303 = new int[11]; // L: 977
+		}
 
-                  var7 = null;
-                  break;
-               }
-            }
+		var0.field3300[var1] = var2; // L: 981
+		if (var2 != null) {
+			var0.field3299 = true; // L: 982
+		} else {
+			var0.field3299 = false; // L: 984
 
-            if (var7 != null) {
-               if (var9 == 115) {
-                  Interpreter.Interpreter_stringStack[++class295.Interpreter_stringStackSize - 1] = var7.defaultStr;
-               } else {
-                  Interpreter.Interpreter_intStack[++class14.Interpreter_intStackSize - 1] = var7.defaultInt;
-               }
-            }
+			for (int var4 = 0; var4 < var0.field3300.length; ++var4) { // L: 985
+				if (var0.field3300[var4] != null) { // L: 986
+					var0.field3299 = true; // L: 987
+					break;
+				}
+			}
+		}
 
-            return 1;
-         } else {
-            if (var9 == 115) {
-               Interpreter.Interpreter_stringStack[++class295.Interpreter_stringStackSize - 1] = "null";
-            } else {
-               Interpreter.Interpreter_intStack[++class14.Interpreter_intStackSize - 1] = 0;
-            }
-
-            return 1;
-         }
-      }
-   }
+		var0.field3301[var1] = var3; // L: 992
+	} // L: 993
 }

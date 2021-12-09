@@ -15,7 +15,7 @@ dependencies {
 
     compileOnly(group: "org.apache.maven.plugin-tools", name: "maven-plugin-annotations", version: "3.6.0")
 
-    implementation("net.runelite:cache:1.8.4-SNAPSHOT")
+    implementation("net.runelite:cache:1.8.4")
     implementation(project(":runelite-api"))
     implementation(project(":meteor-logger"))
     implementation(group: "com.google.guava", name: "guava", version: "23.2-jre")

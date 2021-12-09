@@ -3,6 +3,7 @@ package dev.hoot.api.items;
 import dev.hoot.api.commons.Time;
 import dev.hoot.api.game.Game;
 import dev.hoot.api.game.Vars;
+import dev.hoot.api.packets.DialogPackets;
 import dev.hoot.api.widgets.Dialog;
 import dev.hoot.api.widgets.Widgets;
 import net.runelite.api.InventoryID;
@@ -15,6 +16,7 @@ import net.runelite.api.widgets.WidgetInfo;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 
@@ -142,7 +144,7 @@ public class Bank extends Items {
 	}
 
 	public static void depositAll(String name) {
-		depositAll(x -> x.getName() != null && x.getName().equals(name));
+		depositAll(x -> Objects.equals(x.getName(), name));
 	}
 
 	public static void depositAll(int id) {
@@ -154,7 +156,7 @@ public class Bank extends Items {
 	}
 
 	public static void deposit(String name, int amount) {
-		deposit(x -> x.getName() != null && x.getName().equals(name), amount);
+		deposit(x -> Objects.equals(x.getName(), name), amount);
 	}
 
 	public static void deposit(int id, int amount) {
@@ -179,7 +181,7 @@ public class Bank extends Items {
 
 
 	public static void withdrawAll(String name, WithdrawMode withdrawMode) {
-		withdrawAll(x -> x.getName() != null && x.getName().equals(name), withdrawMode);
+		withdrawAll(x -> Objects.equals(x.getName(), name), withdrawMode);
 	}
 
 	public static void withdrawAll(int id, WithdrawMode withdrawMode) {
@@ -191,7 +193,7 @@ public class Bank extends Items {
 	}
 
 	public static void withdraw(String name, int amount, WithdrawMode withdrawMode) {
-		withdraw(x -> x.getName() != null && x.getName().equals(name), amount, withdrawMode);
+		withdraw(x -> Objects.equals(x.getName(), name), amount, withdrawMode);
 	}
 
 	public static void withdraw(int id, int amount, WithdrawMode withdrawMode) {
@@ -208,19 +210,47 @@ public class Bank extends Items {
 		WithdrawOption withdrawOption = WithdrawOption.ofAmount(item, amount);
 		if (withdrawMode == WithdrawMode.NOTED && !isNotedWithdrawMode()) {
 			setWithdrawMode(true);
-			Time.sleepUntil(Bank::isNotedWithdrawMode, 5000);
+			Time.sleepUntil(Bank::isNotedWithdrawMode, 1200);
 		}
 
 		if (withdrawMode == WithdrawMode.ITEM && isNotedWithdrawMode()) {
 			setWithdrawMode(false);
-			Time.sleepUntil(() -> !isNotedWithdrawMode(), 5000);
+			Time.sleepUntil(() -> !isNotedWithdrawMode(), 1200);
 		}
 
-		item.interact(withdrawOption.menuIndex);
+		item.interact(withdrawOption.getMenuIndex());
 
 		if (withdrawOption == WithdrawOption.X) {
+			Time.sleepUntil(Dialog::isEnterInputOpen, 1200);
 			Dialog.enterInput(amount);
 		}
+	}
+
+	public static void withdrawLastQuantity(String name, WithdrawMode withdrawMode) {
+        withdrawLastQuantity(x -> Objects.equals(name,x.getName()), withdrawMode);
+	}
+
+	public static void withdrawLastQuantity(int id, WithdrawMode withdrawMode) {
+		withdrawLastQuantity(x -> x.getId() == id,withdrawMode);
+	}
+
+	public static void withdrawLastQuantity(Predicate<Item> filter, WithdrawMode withdrawMode) {
+		Item item = getFirst(filter.and(x -> !x.isPlaceholder()));
+
+		if (item == null) {
+			return;
+		}
+
+		WithdrawOption withdrawOption = WithdrawOption.LAST_QUANTITY;
+		if (withdrawMode == WithdrawMode.NOTED && !isNotedWithdrawMode()) {
+			setWithdrawMode(true);
+		}
+
+		if (withdrawMode == WithdrawMode.ITEM && isNotedWithdrawMode()) {
+			setWithdrawMode(false);
+		}
+
+		item.interact(withdrawOption.getMenuIndex());
 	}
 
 	public static void setWithdrawMode(boolean noted) {
@@ -402,13 +432,21 @@ public class Bank extends Items {
 	}
 
 	private enum WithdrawOption {
-		ONE(1), FIVE(3), TEN(4), DEFAULT_QUANTITY(5), X(6),
+		ONE(2), FIVE(3), TEN(4), LAST_QUANTITY(5), X(6),
 		ALL(7), ALL_BUT_1(8);
 
 		private final int menuIndex;
 
 		WithdrawOption(int menuIndex) {
 			this.menuIndex = menuIndex;
+		}
+
+		public int getMenuIndex() {
+			//Special case
+			if(getQuantityMode() == QuantityMode.ONE && this == WithdrawOption.ONE){
+				return 1;
+			}
+			return menuIndex;
 		}
 
 		public static WithdrawOption ofAmount(Item item, int amount) {

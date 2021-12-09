@@ -6,56 +6,61 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("mm")
+@ObfuscatedName("mi")
 @Implements("Ignored")
 public class Ignored extends User {
-   @ObfuscatedName("i")
-   @ObfuscatedGetter(
-      intValue = -781927569
-   )
-   @Export("id")
-   int id;
+	@ObfuscatedName("pz")
+	@ObfuscatedSignature(
+		descriptor = "Loo;"
+	)
+	@Export("HitSplatDefinition_cached")
+	static class404 HitSplatDefinition_cached;
+	@ObfuscatedName("c")
+	@ObfuscatedGetter(
+		intValue = 1285120553
+	)
+	@Export("id")
+	int id;
 
-   @ObfuscatedName("i")
-   @ObfuscatedSignature(
-      descriptor = "(Lmm;I)I",
-      garbageValue = "867220542"
-   )
-   @Export("compareTo_ignored")
-   int compareTo_ignored(Ignored var1) {
-      return this.id - var1.id;
-   }
+	Ignored() {
+	} // L: 6
 
-   @ObfuscatedName("w")
-   @ObfuscatedSignature(
-      descriptor = "(Lla;I)I",
-      garbageValue = "-1073614160"
-   )
-   @Export("compareTo_user")
-   public int compareTo_user(User var1) {
-      return this.compareTo_ignored((Ignored)var1);
-   }
+	@ObfuscatedName("c")
+	@ObfuscatedSignature(
+		descriptor = "(Lmi;B)I",
+		garbageValue = "109"
+	)
+	@Export("compareTo_ignored")
+	int compareTo_ignored(Ignored var1) {
+		return this.id - var1.id; // L: 9
+	}
 
-   public int compareTo(Object var1) {
-      return this.compareTo_ignored((Ignored)var1);
-   }
+	@ObfuscatedName("b")
+	@ObfuscatedSignature(
+		descriptor = "(Lmv;I)I",
+		garbageValue = "-1921032172"
+	)
+	@Export("compareTo_user")
+	public int compareTo_user(User var1) {
+		return this.compareTo_ignored((Ignored)var1); // L: 13
+	}
 
-   @ObfuscatedName("i")
-   @ObfuscatedSignature(
-      descriptor = "(I)[Lom;",
-      garbageValue = "1673389223"
-   )
-   @Export("FillMode_values")
-   public static FillMode[] FillMode_values() {
-      return new FillMode[]{FillMode.field4378, FillMode.field4377, FillMode.SOLID};
-   }
+	public int compareTo(Object var1) {
+		return this.compareTo_ignored((Ignored)var1); // L: 17
+	}
 
-   @ObfuscatedName("w")
-   @ObfuscatedSignature(
-      descriptor = "(CI)Z",
-      garbageValue = "-1749194740"
-   )
-   static final boolean method6212(char var0) {
-      return var0 == 160 || var0 == ' ' || var0 == '_' || var0 == '-';
-   }
+	@ObfuscatedName("c")
+	@ObfuscatedSignature(
+		descriptor = "(I)J",
+		garbageValue = "-376840192"
+	)
+	public static final synchronized long getServerTime() {
+		long var0 = System.currentTimeMillis(); // L: 14
+		if (var0 < class415.field4466) { // L: 15
+			class415.field4467 += class415.field4466 - var0; // L: 16
+		}
+
+		class415.field4466 = var0; // L: 18
+		return var0 + class415.field4467; // L: 19
+	}
 }

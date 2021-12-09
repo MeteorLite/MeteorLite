@@ -5,65 +5,79 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("do")
-public class class121 extends class116 {
-   @ObfuscatedName("ij")
-   @ObfuscatedGetter(
-      intValue = -1196916291
-   )
-   @Export("cameraPitch")
-   static int cameraPitch;
-   @ObfuscatedName("i")
-   @ObfuscatedGetter(
-      intValue = 1717605109
-   )
-   int field1412;
-   @ObfuscatedName("w")
-   @ObfuscatedGetter(
-      intValue = -1452092031
-   )
-   int field1408;
-   @ObfuscatedName("s")
-   @ObfuscatedGetter(
-      intValue = 513208975
-   )
-   int field1409;
-   @ObfuscatedName("a")
-   @ObfuscatedGetter(
-      intValue = 479707565
-   )
-   int field1407;
-   // $FF: synthetic field
-   @ObfuscatedSignature(
-      descriptor = "Ldg;"
-   )
-   final class119 this$0;
+@ObfuscatedName("dj")
+public enum class121 implements MouseWheel {
+	@ObfuscatedName("c")
+	@ObfuscatedSignature(
+		descriptor = "Ldj;"
+	)
+	field1465(0, 0),
+	@ObfuscatedName("b")
+	@ObfuscatedSignature(
+		descriptor = "Ldj;"
+	)
+	field1461(1, 1),
+	@ObfuscatedName("p")
+	@ObfuscatedSignature(
+		descriptor = "Ldj;"
+	)
+	field1459(2, 2),
+	@ObfuscatedName("m")
+	@ObfuscatedSignature(
+		descriptor = "Ldj;"
+	)
+	field1462(3, 3),
+	@ObfuscatedName("t")
+	@ObfuscatedSignature(
+		descriptor = "Ldj;"
+	)
+	field1463(4, 4),
+	@ObfuscatedName("s")
+	@ObfuscatedSignature(
+		descriptor = "Ldj;"
+	)
+	field1464(5, 5),
+	@ObfuscatedName("j")
+	@ObfuscatedSignature(
+		descriptor = "Ldj;"
+	)
+	field1469(6, 6),
+	@ObfuscatedName("w")
+	@ObfuscatedSignature(
+		descriptor = "Ldj;"
+	)
+	field1466(7, 7),
+	@ObfuscatedName("n")
+	@ObfuscatedSignature(
+		descriptor = "Ldj;"
+	)
+	field1467(8, 8);
 
-   @ObfuscatedSignature(
-      descriptor = "(Ldg;)V"
-   )
-   class121(class119 var1) {
-      this.this$0 = var1;
-   }
+	@ObfuscatedName("rf")
+	static boolean field1470;
+	@ObfuscatedName("r")
+	@ObfuscatedGetter(
+		intValue = 1751927131
+	)
+	final int field1460;
+	@ObfuscatedName("o")
+	@ObfuscatedGetter(
+		intValue = -85516245
+	)
+	final int field1468;
 
-   @ObfuscatedName("i")
-   @ObfuscatedSignature(
-      descriptor = "(Lop;I)V",
-      garbageValue = "-2002779676"
-   )
-   void vmethod2847(Buffer var1) {
-      this.field1412 = var1.readInt();
-      this.field1407 = var1.readInt();
-      this.field1408 = var1.readUnsignedByte();
-      this.field1409 = var1.readUnsignedByte();
-   }
+	class121(int var3, int var4) {
+		this.field1460 = var3; // L: 105
+		this.field1468 = var4; // L: 106
+	} // L: 107
 
-   @ObfuscatedName("w")
-   @ObfuscatedSignature(
-      descriptor = "(Ldm;I)V",
-      garbageValue = "-293908864"
-   )
-   void vmethod2848(ClanSettings var1) {
-      var1.method2665(this.field1412, this.field1407, this.field1408, this.field1409);
-   }
+	@ObfuscatedName("b")
+	@ObfuscatedSignature(
+		descriptor = "(B)I",
+		garbageValue = "48"
+	)
+	@Export("rsOrdinal")
+	public int rsOrdinal() {
+		return this.field1468; // L: 110
+	}
 }

@@ -33,15 +33,27 @@ public class TileObjects extends Entities<TileObject> {
 	}
 
 	public static TileObject getNearest(Predicate<TileObject> filter) {
-		return TILE_OBJECTS.nearest(filter);
+		return TILE_OBJECTS.nearest(Players.getLocal().getWorldLocation(), filter);
 	}
 
 	public static TileObject getNearest(int... ids) {
-		return TILE_OBJECTS.nearest(ids);
+		return TILE_OBJECTS.nearest(Players.getLocal().getWorldLocation(), ids);
 	}
 
 	public static TileObject getNearest(String... names) {
-		return TILE_OBJECTS.nearest(names);
+		return TILE_OBJECTS.nearest(Players.getLocal().getWorldLocation(), names);
+	}
+
+	public static TileObject getNearest(WorldPoint to, Predicate<TileObject> filter) {
+		return TILE_OBJECTS.nearest(to, filter);
+	}
+
+	public static TileObject getNearest(WorldPoint to, int... ids) {
+		return TILE_OBJECTS.nearest(to, ids);
+	}
+
+	public static TileObject getNearest(WorldPoint to, String... names) {
+		return TILE_OBJECTS.nearest(to, names);
 	}
 
 	public static List<TileObject> getAt(int worldX, int worldY, int plane, int... ids) {

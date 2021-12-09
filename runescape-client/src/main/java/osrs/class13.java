@@ -2,165 +2,181 @@ package osrs;
 
 import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
+import java.io.File;
 import java.io.IOException;
+import java.util.Date;
 import java.util.Hashtable;
 import net.runelite.mapping.Export;
+import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
-import net.runelite.rs.ScriptOpcodes;
 import org.bouncycastle.crypto.tls.DefaultTlsClient;
 import org.bouncycastle.crypto.tls.TlsAuthentication;
 
-@ObfuscatedName("t")
+@ObfuscatedName("h")
 class class13 extends DefaultTlsClient {
-   // $FF: synthetic field
-   @ObfuscatedSignature(
-      descriptor = "Lk;"
-   )
-   final class12 this$1;
+	@ObfuscatedName("t")
+	@Export("cacheDir")
+	public static File cacheDir;
+	@ObfuscatedName("d")
+	@ObfuscatedGetter(
+		intValue = 1540402679
+	)
+	@Export("Interpreter_stringStackSize")
+	static int Interpreter_stringStackSize;
+	// $FF: synthetic field
+	@ObfuscatedSignature(
+		descriptor = "Ld;"
+	)
+	final class12 this$1;
 
-   @ObfuscatedSignature(
-      descriptor = "(Lk;)V"
-   )
-   class13(class12 var1) {
-      this.this$1 = var1;
-   }
+	@ObfuscatedSignature(
+		descriptor = "(Ld;)V"
+	)
+	class13(class12 var1) {
+		this.this$1 = var1; // L: 284
+	}
 
-   public Hashtable getClientExtensions() throws IOException {
-      Hashtable var1 = super.getClientExtensions();
-      if (var1 == null) {
-         var1 = new Hashtable();
-      }
+	public Hashtable getClientExtensions() throws IOException {
+		Hashtable var1 = super.getClientExtensions(); // L: 287
+		if (var1 == null) { // L: 288
+			var1 = new Hashtable(); // L: 289
+		}
 
-      byte[] var2 = this.this$1.val$host.getBytes();
-      ByteArrayOutputStream var3 = new ByteArrayOutputStream();
-      DataOutputStream var4 = new DataOutputStream(var3);
-      var4.writeShort(var2.length + 3);
-      var4.writeByte(0);
-      var4.writeShort(var2.length);
-      var4.write(var2);
-      var4.close();
-      var1.put(0, var3.toByteArray());
-      return var1;
-   }
+		byte[] var2 = this.this$1.val$host.getBytes(); // L: 291
+		ByteArrayOutputStream var3 = new ByteArrayOutputStream(); // L: 292
+		DataOutputStream var4 = new DataOutputStream(var3); // L: 293
+		var4.writeShort(var2.length + 3); // L: 294
+		var4.writeByte(0); // L: 295
+		var4.writeShort(var2.length); // L: 296
+		var4.write(var2); // L: 297
+		var4.close(); // L: 298
+		var1.put(0, var3.toByteArray()); // L: 299
+		return var1; // L: 300
+	}
 
-   public TlsAuthentication getAuthentication() throws IOException {
-      return new class11(this);
-   }
+	public TlsAuthentication getAuthentication() throws IOException {
+		return new class11(this); // L: 305
+	}
 
-   @ObfuscatedName("i")
-   @ObfuscatedSignature(
-      descriptor = "(Lop;Lnf;I)Lnf;",
-      garbageValue = "261617264"
-   )
-   @Export("readStringIntParameters")
-   static final IterableNodeHashTable readStringIntParameters(Buffer var0, IterableNodeHashTable var1) {
-      int var2 = var0.readUnsignedByte();
-      int var3;
-      if (var1 == null) {
-         int var4 = var2 - 1;
-         var4 |= var4 >>> 1;
-         var4 |= var4 >>> 2;
-         var4 |= var4 >>> 4;
-         var4 |= var4 >>> 8;
-         var4 |= var4 >>> 16;
-         var3 = var4 + 1;
-         var1 = new IterableNodeHashTable(var3);
-      }
+	@ObfuscatedName("c")
+	public static String method195(long var0) {
+		Calendar.Calendar_calendar.setTime(new Date(var0)); // L: 31
+		int var2 = Calendar.Calendar_calendar.get(7); // L: 32
+		int var3 = Calendar.Calendar_calendar.get(5); // L: 33
+		int var4 = Calendar.Calendar_calendar.get(2); // L: 34
+		int var5 = Calendar.Calendar_calendar.get(1); // L: 35
+		int var6 = Calendar.Calendar_calendar.get(11); // L: 36
+		int var7 = Calendar.Calendar_calendar.get(12); // L: 37
+		int var8 = Calendar.Calendar_calendar.get(13); // L: 38
+		return Calendar.DAYS_OF_THE_WEEK[var2 - 1] + ", " + var3 / 10 + var3 % 10 + "-" + Calendar.MONTH_NAMES_ENGLISH_GERMAN[0][var4] + "-" + var5 + " " + var6 / 10 + var6 % 10 + ":" + var7 / 10 + var7 % 10 + ":" + var8 / 10 + var8 % 10 + " GMT"; // L: 39
+	}
 
-      for(var3 = 0; var3 < var2; ++var3) {
-         boolean var7 = var0.readUnsignedByte() == 1;
-         int var5 = var0.readMedium();
-         Object var6;
-         if (var7) {
-            var6 = new ObjectNode(var0.readStringCp1252NullTerminated());
-         } else {
-            var6 = new IntegerNode(var0.readInt());
-         }
+	@ObfuscatedName("p")
+	@ObfuscatedSignature(
+		descriptor = "(Ldn;[F[FI)V",
+		garbageValue = "1644015096"
+	)
+	static void method202(class115 var0, float[] var1, float[] var2) {
+		if (var0 != null) { // L: 224
+			float var3 = var1[3] - var1[0]; // L: 227
+			if ((double)var3 != 0.0D) { // L: 228
+				float var4 = var1[1] - var1[0]; // L: 231
+				float var5 = var1[2] - var1[0]; // L: 232
+				Float var6 = var4 / var3; // L: 233
+				Float var7 = var5 / var3; // L: 234
+				var0.field1398 = var6 == 0.33333334F && var7 == 0.6666667F; // L: 235
+				float var8 = var6; // L: 236
+				float var9 = var7; // L: 237
+				if ((double)var6 < 0.0D) { // L: 238
+					var6 = 0.0F;
+				}
 
-         var1.put((Node)var6, (long)var5);
-      }
+				if ((double)var7 > 1.0D) { // L: 239
+					var7 = 1.0F;
+				}
 
-      return var1;
-   }
+				if ((double)var6 > 1.0D || var7 < -1.0F) { // L: 240
+					Tile.method3844(var6, var7); // L: 241
+				}
 
-   @ObfuscatedName("r")
-   @ObfuscatedSignature(
-      descriptor = "(ILbp;ZI)I",
-      garbageValue = "719840218"
-   )
-   static int method173(int var0, Script var1, boolean var2) {
-      Widget var3 = UserComparator9.getWidget(Interpreter.Interpreter_intStack[--class14.Interpreter_intStackSize]);
-      if (var0 == ScriptOpcodes.IF_GETTARGETMASK) {
-         Interpreter.Interpreter_intStack[++class14.Interpreter_intStackSize - 1] = SecureRandomCallable.Widget_unpackTargetMask(PendingSpawn.getWidgetFlags(var3));
-         return 1;
-      } else if (var0 != ScriptOpcodes.IF_GETOP) {
-         if (var0 == ScriptOpcodes.IF_GETOPBASE) {
-            if (var3.dataText == null) {
-               Interpreter.Interpreter_stringStack[++class295.Interpreter_stringStackSize - 1] = "";
-            } else {
-               Interpreter.Interpreter_stringStack[++class295.Interpreter_stringStackSize - 1] = var3.dataText;
-            }
+				if (var6 != var8) { // L: 243
+					var1[1] = var1[0] + var6 * var3; // L: 244
+					if (0.0D != (double)var8) { // L: 245
+						var2[1] = var2[0] + (var2[1] - var2[0]) * var6 / var8; // L: 246
+					}
+				}
 
-            return 1;
-         } else {
-            return 2;
-         }
-      } else {
-         int var4 = Interpreter.Interpreter_intStack[--class14.Interpreter_intStackSize];
-         --var4;
-         if (var3.actions != null && var4 < var3.actions.length && var3.actions[var4] != null) {
-            Interpreter.Interpreter_stringStack[++class295.Interpreter_stringStackSize - 1] = var3.actions[var4];
-         } else {
-            Interpreter.Interpreter_stringStack[++class295.Interpreter_stringStackSize - 1] = "";
-         }
+				if (var7 != var9) { // L: 249
+					var1[2] = var1[0] + var7 * var3; // L: 250
+					if ((double)var9 != 1.0D) { // L: 251
+						var2[2] = (float)((double)var2[3] - (double)(var2[3] - var2[2]) * (1.0D - (double)var7) / (1.0D - (double)var9)); // L: 252
+					}
+				}
 
-         return 1;
-      }
-   }
+				var0.field1406 = var1[0]; // L: 255
+				var0.field1394 = var1[3]; // L: 256
+				float var10 = var6; // L: 257
+				float var11 = var7; // L: 258
+				float[] var12 = var0.field1401; // L: 259
+				float var13 = var10 - 0.0F; // L: 261
+				float var14 = var11 - var10; // L: 262
+				float var15 = 1.0F - var11; // L: 263
+				float var16 = var14 - var13; // L: 264
+				var12[3] = var15 - var14 - var16; // L: 265
+				var12[2] = var16 + var16 + var16; // L: 266
+				var12[1] = var13 + var13 + var13; // L: 267
+				var12[0] = 0.0F; // L: 268
+				var13 = var2[0]; // L: 270
+				var14 = var2[1]; // L: 271
+				var15 = var2[2]; // L: 272
+				var16 = var2[3]; // L: 273
+				float[] var17 = var0.field1402; // L: 274
+				float var18 = var14 - var13; // L: 276
+				float var19 = var15 - var14; // L: 277
+				float var20 = var16 - var15; // L: 278
+				float var21 = var19 - var18; // L: 279
+				var17[3] = var20 - var19 - var21; // L: 280
+				var17[2] = var21 + var21 + var21; // L: 281
+				var17[1] = var18 + var18 + var18; // L: 282
+				var17[0] = var13; // L: 283
+			}
+		}
+	} // L: 225 229 285
 
-   @ObfuscatedName("jl")
-   @ObfuscatedSignature(
-      descriptor = "(Ljf;IIIIIII)V",
-      garbageValue = "909796147"
-   )
-   static final void method177(Widget var0, int var1, int var2, int var3, int var4, int var5, int var6) {
-      if (Client.field465) {
-         Client.alternativeScrollbarWidth = 32;
-      } else {
-         Client.alternativeScrollbarWidth = 0;
-      }
+	@ObfuscatedName("y")
+	@ObfuscatedSignature(
+		descriptor = "(ILbn;ZB)I",
+		garbageValue = "-18"
+	)
+	static int method201(int var0, Script var1, boolean var2) {
+		int var3;
+		if (var0 == 3500) { // L: 2111
+			var3 = Interpreter.Interpreter_intStack[--IsaacCipher.Interpreter_intStackSize]; // L: 2112
+			Interpreter.Interpreter_intStack[++IsaacCipher.Interpreter_intStackSize - 1] = DevicePcmPlayerProvider.method398(var3) ? 1 : 0; // L: 2113
+			return 1; // L: 2114
+		} else if (var0 == 3501) { // L: 2116
+			var3 = Interpreter.Interpreter_intStack[--IsaacCipher.Interpreter_intStackSize]; // L: 2117
+			Interpreter.Interpreter_intStack[++IsaacCipher.Interpreter_intStackSize - 1] = StructComposition.method3424(var3) ? 1 : 0; // L: 2118
+			return 1; // L: 2119
+		} else if (var0 == 3502) { // L: 2121
+			var3 = Interpreter.Interpreter_intStack[--IsaacCipher.Interpreter_intStackSize]; // L: 2122
+			Interpreter.Interpreter_intStack[++IsaacCipher.Interpreter_intStackSize - 1] = class117.method2676(var3) ? 1 : 0; // L: 2123
+			return 1; // L: 2124
+		} else {
+			return 2; // L: 2126
+		}
+	}
 
-      Client.field465 = false;
-      int var7;
-      if (MouseHandler.MouseHandler_currentButton == 1 || !ApproximateRouteStrategy.mouseCam && MouseHandler.MouseHandler_currentButton == 4) {
-         if (var5 >= var1 && var5 < var1 + 16 && var6 >= var2 && var6 < var2 + 16) {
-            var0.scrollY -= 4;
-            class184.invalidateWidget(var0);
-         } else if (var5 >= var1 && var5 < var1 + 16 && var6 >= var3 + var2 - 16 && var6 < var3 + var2) {
-            var0.scrollY += 4;
-            class184.invalidateWidget(var0);
-         } else if (var5 >= var1 - Client.alternativeScrollbarWidth && var5 < Client.alternativeScrollbarWidth + var1 + 16 && var6 >= var2 + 16 && var6 < var3 + var2 - 16) {
-            var7 = var3 * (var3 - 32) / var4;
-            if (var7 < 8) {
-               var7 = 8;
-            }
-
-            int var8 = var6 - var2 - 16 - var7 / 2;
-            int var9 = var3 - 32 - var7;
-            var0.scrollY = var8 * (var4 - var3) / var9;
-            class184.invalidateWidget(var0);
-            Client.field465 = true;
-         }
-      }
-
-      if (Client.mouseWheelRotation != 0) {
-         var7 = var0.width;
-         if (var5 >= var1 - var7 && var6 >= var2 && var5 < var1 + 16 && var6 <= var3 + var2) {
-            var0.scrollY += Client.mouseWheelRotation * 45;
-            class184.invalidateWidget(var0);
-         }
-      }
-
-   }
+	@ObfuscatedName("jy")
+	@ObfuscatedSignature(
+		descriptor = "(IIIIIIII)V",
+		garbageValue = "847874180"
+	)
+	@Export("updateRootInterface")
+	static final void updateRootInterface(int var0, int var1, int var2, int var3, int var4, int var5, int var6) {
+		if (class242.loadInterface(var0)) { // L: 11380
+			FriendSystem.updateInterface(MouseRecorder.Widget_interfaceComponents[var0], -1, var1, var2, var3, var4, var5, var6); // L: 11381
+		}
+	} // L: 11382
 }

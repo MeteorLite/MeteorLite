@@ -5,6 +5,7 @@ import com.google.inject.*;
 import com.google.inject.name.Names;
 import dev.hoot.api.movement.pathfinder.GlobalCollisionMap;
 import dev.hoot.api.movement.pathfinder.Walker;
+import dev.hoot.api.movement.pathfinder.RegionManager;
 import javafx.scene.paint.Paint;
 import meteor.callback.Hooks;
 import meteor.chat.ChatMessageManager;
@@ -31,6 +32,7 @@ import meteor.util.ExecutorServiceExceptionLogger;
 import meteor.util.NonScheduledExecutorServiceExceptionLogger;
 import net.runelite.api.Client;
 import net.runelite.api.hooks.Callbacks;
+import net.runelite.api.packets.ClientPacket;
 import net.runelite.http.api.chat.ChatClient;
 import okhttp3.OkHttpClient;
 import org.sponge.util.Logger;
@@ -44,6 +46,7 @@ import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
@@ -92,6 +95,9 @@ public class MeteorLiteClientModule extends AbstractModule {
 
   @Inject
   private DiscordService discordService;
+
+  @Inject
+  private ClientPacket clientPacket;
 
   public static Map<String, String> properties;
   public static Map<String, String> parameters;
@@ -231,6 +237,17 @@ public class MeteorLiteClientModule extends AbstractModule {
 
   @Provides
   @Singleton
+  ClientPacket provideClientPacket() {
+    try {
+      return (ClientPacket) ClassLoader.getSystemClassLoader().loadClass("osrs.ClientPacket").newInstance();
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+    return null;
+  }
+
+  @Provides
+  @Singleton
   Client provideClient(@Nullable Applet applet) {
     return applet instanceof Client ? (Client) applet : null;
   }
@@ -274,12 +291,17 @@ public class MeteorLiteClientModule extends AbstractModule {
   @Provides
   @Singleton
   GlobalCollisionMap provideGlobalCollisionMap() throws IOException {
-    return new GlobalCollisionMap(
-            new GZIPInputStream(
-                    new ByteArrayInputStream(
-                            Walker.class.getResourceAsStream("/collision-map").readAllBytes()
-                    )
-            ).readAllBytes()
-    );
+    try (InputStream is = new URL(RegionManager.API_URL + "/regions").openStream()) {
+      return new GlobalCollisionMap(new GZIPInputStream(new ByteArrayInputStream(is.readAllBytes())).readAllBytes());
+    } catch (IOException e) {
+      // Fallback to old map
+      return new GlobalCollisionMap(
+              new GZIPInputStream(
+                      new ByteArrayInputStream(
+                              Walker.class.getResourceAsStream("/collision-map").readAllBytes()
+                      )
+              ).readAllBytes()
+      );
+    }
   }
 }

@@ -31,7 +31,8 @@ public class UpdateRefmap {
               .replace(".class", "");
 
           try {
-            Class<?> clazz = Class.forName("osrs." + className);
+            String packageName = className.startsWith("JS") ? "osrs.javascript." : "osrs.";
+            Class<?> clazz = Class.forName(packageName + className);
 
             ObfuscatedName obfuscatedName = clazz
                 .getAnnotation(ObfuscatedName.class);

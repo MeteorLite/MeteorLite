@@ -2,105 +2,54 @@ package osrs;
 
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
-import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("dn")
+@ObfuscatedName("do")
 @Implements("BuddyRankComparator")
 public class BuddyRankComparator extends AbstractUserComparator {
-   @ObfuscatedName("rd")
-   @ObfuscatedSignature(
-      descriptor = "Las;"
-   )
-   @Export("pcmStreamMixer")
-   static PcmStreamMixer pcmStreamMixer;
-   @ObfuscatedName("sn")
-   @ObfuscatedGetter(
-      intValue = 31962043
-   )
-   static int field1333;
-   @ObfuscatedName("p")
-   @Export("ItemDefinition_inMembersWorld")
-   public static boolean ItemDefinition_inMembersWorld;
-   @ObfuscatedName("i")
-   @Export("reversed")
-   final boolean reversed;
+	@ObfuscatedName("pw")
+	@ObfuscatedSignature(
+		descriptor = "Lnq;"
+	)
+	static class370 field1342;
+	@ObfuscatedName("c")
+	@Export("reversed")
+	final boolean reversed;
 
-   public BuddyRankComparator(boolean var1) {
-      this.reversed = var1;
-   }
+	public BuddyRankComparator(boolean var1) {
+		this.reversed = var1; // L: 10
+	} // L: 11
 
-   @ObfuscatedName("i")
-   @ObfuscatedSignature(
-      descriptor = "(Lmt;Lmt;B)I",
-      garbageValue = "1"
-   )
-   @Export("compareBuddy")
-   int compareBuddy(Buddy var1, Buddy var2) {
-      if (var2.rank != var1.rank) {
-         return this.reversed ? var1.rank - var2.rank : var2.rank - var1.rank;
-      } else {
-         return this.compareUser(var1, var2);
-      }
-   }
+	@ObfuscatedName("c")
+	@ObfuscatedSignature(
+		descriptor = "(Lmp;Lmp;I)I",
+		garbageValue = "-1364999182"
+	)
+	@Export("compareBuddy")
+	int compareBuddy(Buddy var1, Buddy var2) {
+		if (var2.rank != var1.rank) { // L: 14
+			return this.reversed ? var1.rank - var2.rank : var2.rank - var1.rank; // L: 15
+		} else {
+			return this.compareUser(var1, var2); // L: 17
+		}
+	}
 
-   public int compare(Object var1, Object var2) {
-      return this.compareBuddy((Buddy)var1, (Buddy)var2);
-   }
+	public int compare(Object var1, Object var2) {
+		return this.compareBuddy((Buddy)var1, (Buddy)var2); // L: 21
+	}
 
-   @ObfuscatedName("y")
-   @ObfuscatedSignature(
-      descriptor = "(Lko;III)Z",
-      garbageValue = "2134321189"
-   )
-   public static boolean method2502(AbstractArchive var0, int var1, int var2) {
-      byte[] var3 = var0.takeFile(var1, var2);
-      if (var3 == null) {
-         return false;
-      } else {
-         Script.SpriteBuffer_decode(var3);
-         return true;
-      }
-   }
-
-   @ObfuscatedName("gm")
-   @ObfuscatedSignature(
-      descriptor = "(S)V",
-      garbageValue = "459"
-   )
-   static void method2500() {
-      int var0 = Players.Players_count;
-      int[] var1 = Players.Players_indices;
-
-      for(int var2 = 0; var2 < var0; ++var2) {
-         if (var1[var2] != Client.combatTargetPlayerIndex && var1[var2] != Client.localPlayerIndex) {
-            class132.addPlayerToScene(Client.players[var1[var2]], true);
-         }
-      }
-
-   }
-
-   @ObfuscatedName("le")
-   @ObfuscatedSignature(
-      descriptor = "(Ljf;I)Ljf;",
-      garbageValue = "1540120138"
-   )
-   static Widget method2501(Widget var0) {
-      int var2 = PendingSpawn.getWidgetFlags(var0);
-      int var1 = var2 >> 17 & 7;
-      int var3 = var1;
-      if (var1 == 0) {
-         return null;
-      } else {
-         for(int var4 = 0; var4 < var3; ++var4) {
-            var0 = UserComparator9.getWidget(var0.parentId);
-            if (var0 == null) {
-               return null;
-            }
-         }
-
-         return var0;
-      }
-   }
+	@ObfuscatedName("ld")
+	@ObfuscatedSignature(
+		descriptor = "(IIIZI)V",
+		garbageValue = "1683360444"
+	)
+	public static void method2547(int var0, int var1, int var2, boolean var3) {
+		PacketBufferNode var4 = HitSplatDefinition.getPacketBufferNode(ClientPacket.field2819, Client.packetWriter.isaacCipher); // L: 12675
+		var4.packetBuffer.method7527(var3 ? Client.field607 * 1420477321 * -1761828167 : 0); // L: 12676
+		var4.packetBuffer.writeByteC(var0); // L: 12677
+		var4.packetBuffer.method7343(var2); // L: 12678
+		var4.packetBuffer.writeShort(var1); // L: 12679
+		Client.packetWriter.addNode(var4); // L: 12680
+	} // L: 12681
 }

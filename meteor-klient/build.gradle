@@ -1,0 +1,220 @@
+plugins {
+    id 'java'
+    id 'application'
+    id 'com.github.johnrengelman.shadow'
+    id 'org.beryx.runtime'
+    id 'org.openjfx.javafxplugin' version '0.0.10'
+    id "org.jetbrains.kotlin.jvm" version "1.5.31"
+    id 'org.jetbrains.kotlin.plugin.lombok' version '1.5.31'
+    id 'io.freefair.lombok' version '6.2.0'
+}
+
+group 'org.meteorlite'
+version '1.0.36'
+
+repositories {
+    mavenCentral()
+    jcenter()
+    maven { url = 'https://maven.gegy1000.net/' }
+    maven { url = 'https://repo.runelite.net/' }
+    maven { url = 'https://raw.githubusercontent.com/open-osrs/hosting/master/' }
+}
+
+dependencies {
+    implementation 'org.apache.logging.log4j:log4j-core:_'
+    compileOnly group: 'org.projectlombok', name: 'lombok', version: '1.18.20'
+
+    implementation(group: "com.google.inject", name: "guice", version: "4.1.0", classifier: "no_aop")
+
+    implementation(project(":runescape-api"))
+    implementation(project(":runelite-api"))
+    implementation(project(":meteor-logger"))
+    implementation(project(":http-api"))
+    implementation(project(":runelite-annotations"))
+    //Deob
+    //implementation(project(":runescape-client"))
+    //Injected
+    implementation(files("../openosrs-injector/build/injected/injected-klient.jar"))
+    implementation group: 'de.jensd', name: 'fontawesomefx-commons', version: '_'
+    implementation group: 'de.jensd', name: 'fontawesomefx-fontawesome', version: '_'
+    implementation 'de.jensd:fontawesomefx-materialicons:2.2.0-9.1.2'
+    implementation 'com.jfoenix:jfoenix:_'
+    implementation group: 'org.jetbrains', name: 'annotations', version: '21.0.1'
+    runtimeOnly(files("../openosrs-injector/build/injected/injected-client.jar"))
+    compileOnly 'org.projectlombok:lombok:_'
+    annotationProcessor 'org.projectlombok:lombok:_'
+    annotationProcessor group: 'org.jetbrains', name: 'annotations', version: '_'
+    implementation(group: "net.runelite.gluegen", name: "gluegen-rt", version: "2.4.0-rc-20200429")
+    implementation(group: "net.runelite.jogl", name: "jogl-all", version: "2.4.0-rc-20200429")
+    implementation(group: "net.runelite.jocl", name: "jocl", version: "1.0")
+    implementation(group: "io.reactivex.rxjava3", name: "rxjava", version: "_")
+    implementation group: 'org.apache.commons', name: 'commons-lang3', version: '_'
+    implementation(group: "com.squareup.okhttp3", name: "okhttp", version: "_")
+
+    implementation 'org.controlsfx:controlsfx:11.1.0'
+
+    implementation(group: "net.runelite.gluegen", name: "gluegen-rt", version: "2.4.0-rc-20200429")
+    implementation(group: "net.runelite.jogl", name: "jogl-all", version: "2.4.0-rc-20200429")
+
+    runtimeOnly(group: "net.runelite.pushingpixels", name: "trident", version: "1.5.00")
+    runtimeOnly(group: "net.runelite.gluegen", name: "gluegen-rt", version: "2.4.0-rc-20200429", classifier: "natives-linux-amd64")
+    runtimeOnly(group: "net.runelite.gluegen", name: "gluegen-rt", version: "2.4.0-rc-20200429", classifier: "natives-windows-amd64")
+    runtimeOnly(group: "net.runelite.gluegen", name: "gluegen-rt", version: "2.4.0-rc-20200429", classifier: "natives-windows-i586")
+    runtimeOnly(group: "net.runelite.gluegen", name: "gluegen-rt-natives-macosx", version: "2.4.0-rc-20210117")
+    runtimeOnly(group: "net.runelite.jogl", name: "jogl-all", version: "2.4.0-rc-20200429", classifier: "natives-linux-amd64")
+    runtimeOnly(group: "net.runelite.jogl", name: "jogl-all", version: "2.4.0-rc-20200429", classifier: "natives-windows-amd64")
+    runtimeOnly(group: "net.runelite.jogl", name: "jogl-all", version: "2.4.0-rc-20200429", classifier: "natives-windows-i586")
+    runtimeOnly(group: "net.runelite.jogl", name: "jogl-all-natives-macosx", version: "2.4.0-rc-20210117")
+    runtimeOnly(group: "net.runelite.jocl", name: "jocl", version: "1.0", classifier: 'macos-x64')
+    runtimeOnly(group: "net.runelite.jocl", name: "jocl", version: "1.0", classifier: 'macos-arm64')
+    implementation group: 'com.google.guava', name: 'guava', version: '_'
+    implementation(group : "org.apache.commons", name : "commons-text", version : "_")
+    implementation(group : "commons-io", name : "commons-io", version : "_")
+    implementation(group : "net.sf.jopt-simple", name : "jopt-simple", version : "_")
+    annotationProcessor group: 'javax.inject', name: 'javax.inject', version: '1'
+    implementation(group : "io.reactivex.rxjava3", name : "rxjava", version : "_")
+    implementation group: 'com.google.code.findbugs', name: 'jsr305', version: '_'
+    implementation group: 'com.google.code.gson', name: 'gson', version: '_'
+    implementation group: 'net.lingala.zip4j', name: 'zip4j', version: '2.9.0'
+    implementation 'org.jetbrains.kotlin:kotlin-stdlib:1.5.31'
+    implementation(platform("org.jetbrains.kotlin:kotlin-bom"))
+    implementation(group: "net.runelite", name: "discord", version: "1.4")
+    implementation 'org.bouncycastle:bcprov-jdk15on:1.52'
+    implementation 'org.openjfx:javafx:16'
+    implementation 'org.slf4j:slf4j-api:1.7.12'
+    implementation 'xerces:xercesImpl:2.12.1'
+    implementation("com.formdev:flatlaf:_")
+    implementation("com.formdev:flatlaf-intellij-themes:_")
+    implementation 'com.miglayout:miglayout:3.7.4'
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.2'
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-javafx:1.5.2'
+    implementation 'io.insert-koin:koin-core:3.1.4'
+
+}
+
+task createJavadocs (type: Javadoc)
+{
+    source = sourceSets.main.allJava
+    classpath = sourceSets.main.getCompileClasspath()
+}
+
+runtime {
+    options = ['--strip-debug', '--compress', '2', '--no-header-files', '--no-man-pages']
+    jpackage {
+        imageOptions += [
+                "--icon", "src/main/resources/MeteorLite.ico", "--win-console"]
+        mainClass = "meteor.Main"
+        installerOptions += [
+                "--name", "MeteorLite",
+                "--description", "Open source OSRS toolkit",
+                "--copyright", "2021 MeteorLite",
+                "--vendor", "Null",
+                '--win-upgrade-uuid', 'aaffbbff-ffaa-0420-4200-867530986753',
+                "--win-per-user-install",
+                "--win-dir-chooser",
+                "--win-menu",
+                "--win-shortcut"]
+    }
+}
+
+javafx {
+    modules = ['javafx.controls', 'javafx.fxml', 'javafx.swing', 'javafx.graphics', 'javafx.media']
+}
+
+application {
+    mainClass = 'meteor.Main'
+}
+
+compileJava.options.encoding = 'UTF-8'
+
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
+}
+
+task copyRunBat (type: Copy) {
+    from "/"
+    into "build/libs/"
+    include "run.bat"
+}
+
+shadowJar {
+    finalizedBy(copyRunBat)
+    configurations = [project.configurations.runtimeClasspath]
+    minimize {
+        it.exclude(it.dependency {'net.runelite.jogl:.*:.*'} as Spec<? super ResolvedDependency>)
+        it.exclude(it.dependency {'xerces:xercesImpl:.*:.*'} as Spec<? super ResolvedDependency>)
+        it.exclude(it.project(":runelite-api") as Spec<? super ResolvedDependency>)
+        it.exclude(it.project(":runescape-api") as Spec<? super ResolvedDependency>)
+    }
+    minimize()
+    applicationDefaultJvmArgs = [
+            "-noverify",
+            "-Xmx512m",
+            "-Dprism.allowhidpi=false",
+            "-Dsun.awt.noerasebackground=true",
+            "--add-modules=javafx.media",
+            "--add-modules=javafx.fxml",
+            "--add-modules=javafx.swing",
+            "--add-modules=javafx.graphics",
+            "--add-exports=java.desktop/sun.awt=javafx.swing",
+            "--add-exports=javafx.base/com.sun.javafx=ALL-UNNAMED",
+            "--add-exports=javafx.base/com.sun.javafx.binding=ALL-UNNAMED",
+            "--add-exports=javafx.base/com.sun.javafx.collections=ALL-UNNAMED",
+            "--add-exports=javafx.base/com.sun.javafx.event=ALL-UNNAMED",
+            "--add-exports=javafx.base/com.sun.javafx.logging=ALL-UNNAMED",
+            "--add-exports=javafx.graphics/com.sun.javafx.application=ALL-UNNAMED",
+            "--add-exports=javafx.graphics/com.sun.javafx.geom=ALL-UNNAMED",
+            "--add-exports=javafx.graphics/com.sun.javafx.scene=ALL-UNNAMED",
+            "--add-exports=javafx.graphics/com.sun.javafx.scene.layout=ALL-UNNAMED",
+            "--add-exports=javafx.graphics/com.sun.javafx.scene.input=ALL-UNNAMED",
+            "--add-exports=javafx.graphics/com.sun.javafx.scene.text=ALL-UNNAMED",
+            "--add-exports=javafx.graphics/com.sun.javafx.scene.traversal=ALL-UNNAMED",
+            "--add-exports=javafx.graphics/com.sun.javafx.stage=ALL-UNNAMED",
+            "--add-exports=javafx.graphics/com.sun.javafx.tk=ALL-UNNAMED",
+            "--add-exports=javafx.graphics/com.sun.javafx.util=ALL-UNNAMED",
+            "--add-exports=javafx.controls/com.sun.javafx.scene.control=ALL-UNNAMED",
+            "--add-exports=javafx.controls/com.sun.javafx.scene.control.behavior=ALL-UNNAMED",
+            "--add-opens=javafx.graphics/javafx.css=ALL-UNNAMED",
+            "-Dsun.java2d.uiScale=1.0",
+            "--illegal-access=permit",
+            "-ea"]
+}
+tasks {
+    compileJava.dependsOn project(":fernflower").tasks.getByName("decompileInjected")
+    compileJava.dependsOn(":klient-mixins:compileJava")
+    compileKotlin {
+        kotlinOptions.jvmTarget = "16"
+    }
+    compileTestKotlin {
+        kotlinOptions.jvmTarget = "16"
+    }
+}
+
+processResources {
+    dependsOn(":runelite-script-assembler:assembleScripts")
+    from("${buildDir}/scripts")
+}
+
+task bootstrap(type: JavaExec) {
+    classpath = sourceSets.main.runtimeClasspath
+    main = "meteor.util.bootstrap.Bootstrapper"
+}
+
+task klient(type: JavaExec) {
+    classpath = sourceSets.main.runtimeClasspath
+    main = "meteor.Main"
+}
+
+jar {
+    manifest {
+        attributes(
+                'Main-Class': 'meteor.Main'
+        )
+    }
+}
+
+sourceCompatibility = 16
+targetCompatibility = 16
+
+
+

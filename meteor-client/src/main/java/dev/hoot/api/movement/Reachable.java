@@ -15,7 +15,7 @@ public class Reachable {
     private static final int MAX_ATTEMPTED_TILES = 1000;
 
     public static boolean check(int flag, int checkFlag) {
-        return flag != 0xFFFFFF && (flag & checkFlag) != 0;
+        return (flag & checkFlag) != 0;
     }
 
     public static boolean isObstacle(int endFlag) {
@@ -23,11 +23,6 @@ public class Reachable {
     }
 
     public static boolean isObstacle(WorldPoint worldPoint) {
-        Tile tile = Tiles.getAt(worldPoint);
-        if (tile == null) {
-            return true;
-        }
-
         return isObstacle(getCollisionFlag(worldPoint));
     }
 

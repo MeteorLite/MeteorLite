@@ -6,103 +6,91 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("im")
+@ObfuscatedName("ir")
 @Implements("LoginPacket")
-public class LoginPacket implements class238 {
-   @ObfuscatedName("i")
-   @ObfuscatedSignature(
-      descriptor = "Lim;"
-   )
-   public static final LoginPacket field2901 = new LoginPacket(14, 0);
-   @ObfuscatedName("w")
-   @ObfuscatedSignature(
-      descriptor = "Lim;"
-   )
-   static final LoginPacket field2897 = new LoginPacket(15, 4);
-   @ObfuscatedName("s")
-   @ObfuscatedSignature(
-      descriptor = "Lim;"
-   )
-   public static final LoginPacket field2896 = new LoginPacket(16, -2);
-   @ObfuscatedName("a")
-   @ObfuscatedSignature(
-      descriptor = "Lim;"
-   )
-   public static final LoginPacket field2894 = new LoginPacket(18, -2);
-   @ObfuscatedName("o")
-   @ObfuscatedSignature(
-      descriptor = "Lim;"
-   )
-   public static final LoginPacket field2900 = new LoginPacket(19, -2);
-   @ObfuscatedName("g")
-   @ObfuscatedSignature(
-      descriptor = "Lim;"
-   )
-   static final LoginPacket field2899 = new LoginPacket(27, 0);
-   @ObfuscatedName("p")
-   @ObfuscatedSignature(
-      descriptor = "[Lim;"
-   )
-   @Export("LoginPacket_indexedValues")
-   static final LoginPacket[] LoginPacket_indexedValues = new LoginPacket[32];
-   @ObfuscatedName("e")
-   @ObfuscatedGetter(
-      intValue = -152367843
-   )
-   @Export("id")
-   public final int id;
+public class LoginPacket implements class251 {
+	@ObfuscatedName("c")
+	@ObfuscatedSignature(
+		descriptor = "Lir;"
+	)
+	public static final LoginPacket field3032;
+	@ObfuscatedName("b")
+	@ObfuscatedSignature(
+		descriptor = "Lir;"
+	)
+	static final LoginPacket field3031;
+	@ObfuscatedName("p")
+	@ObfuscatedSignature(
+		descriptor = "Lir;"
+	)
+	public static final LoginPacket field3038;
+	@ObfuscatedName("m")
+	@ObfuscatedSignature(
+		descriptor = "Lir;"
+	)
+	public static final LoginPacket field3037;
+	@ObfuscatedName("t")
+	@ObfuscatedSignature(
+		descriptor = "Lir;"
+	)
+	public static final LoginPacket field3034;
+	@ObfuscatedName("s")
+	@ObfuscatedSignature(
+		descriptor = "Lir;"
+	)
+	static final LoginPacket field3035;
+	@ObfuscatedName("w")
+	@ObfuscatedSignature(
+		descriptor = "[Lir;"
+	)
+	@Export("LoginPacket_indexedValues")
+	static final LoginPacket[] LoginPacket_indexedValues;
+	@ObfuscatedName("j")
+	@ObfuscatedGetter(
+		intValue = -1815606843
+	)
+	@Export("id")
+	public final int id;
 
-   static {
-      LoginPacket[] var0 = class240.method4711();
+	static {
+		field3032 = new LoginPacket(14, 0); // L: 5
+		field3031 = new LoginPacket(15, 4); // L: 6
+		field3038 = new LoginPacket(16, -2); // L: 7
+		field3037 = new LoginPacket(18, -2); // L: 8
+		field3034 = new LoginPacket(19, -2); // L: 9
+		field3035 = new LoginPacket(27, 0); // L: 10
+		LoginPacket_indexedValues = new LoginPacket[32]; // L: 12
+		LoginPacket[] var0 = new LoginPacket[]{field3031, field3037, field3038, field3034, field3032, field3035}; // L: 17
+		LoginPacket[] var1 = var0; // L: 19
 
-      for(int var1 = 0; var1 < var0.length; ++var1) {
-         LoginPacket_indexedValues[var0[var1].id] = var0[var1];
-      }
+		for (int var2 = 0; var2 < var1.length; ++var2) { // L: 20
+			LoginPacket_indexedValues[var1[var2].id] = var1[var2]; // L: 21
+		}
 
-   }
+	} // L: 23
 
-   @ObfuscatedSignature(
-      descriptor = "(II)V",
-      garbageValue = "0"
-   )
-   LoginPacket(int var1, int var2) {
-      this.id = var1;
-   }
+	@ObfuscatedSignature(
+		descriptor = "(II)V",
+		garbageValue = "0"
+	)
+	LoginPacket(int var1, int var2) {
+		this.id = var1; // L: 26
+	} // L: 27
 
-   @ObfuscatedName("jf")
-   @ObfuscatedSignature(
-      descriptor = "(Ljf;IIB)V",
-      garbageValue = "8"
-   )
-   @Export("alignWidgetPosition")
-   static void alignWidgetPosition(Widget var0, int var1, int var2) {
-      if (var0.xAlignment == 0) {
-         var0.x = var0.rawX;
-      } else if (var0.xAlignment == 1) {
-         var0.x = var0.rawX + (var1 - var0.width) / 2;
-      } else if (var0.xAlignment == 2) {
-         var0.x = var1 - var0.width - var0.rawX;
-      } else if (var0.xAlignment == 3) {
-         var0.x = var0.rawX * var1 >> 14;
-      } else if (var0.xAlignment == 4) {
-         var0.x = (var0.rawX * var1 >> 14) + (var1 - var0.width) / 2;
-      } else {
-         var0.x = var1 - var0.width - (var0.rawX * var1 >> 14);
-      }
+	@ObfuscatedName("v")
+	@ObfuscatedSignature(
+		descriptor = "(Ljava/lang/CharSequence;B)Ljava/lang/String;",
+		garbageValue = "100"
+	)
+	public static String method5019(CharSequence var0) {
+		int var2 = var0.length(); // L: 176
+		char[] var3 = new char[var2]; // L: 178
 
-      if (var0.yAlignment == 0) {
-         var0.y = var0.rawY;
-      } else if (var0.yAlignment == 1) {
-         var0.y = (var2 - var0.height) / 2 + var0.rawY;
-      } else if (var0.yAlignment == 2) {
-         var0.y = var2 - var0.height - var0.rawY;
-      } else if (var0.yAlignment == 3) {
-         var0.y = var2 * var0.rawY >> 14;
-      } else if (var0.yAlignment == 4) {
-         var0.y = (var2 * var0.rawY >> 14) + (var2 - var0.height) / 2;
-      } else {
-         var0.y = var2 - var0.height - (var2 * var0.rawY >> 14);
-      }
+		for (int var4 = 0; var4 < var2; ++var4) { // L: 179
+			var3[var4] = '*';
+		}
 
-   }
+		String var1 = new String(var3); // L: 180
+		return var1; // L: 182
+	}
 }

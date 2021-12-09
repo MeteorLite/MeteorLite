@@ -2,6 +2,7 @@ package dev.hoot.api.entities;
 
 import dev.hoot.api.game.Game;
 import net.runelite.api.Player;
+import net.runelite.api.coords.WorldPoint;
 
 import java.util.List;
 import java.util.function.Predicate;
@@ -26,11 +27,19 @@ public class Players extends Entities<Player> {
     }
 
     public static Player getNearest(Predicate<Player> filter) {
-        return PLAYERS.nearest(filter);
+        return getNearest(getLocal().getWorldLocation(),filter);
     }
 
     public static Player getNearest(String... names) {
-        return PLAYERS.nearest(names);
+        return getNearest(getLocal().getWorldLocation(), names);
+    }
+
+    public static Player getNearest(WorldPoint to, Predicate<Player> filter) {
+        return PLAYERS.nearest(to, filter);
+    }
+
+    public static Player getNearest(WorldPoint to, String... names) {
+        return PLAYERS.nearest(to, names);
     }
 
     public static Player getHintArrowed() {

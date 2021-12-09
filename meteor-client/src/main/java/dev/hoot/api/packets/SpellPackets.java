@@ -3,12 +3,14 @@ package dev.hoot.api.packets;
 import dev.hoot.api.game.Game;
 import dev.hoot.api.magic.Spell;
 import dev.hoot.api.widgets.Widgets;
+import net.runelite.api.Client;
 import net.runelite.api.Item;
+import net.runelite.api.packets.ClientPacket;
+import net.runelite.api.packets.PacketBufferNode;
 import net.runelite.api.widgets.Widget;
-import osrs.Client;
-import osrs.ClientPacket;
 
 public class SpellPackets {
+
 	public static void spellOnItem(Spell spell, Item item) {
 		Widget spellWidget = Widgets.get(spell.getWidget());
 		if (spellWidget == null) {
@@ -20,13 +22,15 @@ public class SpellPackets {
 	}
 
 	public static void queueSpellOnItemPacket(int spellWidgetID, int spellWidgetIndex, int inventoryID, int itemID, int itemIndex) {
-		osrs.PacketBufferNode var8 = (osrs.PacketBufferNode) Game.getClient().preparePacket(ClientPacket.OPHELDT, Client.packetWriter.isaacCipher);
-		var8.packetBuffer.writeByteC(itemIndex);
-		var8.packetBuffer.writeInt(spellWidgetID);
-		var8.packetBuffer.writeShort(spellWidgetIndex);
-		var8.packetBuffer.writeIntME2(inventoryID);
-		var8.packetBuffer.writeByteA(itemID);
-		Client.packetWriter.addNode(var8);
+		Client client = Game.getClient();
+		ClientPacket clientPacket = Game.getClientPacket();
+		PacketBufferNode var8 = Game.getClient().preparePacket(clientPacket.OPHELDT(), client.getPacketWriter().getIsaacCipher());
+		var8.getPacketBuffer().writeByteC(itemIndex);
+		var8.getPacketBuffer().writeInt(spellWidgetID);
+		var8.getPacketBuffer().writeShort(spellWidgetIndex);
+		var8.getPacketBuffer().writeIntME2(inventoryID);
+		var8.getPacketBuffer().writeByteA(itemID);
+		client.getPacketWriter().queuePacket(var8);
 	}
 	public static void spellOnNpc(int spellWidgetID, net.runelite.api.NPC npc){
 		Widget spellWidget = Game.getClient().getWidget(spellWidgetID);
@@ -37,12 +41,14 @@ public class SpellPackets {
 		queueSpellOnNpcPacket(spellWidget.getId(), -1,0,index,-1);
 	}
 	public static void queueSpellOnNpcPacket(int spellWidgetID,int spellWidgetIndex,int ctrlDown,int npcIndex,int idk){
-		osrs.PacketBufferNode var9 = (osrs.PacketBufferNode) Game.getClient().preparePacket(ClientPacket.spellOnNpc, Client.packetWriter.isaacCipher);
-		var9.packetBuffer.writeIntME(spellWidgetID);
-		var9.packetBuffer.writeByteA(spellWidgetIndex);
-		var9.packetBuffer.writeByteB(ctrlDown);
-		var9.packetBuffer.writeByteA(npcIndex);
-		var9.packetBuffer.writeShort(idk);
-		Client.packetWriter.addNode(var9);
+		Client client = Game.getClient();
+		ClientPacket clientPacket = Game.getClientPacket();
+		PacketBufferNode var9 = Game.getClient().preparePacket(clientPacket.spellOnNpc(), client.getPacketWriter().getIsaacCipher());
+		var9.getPacketBuffer().writeIntME(spellWidgetID);
+		var9.getPacketBuffer().writeByteA(spellWidgetIndex);
+		var9.getPacketBuffer().writeByteB(ctrlDown);
+		var9.getPacketBuffer().writeByteA(npcIndex);
+		var9.getPacketBuffer().writeShort(idk);
+		client.getPacketWriter().queuePacket(var9);
 	}
 }

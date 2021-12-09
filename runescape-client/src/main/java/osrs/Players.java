@@ -6,135 +6,115 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("cc")
+@ObfuscatedName("cw")
 @Implements("Players")
 public class Players {
-   @ObfuscatedName("s")
-   static byte[] field1244 = new byte[2048];
-   @ObfuscatedName("a")
-   static byte[] field1241 = new byte[2048];
-   @ObfuscatedName("o")
-   @ObfuscatedSignature(
-      descriptor = "[Lop;"
-   )
-   static Buffer[] field1242 = new Buffer[2048];
-   @ObfuscatedName("g")
-   @ObfuscatedGetter(
-      intValue = -1178638681
-   )
-   @Export("Players_count")
-   static int Players_count = 0;
-   @ObfuscatedName("e")
-   @Export("Players_indices")
-   static int[] Players_indices = new int[2048];
-   @ObfuscatedName("p")
-   @ObfuscatedGetter(
-      intValue = 1076680873
-   )
-   @Export("Players_emptyIdxCount")
-   static int Players_emptyIdxCount = 0;
-   @ObfuscatedName("j")
-   @Export("Players_emptyIndices")
-   static int[] Players_emptyIndices = new int[2048];
-   @ObfuscatedName("b")
-   @Export("Players_regions")
-   static int[] Players_regions = new int[2048];
-   @ObfuscatedName("x")
-   @Export("Players_orientations")
-   static int[] Players_orientations = new int[2048];
-   @ObfuscatedName("y")
-   @Export("Players_targetIndices")
-   static int[] Players_targetIndices = new int[2048];
-   @ObfuscatedName("k")
-   @ObfuscatedGetter(
-      intValue = -1904641985
-   )
-   @Export("Players_pendingUpdateCount")
-   static int Players_pendingUpdateCount = 0;
-   @ObfuscatedName("t")
-   @Export("Players_pendingUpdateIndices")
-   static int[] Players_pendingUpdateIndices = new int[2048];
-   @ObfuscatedName("l")
-   @ObfuscatedSignature(
-      descriptor = "Lop;"
-   )
-   static Buffer field1240 = new Buffer(new byte[5000]);
-   @ObfuscatedName("do")
-   static boolean field1254;
+	@ObfuscatedName("qa")
+	@ObfuscatedSignature(
+		descriptor = "Lmc;"
+	)
+	@Export("friendsChat")
+	static FriendsChat friendsChat;
+	@ObfuscatedName("p")
+	static byte[] field1243;
+	@ObfuscatedName("m")
+	@ObfuscatedSignature(
+		descriptor = "[Lgj;"
+	)
+	static class185[] field1246;
+	@ObfuscatedName("t")
+	@ObfuscatedSignature(
+		descriptor = "[Lpi;"
+	)
+	static Buffer[] field1248;
+	@ObfuscatedName("s")
+	@ObfuscatedGetter(
+		intValue = 60233761
+	)
+	@Export("Players_count")
+	static int Players_count;
+	@ObfuscatedName("j")
+	@Export("Players_indices")
+	static int[] Players_indices;
+	@ObfuscatedName("w")
+	@ObfuscatedGetter(
+		intValue = -1857354621
+	)
+	@Export("Players_emptyIdxCount")
+	static int Players_emptyIdxCount;
+	@ObfuscatedName("n")
+	@Export("Players_emptyIndices")
+	static int[] Players_emptyIndices;
+	@ObfuscatedName("r")
+	@Export("Players_regions")
+	static int[] Players_regions;
+	@ObfuscatedName("o")
+	@Export("Players_orientations")
+	static int[] Players_orientations;
+	@ObfuscatedName("v")
+	@Export("Players_targetIndices")
+	static int[] Players_targetIndices;
+	@ObfuscatedName("d")
+	@ObfuscatedGetter(
+		intValue = 1591161311
+	)
+	@Export("Players_pendingUpdateCount")
+	static int Players_pendingUpdateCount;
+	@ObfuscatedName("h")
+	@Export("Players_pendingUpdateIndices")
+	static int[] Players_pendingUpdateIndices;
+	@ObfuscatedName("g")
+	@ObfuscatedSignature(
+		descriptor = "Lpi;"
+	)
+	static Buffer field1257;
+	@ObfuscatedName("cb")
+	@ObfuscatedGetter(
+		intValue = 1838137179
+	)
+	public static int field1247;
+	@ObfuscatedName("el")
+	@ObfuscatedSignature(
+		descriptor = "Lkz;"
+	)
+	@Export("archive11")
+	static Archive archive11;
 
-   @ObfuscatedName("i")
-   @ObfuscatedSignature(
-      descriptor = "(Lko;I)V",
-      garbageValue = "-678131121"
-   )
-   public static void method2327(AbstractArchive var0) {
-      VarpDefinition.VarpDefinition_archive = var0;
-      VarpDefinition.VarpDefinition_fileCount = VarpDefinition.VarpDefinition_archive.getGroupFileCount(16);
-   }
+	static {
+		field1243 = new byte[2048]; // L: 18
+		field1246 = new class185[2048]; // L: 19
+		field1248 = new Buffer[2048]; // L: 20
+		Players_count = 0; // L: 21
+		Players_indices = new int[2048]; // L: 22
+		Players_emptyIdxCount = 0; // L: 23
+		Players_emptyIndices = new int[2048]; // L: 24
+		Players_regions = new int[2048]; // L: 25
+		Players_orientations = new int[2048];
+		Players_targetIndices = new int[2048];
+		Players_pendingUpdateCount = 0;
+		Players_pendingUpdateIndices = new int[2048];
+		field1257 = new Buffer(new byte[5000]); // L: 30
+	}
 
-   @ObfuscatedName("km")
-   @ObfuscatedSignature(
-      descriptor = "(Lcq;ZI)V",
-      garbageValue = "-1700143526"
-   )
-   @Export("closeInterface")
-   static final void closeInterface(InterfaceParent var0, boolean var1) {
-      int var2 = var0.group;
-      int var3 = (int)var0.key;
-      var0.remove();
-      int var5;
-      if (var1 && var2 != -1 && class132.Widget_loadedInterfaces[var2]) {
-         class283.Widget_archive.clearFilesGroup(var2);
-         if (WorldMapSection1.Widget_interfaceComponents[var2] != null) {
-            boolean var4 = true;
+	@ObfuscatedName("c")
+	@ObfuscatedSignature(
+		descriptor = "(Lku;Ljava/lang/String;Ljava/lang/String;IZI)V",
+		garbageValue = "2062230724"
+	)
+	public static void method2382(AbstractArchive var0, String var1, String var2, int var3, boolean var4) {
+		int var5 = var0.getGroupId(var1); // L: 26
+		int var6 = var0.getFileId(var5, var2); // L: 27
+		NetSocket.method3118(var0, var5, var6, var3, var4); // L: 28
+	} // L: 29
 
-            for(var5 = 0; var5 < WorldMapSection1.Widget_interfaceComponents[var2].length; ++var5) {
-               if (WorldMapSection1.Widget_interfaceComponents[var2][var5] != null) {
-                  if (WorldMapSection1.Widget_interfaceComponents[var2][var5].type != 2) {
-                     WorldMapSection1.Widget_interfaceComponents[var2][var5] = null;
-                  } else {
-                     var4 = false;
-                  }
-               }
-            }
-
-            if (var4) {
-               WorldMapSection1.Widget_interfaceComponents[var2] = null;
-            }
-
-            class132.Widget_loadedInterfaces[var2] = false;
-         }
-      }
-
-      class316.method5839(var2);
-      Widget var7 = UserComparator9.getWidget(var3);
-      if (var7 != null) {
-         class184.invalidateWidget(var7);
-      }
-
-      for(var5 = 0; var5 < Client.menuOptionsCount; ++var5) {
-         if (class122.method2607(Client.menuOpcodes[var5])) {
-            if (var5 < Client.menuOptionsCount - 1) {
-               for(int var6 = var5; var6 < Client.menuOptionsCount - 1; ++var6) {
-                  Client.menuActions[var6] = Client.menuActions[var6 + 1];
-                  Client.menuTargets[var6] = Client.menuTargets[var6 + 1];
-                  Client.menuOpcodes[var6] = Client.menuOpcodes[var6 + 1];
-                  Client.menuIdentifiers[var6] = Client.menuIdentifiers[var6 + 1];
-                  Client.menuArguments1[var6] = Client.menuArguments1[var6 + 1];
-                  Client.menuArguments2[var6] = Client.menuArguments2[var6 + 1];
-                  Client.menuShiftClick[var6] = Client.menuShiftClick[var6 + 1];
-               }
-            }
-
-            --var5;
-            --Client.menuOptionsCount;
-         }
-      }
-
-      class262.method5136();
-      if (Client.rootInterface != -1) {
-         ItemComposition.runIntfCloseListeners(Client.rootInterface, 1);
-      }
-
-   }
+	@ObfuscatedName("kz")
+	@ObfuscatedSignature(
+		descriptor = "(II)V",
+		garbageValue = "-733179789"
+	)
+	static final void method2383(int var0) {
+		var0 = Math.min(Math.max(var0, 0), 127); // L: 12155
+		SecureRandomFuture.clientPreferences.areaSoundEffectsVolume = var0; // L: 12156
+		class127.savePreferences(); // L: 12157
+	} // L: 12158
 }

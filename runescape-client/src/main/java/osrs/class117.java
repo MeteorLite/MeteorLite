@@ -5,215 +5,186 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ds")
-public class class117 extends class116 {
-   @ObfuscatedName("i")
-   @ObfuscatedGetter(
-      intValue = -1054010885
-   )
-   int field1378;
-   @ObfuscatedName("w")
-   boolean field1375;
-   // $FF: synthetic field
-   @ObfuscatedSignature(
-      descriptor = "Ldg;"
-   )
-   final class119 this$0;
+@ObfuscatedName("dp")
+public class class117 implements MouseWheel {
+	@ObfuscatedName("sx")
+	@ObfuscatedGetter(
+		intValue = -1106281963
+	)
+	static int field1433;
+	@ObfuscatedName("c")
+	@ObfuscatedSignature(
+		descriptor = "Ldp;"
+	)
+	static final class117 field1425;
+	@ObfuscatedName("b")
+	@ObfuscatedSignature(
+		descriptor = "Ldp;"
+	)
+	static final class117 field1444;
+	@ObfuscatedName("p")
+	@ObfuscatedSignature(
+		descriptor = "Ldp;"
+	)
+	static final class117 field1430;
+	@ObfuscatedName("m")
+	@ObfuscatedSignature(
+		descriptor = "Ldp;"
+	)
+	static final class117 field1427;
+	@ObfuscatedName("t")
+	@ObfuscatedSignature(
+		descriptor = "Ldp;"
+	)
+	static final class117 field1428;
+	@ObfuscatedName("s")
+	@ObfuscatedSignature(
+		descriptor = "Ldp;"
+	)
+	static final class117 field1429;
+	@ObfuscatedName("j")
+	@ObfuscatedSignature(
+		descriptor = "Ldp;"
+	)
+	static final class117 field1442;
+	@ObfuscatedName("w")
+	@ObfuscatedSignature(
+		descriptor = "Ldp;"
+	)
+	static final class117 field1431;
+	@ObfuscatedName("n")
+	@ObfuscatedSignature(
+		descriptor = "Ldp;"
+	)
+	static final class117 field1432;
+	@ObfuscatedName("r")
+	@ObfuscatedSignature(
+		descriptor = "Ldp;"
+	)
+	static final class117 field1424;
+	@ObfuscatedName("o")
+	@ObfuscatedSignature(
+		descriptor = "Ldp;"
+	)
+	static final class117 field1434;
+	@ObfuscatedName("v")
+	@ObfuscatedSignature(
+		descriptor = "Ldp;"
+	)
+	static final class117 field1435;
+	@ObfuscatedName("d")
+	@ObfuscatedSignature(
+		descriptor = "Ldp;"
+	)
+	static final class117 field1436;
+	@ObfuscatedName("h")
+	@ObfuscatedSignature(
+		descriptor = "Ldp;"
+	)
+	static final class117 field1437;
+	@ObfuscatedName("g")
+	@ObfuscatedSignature(
+		descriptor = "Ldp;"
+	)
+	static final class117 field1438;
+	@ObfuscatedName("e")
+	@ObfuscatedSignature(
+		descriptor = "Ldp;"
+	)
+	static final class117 field1439;
+	@ObfuscatedName("a")
+	@ObfuscatedSignature(
+		descriptor = "Ldp;"
+	)
+	static final class117 field1440;
+	@ObfuscatedName("u")
+	@ObfuscatedGetter(
+		intValue = -1755047429
+	)
+	final int field1441;
+	@ObfuscatedName("k")
+	@ObfuscatedGetter(
+		intValue = -438304939
+	)
+	final int field1426;
+	@ObfuscatedName("f")
+	@ObfuscatedGetter(
+		intValue = 614342417
+	)
+	final int field1443;
 
-   @ObfuscatedSignature(
-      descriptor = "(Ldg;)V"
-   )
-   class117(class119 var1) {
-      this.this$0 = var1;
-      this.field1378 = -1;
-   }
+	static {
+		field1425 = new class117(0, 0, (String)null, -1, -1); // L: 46
+		field1444 = new class117(1, 1, (String)null, 0, 2); // L: 47
+		field1430 = new class117(2, 2, (String)null, 1, 2); // L: 48
+		field1427 = new class117(3, 3, (String)null, 2, 2); // L: 49
+		field1428 = new class117(4, 4, (String)null, 3, 1); // L: 50
+		field1429 = new class117(5, 5, (String)null, 4, 1); // L: 51
+		field1442 = new class117(6, 6, (String)null, 5, 1); // L: 52
+		field1431 = new class117(7, 7, (String)null, 6, 3); // L: 53
+		field1432 = new class117(8, 8, (String)null, 7, 3); // L: 54
+		field1424 = new class117(9, 9, (String)null, 8, 3); // L: 55
+		field1434 = new class117(10, 10, (String)null, 0, 7); // L: 56
+		field1435 = new class117(11, 11, (String)null, 1, 7); // L: 57
+		field1436 = new class117(12, 12, (String)null, 2, 7); // L: 58
+		field1437 = new class117(13, 13, (String)null, 3, 7); // L: 59
+		field1438 = new class117(14, 14, (String)null, 4, 7); // L: 60
+		field1439 = new class117(15, 15, (String)null, 5, 7); // L: 61
+		field1440 = new class117(16, 16, (String)null, 0, 5); // L: 62
+	}
 
-   @ObfuscatedName("i")
-   @ObfuscatedSignature(
-      descriptor = "(Lop;I)V",
-      garbageValue = "-2002779676"
-   )
-   void vmethod2847(Buffer var1) {
-      this.field1378 = var1.readUnsignedShort();
-      this.field1375 = var1.readUnsignedByte() == 1;
-   }
+	@ObfuscatedSignature(
+		descriptor = "(IILjava/lang/String;II)V",
+		garbageValue = "-1"
+	)
+	class117(int var1, int var2, String var3, int var4, int var5) {
+		this.field1441 = var1; // L: 72
+		this.field1426 = var2; // L: 73
+		this.field1443 = var4; // L: 74
+	} // L: 75
 
-   @ObfuscatedName("w")
-   @ObfuscatedSignature(
-      descriptor = "(Ldm;I)V",
-      garbageValue = "-293908864"
-   )
-   void vmethod2848(ClanSettings var1) {
-      var1.method2662(this.field1378, this.field1375);
-   }
+	@ObfuscatedName("b")
+	@ObfuscatedSignature(
+		descriptor = "(B)I",
+		garbageValue = "48"
+	)
+	@Export("rsOrdinal")
+	public int rsOrdinal() {
+		return this.field1426; // L: 78
+	}
 
-   @ObfuscatedName("x")
-   @ObfuscatedSignature(
-      descriptor = "(CI)Z",
-      garbageValue = "-1364170988"
-   )
-   @Export("isDigit")
-   public static boolean isDigit(char var0) {
-      return var0 >= '0' && var0 <= '9';
-   }
+	@ObfuscatedName("p")
+	@ObfuscatedSignature(
+		descriptor = "(I)I",
+		garbageValue = "-202233185"
+	)
+	int method2674() {
+		return this.field1443; // L: 82
+	}
 
-   @ObfuscatedName("x")
-   @ObfuscatedSignature(
-      descriptor = "(IIIIIZI)Low;",
-      garbageValue = "-115532450"
-   )
-   @Export("getItemSprite")
-   public static final SpritePixels getItemSprite(int var0, int var1, int var2, int var3, int var4, boolean var5) {
-      if (var1 == -1) {
-         var4 = 0;
-      } else if (var4 == 2 && var1 != 1) {
-         var4 = 1;
-      }
+	@ObfuscatedName("j")
+	@ObfuscatedSignature(
+		descriptor = "(IB)Z",
+		garbageValue = "8"
+	)
+	public static boolean method2676(int var0) {
+		return var0 >= 0 && var0 < 112 ? KeyHandler.field130[var0] : false; // L: 246 247
+	}
 
-      long var6 = ((long)var3 << 42) + ((long)var4 << 40) + (long)var0 + ((long)var1 << 16) + ((long)var2 << 38);
-      SpritePixels var8;
-      if (!var5) {
-         var8 = (SpritePixels)ItemComposition.ItemDefinition_cachedSprites.get(var6);
-         if (var8 != null) {
-            return var8;
-         }
-      }
+	@ObfuscatedName("fw")
+	@ObfuscatedSignature(
+		descriptor = "(B)V",
+		garbageValue = "0"
+	)
+	static final void method2682() {
+		if (class121.field1470) { // L: 4383
+			for (int var0 = 0; var0 < Players.Players_count; ++var0) { // L: 4385
+				Player var1 = Client.players[Players.Players_indices[var0]]; // L: 4386
+				var1.method2186(); // L: 4387
+			}
 
-      ItemComposition var9 = TaskHandler.ItemDefinition_get(var0);
-      if (var1 > 1 && var9.countobj != null) {
-         int var10 = -1;
+			class121.field1470 = false; // L: 4390
+		}
 
-         for(int var11 = 0; var11 < 10; ++var11) {
-            if (var1 >= var9.countco[var11] && var9.countco[var11] != 0) {
-               var10 = var9.countobj[var11];
-            }
-         }
-
-         if (var10 != -1) {
-            var9 = TaskHandler.ItemDefinition_get(var10);
-         }
-      }
-
-      Model var21 = var9.getModel(1);
-      if (var21 == null) {
-         return null;
-      } else {
-         SpritePixels var22 = null;
-         if (var9.noteTemplate != -1) {
-            var22 = getItemSprite(var9.note, 10, 1, 0, 0, true);
-            if (var22 == null) {
-               return null;
-            }
-         } else if (var9.notedId != -1) {
-            var22 = getItemSprite(var9.unnotedId, var1, var2, var3, 0, false);
-            if (var22 == null) {
-               return null;
-            }
-         } else if (var9.placeholderTemplate != -1) {
-            var22 = getItemSprite(var9.placeholder, var1, 0, 0, 0, false);
-            if (var22 == null) {
-               return null;
-            }
-         }
-
-         int[] var12 = Rasterizer2D.Rasterizer2D_pixels;
-         int var13 = Rasterizer2D.Rasterizer2D_width;
-         int var14 = Rasterizer2D.Rasterizer2D_height;
-         int[] var15 = new int[4];
-         Rasterizer2D.Rasterizer2D_getClipArray(var15);
-         var8 = new SpritePixels(36, 32);
-         Rasterizer2D.Rasterizer2D_replace(var8.pixels, 36, 32);
-         Rasterizer2D.Rasterizer2D_clear();
-         Rasterizer3D.Rasterizer3D_setClipFromRasterizer2D();
-         Rasterizer3D.method4205(16, 16);
-         Rasterizer3D.field2367 = false;
-         if (var9.placeholderTemplate != -1) {
-            var22.drawTransBgAt(0, 0);
-         }
-
-         int var16 = var9.zoom2d;
-         if (var5) {
-            var16 = (int)((double)var16 * 1.5D);
-         } else if (var2 == 2) {
-            var16 = (int)((double)var16 * 1.04D);
-         }
-
-         int var17 = var16 * Rasterizer3D.Rasterizer3D_sine[var9.xan2d] >> 16;
-         int var18 = var16 * Rasterizer3D.Rasterizer3D_cosine[var9.xan2d] >> 16;
-         var21.calculateBoundsCylinder();
-         var21.method4539(0, var9.yan2d, var9.zan2d, var9.xan2d, var9.offsetX2d, var21.height / 2 + var17 + var9.offsetY2d, var18 + var9.offsetY2d);
-         if (var9.notedId != -1) {
-            var22.drawTransBgAt(0, 0);
-         }
-
-         if (var2 >= 1) {
-            var8.outline(1);
-         }
-
-         if (var2 >= 2) {
-            var8.outline(16777215);
-         }
-
-         if (var3 != 0) {
-            var8.shadow(var3);
-         }
-
-         Rasterizer2D.Rasterizer2D_replace(var8.pixels, 36, 32);
-         if (var9.noteTemplate != -1) {
-            var22.drawTransBgAt(0, 0);
-         }
-
-         if (var4 == 1 || var4 == 2 && var9.isStackable == 1) {
-            Font var19 = SoundSystem.ItemDefinition_fontPlain11;
-            String var20;
-            if (var1 < 100000) {
-               var20 = "<col=ffff00>" + var1 + "</col>";
-            } else if (var1 < 10000000) {
-               var20 = "<col=ffffff>" + var1 / 1000 + "K" + "</col>";
-            } else {
-               var20 = "<col=00ff80>" + var1 / 1000000 + "M" + "</col>";
-            }
-
-            var19.draw(var20, 0, 9, 16776960, 1);
-         }
-
-         if (!var5) {
-            ItemComposition.ItemDefinition_cachedSprites.put(var8, var6);
-         }
-
-         Rasterizer2D.Rasterizer2D_replace(var12, var13, var14);
-         Rasterizer2D.Rasterizer2D_setClipArray(var15);
-         Rasterizer3D.Rasterizer3D_setClipFromRasterizer2D();
-         Rasterizer3D.field2367 = true;
-         return var8;
-      }
-   }
-
-   @ObfuscatedName("y")
-   @ObfuscatedSignature(
-      descriptor = "(III)I",
-      garbageValue = "969588273"
-   )
-   static final int method2573(int var0, int var1) {
-      int var2 = var1 * 57 + var0;
-      var2 ^= var2 << 13;
-      int var3 = (var2 * var2 * 15731 + 789221) * var2 + 1376312589 & Integer.MAX_VALUE;
-      return var3 >> 19 & 255;
-   }
-
-   @ObfuscatedName("ak")
-   @ObfuscatedSignature(
-      descriptor = "([BIII)I",
-      garbageValue = "-1335123440"
-   )
-   static int method2565(byte[] var0, int var1, int var2) {
-      int var3 = -1;
-
-      for(int var4 = var1; var4 < var2; ++var4) {
-         var3 = var3 >>> 8 ^ Buffer.crc32Table[(var3 ^ var0[var4]) & 255];
-      }
-
-      var3 = ~var3;
-      return var3;
-   }
+	} // L: 4392
 }

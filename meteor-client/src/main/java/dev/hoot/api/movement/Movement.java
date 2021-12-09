@@ -231,11 +231,6 @@ public class Movement {
                     graphics2D.drawLine(poly.xpoints[1], poly.ypoints[1], poly.xpoints[2], poly.ypoints[2]);
                 }
 
-                int stringX = (int)
-                        (poly.getBounds().getCenterX() -
-                                graphics2D.getFontMetrics().getStringBounds(s, graphics2D).getWidth() / 2);
-                int stringY = (int) poly.getBounds().getCenterY();
-                graphics2D.drawString(s, stringX, stringY);
                 continue;
             }
 

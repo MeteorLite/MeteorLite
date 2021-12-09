@@ -11,7 +11,7 @@ import net.runelite.rs.api.RSUser;
 public abstract class UserMixin implements RSUser {
 	@Inject
 	@Override
-	public String getName() {
+	public String getName$api() {
 		return Text.sanitize(getRsName().getName$api());
 	}
 }

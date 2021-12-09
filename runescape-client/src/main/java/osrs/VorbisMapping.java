@@ -4,42 +4,42 @@ import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 
-@ObfuscatedName("ap")
+@ObfuscatedName("aq")
 @Implements("VorbisMapping")
 public class VorbisMapping {
-   @ObfuscatedName("i")
-   @Export("submaps")
-   int submaps;
-   @ObfuscatedName("w")
-   @Export("mappingMux")
-   int mappingMux;
-   @ObfuscatedName("s")
-   @Export("submapFloor")
-   int[] submapFloor;
-   @ObfuscatedName("a")
-   @Export("submapResidue")
-   int[] submapResidue;
+	@ObfuscatedName("c")
+	@Export("submaps")
+	int submaps;
+	@ObfuscatedName("b")
+	@Export("mappingMux")
+	int mappingMux;
+	@ObfuscatedName("p")
+	@Export("submapFloor")
+	int[] submapFloor;
+	@ObfuscatedName("m")
+	@Export("submapResidue")
+	int[] submapResidue;
 
-   VorbisMapping() {
-      VorbisSample.readBits(16);
-      this.submaps = VorbisSample.readBit() != 0 ? VorbisSample.readBits(4) + 1 : 1;
-      if (VorbisSample.readBit() != 0) {
-         VorbisSample.readBits(8);
-      }
+	VorbisMapping() {
+		VorbisSample.readBits(16); // L: 12
+		this.submaps = VorbisSample.readBit() != 0 ? VorbisSample.readBits(4) + 1 : 1; // L: 13
+		if (VorbisSample.readBit() != 0) { // L: 14
+			VorbisSample.readBits(8); // L: 15
+		}
 
-      VorbisSample.readBits(2);
-      if (this.submaps > 1) {
-         this.mappingMux = VorbisSample.readBits(4);
-      }
+		VorbisSample.readBits(2); // L: 18
+		if (this.submaps > 1) { // L: 19
+			this.mappingMux = VorbisSample.readBits(4); // L: 20
+		}
 
-      this.submapFloor = new int[this.submaps];
-      this.submapResidue = new int[this.submaps];
+		this.submapFloor = new int[this.submaps]; // L: 22
+		this.submapResidue = new int[this.submaps]; // L: 23
 
-      for(int var1 = 0; var1 < this.submaps; ++var1) {
-         VorbisSample.readBits(8);
-         this.submapFloor[var1] = VorbisSample.readBits(8);
-         this.submapResidue[var1] = VorbisSample.readBits(8);
-      }
+		for (int var1 = 0; var1 < this.submaps; ++var1) { // L: 24
+			VorbisSample.readBits(8); // L: 25
+			this.submapFloor[var1] = VorbisSample.readBits(8); // L: 26
+			this.submapResidue[var1] = VorbisSample.readBits(8); // L: 27
+		}
 
-   }
+	} // L: 29
 }

@@ -32,6 +32,7 @@ import java.util.List;
 import net.runelite.api.MainBufferProvider;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetItem;
+import org.gradle.internal.impldep.org.glassfish.jaxb.runtime.v2.schemagen.xmlschema.Any;
 
 /**
  * Interface of callbacks the injected client uses to send events

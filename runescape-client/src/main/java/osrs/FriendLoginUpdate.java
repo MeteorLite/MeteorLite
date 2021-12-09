@@ -6,54 +6,35 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("lw")
+@ObfuscatedName("ml")
 @Implements("FriendLoginUpdate")
 public class FriendLoginUpdate extends Link {
-   @ObfuscatedName("x")
-   @ObfuscatedGetter(
-      intValue = 1837653609
-   )
-   static int field3943;
-   @ObfuscatedName("gu")
-   @ObfuscatedSignature(
-      descriptor = "Lle;"
-   )
-   @Export("fontPlain11")
-   static Font fontPlain11;
-   @ObfuscatedName("i")
-   @ObfuscatedGetter(
-      intValue = 1663283777
-   )
-   public int field3945 = (int)(class111.getServerTime() / 1000L);
-   @ObfuscatedName("w")
-   @ObfuscatedSignature(
-      descriptor = "Lpb;"
-   )
-   @Export("username")
-   public Username username;
-   @ObfuscatedName("s")
-   @Export("world")
-   public short world;
+	@ObfuscatedName("bu")
+	@ObfuscatedGetter(
+		intValue = -1607694617
+	)
+	static int field4096;
+	@ObfuscatedName("c")
+	@ObfuscatedGetter(
+		intValue = -1414251107
+	)
+	public int field4097;
+	@ObfuscatedName("b")
+	@ObfuscatedSignature(
+		descriptor = "Lpo;"
+	)
+	@Export("username")
+	public Username username;
+	@ObfuscatedName("p")
+	@Export("world")
+	public short world;
 
-   @ObfuscatedSignature(
-      descriptor = "(Lpb;I)V"
-   )
-   FriendLoginUpdate(Username var1, int var2) {
-      this.username = var1;
-      this.world = (short)var2;
-   }
-
-   @ObfuscatedName("i")
-   @ObfuscatedSignature(
-      descriptor = "(B)V",
-      garbageValue = "-106"
-   )
-   static void method6058() {
-      for(ObjectSound var0 = (ObjectSound)ObjectSound.objectSounds.last(); var0 != null; var0 = (ObjectSound)ObjectSound.objectSounds.previous()) {
-         if (var0.obj != null) {
-            var0.set();
-         }
-      }
-
-   }
+	@ObfuscatedSignature(
+		descriptor = "(Lpo;I)V"
+	)
+	FriendLoginUpdate(Username var1, int var2) {
+		this.field4097 = (int)(Ignored.getServerTime() / 1000L); // L: 109
+		this.username = var1; // L: 110
+		this.world = (short)var2; // L: 111
+	} // L: 112
 }

@@ -1,28 +1,20 @@
 package meteor.plugins.meteorlite;
 
-import dev.hoot.api.game.Game;
 import meteor.PluginManager;
 import meteor.config.Config;
 import meteor.config.ConfigManager;
 import meteor.config.MeteorLiteConfig;
 import meteor.eventbus.Subscribe;
 import meteor.eventbus.events.ConfigChanged;
-import meteor.events.PlaneChanged;
 import meteor.input.MouseManager;
 import meteor.plugins.Plugin;
 import meteor.plugins.PluginDescriptor;
 import meteor.plugins.meteorlite.interaction.InteractionManager;
 import meteor.plugins.meteorlite.interaction.InteractionOverlay;
-import dev.hoot.api.movement.regions.RegionManager;
-import net.runelite.api.GameState;
 import net.runelite.api.events.ConfigButtonClicked;
-import net.runelite.api.events.GameStateChanged;
 import org.sponge.util.Logger;
 
 import javax.inject.Inject;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
 
 
 @PluginDescriptor(
@@ -51,12 +43,6 @@ public class MeteorLitePlugin extends Plugin {
 
     @Inject
     private PluginManager pluginManager;
-
-    @Inject
-    private RegionManager regionManager;
-
-    @Inject
-    private ScheduledExecutorService executorService;
 
     @Override
     public void updateConfig() {
@@ -93,24 +79,6 @@ public class MeteorLitePlugin extends Plugin {
         if (!event.getGroup().equals(MeteorLiteConfig.GROUP_NAME)) {
             return;
         }
-    }
-
-    @Subscribe
-    public void onGameStateChanged(GameStateChanged e) {
-        if (e.getGameState() != GameState.LOGGED_IN) {
-            return;
-        }
-
-        executorService.schedule(() -> regionManager.sendRegion(), 5, TimeUnit.SECONDS);
-    }
-
-    @Subscribe
-    public void onPlaneChanged(PlaneChanged e) {
-        if (Game.getState() != GameState.LOGGED_IN) {
-            return;
-        }
-
-        executorService.schedule(() -> regionManager.sendRegion(), 5, TimeUnit.SECONDS);
     }
 
     @Override

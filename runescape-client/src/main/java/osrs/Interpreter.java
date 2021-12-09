@@ -7,97 +7,97 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("bj")
+@ObfuscatedName("bu")
 @Implements("Interpreter")
 public class Interpreter {
-   @ObfuscatedName("p")
-   @Export("Interpreter_arrayLengths")
-   static int[] Interpreter_arrayLengths = new int[5];
-   @ObfuscatedName("j")
-   @Export("Interpreter_arrays")
-   static int[][] Interpreter_arrays = new int[5][5000];
-   @ObfuscatedName("b")
-   @Export("Interpreter_intStack")
-   static int[] Interpreter_intStack = new int[1000];
-   @ObfuscatedName("y")
-   @Export("Interpreter_stringStack")
-   static String[] Interpreter_stringStack = new String[1000];
-   @ObfuscatedName("t")
-   @ObfuscatedGetter(
-      intValue = 137218349
-   )
-   @Export("Interpreter_frameDepth")
-   static int Interpreter_frameDepth = 0;
-   @ObfuscatedName("l")
-   @ObfuscatedSignature(
-      descriptor = "[Lbt;"
-   )
-   @Export("Interpreter_frames")
-   static ScriptFrame[] Interpreter_frames = new ScriptFrame[50];
-   @ObfuscatedName("r")
-   @Export("Interpreter_calendar")
-   static java.util.Calendar Interpreter_calendar = java.util.Calendar.getInstance();
-   @ObfuscatedName("m")
-   @Export("Interpreter_MONTHS")
-   static final String[] Interpreter_MONTHS = new String[]{"Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"};
-   @ObfuscatedName("f")
-   static boolean field795 = false;
-   @ObfuscatedName("h")
-   static boolean field791 = false;
-   @ObfuscatedName("v")
-   static ArrayList field797 = new ArrayList();
-   @ObfuscatedName("ag")
-   @ObfuscatedGetter(
-      intValue = 519063965
-   )
-   static int field798 = 0;
-   @ObfuscatedName("am")
-   static final double field801 = Math.log(2.0D);
-   @ObfuscatedName("cb")
-   @ObfuscatedSignature(
-      descriptor = "Lci;"
-   )
-   @Export("mouseRecorder")
-   static MouseRecorder mouseRecorder;
+	@ObfuscatedName("tb")
+	@ObfuscatedSignature(
+		descriptor = "Lnn;"
+	)
+	@Export("platformInfo")
+	static PlatformInfo platformInfo;
+	@ObfuscatedName("w")
+	@Export("Interpreter_arrayLengths")
+	static int[] Interpreter_arrayLengths;
+	@ObfuscatedName("n")
+	@Export("Interpreter_arrays")
+	static int[][] Interpreter_arrays;
+	@ObfuscatedName("r")
+	@Export("Interpreter_intStack")
+	static int[] Interpreter_intStack;
+	@ObfuscatedName("v")
+	@Export("Interpreter_stringStack")
+	static String[] Interpreter_stringStack;
+	@ObfuscatedName("h")
+	@ObfuscatedGetter(
+		intValue = -866718889
+	)
+	@Export("Interpreter_frameDepth")
+	static int Interpreter_frameDepth;
+	@ObfuscatedName("g")
+	@ObfuscatedSignature(
+		descriptor = "[Lbg;"
+	)
+	@Export("Interpreter_frames")
+	static ScriptFrame[] Interpreter_frames;
+	@ObfuscatedName("f")
+	@ObfuscatedGetter(
+		intValue = 355212093
+	)
+	static int field812;
+	@ObfuscatedName("l")
+	@Export("Interpreter_calendar")
+	static java.util.Calendar Interpreter_calendar;
+	@ObfuscatedName("q")
+	@Export("Interpreter_MONTHS")
+	static final String[] Interpreter_MONTHS;
+	@ObfuscatedName("z")
+	static boolean field818;
+	@ObfuscatedName("i")
+	static boolean field816;
+	@ObfuscatedName("y")
+	static ArrayList field817;
+	@ObfuscatedName("ah")
+	@ObfuscatedGetter(
+		intValue = -1880353715
+	)
+	static int field815;
+	@ObfuscatedName("ax")
+	static final double field814;
 
-   @ObfuscatedName("b")
-   @ObfuscatedSignature(
-      descriptor = "(Ljf;IIIB)V",
-      garbageValue = "124"
-   )
-   @Export("Widget_setKeyRate")
-   static final void Widget_setKeyRate(Widget var0, int var1, int var2, int var3) {
-      if (var0.field3128 == null) {
-         throw new RuntimeException();
-      } else {
-         var0.field3128[var1] = var2;
-         var0.field3129[var1] = var3;
-      }
-   }
+	static {
+		Interpreter_arrayLengths = new int[5]; // L: 77
+		Interpreter_arrays = new int[5][5000]; // L: 78
+		Interpreter_intStack = new int[1000]; // L: 79
+		Interpreter_stringStack = new String[1000]; // L: 81
+		Interpreter_frameDepth = 0; // L: 83
+		Interpreter_frames = new ScriptFrame[50]; // L: 84
+		Interpreter_calendar = java.util.Calendar.getInstance(); // L: 90
+		Interpreter_MONTHS = new String[]{"Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"}; // L: 93
+		field818 = false; // L: 96
+		field816 = false; // L: 97
+		field817 = new ArrayList(); // L: 98
+		field815 = 0; // L: 99
+		field814 = Math.log(2.0D); // L: 103
+	}
 
-   @ObfuscatedName("fv")
-   @ObfuscatedSignature(
-      descriptor = "(Lfm;IIII)V",
-      garbageValue = "-228411245"
-   )
-   static void method1872(SequenceDefinition var0, int var1, int var2, int var3) {
-      if (Client.soundEffectCount < 50 && class408.clientPreferences.areaSoundEffectsVolume != 0) {
-         if (var0.soundEffects != null && var1 < var0.soundEffects.length) {
-            int var4 = var0.soundEffects[var1];
-            if (var4 != 0) {
-               int var5 = var4 >> 8;
-               int var6 = var4 >> 4 & 7;
-               int var7 = var4 & 15;
-               Client.soundEffectIds[Client.soundEffectCount] = var5;
-               Client.queuedSoundEffectLoops[Client.soundEffectCount] = var6;
-               Client.queuedSoundEffectDelays[Client.soundEffectCount] = 0;
-               Client.soundEffects[Client.soundEffectCount] = null;
-               int var8 = (var2 - 64) / 128;
-               int var9 = (var3 - 64) / 128;
-               Client.soundLocations[Client.soundEffectCount] = var7 + (var9 << 8) + (var8 << 16);
-               ++Client.soundEffectCount;
-            }
-         }
-      }
-   }
+	@ObfuscatedName("p")
+	@ObfuscatedSignature(
+		descriptor = "(CLlf;B)I",
+		garbageValue = "-56"
+	)
+	@Export("lowercaseChar")
+	static int lowercaseChar(char var0, Language var1) {
+		int var2 = var0 << 4; // L: 143
+		if (Character.isUpperCase(var0) || Character.isTitleCase(var0)) { // L: 144
+			var0 = Character.toLowerCase(var0); // L: 145
+			var2 = (var0 << 4) + 1; // L: 146
+		}
+
+		if (var0 == 241 && var1 == Language.Language_ES) { // L: 148
+			var2 = 1762;
+		}
+
+		return var2; // L: 149
+	}
 }

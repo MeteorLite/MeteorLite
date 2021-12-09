@@ -60,6 +60,8 @@ public interface Client extends GameEngine {
    */
   Callbacks getCallbacks();
 
+  void setCallbacks(Callbacks callbacks);
+
   /**
    * The injected client invokes these callbacks for scene drawing, which is used by the gpu plugin
    * to override the client's normal scene drawing code

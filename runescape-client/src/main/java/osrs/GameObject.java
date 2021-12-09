@@ -1,198 +1,147 @@
 package osrs;
 
-import java.io.IOException;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("hv")
+@ObfuscatedName("hl")
 @Implements("GameObject")
 public final class GameObject {
-   @ObfuscatedName("i")
-   @ObfuscatedGetter(
-      intValue = 704202637
-   )
-   @Export("plane")
-   int plane;
-   @ObfuscatedName("w")
-   @ObfuscatedGetter(
-      intValue = -494879285
-   )
-   @Export("height")
-   int height;
-   @ObfuscatedName("s")
-   @ObfuscatedGetter(
-      intValue = 211210251
-   )
-   @Export("centerX")
-   int centerX;
-   @ObfuscatedName("a")
-   @ObfuscatedGetter(
-      intValue = 1046564479
-   )
-   @Export("centerY")
-   int centerY;
-   @ObfuscatedName("o")
-   @ObfuscatedSignature(
-      descriptor = "Lhj;"
-   )
-   @Export("renderable")
-   public Renderable renderable;
-   @ObfuscatedName("g")
-   @ObfuscatedGetter(
-      intValue = -1520193173
-   )
-   @Export("orientation")
-   int orientation;
-   @ObfuscatedName("e")
-   @ObfuscatedGetter(
-      intValue = -478459065
-   )
-   @Export("startX")
-   int startX;
-   @ObfuscatedName("p")
-   @ObfuscatedGetter(
-      intValue = -849496909
-   )
-   @Export("endX")
-   int endX;
-   @ObfuscatedName("j")
-   @ObfuscatedGetter(
-      intValue = 427250493
-   )
-   @Export("startY")
-   int startY;
-   @ObfuscatedName("b")
-   @ObfuscatedGetter(
-      intValue = -1968764473
-   )
-   @Export("endY")
-   int endY;
-   @ObfuscatedName("x")
-   @ObfuscatedGetter(
-      intValue = 1764486953
-   )
-   int field2641;
-   @ObfuscatedName("y")
-   @ObfuscatedGetter(
-      intValue = -1523827707
-   )
-   @Export("lastDrawn")
-   int lastDrawn;
-   @ObfuscatedName("k")
-   @ObfuscatedGetter(
-      longValue = -6523351122347780293L
-   )
-   @Export("tag")
-   public long tag = 0L;
-   @ObfuscatedName("t")
-   @ObfuscatedGetter(
-      intValue = -269494523
-   )
-   @Export("flags")
-   int flags = 0;
+	@ObfuscatedName("fk")
+	@ObfuscatedGetter(
+		intValue = -1234198713
+	)
+	@Export("worldPort")
+	static int worldPort;
+	@ObfuscatedName("ma")
+	@ObfuscatedGetter(
+		intValue = -1786079239
+	)
+	@Export("menuWidth")
+	static int menuWidth;
+	@ObfuscatedName("c")
+	@ObfuscatedGetter(
+		intValue = -1089622701
+	)
+	@Export("plane")
+	int plane;
+	@ObfuscatedName("b")
+	@ObfuscatedGetter(
+		intValue = -465774691
+	)
+	@Export("height")
+	int height;
+	@ObfuscatedName("p")
+	@ObfuscatedGetter(
+		intValue = 1923590497
+	)
+	@Export("centerX")
+	int centerX;
+	@ObfuscatedName("m")
+	@ObfuscatedGetter(
+		intValue = 1996180969
+	)
+	@Export("orientation")
+	int orientation;
+	@ObfuscatedName("t")
+	@ObfuscatedGetter(
+		intValue = 1051509529
+	)
+	@Export("centerY")
+	int centerY;
+	@ObfuscatedName("s")
+	@ObfuscatedSignature(
+		descriptor = "Lgt;"
+	)
+	@Export("renderable")
+	public Renderable renderable;
+	@ObfuscatedName("j")
+	@ObfuscatedGetter(
+		intValue = 1723330507
+	)
+	@Export("startX")
+	int startX;
+	@ObfuscatedName("w")
+	@ObfuscatedGetter(
+		intValue = -621074209
+	)
+	@Export("endX")
+	int endX;
+	@ObfuscatedName("n")
+	@ObfuscatedGetter(
+		intValue = -178409117
+	)
+	@Export("startY")
+	int startY;
+	@ObfuscatedName("r")
+	@ObfuscatedGetter(
+		intValue = 144998379
+	)
+	@Export("endY")
+	int endY;
+	@ObfuscatedName("o")
+	@ObfuscatedGetter(
+		intValue = 1469340071
+	)
+	int field2548;
+	@ObfuscatedName("v")
+	@ObfuscatedGetter(
+		intValue = 800381971
+	)
+	@Export("lastDrawn")
+	int lastDrawn;
+	@ObfuscatedName("d")
+	@ObfuscatedGetter(
+		longValue = -3336818157473405963L
+	)
+	@Export("tag")
+	public long tag;
+	@ObfuscatedName("h")
+	@ObfuscatedGetter(
+		intValue = -1622989155
+	)
+	@Export("flags")
+	int flags;
 
-   @ObfuscatedName("i")
-   @ObfuscatedSignature(
-      descriptor = "(Lmp;ZB)V",
-      garbageValue = "38"
-   )
-   public static void method4647(AbstractSocket var0, boolean var1) {
-      if (NetCache.NetCache_socket != null) {
-         try {
-            NetCache.NetCache_socket.close();
-         } catch (Exception var8) {
-            ;
-         }
+	GameObject() {
+		this.tag = 0L; // L: 16
+		this.flags = 0; // L: 17
+	} // L: 19
 
-         NetCache.NetCache_socket = null;
-      }
-
-      NetCache.NetCache_socket = var0;
-      Buffer var2;
-      if (NetCache.NetCache_socket != null) {
-         try {
-            var2 = new Buffer(4);
-            var2.writeByte(var1 ? 2 : 3);
-            var2.writeMedium(0);
-            NetCache.NetCache_socket.write(var2.array, 0, 4);
-         } catch (IOException var7) {
-            try {
-               NetCache.NetCache_socket.close();
-            } catch (Exception var6) {
-               ;
-            }
-
-            ++NetCache.NetCache_ioExceptions;
-            NetCache.NetCache_socket = null;
-         }
-      }
-
-      NetCache.NetCache_responseHeaderBuffer.offset = 0;
-      class131.NetCache_currentResponse = null;
-      class138.NetCache_responseArchiveBuffer = null;
-      NetCache.field3707 = 0;
-
-      while(true) {
-         NetFileRequest var9 = (NetFileRequest)NetCache.NetCache_pendingPriorityResponses.first();
-         if (var9 == null) {
-            while(true) {
-               var9 = (NetFileRequest)NetCache.NetCache_pendingResponses.first();
-               if (var9 == null) {
-                  if (NetCache.field3719 != 0) {
-                     try {
-                        var2 = new Buffer(4);
-                        var2.writeByte(4);
-                        var2.writeByte(NetCache.field3719);
-                        var2.writeShort(0);
-                        NetCache.NetCache_socket.write(var2.array, 0, 4);
-                     } catch (IOException var5) {
-                        try {
-                           NetCache.NetCache_socket.close();
-                        } catch (Exception var4) {
-                           ;
-                        }
-
-                        ++NetCache.NetCache_ioExceptions;
-                        NetCache.NetCache_socket = null;
-                     }
-                  }
-
-                  NetCache.NetCache_loadTime = 0;
-                  class423.field4436 = class111.getServerTime();
-                  return;
-               }
-
-               NetCache.NetCache_pendingWritesQueue.addLast(var9);
-               NetCache.NetCache_pendingWrites.put(var9, var9.key);
-               ++NetCache.NetCache_pendingWritesCount;
-               --NetCache.NetCache_pendingResponsesCount;
-            }
-         }
-
-         NetCache.NetCache_pendingPriorityWrites.put(var9, var9.key);
-         ++NetCache.NetCache_pendingPriorityWritesCount;
-         --NetCache.NetCache_pendingPriorityResponsesCount;
-      }
-   }
-
-   @ObfuscatedName("ku")
-   @ObfuscatedSignature(
-      descriptor = "(Ljf;IIIB)V",
-      garbageValue = "-109"
-   )
-   @Export("drawCompass")
-   static final void drawCompass(Widget var0, int var1, int var2, int var3) {
-      SpriteMask var4 = var0.getSpriteMask(false);
-      if (var4 != null) {
-         if (Client.minimapState < 3) {
-            class114.compass.drawRotatedMaskedCenteredAround(var1, var2, var4.width, var4.height, 25, 25, Client.camAngleY, 256, var4.xStarts, var4.xWidths);
-         } else {
-            Rasterizer2D.Rasterizer2D_fillMaskedRectangle(var1, var2, 0, var4.xStarts, var4.xWidths);
-         }
-
-      }
-   }
+	@ObfuscatedName("aa")
+	@ObfuscatedSignature(
+		descriptor = "(ILbn;ZI)I",
+		garbageValue = "210014678"
+	)
+	static int method4341(int var0, Script var1, boolean var2) {
+		if (var0 != 6700 && var0 != 6702 && var0 != 6704 && var0 != 6706 && var0 != 6708) { // L: 4274
+			if (var0 != 6701 && var0 != 6703 && var0 != 6705 && var0 != 6707 && var0 != 6709) { // L: 4279
+				if (var0 == 6750) { // L: 4283
+					Interpreter.Interpreter_stringStack[++class13.Interpreter_stringStackSize - 1] = ""; // L: 4284
+					return 1; // L: 4285
+				} else if (var0 != 6751 && var0 != 6752 && var0 != 6753) { // L: 4287
+					if (var0 == 6754) { // L: 4291
+						int var3 = Interpreter.Interpreter_intStack[--IsaacCipher.Interpreter_intStackSize]; // L: 4292
+						NPCComposition var4 = WorldMapLabelSize.getNpcDefinition(var3); // L: 4293
+						Interpreter.Interpreter_stringStack[++class13.Interpreter_stringStackSize - 1] = var4 != null ? var4.name : ""; // L: 4294
+						return 1; // L: 4295
+					} else {
+						return 2; // L: 4297
+					}
+				} else {
+					Interpreter.Interpreter_intStack[++IsaacCipher.Interpreter_intStackSize - 1] = -1; // L: 4288
+					return 1; // L: 4289
+				}
+			} else {
+				--IsaacCipher.Interpreter_intStackSize; // L: 4280
+				return 1; // L: 4281
+			}
+		} else {
+			IsaacCipher.Interpreter_intStackSize -= 2; // L: 4275
+			--class13.Interpreter_stringStackSize; // L: 4276
+			return 1; // L: 4277
+		}
+	}
 }

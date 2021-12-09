@@ -81,6 +81,9 @@ public class EntityInspectorOverlay extends Overlay {
 		}
 
 		Tile hoveredTile = Tiles.getHoveredTile();
+		if (hoveredTile == null) {
+			return null;
+		}
 
 		if (config.tileLocation()) {
 			renderTileTooltip(g, hoveredTile);
@@ -88,10 +91,6 @@ public class EntityInspectorOverlay extends Overlay {
 
 		if (config.path()) {
 			Movement.drawPath(g, hoveredTile.getWorldLocation());
-		}
-
-		if (config.collisions()) {
-			Movement.drawCollisions(g);
 		}
 
 		return null;

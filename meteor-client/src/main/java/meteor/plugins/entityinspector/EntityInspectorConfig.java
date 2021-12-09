@@ -262,17 +262,6 @@ public interface EntityInspectorConfig extends Config {
 	}
 
 	@ConfigItem(
-					keyName = "collisions",
-					name = "Collision Map",
-					description = "Render Collision Map",
-					position = 201,
-					section = others
-	)
-	default boolean collisions() {
-		return false;
-	}
-
-	@ConfigItem(
 					keyName = "packets",
 					name = "Packets",
 					description = "Packets",

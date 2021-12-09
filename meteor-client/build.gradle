@@ -31,7 +31,6 @@ dependencies {
     implementation(project(":meteor-logger"))
     implementation(project(":http-api"))
     implementation(project(":runelite-annotations"))
-    implementation(files("../openosrs-injector/build/injected/injected-client.jar"))
     implementation group: 'de.jensd', name: 'fontawesomefx-commons', version: '_'
     implementation group: 'de.jensd', name: 'fontawesomefx-fontawesome', version: '_'
     implementation 'de.jensd:fontawesomefx-materialicons:2.2.0-9.1.2'
@@ -82,6 +81,7 @@ dependencies {
     implementation 'xerces:xercesImpl:2.12.1'
     implementation("com.formdev:flatlaf:_")
     implementation("com.formdev:flatlaf-intellij-themes:_")
+    implementation 'com.miglayout:miglayout:3.7.4'
 }
 
 task createJavadocs (type: Javadoc)
@@ -183,6 +183,7 @@ tasks {
 }
 
 processResources {
+    delete("${buildDir}/scripts")
     dependsOn(":runelite-script-assembler:assembleScripts")
     from("${buildDir}/scripts")
 }

@@ -3,6 +3,7 @@ package dev.hoot.api.entities;
 import dev.hoot.api.game.Game;
 import dev.hoot.api.game.GameThread;
 import net.runelite.api.NPC;
+import net.runelite.api.coords.WorldPoint;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -50,15 +51,27 @@ public class NPCs extends Entities<NPC> {
         return NPCS.all(names);
     }
 
+    public static NPC getNearest(WorldPoint to, Predicate<NPC> filter) {
+        return NPCS.nearest(to, filter);
+    }
+
+    public static NPC getNearest(WorldPoint to, int... ids) {
+        return NPCS.nearest(to, ids);
+    }
+
+    public static NPC getNearest(WorldPoint to, String... names) {
+        return NPCS.nearest(to, names);
+    }
+
     public static NPC getNearest(Predicate<NPC> filter) {
-        return NPCS.nearest(filter);
+        return getNearest(Players.getLocal().getWorldLocation(), filter);
     }
 
     public static NPC getNearest(int... ids) {
-        return NPCS.nearest(ids);
+        return getNearest(Players.getLocal().getWorldLocation(), ids);
     }
 
     public static NPC getNearest(String... names) {
-        return NPCS.nearest(names);
+        return getNearest(Players.getLocal().getWorldLocation(), names);
     }
 }

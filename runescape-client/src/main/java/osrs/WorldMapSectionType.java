@@ -5,90 +5,89 @@ import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
+import net.runelite.rs.ScriptOpcodes;
 
-@ObfuscatedName("gc")
+@ObfuscatedName("hv")
 @Implements("WorldMapSectionType")
 public enum WorldMapSectionType implements MouseWheel {
-   @ObfuscatedName("i")
-   @ObfuscatedSignature(
-      descriptor = "Lgc;"
-   )
-   @Export("WORLDMAPSECTIONTYPE0")
-   WORLDMAPSECTIONTYPE0(2, (byte)0),
-   @ObfuscatedName("w")
-   @ObfuscatedSignature(
-      descriptor = "Lgc;"
-   )
-   @Export("WORLDMAPSECTIONTYPE1")
-   WORLDMAPSECTIONTYPE1(1, (byte)1),
-   @ObfuscatedName("s")
-   @ObfuscatedSignature(
-      descriptor = "Lgc;"
-   )
-   @Export("WORLDMAPSECTIONTYPE2")
-   WORLDMAPSECTIONTYPE2(3, (byte)2),
-   @ObfuscatedName("a")
-   @ObfuscatedSignature(
-      descriptor = "Lgc;"
-   )
-   @Export("WORLDMAPSECTIONTYPE3")
-   WORLDMAPSECTIONTYPE3(0, (byte)3);
+	@ObfuscatedName("c")
+	@ObfuscatedSignature(
+		descriptor = "Lhv;"
+	)
+	@Export("WORLDMAPSECTIONTYPE0")
+	WORLDMAPSECTIONTYPE0(1, (byte)0),
+	@ObfuscatedName("b")
+	@ObfuscatedSignature(
+		descriptor = "Lhv;"
+	)
+	@Export("WORLDMAPSECTIONTYPE1")
+	WORLDMAPSECTIONTYPE1(0, (byte)1),
+	@ObfuscatedName("p")
+	@ObfuscatedSignature(
+		descriptor = "Lhv;"
+	)
+	@Export("WORLDMAPSECTIONTYPE2")
+	WORLDMAPSECTIONTYPE2(3, (byte)2),
+	@ObfuscatedName("m")
+	@ObfuscatedSignature(
+		descriptor = "Lhv;"
+	)
+	@Export("WORLDMAPSECTIONTYPE3")
+	WORLDMAPSECTIONTYPE3(2, (byte)3);
 
-   @ObfuscatedName("au")
-   @Export("hasFocus")
-   protected static boolean hasFocus;
-   @ObfuscatedName("ir")
-   @ObfuscatedGetter(
-      intValue = 1073689221
-   )
-   @Export("cameraX")
-   static int cameraX;
-   @ObfuscatedName("o")
-   @ObfuscatedGetter(
-      intValue = -637994723
-   )
-   @Export("type")
-   final int type;
-   @ObfuscatedName("g")
-   @Export("id")
-   final byte id;
+	@ObfuscatedName("t")
+	@ObfuscatedGetter(
+		intValue = -1872417907
+	)
+	@Export("type")
+	final int type;
+	@ObfuscatedName("s")
+	@Export("id")
+	final byte id;
 
-   WorldMapSectionType(int var3, byte var4) {
-      this.type = var3;
-      this.id = var4;
-   }
+	WorldMapSectionType(int var3, byte var4) {
+		this.type = var3; // L: 21
+		this.id = var4; // L: 22
+	} // L: 23
 
-   @ObfuscatedName("w")
-   @ObfuscatedSignature(
-      descriptor = "(I)I",
-      garbageValue = "238732485"
-   )
-   @Export("rsOrdinal")
-   public int rsOrdinal() {
-      return this.id;
-   }
+	@ObfuscatedName("b")
+	@ObfuscatedSignature(
+		descriptor = "(B)I",
+		garbageValue = "48"
+	)
+	@Export("rsOrdinal")
+	public int rsOrdinal() {
+		return this.id; // L: 27
+	}
 
-   @ObfuscatedName("s")
-   @ObfuscatedSignature(
-      descriptor = "(III)I",
-      garbageValue = "1484599212"
-   )
-   static int method3920(int var0, int var1) {
-      ItemContainer var2 = (ItemContainer)ItemContainer.itemContainers.get((long)var0);
-      if (var2 == null) {
-         return 0;
-      } else if (var1 == -1) {
-         return 0;
-      } else {
-         int var3 = 0;
+	@ObfuscatedName("c")
+	@ObfuscatedSignature(
+		descriptor = "(I)[Lhv;",
+		garbageValue = "-719396809"
+	)
+	static WorldMapSectionType[] method4754() {
+		return new WorldMapSectionType[]{WORLDMAPSECTIONTYPE3, WORLDMAPSECTIONTYPE2, WORLDMAPSECTIONTYPE1, WORLDMAPSECTIONTYPE0}; // L: 17
+	}
 
-         for(int var4 = 0; var4 < var2.quantities.length; ++var4) {
-            if (var2.ids[var4] == var1) {
-               var3 += var2.quantities[var4];
-            }
-         }
-
-         return var3;
-      }
-   }
+	@ObfuscatedName("ac")
+	@ObfuscatedSignature(
+		descriptor = "(ILbn;ZS)I",
+		garbageValue = "4095"
+	)
+	static int method4756(int var0, Script var1, boolean var2) {
+		if (var0 == ScriptOpcodes.LOGOUT) { // L: 3611
+			Client.logoutTimer = 250; // L: 3612
+			return 1; // L: 3613
+		} else if (var0 != 5631 && var0 != 5633) { // L: 3615
+			if (var0 == 5632) { // L: 3619
+				Interpreter.Interpreter_intStack[++IsaacCipher.Interpreter_intStackSize - 1] = 26; // L: 3620
+				return 1; // L: 3621
+			} else {
+				return 2; // L: 3623
+			}
+		} else {
+			class13.Interpreter_stringStackSize -= 2; // L: 3616
+			return 1; // L: 3617
+		}
+	}
 }

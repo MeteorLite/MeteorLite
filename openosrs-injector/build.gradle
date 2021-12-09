@@ -20,7 +20,7 @@ dependencies {
     implementation(project(":runelite-deobfuscator"))
     implementation(project(":runescape-api"))
     implementation(project(":runescape-client"))
-    implementation(project(":runelite-mixins"))
+    implementation(project(":klient-mixins"))
     implementation(project(":meteor-logger"))
 
     implementation(group: "org.ow2.asm", name: "asm", version: "8.0.1")
@@ -43,7 +43,7 @@ task inject(type: JavaExec) {
 }
 
 tasks {
-    inject.dependsOn(":runelite-mixins:compileJava")
+    inject.dependsOn(":klient-mixins:compileJava")
     inject.outputs.upToDateWhen {
         //tasks.findByPath(":runelite-mixins:compileJava").state.upToDate.booleanValue()
     }

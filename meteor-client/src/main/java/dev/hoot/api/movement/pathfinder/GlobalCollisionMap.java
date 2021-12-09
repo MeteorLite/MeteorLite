@@ -97,6 +97,10 @@ public class GlobalCollisionMap implements CollisionMap {
 		return region.get(regionX, regionY, z, w);
 	}
 
+	public void overwrite(GlobalCollisionMap globalCollisionMap) {
+		System.arraycopy(globalCollisionMap.regions, 0, regions, 0, regions.length);
+	}
+
 	@Override
 	public boolean n(int x, int y, int z) {
 		return get(x, y, z, 0);

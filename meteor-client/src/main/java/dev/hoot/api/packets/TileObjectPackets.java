@@ -1,58 +1,69 @@
 package dev.hoot.api.packets;
 
 import dev.hoot.api.game.Game;
+import net.runelite.api.Client;
 import net.runelite.api.Point;
 import net.runelite.api.TileObject;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
-import osrs.Client;
-import osrs.ClientPacket;
+import net.runelite.api.packets.ClientPacket;
+import net.runelite.api.packets.PacketBufferNode;
 
 import java.util.List;
 
 public class TileObjectPackets {
 
     public static void queueTileObjectActionPacket(int objectID, int worldPointX, int worldPointY, int ctrlDown) {
-        osrs.PacketBufferNode var8 = (osrs.PacketBufferNode) Game.getClient().preparePacket(ClientPacket.OPLOC1, Client.packetWriter.isaacCipher);
-        var8.packetBuffer.writeByteB0(worldPointX);
-        var8.packetBuffer.writeShort(worldPointY);
-        var8.packetBuffer.writeByteA(objectID);
-        var8.packetBuffer.writeByte(ctrlDown);
-        Client.packetWriter.addNode(var8);
+        Client client = Game.getClient();
+        ClientPacket clientPacket = Game.getClientPacket();
+        PacketBufferNode var8 = Game.getClient().preparePacket(clientPacket.OPLOC1(), client.getPacketWriter().getIsaacCipher());
+        var8.getPacketBuffer().writeByteB0(worldPointX);
+        var8.getPacketBuffer().writeShort(worldPointY);
+        var8.getPacketBuffer().writeByteA(objectID);
+        var8.getPacketBuffer().writeByte(ctrlDown);
+        client.getPacketWriter().queuePacket(var8);
     }
 
     public static void queueTileObjectAction2Packet(int objectID, int worldPointX, int worldPointY, int ctrlDown){
-        osrs.PacketBufferNode var8 = (osrs.PacketBufferNode) Game.getClient().preparePacket(ClientPacket.OPLOC2, Client.packetWriter.isaacCipher);
-        var8.packetBuffer.writeByteB0(worldPointX);
-        var8.packetBuffer.writeByte(ctrlDown);
-        var8.packetBuffer.writeShort(objectID);
-        var8.packetBuffer.writeByteC(worldPointY);
-        Client.packetWriter.addNode(var8);
+        Client client = Game.getClient();
+        ClientPacket clientPacket = Game.getClientPacket();
+        PacketBufferNode var8 =  Game.getClient().preparePacket(clientPacket.OPLOC2(), client.getPacketWriter().getIsaacCipher());
+        var8.getPacketBuffer().writeByteB0(worldPointX);
+        var8.getPacketBuffer().writeByte(ctrlDown);
+        var8.getPacketBuffer().writeShort(objectID);
+        var8.getPacketBuffer().writeByteC(worldPointY);
+        client.getPacketWriter().queuePacket(var8);
     }
 
     public static void queueTileObjectAction3Packet(int objectID, int worldPointX, int worldPointY, int ctrlDown) {
-        osrs.PacketBufferNode var8 = (osrs.PacketBufferNode) Game.getClient().preparePacket(ClientPacket.OPLOC3, Client.packetWriter.isaacCipher);
-        var8.packetBuffer.writeShort(worldPointX);
-        var8.packetBuffer.writeByte(ctrlDown);
-        var8.packetBuffer.writeShort(worldPointY);
-        var8.packetBuffer.writeByteA(objectID);
-        Client.packetWriter.addNode(var8);
+        Client client = Game.getClient();
+        ClientPacket clientPacket = Game.getClientPacket();
+        PacketBufferNode var8 = Game.getClient().preparePacket(clientPacket.OPLOC3(), client.getPacketWriter().getIsaacCipher());
+        var8.getPacketBuffer().writeShort(worldPointX);
+        var8.getPacketBuffer().writeByte(ctrlDown);
+        var8.getPacketBuffer().writeShort(worldPointY);
+        var8.getPacketBuffer().writeByteA(objectID);
+        client.getPacketWriter().queuePacket(var8);
     }
     public static void queueTileObjectAction4Packet(int objectID, int worldPointX, int worldPointY, int ctrlDown) {
-        osrs.PacketBufferNode var8 = (osrs.PacketBufferNode) Game.getClient().preparePacket(ClientPacket.OPLOC4, Client.packetWriter.isaacCipher);
-        var8.packetBuffer.writeByteC(objectID);
-        var8.packetBuffer.writeShort(worldPointY);
-        var8.packetBuffer.writeByteC(worldPointX);
-        var8.packetBuffer.write1(ctrlDown);
-        Client.packetWriter.addNode(var8);
+        Client client = Game.getClient();
+        ClientPacket clientPacket = Game.getClientPacket();
+        PacketBufferNode var8 = Game.getClient().preparePacket(clientPacket.OPLOC4(), client.getPacketWriter().getIsaacCipher());
+        var8.getPacketBuffer().writeByteC(objectID);
+        var8.getPacketBuffer().writeShort(worldPointY);
+        var8.getPacketBuffer().writeByteC(worldPointX);
+        var8.getPacketBuffer().write1(ctrlDown);
+        client.getPacketWriter().queuePacket(var8);
     }
     public static void queueTileObjectAction5Packet(int objectID, int worldPointX, int worldPointY, int ctrlDown) {
-        osrs.PacketBufferNode var8 = (osrs.PacketBufferNode) Game.getClient().preparePacket(ClientPacket.OPLOC5, Client.packetWriter.isaacCipher);
-        var8.packetBuffer.writeByteA(worldPointX);
-        var8.packetBuffer.writeByteC(objectID);
-        var8.packetBuffer.writeByteC(worldPointY);
-        var8.packetBuffer.writeByteB(ctrlDown);
-        Client.packetWriter.addNode(var8);
+        Client client = Game.getClient();
+        ClientPacket clientPacket = Game.getClientPacket();
+        PacketBufferNode var8 = Game.getClient().preparePacket(clientPacket.OPLOC5(), client.getPacketWriter().getIsaacCipher());
+        var8.getPacketBuffer().writeByteA(worldPointX);
+        var8.getPacketBuffer().writeByteC(objectID);
+        var8.getPacketBuffer().writeByteC(worldPointY);
+        var8.getPacketBuffer().writeByteB(ctrlDown);
+        client.getPacketWriter().queuePacket(var8);
     }
     public static void tileObjectFirstOption(TileObject object, int ctrlDown){
         Point p = object.menuPoint();

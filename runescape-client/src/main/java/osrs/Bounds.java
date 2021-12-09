@@ -6,193 +6,162 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("mo")
+@ObfuscatedName("me")
 @Implements("Bounds")
 public class Bounds {
-   @ObfuscatedName("i")
-   @ObfuscatedGetter(
-      intValue = -1843320923
-   )
-   @Export("lowX")
-   public int lowX;
-   @ObfuscatedName("w")
-   @ObfuscatedGetter(
-      intValue = 1031650591
-   )
-   @Export("lowY")
-   public int lowY;
-   @ObfuscatedName("s")
-   @ObfuscatedGetter(
-      intValue = -1371710773
-   )
-   @Export("highX")
-   public int highX;
-   @ObfuscatedName("a")
-   @ObfuscatedGetter(
-      intValue = -179878711
-   )
-   @Export("highY")
-   public int highY;
+	@ObfuscatedName("c")
+	@ObfuscatedGetter(
+		intValue = 726079895
+	)
+	@Export("lowX")
+	public int lowX;
+	@ObfuscatedName("b")
+	@ObfuscatedGetter(
+		intValue = -1444108263
+	)
+	@Export("lowY")
+	public int lowY;
+	@ObfuscatedName("p")
+	@ObfuscatedGetter(
+		intValue = 64358351
+	)
+	@Export("highX")
+	public int highX;
+	@ObfuscatedName("m")
+	@ObfuscatedGetter(
+		intValue = 1178509237
+	)
+	@Export("highY")
+	public int highY;
 
-   public Bounds(int var1, int var2, int var3, int var4) {
-      this.setLow(var1, var2);
-      this.setHigh(var3, var4);
-   }
+	public Bounds(int var1, int var2, int var3, int var4) {
+		this.setLow(var1, var2);
+		this.setHigh(var3, var4);
+	} // L: 16
 
-   public Bounds(int var1, int var2) {
-      this(0, 0, var1, var2);
-   }
+	public Bounds(int var1, int var2) {
+		this(0, 0, var1, var2);
+	}
 
-   @ObfuscatedName("i")
-   @ObfuscatedSignature(
-      descriptor = "(IIS)V",
-      garbageValue = "7696"
-   )
-   @Export("setLow")
-   public void setLow(int var1, int var2) {
-      this.lowX = var1;
-      this.lowY = var2;
-   }
+	@ObfuscatedName("c")
+	@ObfuscatedSignature(
+		descriptor = "(III)V",
+		garbageValue = "1930472817"
+	)
+	@Export("setLow")
+	public void setLow(int var1, int var2) {
+		this.lowX = var1; // L: 19
+		this.lowY = var2; // L: 20
+	} // L: 21
 
-   @ObfuscatedName("w")
-   @ObfuscatedSignature(
-      descriptor = "(IIB)V",
-      garbageValue = "101"
-   )
-   @Export("setHigh")
-   public void setHigh(int var1, int var2) {
-      this.highX = var1;
-      this.highY = var2;
-   }
+	@ObfuscatedName("b")
+	@ObfuscatedSignature(
+		descriptor = "(IIS)V",
+		garbageValue = "-7113"
+	)
+	@Export("setHigh")
+	public void setHigh(int var1, int var2) {
+		this.highX = var1; // L: 24
+		this.highY = var2; // L: 25
+	} // L: 26
 
-   @ObfuscatedName("s")
-   @ObfuscatedSignature(
-      descriptor = "(III)Z",
-      garbageValue = "-1805672690"
-   )
-   public boolean method6341(int var1, int var2) {
-      return var1 >= this.lowX && var1 < this.highX + this.lowX && var2 >= this.lowY && var2 < this.highY + this.lowY;
-   }
+	@ObfuscatedName("p")
+	@ObfuscatedSignature(
+		descriptor = "(III)Z",
+		garbageValue = "922229094"
+	)
+	public boolean method6577(int var1, int var2) {
+		return var1 >= this.lowX && var1 < this.lowX + this.highX && var2 >= this.lowY && var2 < this.highY + this.lowY; // L: 29
+	}
 
-   @ObfuscatedName("a")
-   @ObfuscatedSignature(
-      descriptor = "(Lmo;Lmo;I)V",
-      garbageValue = "-1080090251"
-   )
-   public void method6353(Bounds var1, Bounds var2) {
-      this.method6343(var1, var2);
-      this.method6344(var1, var2);
-   }
+	@ObfuscatedName("m")
+	@ObfuscatedSignature(
+		descriptor = "(Lme;Lme;S)V",
+		garbageValue = "3129"
+	)
+	public void method6578(Bounds var1, Bounds var2) {
+		this.method6579(var1, var2); // L: 37
+		this.method6574(var1, var2); // L: 38
+	} // L: 39
 
-   @ObfuscatedName("o")
-   @ObfuscatedSignature(
-      descriptor = "(Lmo;Lmo;I)V",
-      garbageValue = "-953724915"
-   )
-   void method6343(Bounds var1, Bounds var2) {
-      var2.lowX = this.lowX;
-      var2.highX = this.highX;
-      if (this.lowX < var1.lowX) {
-         var2.highX = (var2.highX * -373048605 - (var1.lowX * -373048605 - this.lowX * -373048605)) * -1371710773;
-         var2.lowX = var1.lowX;
-      }
+	@ObfuscatedName("t")
+	@ObfuscatedSignature(
+		descriptor = "(Lme;Lme;S)V",
+		garbageValue = "381"
+	)
+	void method6579(Bounds var1, Bounds var2) {
+		var2.lowX = this.lowX; // L: 42
+		var2.highX = this.highX; // L: 43
+		if (this.lowX < var1.lowX) { // L: 44
+			var2.highX = (var2.highX * 288726831 - (var1.lowX * 288726831 - this.lowX * 288726831)) * 64358351; // L: 45
+			var2.lowX = var1.lowX; // L: 46
+		}
 
-      if (var2.method6345() > var1.method6345()) {
-         var2.highX -= var2.method6345() - var1.method6345();
-      }
+		if (var2.method6581() > var1.method6581()) { // L: 48
+			var2.highX -= var2.method6581() - var1.method6581(); // L: 49
+		}
 
-      if (var2.highX < 0) {
-         var2.highX = 0;
-      }
+		if (var2.highX < 0) { // L: 51
+			var2.highX = 0;
+		}
 
-   }
+	} // L: 52
 
-   @ObfuscatedName("g")
-   @ObfuscatedSignature(
-      descriptor = "(Lmo;Lmo;B)V",
-      garbageValue = "107"
-   )
-   void method6344(Bounds var1, Bounds var2) {
-      var2.lowY = this.lowY;
-      var2.highY = this.highY;
-      if (this.lowY < var1.lowY) {
-         var2.highY = (var2.highY * -447998599 - (var1.lowY * -447998599 - this.lowY * -447998599)) * -179878711;
-         var2.lowY = var1.lowY;
-      }
+	@ObfuscatedName("s")
+	@ObfuscatedSignature(
+		descriptor = "(Lme;Lme;I)V",
+		garbageValue = "-1164608832"
+	)
+	void method6574(Bounds var1, Bounds var2) {
+		var2.lowY = this.lowY; // L: 55
+		var2.highY = this.highY; // L: 56
+		if (this.lowY < var1.lowY) { // L: 57
+			var2.highY = (var2.highY * -327903587 - (var1.lowY * -327903587 - this.lowY * -327903587)) * 1178509237; // L: 58
+			var2.lowY = var1.lowY; // L: 59
+		}
 
-      if (var2.method6369() > var1.method6369()) {
-         var2.highY -= var2.method6369() - var1.method6369();
-      }
+		if (var2.method6582() > var1.method6582()) { // L: 61
+			var2.highY -= var2.method6582() - var1.method6582(); // L: 62
+		}
 
-      if (var2.highY < 0) {
-         var2.highY = 0;
-      }
+		if (var2.highY < 0) { // L: 64
+			var2.highY = 0;
+		}
 
-   }
+	} // L: 65
 
-   @ObfuscatedName("e")
-   @ObfuscatedSignature(
-      descriptor = "(I)I",
-      garbageValue = "-123662248"
-   )
-   int method6345() {
-      return this.lowX + this.highX;
-   }
+	@ObfuscatedName("j")
+	@ObfuscatedSignature(
+		descriptor = "(I)I",
+		garbageValue = "-1484273265"
+	)
+	int method6581() {
+		return this.lowX + this.highX; // L: 68
+	}
 
-   @ObfuscatedName("p")
-   @ObfuscatedSignature(
-      descriptor = "(I)I",
-      garbageValue = "539098241"
-   )
-   int method6369() {
-      return this.highY + this.lowY;
-   }
+	@ObfuscatedName("w")
+	@ObfuscatedSignature(
+		descriptor = "(B)I",
+		garbageValue = "-8"
+	)
+	int method6582() {
+		return this.lowY + this.highY; // L: 72
+	}
 
-   public String toString() {
-      return null;
-   }
+	public String toString() {
+		return null; // L: 33
+	}
 
-   @ObfuscatedName("ft")
-   @ObfuscatedSignature(
-      descriptor = "(B)V",
-      garbageValue = "-113"
-   )
-   static void method6370() {
-      Client.packetWriter.clearBuffer();
-      Client.packetWriter.packetBuffer.offset = 0;
-      Client.packetWriter.serverPacket = null;
-      Client.packetWriter.field1277 = null;
-      Client.packetWriter.field1284 = null;
-      Client.packetWriter.field1285 = null;
-      Client.packetWriter.serverPacketLength = 0;
-      Client.packetWriter.field1275 = 0;
-      Client.rebootTimer = 0;
-      KeyHandler.method343();
-      Client.minimapState = 0;
-      Client.destinationX = 0;
+	@ObfuscatedName("c")
+	public static final void method6608(long var0) {
+		if (var0 > 0L) { // L: 9
+			if (var0 % 10L == 0L) { // L: 10
+				class411.method7280(var0 - 1L); // L: 11
+				class411.method7280(1L); // L: 12
+			} else {
+				class411.method7280(var0); // L: 14
+			}
 
-      int var0;
-      for(var0 = 0; var0 < 2048; ++var0) {
-         Client.players[var0] = null;
-      }
-
-      HealthBarDefinition.localPlayer = null;
-
-      for(var0 = 0; var0 < Client.npcs.length; ++var0) {
-         NPC var1 = Client.npcs[var0];
-         if (var1 != null) {
-            var1.targetIndex = -1;
-            var1.false0 = false;
-         }
-      }
-
-      GrandExchangeOfferUnitPriceComparator.method5485();
-      WorldMapData_1.updateGameState(30);
-
-      for(var0 = 0; var0 < 100; ++var0) {
-         Client.field594[var0] = true;
-      }
-
-      Frames.method4481();
-   }
+		}
+	} // L: 15
 }

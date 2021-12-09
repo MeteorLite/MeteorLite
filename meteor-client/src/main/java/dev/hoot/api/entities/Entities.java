@@ -5,6 +5,7 @@ import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.SceneEntity;
 import net.runelite.api.Tile;
+import net.runelite.api.coords.WorldPoint;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -43,14 +44,14 @@ public abstract class Entities<T extends SceneEntity> {
 		});
 	}
 
-	public T nearest(Predicate<? super T> filter) {
+	public T nearest(WorldPoint to, Predicate<? super T> filter) {
 		return all(x -> x.getId() != -1 && filter.test(x)).stream()
-						.min(Comparator.comparingInt(t -> t.getWorldLocation().distanceTo(Players.getLocal())))
+						.min(Comparator.comparingInt(t -> t.getWorldLocation().distanceTo(to)))
 						.orElse(null);
 	}
 
-	public T nearest(String... names) {
-		return nearest(x -> {
+	public T nearest(WorldPoint to, String... names) {
+		return nearest(to, x -> {
 			if (x.getName() == null) {
 				return false;
 			}
@@ -65,8 +66,8 @@ public abstract class Entities<T extends SceneEntity> {
 		});
 	}
 
-	public T nearest(int... ids) {
-		return nearest(x -> {
+	public T nearest(WorldPoint to, int... ids) {
+		return nearest(to, x -> {
 			for (int id : ids) {
 				if (id == x.getId()) {
 					return true;
