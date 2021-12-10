@@ -27,6 +27,7 @@ import javafx.scene.text.TextAlignment;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
+import meteor.PluginManager;
 import meteor.plugins.Plugin;
 import meteor.ui.MeteorUI;
 import meteor.util.MeteorConstants;
@@ -54,6 +55,9 @@ public class Toolbar extends JFXPanel {
 	@Inject
 	private RightPanel rightPanel;
 
+	@Inject
+	private PluginManager pluginManager;
+
 	@Getter
 	private String position;
 
@@ -67,12 +71,21 @@ public class Toolbar extends JFXPanel {
 		buttons = new HashMap<>();
 
 		ToolbarButton pluginsButton = new ToolbarButton(null, "Plugins", FontAwesomeIcon.PLUG);
+		ToolbarButton reloadExternalsButton = new ToolbarButton(null, "Reload externals", FontAwesomeIcon.REFRESH);
 
 		pluginsButton.setOnMouseClicked(event -> {
 			meteorUI.showPlugins();
 		});
 
+		reloadExternalsButton.setOnMouseClicked(event -> {
+			pluginManager.startExternals();
+			if(rightPanel.isOpen()) {
+				meteorUI.showPlugins();
+			}
+		});
+
 		buttons.put("plugins", pluginsButton);
+		buttons.put("reloadExternals", reloadExternalsButton);
 
 		position = BorderLayout.NORTH;
 		Platform.runLater(() -> createScene(true));
