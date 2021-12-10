@@ -79,7 +79,7 @@ dependencies {
     implementation 'org.bouncycastle:bcprov-jdk15on:1.52'
     implementation 'org.openjfx:javafx:16'
     implementation 'org.slf4j:slf4j-api:1.7.12'
-    implementation 'xerces:xercesImpl:2.12.1'
+    api 'xerces:xercesImpl:2.12.1'
     implementation("com.formdev:flatlaf:_")
     implementation("com.formdev:flatlaf-intellij-themes:_")
     implementation 'com.miglayout:miglayout:3.7.4'
@@ -135,7 +135,6 @@ shadowJar {
     configurations = [project.configurations.runtimeClasspath]
     minimize {
         it.exclude(it.dependency {'net.runelite.jogl:.*:.*'} as Spec<? super ResolvedDependency>)
-        it.exclude(it.dependency {'xerces:xercesImpl:.*:.*'} as Spec<? super ResolvedDependency>)
     }
     minimize()
     applicationDefaultJvmArgs = [

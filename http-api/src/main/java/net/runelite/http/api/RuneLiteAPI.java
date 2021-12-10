@@ -67,7 +67,7 @@ public class RuneLiteAPI {
   private static String upstreamVersion = "1.8.7-SNAPSHOT";
 
   static {
-//    parseMavenVersion();
+    parseMavenVersion();
     version = upstreamVersion;
     userAgent = "RuneLite/" + version + "-";
       OkHttpClient.Builder builder = new OkHttpClient.Builder();
