@@ -228,6 +228,7 @@ public class MeteorLiteClientModule extends AbstractModule {
   @Singleton
   Applet provideApplet() {
     try {
+
       return (Applet) ClassLoader.getSystemClassLoader().loadClass("osrs.Client").newInstance();
     } catch (Exception e) {
       e.printStackTrace();

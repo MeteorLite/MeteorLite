@@ -64,10 +64,10 @@ public class RuneLiteAPI {
   private static String version;
 
   private static final String MAVEN_METADATA = "https://repo.runelite.net/net/runelite/runelite-parent/maven-metadata.xml";
-  private static String upstreamVersion;
+  private static String upstreamVersion = "1.8.7-SNAPSHOT";
 
   static {
-    parseMavenVersion();
+//    parseMavenVersion();
     version = upstreamVersion;
     userAgent = "RuneLite/" + version + "-";
       OkHttpClient.Builder builder = new OkHttpClient.Builder();

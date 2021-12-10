@@ -324,8 +324,8 @@ public final class WidgetID
 		static final int OFFER8 = 14;
 		static final int OFFER_CONTAINER = 25;
 		static final int OFFER_DESCRIPTION = 26;
-		static final int OFFER_PRICE = 26;
-		static final int OFFER_CONFIRM_BUTTON = 27;
+		static final int OFFER_PRICE = 27;
+		static final int OFFER_CONFIRM_BUTTON = 29;
 	}
 
 	static class GrandExchangeInventory
