@@ -392,7 +392,7 @@ public class TransportLoader {
     ) {
         return Arrays.stream(Direction.values()).map(dir -> {
             WorldPoint neighbor = Reachable.getNeighbour(dir, rockfall);
-            if (Reachable.isWalkable(neighbor)) {
+            if (!Reachable.isObstacle(neighbor)) {
                 WorldPoint dest = null;
                 switch (dir) {
                     case NORTH -> dest = rockfall.dy(-1);
