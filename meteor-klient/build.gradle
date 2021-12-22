@@ -10,6 +10,8 @@ plugins {
 group 'org.meteorlite'
 version '1.0.36'
 
+import org.jetbrains.compose.desktop.application.dsl.TargetFormat
+
 repositories {
     mavenCentral()
     jcenter()
@@ -30,6 +32,7 @@ dependencies {
     implementation(project(":meteor-logger"))
     implementation(project(":http-api"))
     implementation(project(":runelite-annotations"))
+    implementation(project(":klient-events"))
     //Deob
     //implementation(project(":runescape-client"))
     //Injected
@@ -89,6 +92,10 @@ dependencies {
 compose.desktop {
     application {
         mainClass = "Main"
+        nativeDistributions {
+            targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)
+            includeAllModules = true
+        }
     }
 }
 

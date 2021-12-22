@@ -6,7 +6,7 @@ import org.koin.dsl.module
 
 object Module: KoinComponent {
     val CLIENT_MODULE = module {
-        single { UI() }
+        single { Applet() }
         single<Callbacks> { Hooks() } bind Callbacks::class
     }
 }

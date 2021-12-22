@@ -23,6 +23,7 @@ dependencies {
     compileOnly(project(":runescape-client"))
     compileOnly(project(":runelite-api"))
     compileOnly(project(":meteor-logger"))
+    compileOnly(project(":klient-events"))
 }
 
 test {

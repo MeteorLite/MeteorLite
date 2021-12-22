@@ -384,9 +384,7 @@ public class Hooks implements Callbacks {
   @Subscribe
   public void onGameStateChanged(GameStateChanged gameStateChanged) {
     switch (gameStateChanged.getGameState()) {
-      case LOGGING_IN:
-      case HOPPING:
-        ignoreNextNpcUpdate = true;
+      case LOGGING_IN, HOPPING -> ignoreNextNpcUpdate = true;
     }
   }
 

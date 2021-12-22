@@ -1,7 +1,7 @@
 package meteor.events
 
-import meteor.eventbus.Event
+import meteor.Event
 
-class ClientLoaded: Event {
+class ClientLoaded: Event() {
     var msToStart: Long? = null
 }

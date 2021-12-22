@@ -148,11 +148,11 @@ class ConfigManager {
         return enumSet!!.iterator().next().javaClass.declaringClass
     }
 
-    fun findEnumClass(clasz: String,
+    fun findEnumClass(`class`: String,
                       classLoader: ClassLoader): Class<Enum<*>> {
         var transformedString = StringBuilder()
         try {
-            val strings = clasz.substring(0, clasz.indexOf("{")).split("\\.").toTypedArray()
+            val strings = `class`.substring(0, `class`.indexOf("{")).split("\\.").toTypedArray()
             var i = 0
             while (i != strings.size) {
                 if (i == 0) {
@@ -169,12 +169,12 @@ class ConfigManager {
             // Will likely fail a lot
         }
         try {
-            return classLoader.loadClass(clasz.substring(0, clasz.indexOf("{"))) as Class<Enum<*>>
+            return classLoader.loadClass(`class`.substring(0, `class`.indexOf("{"))) as Class<Enum<*>>
         } catch (e: java.lang.Exception) {
             // Will likely fail a lot
         }
         transformedString = StringBuilder()
-        throw RuntimeException("Failed to find Enum for " + clasz.substring(0, clasz.indexOf("{")))
+        throw RuntimeException("Failed to find Enum for " + `class`.substring(0, `class`.indexOf("{")))
     }
 
     fun colorFromString(string: String): Color? {

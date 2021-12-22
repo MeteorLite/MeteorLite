@@ -1,11 +1,14 @@
 package meteor
 
 import Main.client
-import meteor.eventbus.Event
 import meteor.eventbus.EventBus
+import meteor.events.GameStateChanged
+import meteor.events.GameTick
 import meteor.input.KeyManager
 import meteor.input.MouseManager
+import meteor.util.RSTimeUnit
 import net.runelite.api.BufferProvider
+import net.runelite.api.GameState
 import net.runelite.api.MainBufferProvider
 import net.runelite.api.Renderable
 import net.runelite.api.hooks.Callbacks
@@ -18,6 +21,16 @@ import java.awt.event.MouseEvent
 import java.awt.event.MouseWheelEvent
 
 class Hooks: Callbacks {
+    private var lastCheck: Long = 0
+    private val CHECK: Long = RSTimeUnit.GAME_TICKS.duration
+            .toNanos()
+    private val GAME_TICK = GameTick()
+    private var shouldProcessGameTick = false
+    private var ignoreNextNpcUpdate = false
+
+    init {
+        EventBus.subscribe(onEvent())
+    }
 
     override fun post(obj: Any?) {
         if (obj is Event)
@@ -29,7 +42,18 @@ class Hooks: Callbacks {
     }
 
     override fun tick() {
-        TODO("Not yet implemented")
+        if (shouldProcessGameTick) {
+            shouldProcessGameTick = false
+            EventBus.post(GAME_TICK as Event)
+        }
+
+        val now = System.nanoTime()
+
+        if (now - lastCheck < CHECK) {
+            return
+        }
+
+        lastCheck = now
     }
 
     override fun frame() {
@@ -37,7 +61,22 @@ class Hooks: Callbacks {
     }
 
     override fun updateNpcs() {
-        TODO("Not yet implemented")
+        if (ignoreNextNpcUpdate) {
+            ignoreNextNpcUpdate = false
+        } else {
+            shouldProcessGameTick = true
+        }
+    }
+
+    private fun onEvent(): (Event) -> Unit {
+        return {
+            if (it is GameStateChanged)
+                when (it.new) {
+                    GameState.LOGGING_IN, GameState.HOPPING -> {
+                        ignoreNextNpcUpdate = true
+                    }
+                }
+        }
     }
 
     override fun drawScene() {

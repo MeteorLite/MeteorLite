@@ -1,8 +1,8 @@
 package meteor.events
 
-import meteor.eventbus.Event
+import meteor.Event
 
-class BeforeMenuRender: Event {
+class BeforeMenuRender: Event() {
     var consumed = false
     fun consume() {
         consumed = true

@@ -1,130 +1,99 @@
 package meteor
 
-import meteor.eventbus.EventBus
-import meteor.events.AppletLoaded
-import net.runelite.api.Client
-import themes.MeteorliteTheme
-import java.applet.Applet
-import java.applet.AppletContext
-import java.applet.AppletStub
-import java.applet.AudioClip
-import java.awt.Desktop
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.*
+import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalContext
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.awt.ComposePanel
+import androidx.compose.ui.awt.ComposeWindow
+import androidx.compose.ui.awt.SwingPanel
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.onSizeChanged
+import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.FrameWindowScope
+import meteor.ui.ToolbarState
+import java.awt.BorderLayout
 import java.awt.Dimension
-import java.awt.Image
-import java.io.InputStream
-import java.net.URL
-import java.util.*
-import javax.swing.ImageIcon
-import javax.swing.JFrame
+import javax.swing.JPanel
 
-class UI: AppletStub, AppletContext {
-    companion object {
-        lateinit var applet: Applet
+object UI {
+    private val toolbarPosition = mutableStateOf(ToolbarState.TOP)
 
-        fun getClient(applet: Applet): Client {
-            return applet as Client
-        }
-    }
-    var icon = ImageIcon(UI::class.java.getResource("/Meteor_icon.png")).image
-    private var properties: Map<String, String> = AppletConfiguration.properties
-    private var parameters: Map<String, String> = AppletConfiguration.parameters
+    @Composable
+    fun Window(): (@Composable FrameWindowScope.() -> Unit) {
+        return {
+            MaterialTheme(colors = darkThemeColors) {
+                BoxWithConstraints(modifier = Modifier.fillMaxSize()){
+                    Column {
+                        if (toolbarPosition.value == ToolbarState.TOP)
+                        { Toolbar(toolbarPosition) }
 
-    fun init() {
-        applet = configureApplet()
-        applet.size = applet.minimumSize
-        EventBus.post(AppletLoaded())
-    }
+                        OSRSApplet(this@BoxWithConstraints)
 
-    private fun configureApplet(): Applet {
-        val applet = ClassLoader.getSystemClassLoader().loadClass("osrs.Client").newInstance() as Applet
-        applet.setStub(this)
-        applet.maximumSize = appletMaxSize()
-        applet.minimumSize = appletMinSize()
-        applet.preferredSize = applet.minimumSize
-        return applet
-    }
-
-    private fun appletMinSize(): Dimension {
-        return Dimension(properties["applet_minwidth"]!!.toInt(), properties["applet_minheight"]!!.toInt())
-    }
-
-    private fun appletMaxSize(): Dimension {
-        return Dimension(properties["applet_maxwidth"]!!.toInt(), properties["applet_maxheight"]!!.toInt())
-    }
-    override fun isActive(): Boolean {
-        return true
-    }
-
-    override fun getDocumentBase(): URL {
-        return codeBase
-    }
-
-    override fun getCodeBase(): URL {
-        return try {
-            URL(properties["codebase"])
-        } catch (e: Exception) {
-            throw RuntimeException("Invalid Codebase")
+                        if (toolbarPosition.value == ToolbarState.BOTTOM)
+                        { Toolbar(toolbarPosition) }
+                    }
+                }
+            }
         }
     }
 
-    override fun getParameter(name: String?): String {
-        if (!parameters.containsKey(name))
-            return ""
-        return parameters[name]!!
+    @Composable
+    fun OSRSApplet(box: BoxWithConstraintsScope) {
+        SwingPanel(Color.Black,
+                modifier = Modifier.fillMaxWidth().height(box.maxHeight - 30.dp).background(Color.Black),
+                factory = {
+                    JPanel().apply {
+                        layout = BorderLayout()
+                        add(Applet.applet, BorderLayout.CENTER)
+                        Applet.applet.init()
+                        Applet.applet.start()
+                    }
+                })
     }
 
-    override fun appletResize(width: Int, height: Int) {
+    @Composable
+    fun Toolbar(toolbarState: MutableState<ToolbarState>){
+        TopAppBar(
+                title = { Text("MeteorLite")},
+                contentColor = Color.Cyan,
+                actions = {
+            IconButton(onClick = {
+                when (toolbarState.value) {
+                    ToolbarState.TOP -> toolbarState.value = ToolbarState.BOTTOM
+                    ToolbarState.BOTTOM -> toolbarState.value = ToolbarState.TOP
+                    else -> {}
+                }}) {
+                if (toolbarPosition.value == ToolbarState.TOP)
+                    Icon(Icons.Filled.KeyboardArrowDown, null)
+                if (toolbarPosition.value == ToolbarState.BOTTOM)
+                    Icon(Icons.Filled.KeyboardArrowUp, null)
+            }
+            IconButton(onClick = {/* Do Something*/ }) {
+                Icon(Icons.Filled.Menu, null)
+            }
+        }, modifier = Modifier.fillMaxWidth().height(30.dp))
     }
 
-    override fun showDocument(url: URL?) {
-        try {
-            Desktop.getDesktop().browse(url!!.toURI())
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
-    }
-
-    override fun showDocument(url: URL?, target: String?) {
-        try {
-            Desktop.getDesktop().browse(url!!.toURI())
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
-    }
-
-    override fun getAppletContext(): AppletContext {
-        return this
-    }
-
-    override fun getAudioClip(url: URL): AudioClip {
-      throw UnsupportedOperationException()
-    }
-
-    override fun getImage(url: URL): Image {
-        throw UnsupportedOperationException()
-    }
-
-    override fun getApplet(name: String): Applet {
-        throw UnsupportedOperationException()
-    }
-
-    override fun getApplets(): Enumeration<Applet> {
-        throw UnsupportedOperationException()
-    }
-
-    override fun showStatus(status: String) {
-        throw UnsupportedOperationException()
-    }
-
-    override fun setStream(key: String, stream: InputStream) {
-        throw UnsupportedOperationException()
-    }
-
-    override fun getStream(key: String): InputStream {
-        throw UnsupportedOperationException()
-    }
-
-    override fun getStreamKeys(): MutableIterator<String> {
-        throw UnsupportedOperationException()
-    }
+    val darkThemeColors = darkColors(
+            primary = Color.Cyan,
+            primaryVariant = Color(0xFF3E2723),
+            secondary = Color(0xFF03DAC5),
+            background = Color(0xFF121212),
+            surface = Color.Black,
+            error = Color(0xFFCF6679),
+            onPrimary = Color.White,
+            onSecondary = Color.White,
+            onBackground = Color.White,
+            onSurface = Color.White,
+            onError = Color.Black
+    )
 }
