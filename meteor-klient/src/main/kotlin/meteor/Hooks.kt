@@ -20,7 +20,7 @@ import java.awt.event.KeyEvent
 import java.awt.event.MouseEvent
 import java.awt.event.MouseWheelEvent
 
-class Hooks: Callbacks {
+class Hooks : Callbacks {
     private var lastCheck: Long = 0
     private val CHECK: Long = RSTimeUnit.GAME_TICKS.duration
             .toNanos()

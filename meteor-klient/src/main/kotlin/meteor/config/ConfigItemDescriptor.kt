@@ -1,7 +1,4 @@
-
 package meteor.config
-
-
 
 
 class ConfigItemDescriptor : ConfigObject {

@@ -25,10 +25,10 @@
 package meteor.input
 
 import Main.client
-import java.util.concurrent.CopyOnWriteArrayList
 import net.runelite.api.GameState
 import org.sponge.util.Logger
 import java.awt.event.KeyEvent
+import java.util.concurrent.CopyOnWriteArrayList
 
 object KeyManager {
     private val keyListeners: MutableList<KeyListener> = CopyOnWriteArrayList()

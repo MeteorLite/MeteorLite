@@ -1,4 +1,3 @@
-
 package meteor.config
 
 import lombok.Value

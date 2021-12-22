@@ -1,4 +1,3 @@
-
 package meteor.config
 
 /**
@@ -8,5 +7,5 @@ package meteor.config
 @Target(AnnotationTarget.FUNCTION, AnnotationTarget.PROPERTY_GETTER, AnnotationTarget.PROPERTY_SETTER)
 @MustBeDocumented
 annotation class Icon(
-    val canToggle: Boolean = false
+        val canToggle: Boolean = false
 )

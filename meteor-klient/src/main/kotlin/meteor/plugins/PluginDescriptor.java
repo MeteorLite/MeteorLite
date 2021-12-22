@@ -31,38 +31,38 @@ import java.lang.annotation.*;
 @Documented
 public @interface PluginDescriptor {
 
-  String name();
+    String name();
 
-  /**
-   * Internal name used in the config.
-   */
-  String configName() default "";
+    /**
+     * Internal name used in the config.
+     */
+    String configName() default "";
 
-  /**
-   * A short, one-line summary of the plugin.
-   */
-  String description() default "";
+    /**
+     * A short, one-line summary of the plugin.
+     */
+    String description() default "";
 
-  /**
-   * A list of plugin keywords, used (together with the name) when searching for plugins. Each tag
-   * should not contain any spaces, and should be fully lowercase.
-   */
-  String[] tags() default {};
+    /**
+     * A list of plugin keywords, used (together with the name) when searching for plugins. Each tag
+     * should not contain any spaces, and should be fully lowercase.
+     */
+    String[] tags() default {};
 
-  boolean enabledByDefault() default true;
+    boolean enabledByDefault() default true;
 
-  /**
-   * Whether or not plugin is hidden from configuration panel
-   */
-  boolean hidden() default false;
+    /**
+     * Whether or not plugin is hidden from configuration panel
+     */
+    boolean hidden() default false;
 
-  boolean developerPlugin() default false;
+    boolean developerPlugin() default false;
 
-  boolean loadWhenOutdated() default false;
+    boolean loadWhenOutdated() default false;
 
-  boolean loadInSafeMode() default true;
+    boolean loadInSafeMode() default true;
 
-  boolean cantDisable() default false;
+    boolean cantDisable() default false;
 
-  boolean disabledOnStartup() default false;
+    boolean disabledOnStartup() default false;
 }

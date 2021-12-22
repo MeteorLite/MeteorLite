@@ -1,8 +1,4 @@
-
 package meteor.config
-
-import lombok.Getter
-import lombok.RequiredArgsConstructor
 
 
 enum class TooltipPositionType(type: String) {

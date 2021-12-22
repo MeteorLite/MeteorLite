@@ -1,7 +1,7 @@
 package meteor.eventbus
 
 import kotlinx.coroutines.*
-import kotlinx.coroutines.channels.*
+import kotlinx.coroutines.channels.BroadcastChannel
 import kotlinx.coroutines.flow.asFlow
 import kotlinx.coroutines.flow.collect
 import meteor.Event
@@ -9,8 +9,8 @@ import java.util.concurrent.Executors
 import kotlin.coroutines.CoroutineContext
 
 class EventBus(override val coroutineContext: CoroutineContext
-                  = Executors.newSingleThreadExecutor().asCoroutineDispatcher())
-    :CoroutineScope {
+               = Executors.newSingleThreadExecutor().asCoroutineDispatcher())
+    : CoroutineScope {
 
     private val channel = BroadcastChannel<Event>(1)
 
@@ -20,17 +20,18 @@ class EventBus(override val coroutineContext: CoroutineContext
         }
     }
 
-    fun subscribe(subs: (event: Event)-> Unit,
+    fun subscribe(subs: (event: Event) -> Unit,
                   scheduler: CoroutineDispatcher = Dispatchers.Unconfined,
-                  filter: ((event: Event) -> Boolean)? = null){
+                  filter: ((event: Event) -> Boolean)? = null) {
         this.launch {
-            channel.asFlow().collect {item ->
-                if(filter?.invoke(item) != false){
-                    withContext(scheduler){
-                            subs.invoke(item)
+            channel.asFlow().collect { item ->
+                if (filter?.invoke(item) != false) {
+                    withContext(scheduler) {
+                        subs.invoke(item)
                     }
                 }
-            }}
+            }
+        }
     }
 
     companion object {

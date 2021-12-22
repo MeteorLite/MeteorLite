@@ -13,9 +13,8 @@ import java.awt.Image
 import java.io.InputStream
 import java.net.URL
 import java.util.*
-import javax.swing.ImageIcon
 
-class Applet: AppletStub, AppletContext {
+class Applet : AppletStub, AppletContext {
     companion object {
         lateinit var applet: Applet
 
@@ -23,6 +22,7 @@ class Applet: AppletStub, AppletContext {
             return applet as Client
         }
     }
+
     private var properties: Map<String, String> = AppletConfiguration.properties
     private var parameters: Map<String, String> = AppletConfiguration.parameters
 
@@ -48,6 +48,7 @@ class Applet: AppletStub, AppletContext {
     private fun appletMaxSize(): Dimension {
         return Dimension(properties["applet_maxwidth"]!!.toInt(), properties["applet_maxheight"]!!.toInt())
     }
+
     override fun isActive(): Boolean {
         return true
     }
@@ -94,7 +95,7 @@ class Applet: AppletStub, AppletContext {
     }
 
     override fun getAudioClip(url: URL): AudioClip {
-      throw UnsupportedOperationException()
+        throw UnsupportedOperationException()
     }
 
     override fun getImage(url: URL): Image {
