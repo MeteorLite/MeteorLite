@@ -20,18 +20,14 @@ object Modifiers {
                         else
                             offCurrent?.plus(change.positionChange())
                         change.consumeAllChanges()
-                        if (toolbarPosition.value != Position.TOP)
-                            if (offCurrent!!.y < (((UI.contentSize.height / 4) * 2) * -1))
-                                toolbarPosition.value = Position.TOP
-                        if (toolbarPosition.value != Position.BOTTOM)
-                            if (offCurrent!!.y > ((UI.contentSize.height / 4) * 2))
-                                toolbarPosition.value = Position.BOTTOM
-                        if (toolbarPosition.value != Position.LEFT)
-                            if (offCurrent!!.x < ((UI.contentSize.width / 4) * 2) * -1)
-                                toolbarPosition.value = Position.LEFT
-                        if (toolbarPosition.value != Position.RIGHT)
-                            if (offCurrent!!.x > ((UI.contentSize.width / 4) * 2))
-                                toolbarPosition.value = Position.RIGHT
+                        if (offCurrent!!.y < (((UI.contentSize.height / 4) * 2) * -1))
+                            toolbarPosition.value = Position.TOP
+                        if (offCurrent!!.y > ((UI.contentSize.height / 4) * 2))
+                            toolbarPosition.value = Position.BOTTOM
+                        if (offCurrent!!.x < ((UI.contentSize.width / 4) * 2) * -1)
+                            toolbarPosition.value = Position.LEFT
+                        if (offCurrent!!.x > ((UI.contentSize.width / 4) * 2))
+                            toolbarPosition.value = Position.RIGHT
                     },
                     onDragStart = {
                         offCurrent = null

@@ -1,9 +1,5 @@
 package meteor.config
 
-import lombok.Value
-
-
-@Value
 class ConfigSectionDescriptor : ConfigObject {
     private val key: String? = null
     private val section: ConfigSection? = null

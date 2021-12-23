@@ -1,10 +1,8 @@
 plugins {
     id 'java'
     id 'com.github.johnrengelman.shadow'
-    id "org.jetbrains.kotlin.jvm" version "1.5.31"
-    id 'org.jetbrains.kotlin.plugin.lombok' version '1.5.31'
-    id 'io.freefair.lombok' version '6.2.0'
-    id 'org.jetbrains.compose' version "1.0.0"
+    id "org.jetbrains.kotlin.jvm" version "1.6.10"
+    id 'org.jetbrains.compose' version "1.1.0-alpha1-dev536"
 }
 
 group 'org.meteorlite'
@@ -23,7 +21,6 @@ repositories {
 
 dependencies {
     implementation 'org.apache.logging.log4j:log4j-core:_'
-    compileOnly group: 'org.projectlombok', name: 'lombok', version: '1.18.20'
 
     implementation(group: "com.google.inject", name: "guice", version: "4.1.0", classifier: "no_aop")
 
@@ -38,8 +35,6 @@ dependencies {
     //Injected
     implementation group: 'org.jetbrains', name: 'annotations', version: '21.0.1'
     runtimeOnly(files("../openosrs-injector/build/injected/injected-klient.jar"))
-    compileOnly 'org.projectlombok:lombok:_'
-    annotationProcessor 'org.projectlombok:lombok:_'
     annotationProcessor group: 'org.jetbrains', name: 'annotations', version: '_'
     implementation(group: "net.runelite.gluegen", name: "gluegen-rt", version: "2.4.0-rc-20200429")
     implementation(group: "net.runelite.jogl", name: "jogl-all", version: "2.4.0-rc-20200429")
