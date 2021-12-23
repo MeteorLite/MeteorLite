@@ -4,8 +4,10 @@ import androidx.compose.ui.window.application
 import androidx.compose.ui.window.rememberWindowState
 import meteor.*
 import meteor.eventbus.EventBus
-import meteor.events.GameStateChanged
-import meteor.events.GameTick
+import meteor.eventbus.events.GameStateChanged
+import meteor.eventbus.events.GameTick
+import meteor.rs.Applet
+import meteor.rs.AppletConfiguration
 import meteor.ui.UI
 import net.runelite.api.Client
 import net.runelite.api.hooks.Callbacks

@@ -13,7 +13,7 @@ import meteor.config.Config;
 import meteor.config.ConfigManager;
 import meteor.eventbus.Subscribe;
 import meteor.eventbus.events.PluginChanged;
-import meteor.events.ExternalsReloaded;
+import meteor.eventbus.events.ExternalsReloaded;
 import meteor.plugins.ExternalPluginClassLoader;
 import meteor.plugins.Plugin;
 import meteor.plugins.PluginDependency;

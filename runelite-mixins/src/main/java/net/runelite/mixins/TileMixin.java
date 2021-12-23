@@ -26,10 +26,8 @@
 package net.runelite.mixins;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
-import meteor.events.AutomationMouseMoved;
 import net.runelite.api.*;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;

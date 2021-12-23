@@ -2,8 +2,8 @@ package meteor
 
 import Main.client
 import meteor.eventbus.EventBus
-import meteor.events.GameStateChanged
-import meteor.events.GameTick
+import meteor.eventbus.events.GameStateChanged
+import meteor.eventbus.events.GameTick
 import meteor.input.KeyManager
 import meteor.input.MouseManager
 import meteor.util.RSTimeUnit
@@ -173,7 +173,7 @@ class Hooks : Callbacks {
 
         @JvmStatic
         fun drawMenu(): Boolean {
-            val event = meteor.events.BeforeMenuRender()
+            val event = meteor.eventbus.events.BeforeMenuRender()
             client.callbacks.post(event)
             return event.consumed
         }

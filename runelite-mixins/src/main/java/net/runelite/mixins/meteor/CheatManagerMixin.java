@@ -1,6 +1,6 @@
 package net.runelite.mixins.meteor;
 
-import meteor.events.ToolbarToggled;
+import meteor.eventbus.events.ToolbarToggled;
 import net.runelite.api.mixins.Copy;
 import net.runelite.api.mixins.Inject;
 import net.runelite.api.mixins.Mixin;

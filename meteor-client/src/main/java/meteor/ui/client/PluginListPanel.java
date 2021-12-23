@@ -30,7 +30,7 @@ import meteor.PluginManager;
 import meteor.config.ConfigManager;
 import meteor.eventbus.EventBus;
 import meteor.eventbus.Subscribe;
-import meteor.events.ExternalsReloaded;
+import meteor.eventbus.events.ExternalsReloaded;
 import meteor.plugins.Plugin;
 import meteor.ui.components.Category;
 import meteor.util.MeteorConstants;

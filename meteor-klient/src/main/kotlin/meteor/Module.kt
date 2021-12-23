@@ -1,5 +1,6 @@
 package meteor
 
+import meteor.rs.Applet
 import net.runelite.api.hooks.Callbacks
 import org.koin.core.component.KoinComponent
 import org.koin.dsl.bind

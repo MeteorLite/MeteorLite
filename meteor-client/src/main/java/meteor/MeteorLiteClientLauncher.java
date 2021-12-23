@@ -1,9 +1,8 @@
 package meteor;
 
-import com.google.inject.Binder;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
-import com.google.inject.Module;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -13,12 +12,11 @@ import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.net.Authenticator;
 import java.net.PasswordAuthentication;
-import java.util.List;
 import java.util.Map;
 
 import javafx.application.Application;
 import javafx.stage.Stage;
-import meteor.themes.MeteorliteTheme;
+import meteor.ui.themes.MeteorliteTheme;
 import meteor.util.LoggerStream;
 import net.runelite.api.Client;
 import sun.misc.Unsafe;

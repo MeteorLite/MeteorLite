@@ -7,18 +7,20 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.awt.SwingPanel
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.painter.Painter
-import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.graphics.FilterQuality
+import androidx.compose.ui.graphics.ImageBitmap
+import androidx.compose.ui.res.loadImageBitmap
+import androidx.compose.ui.res.useResource
 import androidx.compose.ui.unit.dp
-import meteor.Applet
+import meteor.rs.Applet
 import java.awt.BorderLayout
 import javax.swing.JPanel
 
 object Components {
     @Composable
     fun BrandBadge() {
-        val image: Painter = painterResource(resourcePath = "brand/badge.png")
-        Image(painter = image, contentDescription = "")
+        val bitmap: ImageBitmap = useResource("brand/badge.png") { loadImageBitmap(it) }
+        Image(bitmap = bitmap, contentDescription = "Brand Badge", filterQuality = FilterQuality.High)
     }
 
     @Composable

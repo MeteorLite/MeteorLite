@@ -7,7 +7,7 @@ import dev.hoot.api.movement.pathfinder.RegionManager;
 import lombok.Getter;
 import meteor.config.ConfigManager;
 import meteor.eventbus.Subscribe;
-import meteor.events.PlaneChanged;
+import meteor.eventbus.events.PlaneChanged;
 import meteor.plugins.Plugin;
 import meteor.plugins.PluginDescriptor;
 import meteor.ui.overlay.OverlayManager;

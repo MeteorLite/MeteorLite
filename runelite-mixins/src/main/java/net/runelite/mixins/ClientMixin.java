@@ -1,7 +1,7 @@
 package net.runelite.mixins;
 
 import com.google.common.primitives.Doubles;
-import meteor.events.PlaneChanged;
+import meteor.eventbus.events.PlaneChanged;
 import net.runelite.api.*;
 import net.runelite.api.clan.ClanChannel;
 import net.runelite.api.clan.ClanRank;

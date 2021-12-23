@@ -1,6 +1,6 @@
 package net.runelite.mixins;
 
-import meteor.events.GameStateChanged;
+import meteor.eventbus.events.GameStateChanged;
 import net.runelite.api.GameState;
 import net.runelite.api.hooks.Callbacks;
 import net.runelite.api.hooks.DrawCallbacks;
