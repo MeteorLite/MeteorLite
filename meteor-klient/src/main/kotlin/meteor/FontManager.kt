@@ -31,11 +31,11 @@ import java.io.IOException
 import javax.swing.text.StyleContext
 
 object FontManager {
-    private var runescapeFont: Font? = null
+    var runescapeFont: Font? = null
     var runescapeSmallFont: Font? = null
     var runescapeBoldFont: Font? = null
-    private var defaultFont: Font? = null
-    private var defaultBoldFont: Font? = null
+    var defaultFont: Font? = null
+    var defaultBoldFont: Font? = null
 
     init {
         val ge: GraphicsEnvironment = GraphicsEnvironment.getLocalGraphicsEnvironment()

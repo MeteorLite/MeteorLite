@@ -29,7 +29,7 @@ object OverlayManager {
             return@label b.priority.compareTo(a.priority)
     }
 
-    private val overlays: ArrayList<Overlay> = ArrayList()
+    val overlays: ArrayList<Overlay> = ArrayList()
     var widgetItems: Collection<WidgetItem> = emptyList()
     private var overlayMap = ArrayListMultimap.create<Any, Overlay>()
 
@@ -61,9 +61,9 @@ object OverlayManager {
 
     private fun loadOverlay(overlay: Overlay) {
         val location: Point? = loadOverlayLocation(overlay)
-        overlay.setPreferredLocation(location!!)
+        overlay.preferredLocation = location!!
         val size: Dimension? = loadOverlaySize(overlay)
-        overlay.setPreferredSize(size!!)
+        overlay.preferredSize = size!!
         val position: OverlayPosition? = loadOverlayPosition(overlay)
         overlay.preferredPosition = position
     }
@@ -77,29 +77,24 @@ object OverlayManager {
 
     private fun saveOverlayLocation(overlay: Overlay) {
         val key: String = overlay.name + OVERLAY_CONFIG_PREFERRED_LOCATION
-        TODO()
     }
 
     private fun saveOverlaySize(overlay: Overlay) {
         val key: String = overlay.name + OVERLAY_CONFIG_PREFERRED_SIZE
-        TODO()
     }
 
     private fun saveOverlayPosition(overlay: Overlay) {
         val key: String = overlay.name + OVERLAY_CONFIG_PREFERRED_POSITION
-        TODO()
     }
 
     private fun loadOverlayLocation(overlay: Overlay): Point? {
         val key: String = overlay.name + OVERLAY_CONFIG_PREFERRED_LOCATION
         return overlay.preferredLocation
-        TODO()
     }
 
     private fun loadOverlaySize(overlay: Overlay): Dimension? {
         val key: String = overlay.name + OVERLAY_CONFIG_PREFERRED_SIZE
         return overlay.preferredSize
-        TODO()
     }
 
     private fun loadOverlayPosition(overlay: Overlay): OverlayPosition? {

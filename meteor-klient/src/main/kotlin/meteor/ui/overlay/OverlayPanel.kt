@@ -60,15 +60,13 @@ abstract class OverlayPanel : Overlay {
     }
 
     override fun render(graphics: Graphics2D): Dimension? {
-        val oldSize: Dimension = panelComponent.getPreferredSize()
-        if (preferredSize != null) {
-            panelComponent.setPreferredSize(preferredSize)
-            if (dynamicFont) {
-                if (preferredSize.width >= (ComponentConstants.STANDARD_WIDTH * 1.3)) {
-                    graphics.font = FontManager.runescapeBoldFont
-                } else if (preferredSize.width <= ComponentConstants.STANDARD_WIDTH * 0.8) {
-                    graphics.font = FontManager.runescapeSmallFont
-                }
+        val oldSize: Dimension = panelComponent.preferredSize
+        panelComponent.preferredSize = (preferredSize)
+        if (dynamicFont) {
+            if (preferredSize.width >= (ComponentConstants.STANDARD_WIDTH * 1.3)) {
+                graphics.font = FontManager.runescapeBoldFont
+            } else if (preferredSize.width <= ComponentConstants.STANDARD_WIDTH * 0.8) {
+                graphics.font = FontManager.runescapeSmallFont
             }
         }
         val oldBackgroundColor: Color = panelComponent.backgroundColor
@@ -79,7 +77,7 @@ abstract class OverlayPanel : Overlay {
         if (clearChildren) {
             panelComponent.children.clear()
         }
-        panelComponent.setPreferredSize(oldSize)
+        panelComponent.preferredSize = (oldSize)
         panelComponent.backgroundColor = oldBackgroundColor
         return dimension
     }

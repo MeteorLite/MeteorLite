@@ -30,14 +30,13 @@ import net.runelite.api.widgets.WidgetInfo
 import java.awt.Dimension
 import java.awt.Point
 import java.awt.Rectangle
-import java.util.ArrayList
 
 abstract class Overlay : LayoutableRenderableEntity {
     private val plugin: Plugin?
     val drawHooks: MutableList<Int> = ArrayList()
-    private val menuEntries: List<OverlayMenuEntry> = ArrayList<OverlayMenuEntry>()
-    val preferredLocation: Point? = null
-    val preferredSize: Dimension? = null
+    val menuEntries: List<OverlayMenuEntry> = ArrayList<OverlayMenuEntry>()
+    override var preferredLocation: Point = Point(0,0)
+    override var preferredSize: Dimension = Dimension(50,50)
     var preferredPosition: OverlayPosition? = null
     override val bounds = Rectangle()
     var position = OverlayPosition.TOP_LEFT
@@ -51,7 +50,7 @@ abstract class Overlay : LayoutableRenderableEntity {
      * Whether this overlay can be dragged onto other overlays &amp; have other overlays dragged onto
      * it.
      */
-    private val dragTargetable = false
+    val dragTargetable = false
 
     protected constructor() {
         plugin = null
@@ -85,6 +84,5 @@ abstract class Overlay : LayoutableRenderableEntity {
         return false
     }
 
-    private val parentBounds: Rectangle?
-        get() = null
+    open var parentBounds = Rectangle(0,0,1920,1080)
 }

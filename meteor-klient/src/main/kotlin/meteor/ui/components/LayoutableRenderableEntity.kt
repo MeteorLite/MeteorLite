@@ -29,7 +29,7 @@ import java.awt.Point
 import java.awt.Rectangle
 
 interface LayoutableRenderableEntity : RenderableEntity {
+    var preferredLocation: Point
+    var preferredSize: Dimension
     val bounds: Rectangle
-    fun setPreferredLocation(position: Point)
-    fun setPreferredSize(dimension: Dimension)
 }

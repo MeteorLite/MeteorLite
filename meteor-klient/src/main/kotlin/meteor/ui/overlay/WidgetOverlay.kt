@@ -36,17 +36,9 @@ import java.util.*
 
 open class WidgetOverlay private constructor( private val widgetInfo: WidgetInfo,
                                              overlayPosition: OverlayPosition) : Overlay() {
-    private val parentBounds = Rectangle()
-    override fun setPreferredLocation(position: Point) {
-        TODO("Not yet implemented")
-    }
-
-    override fun setPreferredSize(dimension: Dimension) {
-        TODO("Not yet implemented")
-    }
-
     override val name: String
         get() = Objects.toString(widgetInfo)
+    override var parentBounds: Rectangle = getParentBounds()
 
     override fun render(graphics: Graphics2D): Dimension? {
         val widget = client.getWidget(widgetInfo)
@@ -76,7 +68,8 @@ open class WidgetOverlay private constructor( private val widgetInfo: WidgetInfo
         return bounds
     }
 
-    fun getParentBounds(): Rectangle {
+    @JvmName("getParentBounds1")
+    private fun getParentBounds(): Rectangle {
         if (!client.isClientThread) {
             // During overlay drag this is called on the EDT, so we just
             // cache and reuse the last known parent bounds.

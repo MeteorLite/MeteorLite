@@ -36,22 +36,10 @@ class PanelComponent : LayoutableRenderableEntity {
     val children: ArrayList<LayoutableRenderableEntity> = ArrayList<LayoutableRenderableEntity>()
     private val childDimensions = Dimension()
 
-    private var preferredLocation = Point()
-    override fun setPreferredLocation(position: Point) {
-        preferredLocation = position
-    }
+    override var preferredLocation = Point()
 
-    private var preferredSize = Dimension(ComponentConstants.STANDARD_WIDTH, 0)
-    override fun setPreferredSize(dimension: Dimension) {
-        preferredSize = dimension
-    }
-    fun getPreferredSize(): Dimension {
-        return preferredSize
-    }
+    override var preferredSize = Dimension(ComponentConstants.STANDARD_WIDTH, 0)
 
-    fun setpreferredSize(position: Dimension) {
-        preferredSize = position
-    }
     var backgroundColor: Color = ComponentConstants.STANDARD_BACKGROUND_COLOR
 
     private val orientation: ComponentOrientation = ComponentOrientation.VERTICAL
@@ -104,11 +92,11 @@ class PanelComponent : LayoutableRenderableEntity {
             // Correctly propagate child dimensions based on orientation and wrapping
             if (!wrap) {
                 when (orientation) {
-                    ComponentOrientation.VERTICAL -> child.setPreferredSize(Dimension(childPreferredSize.width, 0))
-                    ComponentOrientation.HORIZONTAL -> child.setPreferredSize(Dimension(0, childPreferredSize.height))
+                    ComponentOrientation.VERTICAL -> child.preferredSize = (Dimension(childPreferredSize.width, 0))
+                    ComponentOrientation.HORIZONTAL -> child.preferredSize = (Dimension(0, childPreferredSize.height))
                 }
             }
-            child.setPreferredLocation(Point(x, y))
+            child.preferredLocation = (Point(x, y))
             val childDimension: Dimension? = child.render(graphics)
             when (orientation) {
                 ComponentOrientation.VERTICAL -> {

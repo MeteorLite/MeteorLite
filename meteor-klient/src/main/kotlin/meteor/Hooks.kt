@@ -7,6 +7,7 @@ import meteor.eventbus.events.GameStateChanged
 import meteor.eventbus.events.GameTick
 import meteor.input.KeyManager
 import meteor.input.MouseManager
+import meteor.ui.overlay.OverlayLayer
 import meteor.util.RSTimeUnit
 import net.runelite.api.BufferProvider
 import net.runelite.api.GameState
@@ -16,11 +17,12 @@ import net.runelite.api.hooks.Callbacks
 import net.runelite.api.hooks.DrawCallbacks
 import net.runelite.api.widgets.Widget
 import net.runelite.api.widgets.WidgetItem
-import java.awt.Graphics
-import java.awt.Graphics2D
+import java.awt.*
 import java.awt.event.KeyEvent
 import java.awt.event.MouseEvent
 import java.awt.event.MouseWheelEvent
+import java.awt.image.BufferedImage
+import java.util.function.Supplier
 
 class Hooks : Callbacks {
     private var lastCheck: Long = 0
@@ -31,6 +33,7 @@ class Hooks : Callbacks {
     private var ignoreNextNpcUpdate = false
     private var lastMainBufferProvider: MainBufferProvider? = null
     private var lastGraphics: Graphics2D? = null
+    private var drawManager = meteor.ui.DrawManager
 
     init {
         EventBus.subscribe(onEvent())
@@ -42,7 +45,7 @@ class Hooks : Callbacks {
     }
 
     override fun postDeferred(event: Any?) {
-        TODO("Not yet implemented")
+        //TODO
     }
 
     override fun tick() {
@@ -91,15 +94,66 @@ class Hooks : Callbacks {
         TODO("Not yet implemented")
     }
 
-    override fun draw(mainBufferProvider: MainBufferProvider?, graphics: Graphics?, x: Int, y: Int) {
-        TODO("Not yet implemented")
+    override fun draw(mainBufferProvider: MainBufferProvider, graphics: Graphics?, x: Int, y: Int) {
+        if (graphics == null) {
+            return
+        }
+
+        val graphics2d: Graphics2D = getGraphics(mainBufferProvider)
+
+        try {
+            overlayRenderer.renderOverlayLayer(graphics2d, OverlayLayer.ALWAYS_ON_TOP)
+        } catch (ex: java.lang.Exception) {
+            ex.printStackTrace()
+        }
+
+        if (client.isGpu) {
+            // processDrawComplete gets called on GPU by the gpu plugin at the end of its
+            // drawing cycle, which is later on.
+            return
+        }
+
+        // Stretch the game image if the user has that enabled
+
+        // Stretch the game image if the user has that enabled
+        val image = mainBufferProvider.image
+        val finalImage: Image
+        finalImage = image
+
+        // Draw the image onto the game canvas
+
+        // Draw the image onto the game canvas
+        graphics.drawImage(finalImage, 0, 0, client.canvas)
+
+        // finalImage is backed by the client buffer which will change soon. make a copy
+        // so that callbacks can safely use it later from threads.
+
+        // finalImage is backed by the client buffer which will change soon. make a copy
+        // so that callbacks can safely use it later from threads.
+        drawManager.processDrawComplete { copy(finalImage) }
     }
 
-    override fun drawInterface(interfaceId: Int, widgetItems: MutableList<WidgetItem>?) {
-        TODO("Not yet implemented")
+    private fun copy(src: Image): Image {
+        val width = src.getWidth(null)
+        val height = src.getHeight(null)
+        val image = BufferedImage(width, height, BufferedImage.TYPE_INT_RGB)
+        val graphics = image.graphics
+        graphics.drawImage(src, 0, 0, width, height, null)
+        graphics.dispose()
+        return image
     }
 
-    override fun drawLayer(layer: Widget?, widgetItems: MutableList<WidgetItem>?) {
+    override fun drawInterface(interfaceId: Int, widgetItems: MutableList<WidgetItem>) {
+        val graphics2d: Graphics2D = getGraphics(client.bufferProvider as MainBufferProvider)
+
+        try {
+            overlayRenderer.renderAfterInterface(graphics2d, interfaceId, widgetItems)
+        } catch (ex: java.lang.Exception) {
+            ex.printStackTrace()
+        }
+    }
+
+    override fun drawLayer(layer: Widget, widgetItems: MutableList<WidgetItem>) {
         val bufferProvider = client.bufferProvider as MainBufferProvider
         val graphics2d: Graphics2D = getGraphics(bufferProvider)
 
