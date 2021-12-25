@@ -1,6 +1,7 @@
 package meteor
 
 import Main.client
+import Main.overlayRenderer
 import meteor.eventbus.EventBus
 import meteor.eventbus.events.GameStateChanged
 import meteor.eventbus.events.GameTick
@@ -16,6 +17,7 @@ import net.runelite.api.hooks.DrawCallbacks
 import net.runelite.api.widgets.Widget
 import net.runelite.api.widgets.WidgetItem
 import java.awt.Graphics
+import java.awt.Graphics2D
 import java.awt.event.KeyEvent
 import java.awt.event.MouseEvent
 import java.awt.event.MouseWheelEvent
@@ -27,6 +29,8 @@ class Hooks : Callbacks {
     private val GAME_TICK = GameTick()
     private var shouldProcessGameTick = false
     private var ignoreNextNpcUpdate = false
+    private var lastMainBufferProvider: MainBufferProvider? = null
+    private var lastGraphics: Graphics2D? = null
 
     init {
         EventBus.subscribe(onEvent())
@@ -96,7 +100,23 @@ class Hooks : Callbacks {
     }
 
     override fun drawLayer(layer: Widget?, widgetItems: MutableList<WidgetItem>?) {
-        TODO("Not yet implemented")
+        val bufferProvider = client.bufferProvider as MainBufferProvider
+        val graphics2d: Graphics2D = getGraphics(bufferProvider)
+
+        try {
+            overlayRenderer.renderAfterLayer(graphics2d, layer, widgetItems)
+        } catch (ex: Exception) {
+            ex.printStackTrace()
+        }
+    }
+
+    private fun getGraphics(mainBufferProvider: MainBufferProvider): Graphics2D {
+        if (lastGraphics == null || lastMainBufferProvider !== mainBufferProvider) {
+            lastGraphics?.dispose()
+            lastMainBufferProvider = mainBufferProvider
+            lastGraphics = mainBufferProvider.image.graphics as Graphics2D
+        }
+        return lastGraphics as Graphics2D
     }
 
     override fun mousePressed(mouseEvent: MouseEvent): MouseEvent {

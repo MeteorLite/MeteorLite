@@ -8,6 +8,8 @@ import meteor.eventbus.events.GameStateChanged
 import meteor.eventbus.events.GameTick
 import meteor.rs.Applet
 import meteor.rs.AppletConfiguration
+import meteor.ui.OverlayManager
+import meteor.ui.OverlayRenderer
 import meteor.ui.UI
 import net.runelite.api.Client
 import net.runelite.api.hooks.Callbacks
@@ -19,6 +21,8 @@ import themes.MeteorliteTheme
 object Main: KoinComponent {
     lateinit var client: Client
     private lateinit var callbacks: Callbacks
+    val overlayManager = OverlayManager
+    val overlayRenderer = OverlayRenderer
 
     @JvmStatic
     fun main(args: Array<String>) = application {
