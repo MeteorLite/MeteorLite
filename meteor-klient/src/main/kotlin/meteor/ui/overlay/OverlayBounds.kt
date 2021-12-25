@@ -27,45 +27,47 @@ package meteor.ui.overlay
 import java.awt.Rectangle
 import java.util.*
 
-internal class OverlayBounds(other: OverlayBounds) {
-    private val topLeft: Rectangle
-    private val topCenter: Rectangle
-    private val topRight: Rectangle
-    private val bottomLeft: Rectangle
-    private val bottomRight: Rectangle
-    private val aboveChatboxRight: Rectangle
-    private val canvasTopRight: Rectangle
+internal class OverlayBounds(private var topLeft: Rectangle? = null, private var topCenter: Rectangle? = null,
+                             private var topRight: Rectangle? = null, private var bottomLeft: Rectangle? = null,
+                             private var bottomRight: Rectangle? = null, private var aboveChatboxRight: Rectangle? = null,
+                             private var canvasTopRight: Rectangle? = null, other: OverlayBounds? = null) {
+
+
+
+
 
     init {
-        topLeft = Rectangle(other.topLeft)
-        topCenter = Rectangle(other.topCenter)
-        topRight = Rectangle(other.topRight)
-        bottomLeft = Rectangle(other.bottomLeft)
-        bottomRight = Rectangle(other.bottomRight)
-        aboveChatboxRight = Rectangle(other.aboveChatboxRight)
-        canvasTopRight = Rectangle(other.canvasTopRight)
+        if (other != null) {
+            topLeft = Rectangle(other.topLeft)
+            topCenter = Rectangle(other.topCenter)
+            topRight = Rectangle(other.topRight)
+            bottomLeft = Rectangle(other.bottomLeft)
+            bottomRight = Rectangle(other.bottomRight)
+            aboveChatboxRight = Rectangle(other.aboveChatboxRight)
+            canvasTopRight = Rectangle(other.canvasTopRight)
+        }
     }
 
     fun translated(x: Int, y: Int): OverlayBounds {
-        val translated = OverlayBounds(this)
-        translated.topRight.translate(x, 0)
-        translated.topCenter.translate(x / 2, 0)
-        translated.bottomLeft.translate(0, y)
-        translated.bottomRight.translate(x, y)
-        translated.aboveChatboxRight.translate(x, y)
-        translated.canvasTopRight.translate(x, 0)
+        val translated = OverlayBounds(other = this)
+        translated.topRight!!.translate(x, 0)
+        translated.topCenter!!.translate(x / 2, 0)
+        translated.bottomLeft!!.translate(0, y)
+        translated.bottomRight!!.translate(x, y)
+        translated.aboveChatboxRight!!.translate(x, y)
+        translated.canvasTopRight!!.translate(x, 0)
         return translated
     }
 
     fun forPosition(overlayPosition: OverlayPosition?): Rectangle {
         return when (overlayPosition) {
-            OverlayPosition.TOP_LEFT -> topLeft
-            OverlayPosition.TOP_CENTER -> topCenter
-            OverlayPosition.TOP_RIGHT -> topRight
-            OverlayPosition.BOTTOM_LEFT -> bottomLeft
-            OverlayPosition.BOTTOM_RIGHT -> bottomRight
-            OverlayPosition.ABOVE_CHATBOX_RIGHT -> aboveChatboxRight
-            OverlayPosition.CANVAS_TOP_RIGHT -> canvasTopRight
+            OverlayPosition.TOP_LEFT -> topLeft!!
+            OverlayPosition.TOP_CENTER -> topCenter!!
+            OverlayPosition.TOP_RIGHT -> topRight!!
+            OverlayPosition.BOTTOM_LEFT -> bottomLeft!!
+            OverlayPosition.BOTTOM_RIGHT -> bottomRight!!
+            OverlayPosition.ABOVE_CHATBOX_RIGHT -> aboveChatboxRight!!
+            OverlayPosition.CANVAS_TOP_RIGHT -> canvasTopRight!!
             else -> throw IllegalArgumentException()
         }
     }
@@ -91,6 +93,6 @@ internal class OverlayBounds(other: OverlayBounds) {
     }
 
     val bounds: Collection<Rectangle>
-        get() = Arrays.asList(topLeft, topCenter, topRight, bottomLeft, bottomRight, aboveChatboxRight,
+        get() = Arrays.asList(topLeft!!, topCenter, topRight, bottomLeft, bottomRight, aboveChatboxRight,
                 canvasTopRight)
 }

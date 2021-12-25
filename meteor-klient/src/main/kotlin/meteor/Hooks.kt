@@ -3,6 +3,7 @@ package meteor
 import Main.client
 import Main.overlayRenderer
 import meteor.eventbus.EventBus
+import meteor.eventbus.events.BeforeRender
 import meteor.eventbus.events.GameStateChanged
 import meteor.eventbus.events.GameTick
 import meteor.input.KeyManager
@@ -22,7 +23,6 @@ import java.awt.event.KeyEvent
 import java.awt.event.MouseEvent
 import java.awt.event.MouseWheelEvent
 import java.awt.image.BufferedImage
-import java.util.function.Supplier
 
 class Hooks : Callbacks {
     private var lastCheck: Long = 0
@@ -64,7 +64,7 @@ class Hooks : Callbacks {
     }
 
     override fun frame() {
-        TODO("Not yet implemented")
+        EventBus.post(BeforeRender)
     }
 
     override fun updateNpcs() {

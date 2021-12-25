@@ -27,7 +27,7 @@ object Components {
     fun OSRSApplet() {
         val mod = when (UI.toolbarPosition.value) {
             Toolbar.Position.TOP, Toolbar.Position.BOTTOM -> {
-                Modifier.fillMaxWidth().height(UI.contentSize.height.dp - UI.TOOLBAR_WIDTH.dp).background(Color.Black)
+                Modifier.fillMaxWidth().height(UI.contentSize.height.dp - UI.TOOLBAR_WIDTH.dp + 10.dp).background(Color.Black)
             }
             Toolbar.Position.LEFT, Toolbar.Position.RIGHT -> {
                 Modifier.fillMaxHeight().width(UI.contentSize.width.dp - UI.TOOLBAR_WIDTH.dp).background(Color.Black)

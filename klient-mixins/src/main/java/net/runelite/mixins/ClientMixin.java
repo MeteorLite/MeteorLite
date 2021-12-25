@@ -1,7 +1,10 @@
 package net.runelite.mixins;
 
+import com.google.common.primitives.Doubles;
 import meteor.eventbus.events.GameStateChanged;
 import net.runelite.api.GameState;
+import net.runelite.api.NPC;
+import net.runelite.api.Perspective;
 import net.runelite.api.Point;
 import net.runelite.api.hooks.Callbacks;
 import net.runelite.api.hooks.DrawCallbacks;
@@ -14,6 +17,7 @@ import net.runelite.rs.api.*;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 
 @Mixin(RSClient.class)
@@ -205,4 +209,99 @@ public abstract class ClientMixin implements RSClient {
   @Override
   public boolean isGpu() {return false;}
 
+  @Inject
+  @Override
+  public List<NPC> getNpcs()
+  {
+    int validNpcIndexes = getNpcIndexesCount();
+    int[] npcIndexes = getNpcIndices();
+    NPC[] cachedNpcs = getCachedNPCs();
+    List<NPC> npcs = new ArrayList<>(validNpcIndexes);
+
+    for (int i = 0; i < validNpcIndexes; ++i)
+    {
+      npcs.add(cachedNpcs[npcIndexes[i]]);
+    }
+
+    return npcs;
+  }
+
+  @Inject
+  public static HashMap<Integer, RSNPCComposition> npcDefCache = new HashMap<>();
+
+  @Inject
+  @Override
+  public void uncacheNPC(int id) {
+    npcDefCache.remove(id);
+  }
+
+  @Inject
+  @Override
+  public void clearNPCCache() {
+    npcDefCache.clear();
+  }
+
+  @Inject
+  @MethodHook("draw")
+  public void draw$api(boolean var1) {
+    callbacks.frame();
+    updateCamera();
+  }
+
+  @Inject
+  public long lastNanoTime = 0;
+
+  @Inject
+  public void updateCamera()
+  {
+    long nanoTime = System.nanoTime();
+    long diff = nanoTime - this.lastNanoTime;
+    this.lastNanoTime = nanoTime;
+
+    if (this.getGameState() == GameState.LOGGED_IN)
+    {
+      this.interpolateCamera(diff);
+    }
+  }
+
+  @Inject
+  public static int toCameraPos(double var0)
+  {
+    return (int) (var0 / Perspective.UNIT) & 2047;
+  }
+
+  @Inject
+  public static double tmpCamAngleY;
+  @Inject
+  public static double tmpCamAngleX;
+
+  public static final int STANDARD_PITCH_MIN = 128;
+  public static final int STANDARD_PITCH_MAX = 383;
+  public static final int NEW_PITCH_MAX = 512;
+
+  @Inject
+  public void interpolateCamera(long var1)
+  {
+    double angleDX = diffToDangle(client.getCamAngleDY(), var1);
+    double angleDY = diffToDangle(client.getCamAngleDX(), var1);
+
+    tmpCamAngleY += angleDX / 2;
+    tmpCamAngleX += angleDY / 2;
+    tmpCamAngleX = Doubles.constrainToRange(tmpCamAngleX, Perspective.UNIT * STANDARD_PITCH_MIN, false ? Perspective.UNIT * NEW_PITCH_MAX : Perspective.UNIT * STANDARD_PITCH_MAX);
+
+    int yaw = toCameraPos(tmpCamAngleY);
+    int pitch = toCameraPos(tmpCamAngleX);
+
+    client.setCameraYawTarget(yaw);
+    client.setCameraPitchTarget(pitch);
+  }
+
+  @Inject
+  public static double diffToDangle(int var0, long var1)
+  {
+    double var2 = var0 * Perspective.UNIT;
+    double var3 = (double) var1 / 2.0E7D;
+
+    return var2 * var3;
+  }
 }

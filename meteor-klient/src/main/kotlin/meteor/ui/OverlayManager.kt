@@ -65,7 +65,7 @@ object OverlayManager {
         val size: Dimension? = loadOverlaySize(overlay)
         overlay.preferredSize = size!!
         val position: OverlayPosition? = loadOverlayPosition(overlay)
-        overlay.preferredPosition = position
+        overlay.preferredPosition = position!!
     }
 
     private fun updateOverlayConfig(overlay: Overlay) {

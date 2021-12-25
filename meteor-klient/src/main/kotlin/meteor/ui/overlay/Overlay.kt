@@ -32,12 +32,13 @@ import java.awt.Point
 import java.awt.Rectangle
 
 abstract class Overlay : LayoutableRenderableEntity {
+    val client = Main.client
     private val plugin: Plugin?
     val drawHooks: MutableList<Int> = ArrayList()
     val menuEntries: List<OverlayMenuEntry> = ArrayList<OverlayMenuEntry>()
     override var preferredLocation: Point = Point(0,0)
     override var preferredSize: Dimension = Dimension(50,50)
-    var preferredPosition: OverlayPosition? = null
+    var preferredPosition= OverlayPosition.TOP_LEFT
     override val bounds = Rectangle()
     var position = OverlayPosition.TOP_LEFT
     var priority: OverlayPriority = OverlayPriority.NONE

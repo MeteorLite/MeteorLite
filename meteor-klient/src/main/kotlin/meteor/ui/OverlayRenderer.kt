@@ -5,17 +5,30 @@ import Main.fontManager
 import Main.overlayManager
 import com.google.common.base.MoreObjects
 import com.google.common.primitives.Ints
+import meteor.Event
+import meteor.eventbus.EventBus
 import meteor.ui.overlay.*
 import meteor.util.JagexColors
-import net.runelite.api.Client
-import net.runelite.api.GameState
-import net.runelite.api.MenuEntry
-import net.runelite.api.Point
+import net.runelite.api.*
 import net.runelite.api.widgets.Widget
+import net.runelite.api.widgets.WidgetInfo
 import net.runelite.api.widgets.WidgetItem
 import java.awt.*
+import java.awt.Point
 
 object OverlayRenderer {
+
+    init {
+        EventBus.subscribe(onEvent())
+    }
+
+    private fun onEvent(): (Event) -> Unit {
+        return {
+            if (it is meteor.eventbus.events.BeforeRender) {
+                onBeforeRender()
+            }
+        }
+    }
 
     private const val BORDER = 5
     private const val BORDER_TOP = BORDER + 15
@@ -42,16 +55,110 @@ object OverlayRenderer {
     private var menuEntries: Array<MenuEntry>? = null
 
     // Overlay state validation
-    private val viewportBounds: Rectangle? = null
-    private val chatboxBounds: Rectangle? = null
-    private const val chatboxHidden = false
-    private const val isResizeable = false
-    private val emptySnapCorners: OverlayBounds? = null
+    private var viewportBounds: Rectangle? = null
+    private var chatboxBounds: Rectangle? = null
+    private var chatboxHidden = false
+    private var isResizeable = false
+    private var emptySnapCorners: OverlayBounds? = null
     private var snapCorners: OverlayBounds? = null
 
     // focused overlay
     private var focusedOverlay: Overlay? = null
-    private val prevFocusedOverlay: Overlay? = null
+    private var prevFocusedOverlay: Overlay? = null
+
+    private fun getViewportLayer(): Widget? {
+        return if (client.isResized) {
+            if (client.getVar(Varbits.SIDE_PANELS) == 1) {
+                client.getWidget(WidgetInfo.RESIZABLE_VIEWPORT_BOTTOM_LINE)
+            } else {
+                client.getWidget(WidgetInfo.RESIZABLE_VIEWPORT_OLD_SCHOOL_BOX)
+            }
+        } else client.getWidget(WidgetInfo.FIXED_VIEWPORT)
+    }
+
+    private fun shouldInvalidateBounds(): Boolean {
+        val chatbox = client.getWidget(WidgetInfo.CHATBOX)
+        val resizeableChanged = isResizeable != client.isResized
+        var changed = false
+        if (resizeableChanged) {
+            isResizeable = client.isResized
+            changed = true
+        }
+        val chatboxBoundsChanged = chatbox == null || chatbox.bounds != chatboxBounds
+        if (chatboxBoundsChanged) {
+            chatboxBounds = if (chatbox != null) chatbox.bounds else Rectangle()
+            changed = true
+        }
+        val chatboxHiddenChanged = chatboxHidden != (chatbox == null || chatbox.isHidden)
+        if (chatboxHiddenChanged) {
+            chatboxHidden = chatbox == null || chatbox.isHidden
+            changed = true
+        }
+        val viewportWidget: Widget? = getViewportLayer()
+        val viewport = if (viewportWidget != null) viewportWidget.bounds else Rectangle()
+        val viewportChanged = viewport != viewportBounds
+        if (viewportChanged) {
+            viewportBounds = viewport
+            changed = true
+        }
+        return changed
+    }
+
+
+    fun onBeforeRender() {
+        menuEntries = null
+        if (focusedOverlay == null && prevFocusedOverlay != null) {
+            prevFocusedOverlay!!.onMouseExit()
+        }
+        prevFocusedOverlay = focusedOverlay
+        focusedOverlay = null
+        if (client.gameState == GameState.LOGGED_IN) {
+            if (shouldInvalidateBounds()) {
+                emptySnapCorners = buildSnapCorners()
+            }
+
+            // Create copy of snap corners because overlays will modify them
+            snapCorners = OverlayBounds(other = emptySnapCorners!!)
+        }
+    }
+
+    private fun buildSnapCorners(): OverlayBounds? {
+        val topLeftPoint = java.awt.Point(
+                viewportBounds!!.x + BORDER,
+                viewportBounds!!.y + BORDER_TOP)
+        val topCenterPoint = java.awt.Point(
+                viewportBounds!!.x + viewportBounds!!.width / 2,
+                viewportBounds!!.y + BORDER
+        )
+        val topRightPoint = java.awt.Point(
+                viewportBounds!!.x + viewportBounds!!.width - BORDER,
+                topCenterPoint.y)
+        val bottomLeftPoint = java.awt.Point(
+                topLeftPoint.x,
+                viewportBounds!!.y + viewportBounds!!.height - BORDER)
+        val bottomRightPoint = java.awt.Point(
+                topRightPoint.x,
+                bottomLeftPoint.y)
+
+        // Check to see if chat box is minimized
+        if (isResizeable && chatboxHidden) {
+            bottomLeftPoint.y += chatboxBounds!!.height
+        }
+        val rightChatboxPoint = if (isResizeable) java.awt.Point(
+                viewportBounds!!.x + chatboxBounds!!.width - BORDER,
+                bottomLeftPoint.y) else bottomRightPoint
+        val canvasTopRightPoint = if (isResizeable) java.awt.Point(client.realDimensions.getWidth().toInt(),
+                0) else topRightPoint
+        return OverlayBounds(
+                Rectangle(topLeftPoint, SNAP_CORNER_SIZE),
+                Rectangle(topCenterPoint, SNAP_CORNER_SIZE),
+                Rectangle(topRightPoint, SNAP_CORNER_SIZE),
+                Rectangle(bottomLeftPoint, SNAP_CORNER_SIZE),
+                Rectangle(bottomRightPoint, SNAP_CORNER_SIZE),
+                Rectangle(rightChatboxPoint, SNAP_CORNER_SIZE),
+                Rectangle(canvasTopRightPoint, SNAP_CORNER_SIZE))
+    }
+
 
     fun renderOverlayLayer(graphics: Graphics2D, layer: OverlayLayer) {
         val overlays: Collection<Overlay> = overlayManager.getLayer(layer)
@@ -185,7 +292,7 @@ object OverlayRenderer {
         }
 
         // Get mouse position
-        val mouseCanvasPosition: Point = client.getMouseCanvasPosition()
+        val mouseCanvasPosition: net.runelite.api.Point = client.mouseCanvasPosition
         val mouse = java.awt.Point(mouseCanvasPosition.x, mouseCanvasPosition.y)
 
         // Save graphics2d properties so we can restore them later
@@ -215,7 +322,7 @@ object OverlayRenderer {
                 var location: java.awt.Point
 
                 // If the final position is not modified, layout it
-                if (overlayPosition != OverlayPosition.DETACHED && overlay.preferredPosition != null) {
+                if (overlayPosition != OverlayPosition.DETACHED && snapCorners != null) {
                     val snapCorner: Rectangle = snapCorners!!.forPosition(overlayPosition)
                     val translation: java.awt.Point = transformPosition(overlayPosition,
                             dimension) // offset from corner
@@ -237,7 +344,7 @@ object OverlayRenderer {
                     location = preferredLocation ?: bounds.location
 
                     // Clamp the overlay position to ensure it is on screen or within parent bounds
-                    location = clampOverlayLocation(location.x, location.y + 10, dimension.width, dimension.height,
+                    location = clampOverlayLocation(location.x, location.y, dimension.width, dimension.height,
                             overlay)
                 }
                 bounds.size = overlay.preferredSize
@@ -270,16 +377,14 @@ object OverlayRenderer {
                         graphics.draw(bounds)
                         graphics.paint = paint
                     }
-                    if (!client.isMenuOpen() && !client.getSpellSelected() && bounds.contains(mouse)) {
+                    if (!client.isMenuOpen && !client.spellSelected && bounds.contains(mouse)) {
                         if (menuEntries == null) {
                             menuEntries = createRightClickMenuEntries(overlay)
                         }
                         if (focusedOverlay == null) {
                             focusedOverlay = overlay
                             if (focusedOverlay !== prevFocusedOverlay) {
-                                if (prevFocusedOverlay != null) {
-                                    prevFocusedOverlay.onMouseExit()
-                                }
+                                prevFocusedOverlay?.onMouseExit()
                                 overlay.onMouseEnter()
                             }
                         }

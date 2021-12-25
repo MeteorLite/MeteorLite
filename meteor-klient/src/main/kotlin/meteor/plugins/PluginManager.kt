@@ -1,12 +1,15 @@
 package meteor.plugins
 
 object PluginManager {
-    var plugins = ArrayList<Plugin>
-
+    var plugins = ArrayList<Plugin>()
     init {
-        plugins.add()
+        plugins.add(OverlayTest())
     }
-    fun startPlugins() {
 
+    fun startPlugins() {
+        for (it in plugins) {
+            it.start()
+            it.onStart()
+        }
     }
 }

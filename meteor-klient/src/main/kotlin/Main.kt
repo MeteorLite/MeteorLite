@@ -7,6 +7,7 @@ import meteor.Event
 import meteor.eventbus.EventBus
 import meteor.eventbus.events.GameStateChanged
 import meteor.eventbus.events.GameTick
+import meteor.plugins.PluginManager
 import meteor.rs.Applet
 import meteor.rs.AppletConfiguration
 import meteor.ui.OverlayManager
@@ -48,6 +49,7 @@ object Main: KoinComponent {
         client.callbacks = callbacks
         client.gameDrawingMode = 2
         overlayManager.add(TestOverlay)
+        PluginManager.startPlugins()
     }
 
     private fun onEvent(): (Event) -> Unit {
@@ -70,8 +72,7 @@ object TestOverlay : Overlay() {
     override fun render(graphics: Graphics2D): Dimension? {
         graphics.color = Color.CYAN
         if (UI.toolbarPosition.value == Toolbar.Position.TOP)
-        graphics.drawString("Meteor Klient rendering overlays!", 0, 0)
+        graphics.drawString("Meteor Klient rendering overlays!", 0, 10)
         return null
     }
 }
-/*
