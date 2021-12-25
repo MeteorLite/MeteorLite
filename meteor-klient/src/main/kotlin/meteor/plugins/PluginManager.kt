@@ -3,7 +3,7 @@ package meteor.plugins
 object PluginManager {
     var plugins = ArrayList<Plugin>()
     init {
-        plugins.add(OverlayTest())
+        plugins.add(ExamplePlugin())
     }
 
     fun startPlugins() {

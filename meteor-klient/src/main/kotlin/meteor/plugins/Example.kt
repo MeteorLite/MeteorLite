@@ -4,15 +4,14 @@ import meteor.ui.overlay.Overlay
 import java.awt.Dimension
 import java.awt.Graphics2D
 
-class OverlayTest: Plugin() {
-    override var overlay = OverlayTestOverlay as Overlay?
+class ExamplePlugin: Plugin() {
+    override var overlay = ExampleOverlay as Overlay?
 
     override fun onStart() {
-
     }
 }
 
-object OverlayTestOverlay: Overlay() {
+object ExampleOverlay: Overlay() {
     override fun render(graphics: Graphics2D): Dimension? {
         for (npc in client.npcs) {
             val convexHull = npc.convexHull

@@ -31,9 +31,10 @@ import java.awt.Dimension
 import java.awt.Point
 import java.awt.Rectangle
 
-abstract class Overlay : LayoutableRenderableEntity {
+abstract class Overlay(plugin: Plugin? = null,
+                       var layer: OverlayLayer = OverlayLayer.ALWAYS_ON_TOP)
+    : LayoutableRenderableEntity {
     val client = Main.client
-    private val plugin: Plugin?
     val drawHooks: MutableList<Int> = ArrayList()
     val menuEntries: List<OverlayMenuEntry> = ArrayList<OverlayMenuEntry>()
     override var preferredLocation: Point = Point(0,0)
@@ -42,7 +43,6 @@ abstract class Overlay : LayoutableRenderableEntity {
     override val bounds = Rectangle()
     var position = OverlayPosition.TOP_LEFT
     var priority: OverlayPriority = OverlayPriority.NONE
-    var layer: OverlayLayer = OverlayLayer.UNDER_WIDGETS
     var resizable = false
     private val minimumSize = 32
     private val resettable = true
@@ -52,14 +52,6 @@ abstract class Overlay : LayoutableRenderableEntity {
      * it.
      */
     val dragTargetable = false
-
-    protected constructor() {
-        plugin = null
-    }
-
-    protected constructor(plugin: Plugin?) {
-        this.plugin = plugin
-    }
 
     /**
      * Overlay name, used for saving the overlay, needs to be unique

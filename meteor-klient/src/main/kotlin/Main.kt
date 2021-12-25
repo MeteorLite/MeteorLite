@@ -65,10 +65,6 @@ object Main: KoinComponent {
 }
 
 object TestOverlay : Overlay() {
-    init {
-        layer = OverlayLayer.ALWAYS_ON_TOP
-    }
-
     override fun render(graphics: Graphics2D): Dimension? {
         graphics.color = Color.CYAN
         if (UI.toolbarPosition.value == Toolbar.Position.TOP)
