@@ -2,10 +2,8 @@ package net.runelite.mixins;
 
 import com.google.common.primitives.Doubles;
 import meteor.eventbus.events.GameStateChanged;
-import net.runelite.api.GameState;
-import net.runelite.api.NPC;
-import net.runelite.api.Perspective;
-import net.runelite.api.Point;
+import meteor.eventbus.events.NpcSpawned;
+import net.runelite.api.*;
 import net.runelite.api.hooks.Callbacks;
 import net.runelite.api.hooks.DrawCallbacks;
 import net.runelite.api.mixins.*;
@@ -303,5 +301,36 @@ public abstract class ClientMixin implements RSClient {
     double var3 = (double) var1 / 2.0E7D;
 
     return var2 * var3;
+  }
+
+  @FieldHook("npcs")
+  @Inject
+  public static void cachedNPCsChanged(int idx) {
+    RSNPC[] cachedNPCs = client.getCachedNPCs();
+    if (idx < 0 || idx >= cachedNPCs.length) {
+      return;
+    }
+
+    RSNPC npc = cachedNPCs[idx];
+    if (npc != null) {
+      npc.setIndex(idx);
+      client.getCallbacks().post(new NpcSpawned(npc));
+    }
+  }
+
+  @Inject
+  @Override
+  public Widget getWidget(WidgetInfo widget) {
+    int groupId = widget.getGroupId();
+    int childId = widget.getChildId();
+
+    return getWidget(groupId, childId);
+  }
+
+  @Inject
+  @Override
+  public int getVar(VarPlayer varPlayer) {
+    int[] varps = getVarps();
+    return varps[varPlayer.getId()];
   }
 }

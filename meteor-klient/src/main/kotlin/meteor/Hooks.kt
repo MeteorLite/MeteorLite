@@ -36,7 +36,14 @@ class Hooks : Callbacks {
     private var drawManager = meteor.ui.DrawManager
 
     init {
-        EventBus.subscribe(onEvent())
+        EventBus.subscribe {
+            if (it is GameStateChanged)
+                when (it.new) {
+                    GameState.LOGGING_IN, GameState.HOPPING -> {
+                        ignoreNextNpcUpdate = true
+                    }
+                }
+        }
     }
 
     override fun post(obj: Any?) {
@@ -72,17 +79,6 @@ class Hooks : Callbacks {
             ignoreNextNpcUpdate = false
         } else {
             shouldProcessGameTick = true
-        }
-    }
-
-    private fun onEvent(): (Event) -> Unit {
-        return {
-            if (it is GameStateChanged)
-                when (it.new) {
-                    GameState.LOGGING_IN, GameState.HOPPING -> {
-                        ignoreNextNpcUpdate = true
-                    }
-                }
         }
     }
 

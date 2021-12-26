@@ -31,7 +31,7 @@ object OverlayRenderer {
     }
 
     private const val BORDER = 5
-    private const val BORDER_TOP = BORDER + 15
+    private const val BORDER_TOP = 0
     private const val PADDING = 2
     private const val OVERLAY_RESIZE_TOLERANCE = 5
     private val SNAP_CORNER_SIZE = Dimension(80, 80)

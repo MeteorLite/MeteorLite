@@ -54,9 +54,6 @@ object Main: KoinComponent {
 
     private fun onEvent(): (Event) -> Unit {
         return {
-            if (it is GameTick) {
-                println("Game Tick")
-            }
             if (it is GameStateChanged) {
                 println("GameStateChanged: ${it.new}")
             }

@@ -24,12 +24,13 @@
  */
 package meteor.ui.overlay
 
+import Main
+import com.google.common.base.Strings
 import meteor.plugins.Plugin
 import meteor.ui.components.LayoutableRenderableEntity
+import meteor.util.ColorUtil
 import net.runelite.api.widgets.WidgetInfo
-import java.awt.Dimension
-import java.awt.Point
-import java.awt.Rectangle
+import java.awt.*
 
 abstract class Overlay(plugin: Plugin? = null,
                        var layer: OverlayLayer = OverlayLayer.ALWAYS_ON_TOP)
@@ -78,4 +79,48 @@ abstract class Overlay(plugin: Plugin? = null,
     }
 
     open var parentBounds = Rectangle(0,0,1920,1080)
+
+    open fun renderPolygon(graphics: Graphics2D, poly: Shape, color: Color) {
+        renderPolygon(graphics, poly, color, BasicStroke(2F))
+    }
+
+    open fun renderPolygon(graphics: Graphics2D, poly: Shape, color: Color,
+                           borderStroke: Stroke) {
+        graphics.color = color
+        val originalStroke = graphics.stroke
+        graphics.stroke = borderStroke
+        graphics.draw(poly)
+        graphics.color = Color(0, 0, 0, 50)
+        graphics.fill(poly)
+        graphics.stroke = originalStroke
+    }
+
+    open fun renderTextLocation(graphics: Graphics2D, txtString: String, fontSize: Int,
+                                fontStyle: Int, fontColor: Color, canvasPoint: net.runelite.api.Point, shadows: Boolean, yOffset: Int) {
+        graphics.font = Font("Arial", fontStyle, fontSize)
+        val canvasCenterPoint = net.runelite.api.Point(
+                canvasPoint.x,
+                canvasPoint.y + yOffset)
+        val canvasCenterPoint_shadow = net.runelite.api.Point(
+                canvasPoint.x + 1,
+                canvasPoint.y + 1 + yOffset)
+        if (shadows) {
+            renderTextLocation(graphics, canvasCenterPoint_shadow, txtString, Color.BLACK)
+        }
+        renderTextLocation(graphics, canvasCenterPoint, txtString, fontColor)
+    }
+
+    open fun renderTextLocation(graphics: Graphics2D, txtLoc: net.runelite.api.Point, text: String,
+                                color: Color) {
+        if (Strings.isNullOrEmpty(text)) {
+            return
+        }
+        val x = txtLoc.x
+        val y = txtLoc.y
+        graphics.color = Color.BLACK
+        graphics.drawString(text, x + 1, y + 1)
+        graphics.color = ColorUtil.colorWithAlpha(color!!, 0xFF)
+        graphics.drawString(text, x, y)
+    }
+
 }

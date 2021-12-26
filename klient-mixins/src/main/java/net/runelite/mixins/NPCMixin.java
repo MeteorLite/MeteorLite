@@ -1,12 +1,12 @@
 package net.runelite.mixins;
 
+import meteor.eventbus.events.NpcDespawned;
 import net.runelite.api.MenuAction;
 import net.runelite.api.NPCComposition;
 import net.runelite.api.Perspective;
 import net.runelite.api.Point;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.events.NpcChanged;
-import net.runelite.api.events.NpcDespawned;
 import net.runelite.api.mixins.FieldHook;
 import net.runelite.api.mixins.Inject;
 import net.runelite.api.mixins.Mixin;
