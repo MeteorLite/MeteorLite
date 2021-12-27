@@ -114,30 +114,8 @@ javafx {
 
 application {
     mainClassName = 'meteor.MeteorLiteClientLauncher'
-}
-
-compileJava.options.encoding = 'UTF-8'
-
-tasks.withType(JavaCompile) {
-    options.encoding = 'UTF-8'
-}
-
-task copyRunBat(type: Copy) {
-    from "/"
-    into "build/libs/"
-    include "run.bat"
-}
-
-shadowJar {
-    finalizedBy(copyRunBat)
-    configurations = [project.configurations.runtimeClasspath]
-    minimize {
-        it.exclude(it.dependency { 'net.runelite.jogl:.*:.*' } as Spec<? super ResolvedDependency>)
-        it.exclude(it.dependency {'xerces:xercesImpl:.*:.*'} as Spec<? super ResolvedDependency>)
-        it.exclude(it.project(":runelite-api") as Spec<? super ResolvedDependency>)
-        it.exclude(it.project(":runescape-api") as Spec<? super ResolvedDependency>)
-    }
     applicationDefaultJvmArgs = [
+            "-Xjvm-default=compatibility",
             "-noverify",
             "-Xmx512m",
             "-Dprism.allowhidpi=false",
@@ -168,6 +146,30 @@ shadowJar {
             "-Dsun.java2d.uiScale=1.0",
             "--illegal-access=permit",
             "-ea"]
+}
+
+compileJava.options.encoding = 'UTF-8'
+
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
+}
+
+task copyRunBat(type: Copy) {
+    from "/"
+    into "build/libs/"
+    include "run.bat"
+}
+
+shadowJar {
+    finalizedBy(copyRunBat)
+    configurations = [project.configurations.runtimeClasspath]
+    minimize {
+        it.exclude(it.dependency { 'net.runelite.jogl:.*:.*' } as Spec<? super ResolvedDependency>)
+        it.exclude(it.dependency {'xerces:xercesImpl:.*:.*'} as Spec<? super ResolvedDependency>)
+        it.exclude(it.project(":runelite-api") as Spec<? super ResolvedDependency>)
+        it.exclude(it.project(":runescape-api") as Spec<? super ResolvedDependency>)
+    }
+
 }
 tasks {
     processResources.outputs.upToDateWhen {false}

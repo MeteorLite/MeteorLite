@@ -1,22 +1,18 @@
 package meteor.config.legacy
 
 
-class ConfigItemDescriptor : ConfigObject {
-    private val item: ConfigItem? = null
-    private val type: Class<*>? = null
-    private val range: Range? = null
-    private val alpha: Alpha? = null
-    private val units: Units? = null
-    private val icon: Icon? = null
+class ConfigItemDescriptor(val item: ConfigItem, val type: Class<*>? = null, val range: Range? = null, val alpha: Alpha? = null,
+                           val units: Units? = null, val icon: Icon? = null) : ConfigObject {
+
     override fun key(): String {
-        return item!!.keyName
+        return item.keyName
     }
 
     override fun name(): String {
-        return item!!.name
+        return item.name
     }
 
     override fun position(): Int {
-        return item!!.position
+        return item.position
     }
 }

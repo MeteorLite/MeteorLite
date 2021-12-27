@@ -1,17 +1,16 @@
 package meteor.config.legacy
 
-class ConfigSectionDescriptor : ConfigObject {
-    private val key: String? = null
-    private val section: ConfigSection? = null
+class ConfigSectionDescriptor(val key: String, val section: ConfigSection) : ConfigObject {
+
     override fun key(): String {
-        return key!!
+        return key
     }
 
     override fun name(): String {
-        return section!!.name
+        return section.name
     }
 
     override fun position(): Int {
-        return section!!.position
+        return section.position
     }
 }

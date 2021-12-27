@@ -6,7 +6,7 @@ import meteor.ui.overlay.Overlay
 import net.runelite.api.GameState
 import java.awt.Dimension
 import java.awt.Graphics2D
-
+@PluginDescriptor("Example")
 class ExamplePlugin: Plugin() {
     override var overlay = ExampleOverlay as Overlay?
 

@@ -106,6 +106,10 @@ tasks.withType(JavaCompile) {
     options.encoding = 'UTF-8'
 }
 
+compileKotlin {
+    kotlinOptions.freeCompilerArgs = ['-Xjvm-default=all']
+}
+
 task copyRunBat (type: Copy) {
     from "/"
     into "build/libs/"

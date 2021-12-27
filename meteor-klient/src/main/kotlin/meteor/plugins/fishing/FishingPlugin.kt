@@ -1,18 +1,23 @@
 package meteor.plugins.fishing
 
+import meteor.config.ConfigManager
+import meteor.config.legacy.Config
 import meteor.eventbus.EventBus
 import meteor.eventbus.events.GameStateChanged
 import meteor.eventbus.events.InteractingChanged
 import meteor.eventbus.events.NpcDespawned
 import meteor.eventbus.events.NpcSpawned
 import meteor.plugins.Plugin
+import meteor.plugins.PluginDescriptor
 import meteor.ui.overlay.Overlay
 import net.runelite.api.Actor
 import net.runelite.api.GameState
 import net.runelite.api.NPC
-
+@PluginDescriptor("Fishing")
 class FishingPlugin: Plugin() {
     override var overlay = FishingSpotOverlay(this) as Overlay?
+    override var config = ConfigManager.getConfig(FishingConfig::class.java) as Config?
+
     val fishingSpots: ArrayList<NPC> = ArrayList()
     private var currentSpot: FishingSpot? = null
 

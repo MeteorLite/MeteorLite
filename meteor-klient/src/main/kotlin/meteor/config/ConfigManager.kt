@@ -1,18 +1,41 @@
 package meteor.config
 
 import Main
-import meteor.config.legacy.Keybind
-import meteor.config.legacy.ModifierlessKeybind
+import com.google.common.base.Strings
+import com.google.common.collect.ComparisonChain
+import meteor.Configuration.CONFIG_FILE
+import meteor.Configuration.MASTER_GROUP
+import meteor.config.legacy.*
+import meteor.eventbus.EventBus
+import meteor.eventbus.events.ConfigChanged
+import meteor.plugins.Plugin
 import net.runelite.api.coords.WorldPoint
 import java.awt.Color
 import java.awt.Dimension
 import java.awt.Point
 import java.awt.Rectangle
+import java.io.File
+import java.io.FileOutputStream
+import java.io.OutputStreamWriter
+import java.lang.reflect.Field
+import java.lang.reflect.Method
+import java.lang.reflect.Modifier
+import java.lang.reflect.Proxy
+import java.nio.charset.StandardCharsets
+import java.nio.file.Files
+import java.nio.file.StandardCopyOption
 import java.time.Duration
 import java.time.Instant
 import java.util.*
+import java.util.function.Consumer
+import java.util.function.Function
+import java.util.stream.Collectors
 
-class ConfigManager {
+object ConfigManager {
+    private val properties = Properties()
+    private val handler: ConfigInvocationHandler = ConfigInvocationHandler(this)
+    private val consumers: HashMap<String, Consumer<in Plugin?>> = HashMap()
+
     fun stringToObject(str: String, type: Class<*>): Any? {
         if (type == Boolean::class.javaPrimitiveType || type == Boolean::class.java) {
             return java.lang.Boolean.parseBoolean(str)
@@ -197,4 +220,256 @@ class ConfigManager {
         key = key.substring(i + 1)
         return arrayOf(group, key)
     }
+
+    fun saveProperties() {
+        try {
+            val parent: File = CONFIG_FILE.parentFile
+            parent.mkdirs()
+            val tempFile = File.createTempFile(MASTER_GROUP, null, parent)
+            FileOutputStream(tempFile).use { out ->
+                out.channel.lock()
+                properties
+                        .store(OutputStreamWriter(out, StandardCharsets.UTF_8), "RuneLite configuration")
+            }
+            try {
+                Files.move(tempFile.toPath(), CONFIG_FILE.toPath(), StandardCopyOption.REPLACE_EXISTING,
+                        StandardCopyOption.ATOMIC_MOVE)
+            } catch (ex: java.lang.Exception) {
+                Files.move(tempFile.toPath(), CONFIG_FILE.toPath(), StandardCopyOption.REPLACE_EXISTING)
+            }
+        } catch (e: java.lang.Exception) {
+            //ignore
+        }
+    }
+
+    fun <T : Config?> getConfig(clazz: Class<T>): T? {
+        if (!Modifier.isPublic(clazz.modifiers)) {
+            throw RuntimeException(
+                    "Non-public configuration classes can't have default methods invoked")
+        }
+        return Proxy.newProxyInstance(clazz.classLoader, arrayOf<Class<*>>(
+                clazz
+        ), handler) as T
+    }
+
+    fun getConfigurationKeys(prefix: String): List<String> {
+        return properties.keys.stream().filter { v: Any -> (v as String).startsWith(prefix) }
+                .map { obj: Any? -> String::class.java.cast(obj) }.collect(Collectors.toList())
+    }
+
+    fun getConfiguration(groupName: String, key: String): String? {
+        return properties.getProperty(getWholeKey(groupName, key))
+    }
+
+    fun <T> getConfiguration(groupName: String, key: String, clazz: Class<T>): T {
+        val value = getConfiguration(groupName, key)
+        if (!Strings.isNullOrEmpty(value)) {
+            try {
+                return stringToObject(value!!, clazz) as T
+            } catch (e: java.lang.Exception) {
+                e.printStackTrace()
+                //log.warn("Unable to unmarshal {} ", getWholeKey(groupName, profile, key), e);
+            }
+        }
+        return null as T
+    }
+
+    fun getWholeKey(groupName: String, key: String): String {
+        return "$groupName.$key"
+    }
+
+    fun unsetConfiguration(groupName: String, key: String) {
+        val wholeKey = getWholeKey(groupName, key)
+        var oldValue: String?
+        synchronized(this) { oldValue = properties.remove(wholeKey) as String? }
+        if (oldValue == null) {
+            return
+        }
+
+        //log.debug("Unsetting configuration value for {}", wholeKey);
+        handler.invalidate()
+        val configChanged = ConfigChanged()
+        configChanged.group = groupName
+        configChanged.key = key
+        configChanged.oldValue = oldValue
+        EventBus.post(configChanged)
+    }
+
+    private fun getAllDeclaredInterfaceFields(clazz: Class<*>): Collection<Field> {
+        val methods: MutableCollection<Field> = HashSet()
+        val interfaces = Stack<Class<*>>()
+        interfaces.push(clazz)
+        while (!interfaces.isEmpty()) {
+            val `interface` = interfaces.pop()
+            Collections.addAll(methods, *`interface`.declaredFields)
+            Collections.addAll(interfaces, *`interface`.interfaces)
+        }
+        return methods
+    }
+
+    private fun getAllDeclaredInterfaceMethods(clazz: Class<*>): Collection<Method> {
+        val methods: HashSet<Method> = HashSet()
+        val interfaces = Stack<Class<*>>()
+        interfaces.push(clazz)
+        while (!interfaces.isEmpty()) {
+            val `interface`: Class<*> = interfaces.pop()
+            Collections.addAll(methods, *`interface`.declaredMethods)
+            Collections.addAll(interfaces, *`interface`.interfaces)
+        }
+        return methods
+    }
+
+    fun setDefaultConfiguration(config: Any, override: Boolean) {
+        val clazz = config.javaClass.interfaces[0]
+        val group: ConfigGroup = clazz.getAnnotation(ConfigGroup::class.java)
+                ?: return
+        for (method in getAllDeclaredInterfaceMethods(clazz)) {
+            val item: ConfigItem? = method.getAnnotation(ConfigItem::class.java)
+
+            // only apply default configuration for methods which read configuration (0 args)
+            if (item == null || method.parameterCount != 0) {
+                continue
+            }
+            if (method.returnType.isAssignableFrom(Consumer::class.java)) {
+                val defaultValue: Any = try {
+                    ConfigInvocationHandler.callDefaultMethod(config, method, null)
+                } catch (ex: Throwable) {
+                    ex.printStackTrace()
+                    continue
+                }
+
+                //log.debug("Registered consumer: {}.{}", group.value(), item.keyName());
+                consumers[group.value + "." + item.keyName] = defaultValue as Consumer<in Plugin?>
+            } else {
+                if (!method.isDefault) {
+                    if (override) {
+                        val current = getConfiguration(group.value, item.keyName)
+                        // only unset if already set
+                        if (current != null) {
+                            unsetConfiguration(group.value, item.keyName)
+                        }
+                    }
+                    continue
+                }
+                if (!override) {
+                    // This checks if it is set and is also unmarshallable to the correct type; so
+                    // we will overwrite invalid config values with the default
+                    val current = getConfiguration(group.value, item.keyName, method.returnType)
+                    if (current != null) {
+                        continue  // something else is already set
+                    }
+                }
+                val defaultValue: Any = try {
+                    ConfigInvocationHandler.callDefaultMethod(config, method, null)
+                } catch (ex: Throwable) {
+                    ex.printStackTrace()
+                    continue
+                }
+                val current = getConfiguration(group.value, item.keyName)
+                val valueString = objectToString(defaultValue)
+                // null and the empty string are treated identically in sendConfig and treated as an unset
+                // If a config value defaults to "" and the current value is null, it will cause an extra
+                // unset to be sent, so treat them as equal
+                if (current == valueString || Strings.isNullOrEmpty(current) && Strings
+                                .isNullOrEmpty(valueString)) {
+                    continue  // already set to the default value
+                }
+
+                //log.debug("Setting default configuration value for {}.{} to {}", group.value(), item.keyName(), defaultValue);
+                setConfiguration(group.value, item.keyName, valueString!!)
+            }
+        }
+    }
+
+    fun setConfiguration(groupName: String, key: String, value: Any) {
+        // do not save consumers for buttons, they cannot be changed anyway
+        if (value is Consumer<*>) {
+            return
+        }
+
+        require(!(Strings.isNullOrEmpty(groupName) || Strings.isNullOrEmpty(key) || key.indexOf(':') != -1))
+
+        val wholeKey = getWholeKey(groupName, key)
+        var oldValue: String?
+        synchronized(this) { oldValue = properties.setProperty(wholeKey, "$value") as String? }
+
+        handler.invalidate()
+
+        val configChanged = ConfigChanged()
+        configChanged.group = groupName
+        configChanged.key = key
+        configChanged.oldValue = oldValue
+        configChanged.newValue = "$value"
+        println("Should have set default $key, $value")
+        EventBus.post(configChanged)
+
+        saveProperties()
+    }
+
+    fun getConfigDescriptor(configurationProxy: Config): ConfigDescriptor {
+        val inter: Class<*> = configurationProxy.javaClass.interfaces[0]
+        val group: ConfigGroup = inter.getAnnotation(ConfigGroup::class.java)
+                ?: throw IllegalArgumentException("Not a config group")
+        val sections: List<ConfigSectionDescriptor> = getAllDeclaredInterfaceFields(inter).stream()
+                .filter { m: Field -> m.isAnnotationPresent(ConfigSection::class.java) && m.type == String::class.java }
+                .map<ConfigSectionDescriptor>(Function { m: Field ->
+                    try {
+                        return@Function ConfigSectionDescriptor(m[inter].toString(),
+                                m.getDeclaredAnnotation(ConfigSection::class.java)
+                        )
+                    } catch (e: IllegalAccessException) {
+                        //log.warn("Unable to load section {}::{}", inter.getSimpleName(), m.getName());
+                        return@Function null
+                    }
+                })
+                .filter { obj: ConfigSectionDescriptor? -> Objects.nonNull(obj) }
+                .sorted { a: ConfigSectionDescriptor, b: ConfigSectionDescriptor ->
+                    ComparisonChain.start()
+                            .compare(a.section.position, b.section.position)
+                            .compare(a.section.name, b.section.name)
+                            .result()
+                }
+                .collect(Collectors.toList())
+        val titles: List<ConfigTitleDescriptor> = getAllDeclaredInterfaceFields(inter).stream()
+                .filter { m: Field -> m.isAnnotationPresent(ConfigTitle::class.java) && m.type == String::class.java }
+                .map<ConfigTitleDescriptor>(Function { m: Field ->
+                    try {
+                        return@Function ConfigTitleDescriptor(m[inter].toString(),
+                                m.getDeclaredAnnotation(ConfigTitle::class.java)
+                        )
+                    } catch (e: IllegalAccessException) {
+                        //log.warn("Unable to load title {}::{}", inter.getSimpleName(), m.getName());
+                        return@Function null
+                    }
+                })
+                .filter { obj: ConfigTitleDescriptor? -> Objects.nonNull(obj) }
+                .sorted { a: ConfigTitleDescriptor, b: ConfigTitleDescriptor ->
+                    ComparisonChain.start()
+                            .compare(a.title.position, b.title.position)
+                            .compare(a.title.name, b.title.name)
+                            .result()
+                }
+                .collect(Collectors.toList())
+        val items: List<ConfigItemDescriptor> = Arrays.stream(inter.methods)
+                .filter { m: Method -> m.parameterCount == 0 && m.isAnnotationPresent(ConfigItem::class.java) }
+                .map { m: Method ->
+                    ConfigItemDescriptor(
+                            m.getDeclaredAnnotation(ConfigItem::class.java),
+                            m.returnType,
+                            m.getDeclaredAnnotation(Range::class.java),
+                            m.getDeclaredAnnotation(Alpha::class.java),
+                            m.getDeclaredAnnotation(Units::class.java),
+                            m.getDeclaredAnnotation(Icon::class.java)
+                    )
+                }
+                .sorted { a: ConfigItemDescriptor, b: ConfigItemDescriptor ->
+                    ComparisonChain.start()
+                            .compare(a.item.position, b.item.position)
+                            .compare(a.item.name, b.item.name)
+                            .result()
+                }
+                .collect(Collectors.toList())
+        return ConfigDescriptor(group, sections, titles, items)
+    }
+
 }
