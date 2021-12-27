@@ -62,9 +62,9 @@ public class Injector extends InjectData implements InjectTaskHandler {
 
     OptionSet options = parser.parse(args);
     oprsVer = "1.0-SNAPSHOT";
-
     File clientMixins = new File("../runelite-mixins/build/libs/runelite-mixins-" + oprsVer + ".jar");
-    if (clientMixins.exists()) {
+    if (true) {
+
       log.info("Injecting Client");
 
       injector.vanilla = load(
@@ -78,12 +78,15 @@ public class Injector extends InjectData implements InjectTaskHandler {
 
       injector.initToVanilla();
       injector.injectVanilla();
-      save(injector.getVanilla(), new File("../meteor-client/src/main/resources/injected-client.osrs"),
-              options.valueOf(outModeOption));
+      File f = new File("../meteor-client/src/main/resources/injected-client.osrs");
+      if (f.exists())
+        f.delete();
+
+      save(injector.getVanilla(), f, options.valueOf(outModeOption));
     }
 
-    File klientMixins = new File("../klient-mixins/build/libs/klient-mixins-" + oprsVer + ".jar");
-    if (klientMixins.exists()) {
+    if (false) {
+      File klientMixins = new File("../klient-mixins/build/libs/klient-mixins-" + oprsVer + ".jar");
       log.info("Injecting Klient");
       HOOKS = "meteor/Hooks";
 

@@ -170,7 +170,8 @@ shadowJar {
             "-ea"]
 }
 tasks {
-    build.dependsOn(":openosrs-injector:inject")
+    processResources.outputs.upToDateWhen {false}
+    processResources.dependsOn(":openosrs-injector:inject")
     compileJava.dependsOn project(":fernflower").tasks.getByName("decompileInjected")
     compileJava.dependsOn(":runelite-mixins:compileJava")
     compileKotlin {
@@ -190,14 +191,6 @@ processResources {
 task bootstrap(type: JavaExec) {
     classpath = sourceSets.main.runtimeClasspath
     main = "meteor.util.bootstrap.Bootstrapper"
-}
-
-distTar {
-    duplicatesStrategy(DuplicatesStrategy.EXCLUDE)
-}
-
-distZip {
-    duplicatesStrategy(DuplicatesStrategy.EXCLUDE)
 }
 
 jar {

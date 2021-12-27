@@ -35,16 +35,12 @@ test {
 }
 
 task inject(type: JavaExec) {
-    onlyIf {
-        !state.upToDate
-    }
     classpath = sourceSets.main.runtimeClasspath
     main = 'com.openosrs.injector.Injector'
 }
 
 tasks {
-    inject.dependsOn(":runelite-mixins:compileJava")
-    inject.dependsOn(":klient-mixins:compileJava")
+    inject.dependsOn(":runelite-mixins:jar")
 
 //    inject.outputs.upToDateWhen {
 //        tasks.findByPath(":runelite-mixins:compileJava").state.upToDate.booleanValue()

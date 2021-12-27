@@ -11,9 +11,6 @@ repositories {
 
 dependencies {
     implementation(project(":runelite-annotations"))
-    implementation(project(":runescape-api"))
-    implementation(project(":runescape-client"))
-    implementation(project(":runelite-api"))
     implementation(project(":meteor-logger"))
     implementation group: 'javax.inject', name: 'javax.inject', version: '1'
 }
