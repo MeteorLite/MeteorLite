@@ -9,9 +9,9 @@ package com.openosrs.injector;
 
 import static net.runelite.deob.util.JarUtil.addReflection;
 import static net.runelite.deob.util.JarUtil.load;
-import static org.sponge.util.Logger.ANSI_GREEN;
-import static org.sponge.util.Logger.ANSI_RESET;
-import static org.sponge.util.Logger.ANSI_YELLOW;
+import static meteor.Logger.ANSI_GREEN;
+import static meteor.Logger.ANSI_RESET;
+import static meteor.Logger.ANSI_YELLOW;
 
 import com.openosrs.injector.injection.InjectData;
 import com.openosrs.injector.injection.InjectTaskHandler;
@@ -38,8 +38,8 @@ import joptsimple.util.EnumConverter;
 import net.runelite.asm.ClassFile;
 import net.runelite.asm.ClassGroup;
 import net.runelite.deob.util.JarUtil;
-import org.sponge.util.Logger;
-import org.sponge.util.Message;
+import meteor.Logger;
+import meteor.Message;
 
 public class Injector extends InjectData implements InjectTaskHandler {
 
@@ -202,7 +202,7 @@ public class Injector extends InjectData implements InjectTaskHandler {
 
     injector.inject();
 
-    log.info(Message.newMessage()
+    log.info(Message.Companion.newMessage()
                     .add(ANSI_YELLOW, name + " ")
                     .add(ANSI_GREEN, injector.getCompletionMsg())
                     .build());
@@ -227,7 +227,7 @@ public class Injector extends InjectData implements InjectTaskHandler {
 
     transformer.transform();
 
-    log.info(Message.newMessage()
+    log.info(Message.Companion.newMessage()
                     .add(ANSI_YELLOW, name + " ")
                     .addDefault(transformer.getCompletionMsg())
         .build());

@@ -26,7 +26,6 @@ package meteor.discord;
 
 import com.google.common.base.Strings;
 import lombok.Getter;
-import lombok.extern.slf4j.Slf4j;
 import meteor.discord.events.*;
 import meteor.eventbus.EventBus;
 import net.runelite.api.Client;
@@ -34,7 +33,7 @@ import net.runelite.discord.DiscordEventHandlers;
 import net.runelite.discord.DiscordRPC;
 import net.runelite.discord.DiscordRichPresence;
 import net.runelite.discord.DiscordUser;
-import org.sponge.util.Logger;
+import meteor.Logger;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;

@@ -15,7 +15,7 @@ import net.runelite.api.Actor;
 import net.runelite.api.Client;
 import net.runelite.api.Player;
 import net.runelite.api.events.GameTick;
-import org.sponge.util.Logger;
+import meteor.Logger;
 
 import javax.inject.Inject;
 import java.util.ArrayList;

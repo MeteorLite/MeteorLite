@@ -43,7 +43,7 @@ import net.runelite.http.api.worlds.World;
 import net.runelite.http.api.worlds.WorldClient;
 import net.runelite.http.api.worlds.WorldResult;
 import okhttp3.OkHttpClient;
-import org.sponge.util.Logger;
+import meteor.Logger;
 
 @Singleton
 public class WorldService

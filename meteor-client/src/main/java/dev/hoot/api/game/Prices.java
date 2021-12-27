@@ -6,7 +6,7 @@ import com.google.common.cache.LoadingCache;
 import com.google.inject.Inject;
 import meteor.game.ItemManager;
 import org.jetbrains.annotations.NotNull;
-import org.sponge.util.Logger;
+import meteor.Logger;
 
 import java.time.Duration;
 import java.util.concurrent.ExecutionException;

@@ -2,7 +2,7 @@ package dev.hoot.api.game;
 
 import meteor.callback.ClientThread;
 import net.runelite.api.Client;
-import org.sponge.util.Logger;
+import meteor.Logger;
 
 import javax.inject.Inject;
 import java.util.concurrent.*;

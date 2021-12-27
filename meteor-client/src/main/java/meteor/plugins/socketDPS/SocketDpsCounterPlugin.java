@@ -21,7 +21,7 @@ import net.runelite.api.*;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.HitsplatApplied;
 import net.runelite.api.events.NpcDespawned;
-import org.sponge.util.Logger;
+import meteor.Logger;
 
 import javax.inject.Inject;
 import java.util.*;

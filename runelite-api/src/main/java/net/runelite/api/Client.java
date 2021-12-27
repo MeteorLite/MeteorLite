@@ -39,7 +39,7 @@ import net.runelite.api.packets.PacketWriter;
 import net.runelite.api.vars.AccountType;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
-import org.sponge.util.Logger;
+import meteor.Logger;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;

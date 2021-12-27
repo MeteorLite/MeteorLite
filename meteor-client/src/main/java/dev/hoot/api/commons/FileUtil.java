@@ -5,7 +5,7 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import meteor.MeteorLiteClientLauncher;
 import meteor.plugins.Plugin;
-import org.sponge.util.Logger;
+import meteor.Logger;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -16,7 +16,6 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
-import java.nio.file.Files;
 
 public class FileUtil {
     private static final Logger log = new Logger("FileUtil");

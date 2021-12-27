@@ -14,7 +14,6 @@ import java.time.Instant
 @ConfigGroup("fishing")
 @JvmDefaultWithoutCompatibility
 interface FishingConfig: Config {
-
     @ConfigItem(position = 0,
             keyName = "onlyCurrent",
             name = "Display only currently fished fish",

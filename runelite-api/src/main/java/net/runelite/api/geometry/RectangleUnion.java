@@ -32,8 +32,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.ToString;
-import lombok.extern.slf4j.Slf4j;
-import org.sponge.util.Logger;
+import meteor.Logger;
 
 public class RectangleUnion {
 

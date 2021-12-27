@@ -19,7 +19,7 @@ import meteor.util.MeteorConstants;
 import net.runelite.api.Client;
 import net.runelite.api.Constants;
 import net.runelite.api.events.GameTick;
-import org.sponge.util.Logger;
+import meteor.Logger;
 
 import javax.inject.Singleton;
 import javax.swing.*;

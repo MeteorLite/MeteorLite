@@ -3,7 +3,7 @@ package meteor.plugins;
 import lombok.Getter;
 import meteor.PluginTask;
 import meteor.task.Schedule;
-import org.sponge.util.Logger;
+import meteor.Logger;
 
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;

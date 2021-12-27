@@ -24,9 +24,6 @@
  */
 package meteor.config;
 
-import static org.sponge.util.Logger.ANSI_GREEN;
-import static org.sponge.util.Logger.ANSI_YELLOW;
-
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.Strings;
 import com.google.common.collect.ComparisonChain;
@@ -85,13 +82,10 @@ import meteor.eventbus.Subscribe;
 import meteor.eventbus.events.ClientShutdown;
 import meteor.eventbus.events.ConfigChanged;
 import meteor.plugins.Plugin;
-import meteor.plugins.PluginDescriptor;
 import meteor.util.ColorUtil;
 import net.runelite.api.Client;
-import net.runelite.api.GameState;
 import net.runelite.api.coords.WorldPoint;
-import org.sponge.util.Logger;
-import org.sponge.util.Message;
+import meteor.Logger;
 
 @Singleton
 public class ConfigManager {

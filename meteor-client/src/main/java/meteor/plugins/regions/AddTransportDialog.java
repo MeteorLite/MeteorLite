@@ -1,7 +1,6 @@
 package meteor.plugins.regions;
 
 import dev.hoot.api.entities.Entities;
-import dev.hoot.api.entities.TileObjects;
 import dev.hoot.api.game.Game;
 import dev.hoot.api.movement.pathfinder.RegionManager;
 import dev.hoot.api.scene.Tiles;
@@ -11,14 +10,13 @@ import net.miginfocom.swing.MigLayout;
 import net.runelite.api.GameState;
 import net.runelite.api.SceneEntity;
 import net.runelite.api.Tile;
-import net.runelite.api.TileObject;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.MenuOptionClicked;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
-import org.sponge.util.Logger;
+import meteor.Logger;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;

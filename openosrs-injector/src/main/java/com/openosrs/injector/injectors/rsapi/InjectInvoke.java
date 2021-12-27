@@ -48,7 +48,7 @@ import net.runelite.asm.attributes.code.instructions.InvokeVirtual;
 import net.runelite.asm.attributes.code.instructions.LDC;
 import net.runelite.asm.attributes.code.instructions.SiPush;
 import net.runelite.asm.signature.Signature;
-import org.sponge.util.Logger;
+import meteor.Logger;
 
 public class InjectInvoke {
 

@@ -18,7 +18,7 @@ import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.api.widgets.WidgetItem;
 import net.runelite.api.widgets.WidgetType;
 import net.runelite.rs.api.*;
-import org.sponge.util.Logger;
+import meteor.Logger;
 
 import javax.annotation.Nullable;
 import java.math.BigInteger;

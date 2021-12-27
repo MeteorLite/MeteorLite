@@ -49,7 +49,7 @@ import meteor.ui.components.SectionPane;
 import meteor.util.MeteorConstants;
 import net.runelite.api.Client;
 import net.runelite.api.events.ConfigButtonClicked;
-import org.sponge.util.Logger;
+import meteor.Logger;
 
 import javax.inject.Inject;
 import java.awt.*;

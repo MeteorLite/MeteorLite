@@ -52,7 +52,6 @@ import net.runelite.asm.Type;
 import net.runelite.asm.attributes.Annotated;
 import net.runelite.asm.signature.Signature;
 import net.runelite.deob.DeobAnnotations;
-import org.sponge.util.Logger;
 
 public class RSApiInjector extends AbstractInjector {
 

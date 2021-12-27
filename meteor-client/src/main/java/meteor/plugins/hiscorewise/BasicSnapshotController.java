@@ -34,7 +34,7 @@ import net.runelite.http.api.wiseoldman.WiseOldManClient;
 import net.runelite.http.api.wiseoldman.model.BasicResponse;
 import net.runelite.http.api.wiseoldman.model.KillSnapshot;
 import net.runelite.http.api.wiseoldman.model.SkillSnapshot;
-import org.sponge.util.Logger;
+import meteor.Logger;
 
 public class BasicSnapshotController {
 

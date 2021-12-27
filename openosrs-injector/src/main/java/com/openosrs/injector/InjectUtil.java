@@ -45,7 +45,6 @@ import net.runelite.asm.signature.Signature;
 import net.runelite.deob.DeobAnnotations;
 import net.runelite.deob.deobfuscators.arithmetic.DMath;
 import org.jetbrains.annotations.Nullable;
-import org.sponge.util.Logger;
 
 public interface InjectUtil {
 

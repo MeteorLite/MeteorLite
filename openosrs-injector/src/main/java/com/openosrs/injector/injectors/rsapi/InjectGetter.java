@@ -43,7 +43,7 @@ import net.runelite.asm.attributes.code.instructions.ALoad;
 import net.runelite.asm.attributes.code.instructions.GetField;
 import net.runelite.asm.attributes.code.instructions.GetStatic;
 import net.runelite.asm.signature.Signature;
-import org.sponge.util.Logger;
+import meteor.Logger;
 
 public class InjectGetter {
 

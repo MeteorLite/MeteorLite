@@ -4,7 +4,7 @@ import dev.hoot.api.game.Game;
 import net.runelite.api.*;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
-import org.sponge.util.Logger;
+import meteor.Logger;
 
 import javax.inject.Singleton;
 import java.util.ArrayList;

@@ -7,8 +7,8 @@ import io.reactivex.rxjava3.functions.Consumer;
 import io.reactivex.rxjava3.subjects.PublishSubject;
 import java.util.HashMap;
 import java.util.Map;
-import lombok.extern.slf4j.Slf4j;
-import org.sponge.util.Logger;
+
+import meteor.Logger;
 
 public class StateMachine<T, E> implements Consumer<E>
 {

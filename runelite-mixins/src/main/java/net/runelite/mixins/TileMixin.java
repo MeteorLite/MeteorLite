@@ -37,7 +37,7 @@ import net.runelite.api.mixins.Inject;
 import net.runelite.api.mixins.Mixin;
 import net.runelite.api.mixins.Shadow;
 import net.runelite.rs.api.*;
-import org.sponge.util.Logger;
+import meteor.Logger;
 
 @Mixin(RSTile.class)
 public abstract class TileMixin implements RSTile

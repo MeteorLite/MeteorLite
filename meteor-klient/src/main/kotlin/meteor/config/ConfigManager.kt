@@ -14,9 +14,7 @@ import java.awt.Color
 import java.awt.Dimension
 import java.awt.Point
 import java.awt.Rectangle
-import java.io.File
-import java.io.FileOutputStream
-import java.io.OutputStreamWriter
+import java.io.*
 import java.lang.reflect.Field
 import java.lang.reflect.Method
 import java.lang.reflect.Modifier
@@ -35,6 +33,8 @@ object ConfigManager {
     private val properties = Properties()
     private val handler: ConfigInvocationHandler = ConfigInvocationHandler(this)
     private val consumers: HashMap<String, Consumer<in Plugin?>> = HashMap()
+    private const val KEY_SPLITTER_GROUP = 0
+    private const val KEY_SPLITTER_KEY = 1
 
     fun stringToObject(str: String, type: Class<*>): Any? {
         if (type == Boolean::class.javaPrimitiveType || type == Boolean::class.java) {
@@ -400,7 +400,6 @@ object ConfigManager {
         configChanged.key = key
         configChanged.oldValue = oldValue
         configChanged.newValue = "$value"
-        println("Should have set default $key, $value")
         EventBus.post(configChanged)
 
         saveProperties()
@@ -470,6 +469,47 @@ object ConfigManager {
                 }
                 .collect(Collectors.toList())
         return ConfigDescriptor(group, sections, titles, items)
+    }
+
+    @Synchronized
+    fun loadSavedProperties() {
+        consumers.clear()
+        val newProperties = Properties()
+        var loaded = false
+        try {
+            FileInputStream(CONFIG_FILE).use { `in` ->
+                newProperties.load(InputStreamReader(`in`, StandardCharsets.UTF_8))
+                loaded = true
+            }
+        } catch (e: java.lang.Exception) {
+            e.printStackTrace()
+        }
+        swapProperties(newProperties)
+        if (!loaded) {
+            saveProperties()
+            loaded = true
+        }
+    }
+
+    private fun swapProperties(newProperties: Properties) {
+        val newKeys: Set<Any> = HashSet(newProperties.keys)
+        val oldKeys: Set<Any> = HashSet(properties.keys)
+        synchronized(this) { handler.invalidate() }
+        for (wholeKey in oldKeys) {
+            val split = splitKey((wholeKey as String)) ?: continue
+            val groupName = split[KEY_SPLITTER_GROUP]
+            val key = split[KEY_SPLITTER_KEY]
+            val newValue = properties[wholeKey] as String?
+            setConfiguration(groupName, key, newValue!!)
+        }
+        for (wholeKey in newKeys) {
+            val split = splitKey((wholeKey as String)) ?: continue
+            val groupName = split[KEY_SPLITTER_GROUP]
+            val key = split[KEY_SPLITTER_KEY]
+            val newValue = newProperties[wholeKey] as String?
+            println("$groupName $key $newValue" )
+            setConfiguration(groupName, key, newValue!!)
+        }
     }
 
 }

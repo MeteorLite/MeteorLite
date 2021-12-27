@@ -35,7 +35,7 @@ import meteor.plugins.Plugin;
 import meteor.ui.components.Category;
 import meteor.util.MeteorConstants;
 import org.controlsfx.control.textfield.CustomTextField;
-import org.sponge.util.Logger;
+import meteor.Logger;
 
 import javax.inject.Inject;
 import java.util.Arrays;

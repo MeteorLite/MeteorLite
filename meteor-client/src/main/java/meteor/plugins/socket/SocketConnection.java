@@ -39,7 +39,7 @@ import meteor.plugins.socket.packet.SocketMembersUpdate;
 import meteor.plugins.socket.packet.SocketPlayerJoin;
 import meteor.plugins.socket.packet.SocketPlayerLeave;
 import meteor.plugins.socket.packet.SocketReceivePacket;
-import org.sponge.util.Logger;
+import meteor.Logger;
 
 import java.io.BufferedReader;
 import java.io.IOException;

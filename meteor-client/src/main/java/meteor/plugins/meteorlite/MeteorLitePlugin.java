@@ -12,7 +12,7 @@ import meteor.plugins.PluginDescriptor;
 import meteor.plugins.meteorlite.interaction.InteractionManager;
 import meteor.plugins.meteorlite.interaction.InteractionOverlay;
 import net.runelite.api.events.ConfigButtonClicked;
-import org.sponge.util.Logger;
+import meteor.Logger;
 
 import javax.inject.Inject;
 

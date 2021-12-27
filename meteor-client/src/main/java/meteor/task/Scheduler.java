@@ -40,7 +40,7 @@ import java.util.concurrent.ScheduledExecutorService;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import meteor.eventbus.ReflectUtil;
-import org.sponge.util.Logger;
+import meteor.Logger;
 
 @Singleton
 public class Scheduler

@@ -6,7 +6,7 @@ import java.net.URL;
 import java.nio.channels.Channels;
 import java.nio.channels.ReadableByteChannel;
 import java.util.Objects;
-import org.sponge.util.Logger;
+import meteor.Logger;
 
 import java.io.*;
 import java.nio.file.Files;

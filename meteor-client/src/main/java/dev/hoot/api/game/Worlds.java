@@ -15,7 +15,7 @@ import net.runelite.api.World;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.http.api.worlds.WorldResult;
-import org.sponge.util.Logger;
+import meteor.Logger;
 
 import javax.inject.Inject;
 import java.awt.*;

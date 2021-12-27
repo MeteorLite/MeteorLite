@@ -1,7 +1,7 @@
 package dev.hoot.api.commons;
 
 import dev.hoot.api.game.Game;
-import org.sponge.util.Logger;
+import meteor.Logger;
 
 import java.time.Duration;
 import java.util.function.BooleanSupplier;

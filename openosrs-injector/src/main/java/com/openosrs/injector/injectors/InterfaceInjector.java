@@ -8,15 +8,15 @@
 package com.openosrs.injector.injectors;
 
 import static com.openosrs.injector.rsapi.RSApi.API_BASE;
-import static org.sponge.util.Logger.*;
+import static meteor.Logger.*;
 
 import com.openosrs.injector.injection.InjectData;
 import net.runelite.asm.ClassFile;
 import net.runelite.asm.Interfaces;
 import net.runelite.asm.pool.Class;
 import net.runelite.deob.DeobAnnotations;
-import org.sponge.util.Logger;
-import org.sponge.util.Message;
+import meteor.Logger;
+import meteor.Message;
 
 public class InterfaceInjector extends AbstractInjector {
 
@@ -46,7 +46,7 @@ public class InterfaceInjector extends AbstractInjector {
     final String fullName = API_BASE + impls;
     if (fullName.contains("class"))
       return;
-    String message = Message.newMessage()
+    String message = Message.Companion.newMessage()
             .add(ANSI_PURPLE, "[WARNING]")
             .addDefault(" Class ")
             .add(ANSI_CYAN, deobCf.getName())

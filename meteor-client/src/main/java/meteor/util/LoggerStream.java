@@ -5,7 +5,7 @@ import static meteor.MeteorLiteClientLauncher.verboseFileStream;
 import java.io.OutputStream;
 import java.io.PrintStream;
 import org.jetbrains.annotations.NotNull;
-import org.sponge.util.Logger;
+import meteor.Logger;
 
 public class LoggerStream extends PrintStream {
 

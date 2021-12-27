@@ -6,7 +6,6 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URL;
 import java.nio.file.FileSystem;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
@@ -31,7 +30,7 @@ import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.ScriptPostFired;
 import okhttp3.HttpUrl;
 import org.apache.commons.io.FileUtils;
-import org.sponge.util.Logger;
+import meteor.Logger;
 
 @PluginDescriptor(
 		name = "Resource Packs",

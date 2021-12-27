@@ -16,7 +16,7 @@ import net.runelite.api.coords.WorldArea;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
-import org.sponge.util.Logger;
+import meteor.Logger;
 
 import java.awt.*;
 import java.util.*;

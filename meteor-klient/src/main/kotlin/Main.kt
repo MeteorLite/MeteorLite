@@ -1,4 +1,3 @@
-import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Window
@@ -6,6 +5,7 @@ import androidx.compose.ui.window.application
 import androidx.compose.ui.window.rememberWindowState
 import meteor.*
 import meteor.Event
+import meteor.config.ConfigManager
 import meteor.eventbus.EventBus
 import meteor.eventbus.events.GameStateChanged
 import meteor.plugins.PluginManager
@@ -51,6 +51,7 @@ object Main: KoinComponent {
         client.callbacks = callbacks
         client.gameDrawingMode = 2
         overlayManager.add(TestOverlay)
+        ConfigManager.loadSavedProperties()
         PluginManager.startPlugins()
     }
 

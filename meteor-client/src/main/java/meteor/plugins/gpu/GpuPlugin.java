@@ -90,7 +90,6 @@ import net.runelite.api.BufferProvider;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.Model;
-import net.runelite.api.NodeCache;
 import net.runelite.api.Perspective;
 import net.runelite.api.Renderable;
 import net.runelite.api.Scene;
@@ -101,7 +100,7 @@ import net.runelite.api.TextureProvider;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.hooks.DrawCallbacks;
 import org.jocl.CL;
-import org.sponge.util.Logger;
+import meteor.Logger;
 
 @PluginDescriptor(
     name = "GPU",

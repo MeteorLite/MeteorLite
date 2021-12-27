@@ -38,7 +38,7 @@ import net.runelite.asm.attributes.code.Instruction;
 import net.runelite.asm.attributes.code.instructions.BiPush;
 import net.runelite.asm.attributes.code.instructions.SiPush;
 import net.runelite.rs.ScriptOpcodes;
-import org.sponge.util.Logger;
+import meteor.Logger;
 
 /*
  * This finds packet opcodes

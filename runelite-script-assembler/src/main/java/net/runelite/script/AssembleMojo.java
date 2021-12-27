@@ -44,7 +44,7 @@ import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
-import org.sponge.util.Logger;
+import meteor.Logger;
 
 @Mojo(
     name = "assemble",

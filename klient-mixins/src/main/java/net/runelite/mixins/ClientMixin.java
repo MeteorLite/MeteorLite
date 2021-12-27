@@ -1,6 +1,7 @@
 package net.runelite.mixins;
 
 import com.google.common.primitives.Doubles;
+import meteor.Logger;
 import meteor.eventbus.events.GameStateChanged;
 import meteor.eventbus.events.NpcSpawned;
 import net.runelite.api.*;
@@ -22,6 +23,9 @@ import java.util.List;
 public abstract class ClientMixin implements RSClient {
   @Shadow("client")
   public static RSClient client;
+
+  @Inject
+  public static Logger logger = new Logger("injected-client");
 
   @Inject
   private static GameState oldGameState;

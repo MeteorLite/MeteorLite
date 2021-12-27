@@ -15,15 +15,12 @@ import meteor.ui.overlay.infobox.InfoBoxManager;
 import meteor.util.ColorUtil;
 import net.runelite.api.Client;
 import net.runelite.api.NPC;
-import net.runelite.api.events.GameTick;
 import net.runelite.api.events.NpcDespawned;
-import org.sponge.util.Logger;
+import meteor.Logger;
 
 import javax.inject.Inject;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.time.Instant;
-import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 
 @PluginDescriptor(

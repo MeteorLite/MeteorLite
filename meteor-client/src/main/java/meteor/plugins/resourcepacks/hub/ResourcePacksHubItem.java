@@ -22,7 +22,7 @@ import meteor.plugins.resourcepacks.ResourcePacksPlugin;
 import meteor.ui.ColorScheme;
 import meteor.ui.FontManager;
 import meteor.util.ImageUtil;
-import org.sponge.util.Logger;
+import meteor.Logger;
 
 public class ResourcePacksHubItem extends JPanel
 {

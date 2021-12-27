@@ -37,7 +37,6 @@ import net.runelite.api.packets.ClientPacket;
 import net.runelite.http.api.chat.ChatClient;
 import okhttp3.OkHttpClient;
 import org.apache.commons.io.FileUtils;
-import org.sponge.util.Logger;
 
 import javax.annotation.Nullable;
 import javax.inject.Named;
@@ -61,8 +60,8 @@ import java.util.concurrent.*;
 import java.util.zip.GZIPInputStream;
 
 import static meteor.MeteorLiteClientLauncher.CONFIG_FILE;
-import static org.sponge.util.Logger.ANSI_RESET;
-import static org.sponge.util.Logger.ANSI_YELLOW;
+import static meteor.Logger.ANSI_RESET;
+import static meteor.Logger.ANSI_YELLOW;
 
 public class MeteorLiteClientModule extends AbstractModule {
   private static final Logger log = new Logger("MeteorLiteClient");

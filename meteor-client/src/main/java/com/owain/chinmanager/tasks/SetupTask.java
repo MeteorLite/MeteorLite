@@ -13,7 +13,7 @@ import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.VarClientInt;
 import meteor.callback.ClientThread;
-import org.sponge.util.Logger;
+import meteor.Logger;
 
 
 public class SetupTask implements Task<Void>

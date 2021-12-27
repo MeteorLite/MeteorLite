@@ -58,7 +58,7 @@ import net.runelite.api.widgets.WidgetPositionMode;
 import net.runelite.api.widgets.WidgetSizeMode;
 import net.runelite.api.widgets.WidgetTextAlignment;
 import net.runelite.api.widgets.WidgetType;
-import org.sponge.util.Logger;
+import meteor.Logger;
 
 public class ChatboxTextInput extends ChatboxInput implements KeyListener, MouseListener {
 

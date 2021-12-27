@@ -9,7 +9,6 @@ import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.events.MenuOptionClicked;
 import meteor.plugins.oneclick.comparables.ClickCompare;
-import org.sponge.util.Logger;
 
 public class Custom extends ClickCompare
 {

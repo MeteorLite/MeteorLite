@@ -15,15 +15,12 @@ import net.runelite.api.Tile;
 import net.runelite.api.WallObject;
 import net.runelite.api.coords.WorldPoint;
 import org.jetbrains.annotations.NotNull;
-import org.sponge.util.Logger;
+import meteor.Logger;
 
 import javax.inject.Singleton;
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
 import java.util.*;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
-import java.util.zip.GZIPInputStream;
 
 @Singleton
 public class Walker {

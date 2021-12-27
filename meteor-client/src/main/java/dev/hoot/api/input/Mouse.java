@@ -3,7 +3,7 @@ package dev.hoot.api.input;
 import dev.hoot.api.commons.Rand;
 import dev.hoot.api.commons.Time;
 import dev.hoot.api.game.Game;
-import org.sponge.util.Logger;
+import meteor.Logger;
 
 import java.awt.*;
 import java.awt.event.MouseEvent;

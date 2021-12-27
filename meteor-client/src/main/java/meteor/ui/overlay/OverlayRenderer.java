@@ -67,7 +67,7 @@ import net.runelite.api.events.FocusChanged;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.api.widgets.WidgetItem;
-import org.sponge.util.Logger;
+import meteor.Logger;
 
 @Singleton
 public class OverlayRenderer extends MouseAdapter implements KeyListener {

@@ -25,7 +25,7 @@
 package net.runelite.http.api.xp;
 
 import java.io.IOException;
-import lombok.extern.slf4j.Slf4j;
+
 import net.runelite.http.api.RuneLiteAPI;
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -33,7 +33,7 @@ import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
-import org.sponge.util.Logger;
+import meteor.Logger;
 
 public class XpClient
 {

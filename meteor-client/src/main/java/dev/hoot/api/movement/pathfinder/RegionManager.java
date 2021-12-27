@@ -15,7 +15,7 @@ import net.runelite.api.Tile;
 import net.runelite.api.coords.Direction;
 import net.runelite.api.coords.WorldPoint;
 import okhttp3.*;
-import org.sponge.util.Logger;
+import meteor.Logger;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;

@@ -24,7 +24,7 @@
  */
 package net.runelite.http.api.item;
 
-import org.sponge.util.Logger;
+import meteor.Logger;
 
 public enum ItemType {
   DEFAULT;

@@ -52,7 +52,7 @@ import net.runelite.api.widgets.WidgetInfo;
 import meteor.eventbus.EventBus;
 import meteor.eventbus.Subscribe;
 import meteor.game.ItemManager;
-import org.sponge.util.Logger;
+import meteor.Logger;
 
 public class TeleportTask implements Task<Void>
 {

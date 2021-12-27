@@ -199,7 +199,7 @@ import net.runelite.http.api.item.ItemClient;
 import net.runelite.http.api.item.ItemPrice;
 import net.runelite.http.api.item.ItemStats;
 import okhttp3.OkHttpClient;
-import org.sponge.util.Logger;
+import meteor.Logger;
 
 @Singleton
 public class ItemManager {

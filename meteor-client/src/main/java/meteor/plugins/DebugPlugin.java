@@ -1,7 +1,7 @@
 package meteor.plugins;
 
-import static org.sponge.util.Logger.ANSI_CYAN;
-import static org.sponge.util.Logger.ANSI_YELLOW;
+import static meteor.Logger.ANSI_CYAN;
+import static meteor.Logger.ANSI_YELLOW;
 
 import java.awt.Color;
 import java.awt.Graphics2D;

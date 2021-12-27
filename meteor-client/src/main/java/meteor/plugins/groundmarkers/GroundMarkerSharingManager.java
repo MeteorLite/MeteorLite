@@ -53,7 +53,7 @@ import meteor.eventbus.Subscribe;
 import meteor.game.chatbox.ChatboxPanelManager;
 import meteor.menus.MenuManager;
 import meteor.menus.WidgetMenuOption;
-import org.sponge.util.Logger;
+import meteor.Logger;
 
 class GroundMarkerSharingManager
 {

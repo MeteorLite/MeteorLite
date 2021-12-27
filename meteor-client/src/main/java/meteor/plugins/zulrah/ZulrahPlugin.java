@@ -62,7 +62,7 @@ import meteor.ui.overlay.infobox.InfoBoxManager;
 import meteor.util.ImageUtil;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
-import org.sponge.util.Logger;
+import meteor.Logger;
 
 @PluginDescriptor(
     name = "Zulrah",

@@ -8,7 +8,7 @@ import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import javax.inject.Singleton;
 import okhttp3.Cookie;
-import org.sponge.util.Logger;
+import meteor.Logger;
 
 @Singleton
 public class SerializableCookie implements Serializable

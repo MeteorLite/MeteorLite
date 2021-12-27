@@ -29,8 +29,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashSet;
 import java.util.Set;
-import lombok.extern.slf4j.Slf4j;
-import org.sponge.util.Logger;
+
+import meteor.Logger;
 
 public class OverlayIndex {
 

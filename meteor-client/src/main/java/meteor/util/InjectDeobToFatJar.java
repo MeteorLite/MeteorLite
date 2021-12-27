@@ -1,8 +1,6 @@
 package meteor.util;
 
-import net.lingala.zip4j.ZipFile;
-import net.lingala.zip4j.exception.ZipException;
-import org.sponge.util.Logger;
+import meteor.Logger;
 
 import java.io.*;
 import java.util.ArrayList;

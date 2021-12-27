@@ -71,7 +71,7 @@ import net.runelite.api.hooks.Callbacks;
 import net.runelite.api.hooks.DrawCallbacks;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetItem;
-import org.sponge.util.Logger;
+import meteor.Logger;
 
 /**
  * This class contains field required for mixins and runelite hooks to work. All remaining method

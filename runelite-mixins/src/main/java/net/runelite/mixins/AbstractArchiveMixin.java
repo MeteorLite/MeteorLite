@@ -20,7 +20,7 @@ import net.runelite.rs.api.RSAbstractArchive;
 import net.runelite.rs.api.RSArchive;
 import net.runelite.rs.api.RSClient;
 import org.apache.commons.io.IOUtils;
-import org.sponge.util.Logger;
+import meteor.Logger;
 
 @Mixin(RSAbstractArchive.class)
 public abstract class AbstractArchiveMixin implements RSAbstractArchive {

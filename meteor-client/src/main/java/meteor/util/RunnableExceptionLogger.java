@@ -25,7 +25,7 @@
 package meteor.util;
 
 import lombok.RequiredArgsConstructor;
-import org.sponge.util.Logger;
+import meteor.Logger;
 
 @RequiredArgsConstructor
 public class RunnableExceptionLogger implements Runnable {

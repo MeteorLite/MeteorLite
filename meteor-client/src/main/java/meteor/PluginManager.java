@@ -184,7 +184,6 @@ import meteor.plugins.xpupdater.XpUpdaterPlugin;
 import meteor.plugins.zulrah.ZulrahPlugin;
 import net.runelite.api.GameState;
 import net.runelite.api.events.GameStateChanged;
-import org.sponge.util.Logger;
 import rs117.hd.GpuHDPlugin;
 
 import java.io.File;

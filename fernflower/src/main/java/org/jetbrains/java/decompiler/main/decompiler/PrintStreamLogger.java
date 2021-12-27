@@ -15,14 +15,14 @@
  */
 package org.jetbrains.java.decompiler.main.decompiler;
 
-import static org.sponge.util.Logger.ANSI_CYAN;
-import static org.sponge.util.Logger.ANSI_YELLOW;
+import static meteor.Logger.ANSI_CYAN;
+import static meteor.Logger.ANSI_YELLOW;
 
 import java.io.PrintStream;
 import org.jetbrains.java.decompiler.main.extern.IFernflowerLogger;
 import org.jetbrains.java.decompiler.util.TextUtil;
-import org.sponge.util.Logger;
-import org.sponge.util.Message;
+import meteor.Logger;
+import meteor.Message;
 
 public class PrintStreamLogger extends IFernflowerLogger {
 
@@ -53,7 +53,7 @@ public class PrintStreamLogger extends IFernflowerLogger {
   @Override
   public void startReadingClass(String className) {
     if (accepts(Severity.INFO)) {
-      logger.info(Message.newMessage()
+      logger.info(Message.Companion.newMessage()
                       .add(ANSI_YELLOW, "Decompiling class ")
                       .add(ANSI_CYAN, className)
                       .build());

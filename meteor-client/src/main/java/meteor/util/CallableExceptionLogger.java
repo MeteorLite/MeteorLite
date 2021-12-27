@@ -26,7 +26,7 @@ package meteor.util;
 
 import java.util.concurrent.Callable;
 import lombok.RequiredArgsConstructor;
-import org.sponge.util.Logger;
+import meteor.Logger;
 
 @RequiredArgsConstructor
 public class CallableExceptionLogger<V> implements Callable<V> {

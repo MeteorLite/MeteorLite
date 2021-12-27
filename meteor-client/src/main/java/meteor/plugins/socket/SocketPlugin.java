@@ -19,7 +19,7 @@ import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
 import meteor.plugins.socket.hash.AES256;
 import meteor.plugins.socket.org.json.JSONObject;
-import org.sponge.util.Logger;
+import meteor.Logger;
 
 import javax.inject.Inject;
 import java.io.PrintWriter;

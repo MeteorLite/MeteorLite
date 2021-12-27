@@ -57,7 +57,6 @@ import javax.inject.Named;
 import lombok.Getter;
 import lombok.Setter;
 import meteor.MeteorLiteClientLauncher;
-import meteor.MeteorLiteClientModule;
 import meteor.eventbus.events.ClientShutdown;
 import meteor.eventbus.events.ConfigChanged;
 import net.runelite.api.ChatMessageType;
@@ -90,7 +89,6 @@ import meteor.plugins.PluginDescriptor;
 import meteor.plugins.bank.BankSearch;
 import meteor.ui.overlay.OverlayManager;
 import meteor.util.Text;
-import org.sponge.util.Logger;
 
 @PluginDescriptor(
 	name = "Quest Helper",

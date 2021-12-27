@@ -25,7 +25,6 @@
 package meteor.input;
 
 import java.awt.event.KeyEvent;
-import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 import javax.annotation.Nullable;
@@ -33,7 +32,7 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
-import org.sponge.util.Logger;
+import meteor.Logger;
 
 @Singleton
 public class KeyManager {

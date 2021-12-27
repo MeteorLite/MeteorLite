@@ -65,7 +65,7 @@ import net.runelite.api.widgets.JavaScriptCallback;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetID;
 import net.runelite.api.widgets.WidgetInfo;
-import org.sponge.util.Logger;
+import meteor.Logger;
 
 @PluginDescriptor(
     name = "Bank",

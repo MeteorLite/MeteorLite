@@ -21,7 +21,7 @@ import net.runelite.api.MenuEntry;
 import net.runelite.api.Varbits;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.*;
-import org.sponge.util.Logger;
+import meteor.Logger;
 
 import javax.inject.Inject;
 import java.util.ArrayList;

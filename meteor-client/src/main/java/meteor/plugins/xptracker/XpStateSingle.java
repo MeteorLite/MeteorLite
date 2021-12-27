@@ -33,7 +33,7 @@ import lombok.Getter;
 import lombok.Setter;
 import net.runelite.api.Experience;
 import net.runelite.api.Skill;
-import org.sponge.util.Logger;
+import meteor.Logger;
 
 class XpStateSingle
 {

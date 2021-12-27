@@ -9,7 +9,6 @@ import javax.inject.Inject;
 
 import lombok.Getter;
 import lombok.Setter;
-import meteor.PluginManager;
 import meteor.config.Config;
 import meteor.config.ConfigManager;
 import meteor.eventbus.EventBus;
@@ -19,7 +18,7 @@ import meteor.ui.MeteorUI;
 import meteor.ui.client.PluginConfigPanel;
 import meteor.ui.overlay.OverlayManager;
 import net.runelite.api.Client;
-import org.sponge.util.Logger;
+import meteor.Logger;
 
 public class Plugin implements Module {
 

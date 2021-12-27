@@ -58,7 +58,7 @@ import net.runelite.api.events.GameTick;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.http.api.chat.ChatClient;
 import net.runelite.http.api.chat.LayoutRoom;
-import org.sponge.util.Logger;
+import meteor.Logger;
 
 import javax.inject.Inject;
 import java.io.IOException;

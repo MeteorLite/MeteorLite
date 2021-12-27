@@ -10,7 +10,7 @@ package com.openosrs.injector.injectors;
 import com.google.common.base.Stopwatch;
 import com.openosrs.injector.injection.InjectData;
 import lombok.RequiredArgsConstructor;
-import org.sponge.util.Logger;
+import meteor.Logger;
 
 @RequiredArgsConstructor
 public abstract class AbstractInjector implements Injector {

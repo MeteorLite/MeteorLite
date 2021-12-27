@@ -14,7 +14,7 @@ import net.runelite.api.MouseHandler;
 import net.runelite.api.events.DialogProcessed;
 import net.runelite.api.events.InvokeMenuActionEvent;
 import net.runelite.api.events.MenuOptionClicked;
-import org.sponge.util.Logger;
+import meteor.Logger;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;

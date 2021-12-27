@@ -27,7 +27,6 @@ package net.runelite.http.api.hiscore;
 import java.io.IOException;
 import java.util.concurrent.CompletableFuture;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.HttpUrl;
@@ -37,7 +36,7 @@ import okhttp3.Response;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
-import org.sponge.util.Logger;
+import meteor.Logger;
 
 @RequiredArgsConstructor
 public class HiscoreClient

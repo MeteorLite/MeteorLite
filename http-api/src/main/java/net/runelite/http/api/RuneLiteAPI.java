@@ -44,7 +44,7 @@ import net.runelite.http.api.gson.ColorTypeAdapter;
 import net.runelite.http.api.gson.IllegalReflectionExclusion;
 import net.runelite.http.api.gson.InstantTypeAdapter;
 import okhttp3.*;
-import org.sponge.util.Logger;
+import meteor.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;

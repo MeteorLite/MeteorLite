@@ -19,7 +19,7 @@ import meteor.ui.components.ToolbarButton;
 import net.runelite.http.api.hiscore.HiscoreClient;
 import net.runelite.http.api.hiscore.HiscoreEndpoint;
 import okhttp3.OkHttpClient;
-import org.sponge.util.Logger;
+import meteor.Logger;
 
 public class HiscoreController {
 

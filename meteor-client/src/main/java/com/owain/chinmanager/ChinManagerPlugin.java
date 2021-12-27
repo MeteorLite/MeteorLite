@@ -137,7 +137,7 @@ import net.runelite.http.api.worlds.WorldResult;
 import net.runelite.http.api.worlds.WorldType;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
-import org.sponge.util.Logger;
+import meteor.Logger;
 
 @PluginDescriptor(
 	name = "Chin manager",

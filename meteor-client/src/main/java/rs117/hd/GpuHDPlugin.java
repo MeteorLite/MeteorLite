@@ -116,7 +116,7 @@ import static rs117.hd.GLUtil.glGenRenderbuffer;
 import static rs117.hd.GLUtil.glGenTexture;
 import static rs117.hd.GLUtil.glGenVertexArrays;
 import static rs117.hd.GLUtil.glGetInteger;
-import org.sponge.util.Logger;
+import meteor.Logger;
 import rs117.hd.config.LevelOfDetail;
 import rs117.hd.config.AntiAliasingMode;
 import rs117.hd.config.FogDepthMode;

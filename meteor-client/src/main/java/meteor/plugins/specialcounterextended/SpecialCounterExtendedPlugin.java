@@ -40,7 +40,7 @@ import meteor.ui.overlay.OverlayManager;
 import meteor.ui.overlay.infobox.InfoBoxManager;
 import net.runelite.api.*;
 import net.runelite.api.events.*;
-import org.sponge.util.Logger;
+import meteor.Logger;
 
 import javax.inject.Inject;
 import java.awt.image.BufferedImage;

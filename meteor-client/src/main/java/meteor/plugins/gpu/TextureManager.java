@@ -29,7 +29,7 @@ import java.nio.ByteBuffer;
 import javax.inject.Singleton;
 import net.runelite.api.Texture;
 import net.runelite.api.TextureProvider;
-import org.sponge.util.Logger;
+import meteor.Logger;
 
 @Singleton
 class TextureManager {

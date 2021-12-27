@@ -30,8 +30,6 @@
  */
 package com.openosrs.injector.injectors;
 
-import static org.sponge.util.Logger.ANSI_GREEN;
-
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.collect.ImmutableMap;
 import com.openosrs.injector.InjectException;
@@ -79,7 +77,7 @@ import net.runelite.deob.DeobAnnotations;
 import net.runelite.deob.util.JarUtil;
 import org.jetbrains.annotations.Nullable;
 import org.objectweb.asm.Opcodes;
-import org.sponge.util.Message;
+import meteor.Message;
 
 public class MixinInjector extends AbstractInjector {
 
@@ -129,7 +127,7 @@ public class MixinInjector extends AbstractInjector {
       injectInterfaces(entry.getKey(), entry.getValue());
     }
 
-    log.info(Message.newMessage()
+    log.info(Message.Companion.newMessage()
         .addDefault("Injected " + injectedInterfaces + " interfaces")
         .build());
 
@@ -137,7 +135,7 @@ public class MixinInjector extends AbstractInjector {
       injectFields(entry.getKey(), entry.getValue());
     }
 
-    log.info(Message.newMessage()
+    log.info(Message.Companion.newMessage()
         .addDefault("Injected " + injectedFields.size() + " fields")
         .build());
 
@@ -145,7 +143,7 @@ public class MixinInjector extends AbstractInjector {
       findShadowFields(entry.getKey());
     }
 
-    log.info(Message.newMessage()
+    log.info(Message.Companion.newMessage()
         .addDefault("Shadowed " + shadowFields.size() + " fields")
         .build());
 
@@ -153,7 +151,7 @@ public class MixinInjector extends AbstractInjector {
       injectMethods(entry.getKey(), entry.getValue());
     }
 
-    log.info(Message.newMessage()
+    log.info(Message.Companion.newMessage()
             .addDefault(
             "Injected " + injected + ", copied " + copied + ", replaced " + replaced
                 + " methods")
