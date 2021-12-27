@@ -24,7 +24,7 @@ import java.util.concurrent.TimeUnit;
 
 @Singleton
 public class Walker {
-    private static final Logger logger = new Logger("Walker");
+    private static final Logger logger = Logger.Companion.getLogger(Walker.class);
     private static final int MAX_INTERACT_DISTANCE = 20;
     private static final int MIN_TILES_WALKED_IN_STEP = 7;
     private static final int MAX_TILES_WALKED_IN_STEP = 14;

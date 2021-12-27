@@ -11,7 +11,7 @@ import java.util.Arrays;
 import java.util.List;
 
 public class TaskPlugin extends Plugin {
-	private static final Logger log = new Logger("TaskPlugin");
+	private static final Logger log = Logger.Companion.getLogger(TaskPlugin.class);
 	private final List<PluginTask> tasks = new ArrayList<>();
 	@Getter
 	private String currentTask = "Idle";

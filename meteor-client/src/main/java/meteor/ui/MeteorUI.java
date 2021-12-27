@@ -46,7 +46,7 @@ import static meteor.MeteorLiteClientModule.properties;
 @Singleton
 public class MeteorUI extends ContainableFrame implements AppletStub, AppletContext {
 	public static final BufferedImage ICON = ImageUtil.loadImageResource(MeteorUI.class, "/MeteorLite_icon2.png");
-	private static final Logger log = new Logger("MeteorUI");
+	private static final Logger log = Logger.Companion.getLogger(MeteorUI.class);
 	private static final String CONFIG_CLIENT_BOUNDS = "clientBounds";
 	private static final String CONFIG_CLIENT_MAXIMIZED = "clientMaximized";
 	private static final String CONFIG_OPACITY = "enableOpacity";

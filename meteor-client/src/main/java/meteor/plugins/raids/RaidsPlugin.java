@@ -80,7 +80,7 @@ import static net.runelite.api.SpriteID.TAB_QUESTS_BROWN_RAIDING_PARTY;
 )
 public class RaidsPlugin extends Plugin
 {
-	private static final Logger log = Logger.getLogger(RaidsPlugin.class);	private static final int LOBBY_PLANE = 3;
+	private static final Logger log = Logger.Companion.getLogger(RaidsPlugin.class);	private static final int LOBBY_PLANE = 3;
 	private static final int SECOND_FLOOR_PLANE = 2;
 	private static final int ROOMS_PER_PLANE = 8;
 	private static final int AMOUNT_OF_ROOMS_PER_X_AXIS_PER_PLANE = 4;

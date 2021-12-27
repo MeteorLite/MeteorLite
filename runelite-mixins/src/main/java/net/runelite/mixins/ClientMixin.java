@@ -36,7 +36,7 @@ public abstract class ClientMixin implements RSClient {
   @Inject
   public static int viewportColor;
   @Inject
-  public static Logger logger = new Logger("injected-clients");
+  public static Logger logger = Logger.Companion.getLogger(Class.class);
   @Inject
   static int skyboxColor;
   @Inject

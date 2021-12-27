@@ -22,7 +22,7 @@ public class SetupTask implements Task<Void>
 	private final ChinManagerPlugin chinManagerPlugin;
 	private final Client client;
 	private final ClientThread clientThread;
-	private Logger log = new Logger("Chin-SetupTask");
+	private Logger log = Logger.Companion.getLogger(SetupTask.class);
 
 	@Inject
 	SetupTask(ChinManager chinManager, ChinManagerPlugin chinManagerPlugin)

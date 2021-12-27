@@ -42,7 +42,7 @@ import meteor.Logger;
 public class ItemClient {
 
   private final OkHttpClient client;
-  Logger log = new Logger("ItemClient");
+  Logger log = Logger.Companion.getLogger(ItemClient.class);
 
   public ItemClient(OkHttpClient client) {
     this.client = client;

@@ -56,7 +56,7 @@ import java.util.Set;
 )
 public class SpecialCounterExtendedPlugin extends Plugin {
 
-    private static final Logger log = Logger.getLogger(SpecialCounterExtendedPlugin.class);
+    private static final Logger log = Logger.Companion.getLogger(SpecialCounterExtendedPlugin.class);
 
     @Inject
     private Client client;

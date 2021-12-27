@@ -44,7 +44,7 @@ import meteor.Logger;
 public class WiseOldManClient
 {
 	private static final String BASE = "https://api.wiseoldman.net";
-	private static Logger log = new Logger("WiseOldManClient");
+	private static Logger log = Logger.Companion.getLogger(WiseOldManClient.class);
 	private final OkHttpClient client = new OkHttpClient();
 	public static HttpUrl getApiBase() {
 		return HttpUrl.parse(BASE);

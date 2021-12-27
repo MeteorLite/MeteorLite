@@ -72,7 +72,7 @@ import meteor.Logger;
 )
 public class ZulrahPlugin extends Plugin implements KeyListener {
 
-  private static final Logger log = Logger.getLogger(ZulrahPlugin.class);
+  private static final Logger log = Logger.Companion.getLogger(ZulrahPlugin.class);
   @Inject
   private Client client;
   @Inject

@@ -558,7 +558,7 @@ public class HiscoreController {
           {
             if (ex != null)
             {
-              Logger.getLogger(getClass()).warn("Error fetching Hiscore data " + ex.getMessage());
+              Logger.Companion.getLogger(getClass()).warn("Error fetching Hiscore data " + ex.getMessage());
             }
 
             searchBox.setEditable(true);

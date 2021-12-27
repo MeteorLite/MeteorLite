@@ -115,7 +115,6 @@ javafx {
 application {
     mainClassName = 'meteor.MeteorLiteClientLauncher'
     applicationDefaultJvmArgs = [
-            "-Xjvm-default=compatibility",
             "-noverify",
             "-Xmx512m",
             "-Dprism.allowhidpi=false",

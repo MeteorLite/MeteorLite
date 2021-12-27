@@ -29,7 +29,7 @@ import meteor.Logger;
 public enum ItemType {
   DEFAULT;
 
-  private static final Logger logger = new Logger("ItemClient");
+  private static final Logger logger = Logger.Companion.getLogger(ItemType.class);
 
   public static ItemType of(String type) {
     try {

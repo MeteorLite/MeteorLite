@@ -44,7 +44,7 @@ import meteor.Logger;
  * This finds packet opcodes
  */
 public class DecodeNet extends AbstractInjector {
-    private static final Logger log = new Logger("Packets");
+    private static final Logger log = Logger.Companion.getLogger(DecodeNet.class);
     public int totalFound = 0;
     public final int expected = 52;
 

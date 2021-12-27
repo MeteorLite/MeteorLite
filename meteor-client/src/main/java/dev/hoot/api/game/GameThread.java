@@ -8,7 +8,7 @@ import javax.inject.Inject;
 import java.util.concurrent.*;
 
 public class GameThread {
-    private static final Logger log = new Logger("GameThread");
+    private static final Logger log = Logger.Companion.getLogger(GameThread.class);
     private static final long TIMEOUT = 1000;
     @Inject
     private static ClientThread clientThread;

@@ -204,7 +204,7 @@ public class ResourcePacksPlugin extends Plugin
 	}
 
 	private void unpackMeteorLiteTheme() {
-		Logger log = Logger.getLogger(getClass());
+		Logger log = Logger.Companion.getLogger(getClass());
 		log.info("Unpacking theme");
 		File themeZip = new File(MeteorLiteClientLauncher.METEOR_DIR, "theme.zip");
 		File themeDir = new File(RESOURCEPACKS_DIR, "MeteorLite");

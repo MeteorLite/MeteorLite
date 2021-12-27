@@ -196,7 +196,7 @@ import java.util.jar.JarFile;
 
 @Singleton
 public class PluginManager {
-    private final Logger logger = new Logger("PluginManager");
+    private final Logger logger = Logger.Companion.getLogger(PluginManager.class);
     private final File EXTERNALS_DIR = new File(MeteorLiteClientLauncher.METEOR_DIR, "externals");
     private HashMap<Class<? extends Plugin>, Class<? extends Plugin>> conflicts = new HashMap<>();
 

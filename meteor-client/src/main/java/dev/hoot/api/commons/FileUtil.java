@@ -18,7 +18,7 @@ import java.io.ObjectOutputStream;
 import java.io.Serializable;
 
 public class FileUtil {
-    private static final Logger log = new Logger("FileUtil");
+    private static final Logger log = Logger.Companion.getLogger(FileUtil.class);
     private static final File DATA_DIR = MeteorLiteClientLauncher.DATA_DIR;
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
 

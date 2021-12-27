@@ -31,7 +31,7 @@ import meteor.Logger;
 public class RunnableExceptionLogger implements Runnable {
 
   private final Runnable runnable;
-  public Logger log = new Logger("Runnable");
+  public Logger log = Logger.Companion.getLogger(RunnableExceptionLogger.class);
 
   public static RunnableExceptionLogger wrap(Runnable runnable) {
     return new RunnableExceptionLogger(runnable);

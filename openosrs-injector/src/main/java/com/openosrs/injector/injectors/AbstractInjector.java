@@ -16,7 +16,7 @@ import meteor.Logger;
 public abstract class AbstractInjector implements Injector {
 
   protected final InjectData inject;
-  protected final Logger log = new Logger("Injector");
+  protected final Logger log = Logger.Companion.getLogger(AbstractInjector.class);
   private Stopwatch stopwatch;
 
   public void start() {

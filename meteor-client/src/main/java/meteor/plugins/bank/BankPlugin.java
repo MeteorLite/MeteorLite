@@ -124,7 +124,7 @@ public class BankPlugin extends Plugin {
   };
   @Inject
   private KeyManager keyManager;
-  private final Logger log = new Logger("Bank");
+  private final Logger log = Logger.Companion.getLogger(BankPlugin.class);
   private boolean forceRightClickFlag;
   private Multiset<Integer> itemQuantities; // bank item quantities for bank value search
   private String searchString;

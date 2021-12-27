@@ -18,7 +18,7 @@ public class LoggerStream extends PrintStream {
   @Override
   public void println(String s) {
     if (error) {
-      verboseFileStream.println(Logger.generateError(s));
+      verboseFileStream.println(Logger.Companion.generateError(s));
       super.print(s);
     } else {
       consoleStream.println(s);
@@ -29,7 +29,7 @@ public class LoggerStream extends PrintStream {
   @Override
   public void print(String s) {
     if (error) {
-      verboseFileStream.print(Logger.generateError(s));
+      verboseFileStream.print(Logger.Companion.generateError(s));
       super.print(s);
     } else {
       consoleStream.print(s);

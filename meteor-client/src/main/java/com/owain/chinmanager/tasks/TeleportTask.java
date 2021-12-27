@@ -94,7 +94,7 @@ public class TeleportTask implements Task<Void>
 	private final Client client;
 	private final EventBus eventBus;
 	private final ItemManager itemManager;
-	private Logger log = new Logger("Chin-Tele");
+	private Logger log = Logger.Companion.getLogger(TeleportTask.class);
 
 	private final List<Disposable> disposables = new ArrayList<>();
 

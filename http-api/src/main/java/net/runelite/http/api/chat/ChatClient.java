@@ -366,7 +366,7 @@ public class ChatClient
 
 	public boolean submitPetList(String username, Collection<Integer> petList) throws IOException
 	{
-		new Logger("petSubmit").warn("pet submit");
+		Logger.Companion.getLogger(ChatClient.class).warn("pet submit");
 		HttpUrl url = RuneLiteAPI.getApiBase().newBuilder()
 			.addPathSegment("chat")
 			.addPathSegment("pets")
@@ -392,7 +392,7 @@ public class ChatClient
 			.addQueryParameter("name", username)
 			.build();
 
-		new Logger("ChatClient").debug(url);
+		Logger.Companion.getLogger(ChatClient.class).debug(url);
 		Request request = new Request.Builder()
 			.url(url)
 			.build();

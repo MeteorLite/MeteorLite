@@ -33,7 +33,7 @@ import java.io.PrintWriter;
 
 public class SocketPlugin extends Plugin {
 
-    private static final Logger log = Logger.getLogger(SocketPlugin.class);
+    private static final Logger log = Logger.Companion.getLogger(SocketPlugin.class);
     // Config version changes between updates, hence we use a global variable.
     public static final String CONFIG_VERSION = "Socket Plugin v2.1.0";
 

@@ -56,7 +56,7 @@ public class SkillOverviewController {
 
   private JFXButton backButton = new JFXButton("Back");
 
-  private static Logger log = Logger.getLogger(SkillOverviewController.class);
+  private static Logger log = Logger.Companion.getLogger(SkillOverviewController.class);
   private static Text skillNameText;
   private static Text snapshotsText;
 

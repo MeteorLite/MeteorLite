@@ -57,7 +57,7 @@ import static meteor.plugins.socket.SocketPlugin.PASSWORD_SALT;
  */
 public class SocketConnection implements Runnable
 {
-    private static final Logger log = Logger.getLogger(SocketPlugin.class);
+    private static final Logger log = Logger.Companion.getLogger(SocketPlugin.class);
 
     private SocketPlugin plugin;
     private SocketConfig config;

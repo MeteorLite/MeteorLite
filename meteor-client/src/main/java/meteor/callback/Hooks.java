@@ -85,7 +85,7 @@ public class Hooks implements Callbacks {
       .toNanos(); // ns - how often to run checks
   private static final GameTick GAME_TICK = GameTick.INSTANCE;
   private static final BeforeRender BEFORE_RENDER = new BeforeRender();
-  public static Logger log = new Logger("Hooks");
+  public static Logger log = Logger.Companion.getLogger(Hooks.class);
   private static Client client;
   private static MainBufferProvider lastMainBufferProvider;
   private static Graphics2D lastGraphics;

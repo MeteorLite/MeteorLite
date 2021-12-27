@@ -102,7 +102,7 @@ public class ConfigManager {
   private final ConfigInvocationHandler handler = new ConfigInvocationHandler(this);
   private final Map<String, Consumer<? super Plugin>> consumers = new HashMap<>();
   private final File propertiesFile;
-  private final Logger log = new Logger("ConfigManager");
+  private final Logger log = Logger.Companion.getLogger(ConfigManager.class);
   private Properties properties = new Properties();
   private boolean loaded;
   private Client client;

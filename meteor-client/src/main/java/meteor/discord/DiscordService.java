@@ -48,7 +48,7 @@ public class DiscordService implements AutoCloseable
 	private final String discordAppId = "870557549030670336";
 	private final DiscordRPC discordRPC;
 
-	private Logger log = new Logger("Discord");
+	private Logger log = Logger.Companion.getLogger(DiscordService.class);
 
 	// Hold a reference to the event handlers to prevent the garbage collector from deleting them
 	private final DiscordEventHandlers discordEventHandlers;

@@ -39,7 +39,7 @@ public class XpClient
 {
 	private final OkHttpClient client;
 
-	private Logger log = new Logger("XPClient");
+	private Logger log = Logger.Companion.getLogger(XpClient.class);
 
 	public XpClient(OkHttpClient client)
 	{

@@ -43,7 +43,7 @@ import meteor.Message;
 
 public class Injector extends InjectData implements InjectTaskHandler {
 
-  static final Logger log = new Logger("Injector");
+  static final Logger log = Logger.Companion.getLogger(Injector.class);
   static Injector injector = new Injector();
   static String oprsVer;
 

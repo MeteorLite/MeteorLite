@@ -110,7 +110,7 @@ public class OverlayRenderer extends MouseAdapter implements KeyListener {
   // focused overlay
   private Overlay focusedOverlay;
   private Overlay prevFocusedOverlay;
-  private Logger logger = new Logger("OverlayRenderer");
+  private Logger logger = Logger.Companion.getLogger(OverlayRenderer.class);
 
   @Inject
   private OverlayRenderer(

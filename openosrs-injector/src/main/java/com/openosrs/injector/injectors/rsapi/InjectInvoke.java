@@ -55,7 +55,7 @@ public class InjectInvoke {
   public static void inject(ClassFile targetClass, RSApiMethod apiMethod, Method vanillaMethod,
       String garbage) {
     if (targetClass.findMethod(apiMethod.getName(), apiMethod.getSignature()) != null) {
-      new Logger("InjectGetter")
+      Logger.Companion.getLogger(InjectInvoke.class)
           .debug("Duplicate invoker method " + apiMethod.getMethod().toString());
     }
 

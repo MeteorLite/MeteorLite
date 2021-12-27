@@ -22,7 +22,7 @@ import java.awt.*;
 
 @Singleton
 public class InteractionManager {
-	private static final Logger logger = new Logger("Interaction Manager");
+	private static final Logger logger = Logger.Companion.getLogger(InteractionManager.class);
 	private static final int MINIMAP_WIDTH = 250;
 	private static final int MINIMAP_HEIGHT = 180;
 

@@ -64,7 +64,7 @@ import static java.awt.event.KeyEvent.getExtendedKeyCodeForChar;
 
 public class PluginConfigPanel extends AnchorPane {
 
-	private static final Logger logger = new Logger("PluginConfigController");
+	private static final Logger logger = Logger.Companion.getLogger(PluginConfigPanel.class);
 	private final Map<String, SectionPane> sections = new HashMap<>();
 	private final Plugin plugin;
 	private final AnchorPane titlePanel;

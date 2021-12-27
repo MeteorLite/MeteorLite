@@ -30,7 +30,7 @@ import java.util.ArrayList;
 	enabledByDefault = false
 )
 public class SocketBossTimersPlugin extends Plugin {
-	private static final Logger log = Logger.getLogger(SocketBossTimersPlugin.class);
+	private static final Logger log = Logger.Companion.getLogger(SocketBossTimersPlugin.class);
 
 	@Inject
 	private Client client;

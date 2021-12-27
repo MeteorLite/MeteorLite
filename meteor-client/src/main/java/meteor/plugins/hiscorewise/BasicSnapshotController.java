@@ -1154,7 +1154,7 @@ public class BasicSnapshotController {
 
   public void lookup()
   {
-    Logger.getLogger(getClass()).error("lookup");
+    Logger.Companion.getLogger(getClass()).error("lookup");
     resetButtons();
     final String lookup = sanitize(searchBox.getText());
 

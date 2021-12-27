@@ -64,7 +64,7 @@ import static meteor.Logger.ANSI_RESET;
 import static meteor.Logger.ANSI_YELLOW;
 
 public class MeteorLiteClientModule extends AbstractModule {
-  private static final Logger log = new Logger("MeteorLiteClient");
+  private static final Logger log = Logger.Companion.getLogger(MeteorLiteClientModule.class);
   public static int METEOR_FONT_SIZE = 14;
   public static Paint METEOR_FONT_COLOR = Paint.valueOf("AQUA");
 

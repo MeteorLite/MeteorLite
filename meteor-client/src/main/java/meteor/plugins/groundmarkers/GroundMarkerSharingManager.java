@@ -67,7 +67,7 @@ class GroundMarkerSharingManager
 	private final ChatMessageManager chatMessageManager;
 	private final ChatboxPanelManager chatboxPanelManager;
 	private final Gson gson;
-	private final Logger logger = new Logger(getClass().getName());
+	private final Logger logger = Logger.Companion.getLogger(GroundMarkerSharingManager.class);
 
 	@Inject
 	private GroundMarkerSharingManager(sGroundMarkerPlugin plugin, Client client, MenuManager menuManager,

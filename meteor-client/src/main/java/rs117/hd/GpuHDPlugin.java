@@ -153,7 +153,7 @@ public class GpuHDPlugin extends Plugin implements DrawCallbacks
 	private static final int MATERIAL_PROPERTIES_COUNT = 12;
 	private static final int LIGHT_PROPERTIES_COUNT = 8;
 	private static final int SCALAR_BYTES = 4;
-	Logger log = Logger.getLogger(getClass());
+	Logger log = Logger.Companion.getLogger(getClass());
 
 	@Inject
 	private Client client;
@@ -449,7 +449,7 @@ public class GpuHDPlugin extends Plugin implements DrawCallbacks
 				modelBufferSmall = new GpuIntBuffer();
 				modelBuffer = new GpuIntBuffer();
 
-				if (log.isDebugEnabled())
+				if (Logger.Companion.isDebugEnabled())
 				{
 					System.setProperty("jogl.debug", "true");
 				}
@@ -488,7 +488,7 @@ public class GpuHDPlugin extends Plugin implements DrawCallbacks
 						glDrawable.setRealized(true);
 
 						glContext = glDrawable.createContext(null);
-						if (log.isDebugEnabled())
+						if (Logger.Companion.isDebugEnabled())
 						{
 							// Debug config on context needs to be set before .makeCurrent call
 							glContext.enableGLDebugMessage(true);
@@ -516,7 +516,7 @@ public class GpuHDPlugin extends Plugin implements DrawCallbacks
 					client.setUnlockedFps(unlockFps);
 					gl.setSwapInterval(unlockFps ? 1 : 0);
 
-					if (log.isDebugEnabled())
+					if (Logger.Companion.isDebugEnabled())
 					{
 						gl.glEnable(gl.GL_DEBUG_OUTPUT);
 

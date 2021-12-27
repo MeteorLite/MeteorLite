@@ -4,7 +4,8 @@ import java.lang.Exception
 import java.lang.StringBuilder
 import java.util.*
 
-class Logger(var name: String) {
+class Logger {
+    lateinit var name: String
     var plugin: String? = null
     var format = "%-35s%s%n"
     fun info(message: Any, vararg replacers: Any) {
@@ -76,7 +77,9 @@ class Logger(var name: String) {
         var DEFAULT_CONTROLLER_COLOR = ANSI_CYAN
         var isDebugEnabled = true
         fun getLogger(loggedClass: Class<*>): Logger {
-            return Logger(loggedClass.simpleName)
+            val newLogger = Logger()
+            newLogger.name = loggedClass.toString()
+            return newLogger
         }
 
         fun generateError(s: String): String {

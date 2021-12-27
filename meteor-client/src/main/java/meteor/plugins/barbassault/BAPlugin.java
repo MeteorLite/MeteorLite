@@ -32,7 +32,7 @@ import java.util.Map;
 @PluginDescriptor(name = "BA Additions", description = "", tags = { "barbarian", "assault", "barb", "ba", "attacker", "defender", "collector", "healer", "zhuri/nicole" }, enabledByDefault = false)
 public class BAPlugin extends Plugin
 {
-    private static final Logger log = Logger.getLogger(BAPlugin.class);
+    private static final Logger log = Logger.Companion.getLogger(BAPlugin.class);
     @Inject
     private Client client;
     @Inject

@@ -60,7 +60,7 @@ class XpStateSingle
 	private int startLevelExp = 0;
 	private int endLevelExp = 0;
 
-	private Logger log = new Logger("XPTracker");
+	private Logger log = Logger.Companion.getLogger(XpStateSingle.class);
 
 	XpStateSingle(Skill skill, long startXp)
 	{

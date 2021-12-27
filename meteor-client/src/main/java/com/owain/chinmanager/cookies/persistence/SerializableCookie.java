@@ -19,7 +19,7 @@ public class SerializableCookie implements Serializable
 
 	private transient Cookie cookie;
 
-	private Logger log = new Logger("Chin-Cookie");
+	private Logger log = Logger.Companion.getLogger(SerializableCookie.class);
 
 	public String encode(Cookie cookie)
 	{

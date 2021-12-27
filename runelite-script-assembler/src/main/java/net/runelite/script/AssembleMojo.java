@@ -52,7 +52,7 @@ import meteor.Logger;
 )
 public class AssembleMojo extends AbstractMojo {
 
-  private final Logger log = new Logger("Script-Assembler");
+  private final Logger log = Logger.Companion.getLogger(AssembleMojo.class);
   @Parameter(required = true)
   private File scriptDirectory;
   @Parameter(required = true)

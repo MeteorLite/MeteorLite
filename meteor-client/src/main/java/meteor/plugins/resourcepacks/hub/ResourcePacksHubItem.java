@@ -32,7 +32,7 @@ public class ResourcePacksHubItem extends JPanel
 	private static final int HEIGHT = 147;
 	private static final int ICON_WIDTH = 224;
 	private static final int BOTTOM_LINE_HEIGHT = 16;
-	private final Logger logger = new Logger(getClass().getName());
+	private final Logger logger = Logger.Companion.getLogger(ResourcePacksHubItem.class);
 
 	public final ResourcePackManifest manifest;
 	public final List<String> keywords = new ArrayList<>();

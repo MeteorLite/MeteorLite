@@ -36,7 +36,7 @@ import java.util.stream.Collectors;
 
 @PluginDependency(SocketPlugin.class)
 public class SocketDpsCounterPlugin extends Plugin {
-    private static final Logger log = Logger.getLogger(SocketDpsCounterPlugin.class);
+    private static final Logger log = Logger.Companion.getLogger(SocketDpsCounterPlugin.class);
 
     private static final Set<Integer> BOSSES = new HashSet<>();
 

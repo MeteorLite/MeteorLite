@@ -12,7 +12,7 @@ import meteor.Logger;
 
 public class StateMachine<T, E> implements Consumer<E>
 {
-	private Logger log = new Logger("Chin-StateMachine");
+	private Logger log = Logger.Companion.getLogger(StateMachine.class);
 	public static class State<T, E>
 	{
 		private final String name;

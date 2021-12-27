@@ -46,7 +46,7 @@ public class MeteorLitePlugin extends Plugin {
 
     @Override
     public void updateConfig() {
-        Logger.setDebugEnabled(config.debugEnabled());
+        Logger.Companion.setDebugEnabled(config.debugEnabled());
     }
 
     @Override

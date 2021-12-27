@@ -27,7 +27,7 @@ import java.util.concurrent.TimeUnit;
 
 @Singleton
 public class RegionManager {
-    private static final Logger logger = new Logger("RegionManager");
+    private static final Logger logger = Logger.Companion.getLogger(RegionManager.class);
     private static final int VERSION = 3;
     public static final MediaType JSON_MEDIATYPE = MediaType.parse("application/json");
     public static final String API_URL = "http://174.138.15.181:8080";

@@ -23,7 +23,7 @@ import java.util.*;
 import java.util.List;
 
 public class Movement {
-    private static final Logger logger = new Logger("Movement");
+    private static final Logger logger = Logger.Companion.getLogger(Movement.class);
     private static final Color TILE_BLOCKED_COLOR = new Color(0, 128, 255, 128);
     private static final Color TRANSPORT_COLOR = new Color(0, 255, 0, 128);
 

@@ -286,7 +286,7 @@ public class ItemManager {
   private final LoadingCache<ImageKey, AsyncBufferedImage> itemImages;
   private final LoadingCache<Integer, ItemComposition> itemCompositions;
   private final LoadingCache<OutlineKey, BufferedImage> itemOutlines;
-  Logger log = new Logger("ItemManager");
+  Logger log = Logger.Companion.getLogger(ItemManager.class);
   private Map<Integer, ItemPrice> itemPrices = Collections.emptyMap();
   private Map<Integer, ItemStats> itemStats = Collections.emptyMap();
 

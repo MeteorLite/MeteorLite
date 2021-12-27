@@ -32,7 +32,7 @@ import java.util.concurrent.CopyOnWriteArrayList
 
 object KeyManager {
     private val keyListeners: MutableList<KeyListener> = CopyOnWriteArrayList()
-    var log = Logger("KeyManager")
+    var log = Logger.getLogger(KeyManager.javaClass)
     fun registerKeyListener(keyListener: KeyListener, source: Class<*>) {
         log.warn("Registering key listener for $source")
         if (!keyListeners.contains(keyListener)) {

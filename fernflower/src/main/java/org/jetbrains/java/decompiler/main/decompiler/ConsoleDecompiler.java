@@ -49,7 +49,7 @@ import meteor.Message;
 
 public class ConsoleDecompiler implements IBytecodeProvider, IResultSaver {
 
-  static Logger logger = new Logger("Decompiler");
+  static Logger logger = Logger.Companion.getLogger(ConsoleDecompiler.class);
   private final File root;
   private final Fernflower fernflower;
 

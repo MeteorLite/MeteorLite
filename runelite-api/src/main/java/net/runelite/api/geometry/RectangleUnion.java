@@ -36,7 +36,7 @@ import meteor.Logger;
 
 public class RectangleUnion {
 
-  static Logger log = new Logger("api-geom");
+  static Logger log = Logger.Companion.getLogger(RectangleUnion.class);
 
   private RectangleUnion() {
   }

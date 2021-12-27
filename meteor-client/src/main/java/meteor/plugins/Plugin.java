@@ -22,7 +22,7 @@ import meteor.Logger;
 
 public class Plugin implements Module {
 
-  public Logger logger = new Logger("");
+  public Logger logger = Logger.Companion.getLogger(Plugin.class);
 
   @Inject
   public Client client;

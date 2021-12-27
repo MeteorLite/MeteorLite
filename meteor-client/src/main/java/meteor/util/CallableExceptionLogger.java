@@ -32,7 +32,7 @@ import meteor.Logger;
 public class CallableExceptionLogger<V> implements Callable<V> {
 
   private final Callable<V> callable;
-  public Logger log = new Logger("Callable");
+  public Logger log = Logger.Companion.getLogger(CallableExceptionLogger.class);
 
   public static <V> CallableExceptionLogger<V> wrap(Callable<V> callable) {
     return new CallableExceptionLogger<>(callable);

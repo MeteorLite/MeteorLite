@@ -28,7 +28,7 @@ import java.util.function.Predicate;
 public class Worlds {
     private static final Point LOBBY_WORLD_SELECTOR = new Point(20, 475);
     private static final Point CLOSE_LOBBY_SELECTOR = new Point(715, 10);
-    private static final Logger logger = new Logger("Worlds");
+    private static final Logger logger = Logger.Companion.getLogger(Worlds.class);
 
     @Inject
     private static Client client;

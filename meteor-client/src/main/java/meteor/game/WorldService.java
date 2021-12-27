@@ -57,7 +57,7 @@ public class WorldService
 	private final CompletableFuture<WorldResult> firstRunFuture = new CompletableFuture<>();
 
 	private WorldResult worlds;
-	private Logger log = new Logger("WorldService");
+	private Logger log = Logger.Companion.getLogger(WorldService.class);
 
 	@Inject
 	private WorldService(@Nullable Client client, ScheduledExecutorService scheduledExecutorService, OkHttpClient okHttpClient,

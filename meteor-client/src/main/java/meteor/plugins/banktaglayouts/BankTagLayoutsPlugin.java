@@ -336,7 +336,7 @@ public class BankTagLayoutsPlugin extends Plugin implements MouseListener {
 
     @Subscribe
     public void onCommandExecuted(CommandExecuted commandExecuted) {
-		if (!Logger.isDebugEnabled()) {
+		if (!Logger.Companion.isDebugEnabled()) {
 			return;
 		}
 

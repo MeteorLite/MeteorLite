@@ -41,7 +41,7 @@ import meteor.Logger;
 @RequiredArgsConstructor
 public class HiscoreClient
 {
-	private static Logger log = new Logger("HiscoreClient");
+	private static Logger log = Logger.Companion.getLogger(HiscoreClient.class);
 	private final OkHttpClient client;
 
 	public HiscoreResult lookup(String username, HiscoreEndpoint endpoint) throws IOException

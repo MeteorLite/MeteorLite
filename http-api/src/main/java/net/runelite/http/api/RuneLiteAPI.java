@@ -55,7 +55,7 @@ public class RuneLiteAPI {
   public static final OkHttpClient CLIENT;
   public static final Gson GSON;
   public static final MediaType JSON = MediaType.parse("application/json");
-  private static final Logger logger = new Logger("");
+  private static final Logger logger = Logger.Companion.getLogger(RuneLiteAPI.class);
   private static final String BASE = "http://api.runelite.net";
   private static final String WSBASE = "http://api.runelite.net/ws";
   private static final String STATICBASE = "http://static.runelite.net";

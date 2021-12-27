@@ -39,7 +39,7 @@ public class KeyManager {
 
   private final Client client;
   private final List<meteor.input.KeyListener> keyListeners = new CopyOnWriteArrayList<>();
-  public Logger log = new Logger("KeyManager");
+  public Logger log = Logger.Companion.getLogger(KeyManager.class);
 
   @Inject
   private KeyManager(@Nullable final Client client) {

@@ -42,7 +42,7 @@ import meteor.Logger;
 public class WorldClient
 {
 	private final OkHttpClient client;
-	private Logger log = new Logger("WorldClient");
+	private Logger log = Logger.Companion.getLogger(WorldClient.class);
 
 	public WorldResult lookupWorlds() throws IOException
 	{

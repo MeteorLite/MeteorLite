@@ -50,7 +50,7 @@ public class PluginListPanel extends BorderPane {
     private static final String MAIN_CATEGORY_NAME = "Plugins";
     private static final String EXTERNAL_CATEGORY_NAME = "Externals";
 
-    private final Logger logger = new Logger("PluginList");
+    private final Logger logger = Logger.Companion.getLogger(PluginListPanel.class);
     private final ObservableList<Plugin> plugins;
     private Category main;
     private Category externals;

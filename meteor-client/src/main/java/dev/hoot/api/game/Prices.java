@@ -12,7 +12,7 @@ import java.time.Duration;
 import java.util.concurrent.ExecutionException;
 
 public class Prices {
-	private static final Logger logger = new Logger("Prices");
+	private static final Logger logger = Logger.Companion.getLogger(Prices.class);
 	@Inject
 	private static ItemManager itemManager;
 

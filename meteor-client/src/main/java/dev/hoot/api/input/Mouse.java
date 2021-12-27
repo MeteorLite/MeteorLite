@@ -12,7 +12,7 @@ import java.util.concurrent.Executors;
 import java.util.function.Supplier;
 
 public class Mouse {
-    private static final Logger log = new Logger("Mouse");
+    private static final Logger log = Logger.Companion.getLogger(Mouse.class);
     private static final int MENU_REPLACE_DELAY = 80;
     public static final Supplier<Point> CLICK_POINT_SUPPLIER = () -> new Point(Rand.nextInt(520, 568), Rand.nextInt(55, 70));
 

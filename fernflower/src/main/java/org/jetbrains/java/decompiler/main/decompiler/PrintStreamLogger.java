@@ -27,7 +27,7 @@ import meteor.Message;
 public class PrintStreamLogger extends IFernflowerLogger {
 
   private final PrintStream stream;
-  Logger logger = new Logger("Decompiler");
+  Logger logger = Logger.Companion.getLogger(PrintStreamLogger.class);
   private int indent;
 
   public PrintStreamLogger(PrintStream printStream) {

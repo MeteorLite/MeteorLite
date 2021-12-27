@@ -149,7 +149,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks {
   private final GLBuffer tmpOutUvBuffer = new GLBuffer(); // target uv buffer for compute shaders
   private final GLBuffer uniformBuffer = new GLBuffer();
   private final float[] textureOffsets = new float[256];
-  public Logger log = new Logger("GPU");
+  public Logger log = Logger.Companion.getLogger(GpuPlugin.class);
   @Inject
   private Client client;
   @Inject

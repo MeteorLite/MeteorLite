@@ -22,7 +22,7 @@ public class Bootstrapper {
     private static final File bootstrapShadowJar = new File("./build/bootstrap/meteorlite.jar");
     private static final File libsDir = new File("./build/libs/");
 
-    private static Logger log = new Logger("Bootstrapper");
+    private static Logger log = Logger.Companion.getLogger(Bootstrapper.class);
 
     private static MessageDigest md5Digest;
     private static Update update;

@@ -25,7 +25,7 @@ public class InterfaceInjector extends AbstractInjector {
   public InterfaceInjector(InjectData inject) {
     super(inject);
   }
-  private Logger log = new Logger("Interfaces");
+  private Logger log = Logger.Companion.getLogger(InterfaceInjector.class);
 
   public void inject() {
     // forEachPair performs actions on a deob-vanilla pair, which is what's needed here

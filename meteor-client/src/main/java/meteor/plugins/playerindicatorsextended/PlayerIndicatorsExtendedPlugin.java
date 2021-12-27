@@ -28,7 +28,7 @@ import java.util.Objects;
         enabledByDefault = false
 )
 public class PlayerIndicatorsExtendedPlugin extends Plugin {
-    private static final Logger log = Logger.getLogger(PlayerIndicatorsExtendedPlugin.class);
+    private static final Logger log = Logger.Companion.getLogger(PlayerIndicatorsExtendedPlugin.class);
 
     @Inject
     private PlayerIndicatorsExtendedConfig config;

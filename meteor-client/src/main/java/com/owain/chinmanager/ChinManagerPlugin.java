@@ -152,7 +152,7 @@ public class ChinManagerPlugin extends Plugin
 	public static final List<Disposable> DISPOSABLES = new ArrayList<>();
 	public static final Map<Plugin, List<Disposable>> PLUGIN_DISPOSABLE_MAP = new HashMap<>();
 	private static final int DISPLAY_SWITCHER_MAX_ATTEMPTS = 3;
-	private Logger log = new Logger("Chin-Manager");
+	private Logger log = Logger.Companion.getLogger(ChinManagerPlugin.class);
 
 	public static final List<Integer> DIGSIDE_PENDANTS = List.of(
 		ItemID.DIGSITE_PENDANT_1,

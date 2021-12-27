@@ -25,7 +25,7 @@ public abstract class ClientMixin implements RSClient {
   public static RSClient client;
 
   @Inject
-  public static Logger logger = new Logger("injected-client");
+  public static Logger logger = Logger.Companion.getLogger(Class.class);
 
   @Inject
   private static GameState oldGameState;

@@ -21,7 +21,7 @@ public class InjectDeobToFatJar {
             new File("./meteor-client/build/libs/fatJarTemp/");
     private static List<File> filesToAdd = new ArrayList<>();
     private static int classesAdded = 0;
-    private static Logger log = new Logger("FatJarPacker");
+    private static Logger log = Logger.Companion.getLogger(InjectDeobToFatJar.class);
 
     public static void main(String[] args) throws IOException {
         log.debug("unzipping...");

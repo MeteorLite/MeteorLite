@@ -47,7 +47,7 @@ public class Reflection {
   public static boolean printDebugMessages = false;
   public static Map<String, Class<?>> classMap = new HashMap<>();
   static HashMap<String, String> refmap;
-  static Logger logger = new Logger("Reflection");
+  static Logger logger = Logger.Companion.getLogger(Reflection.class);
   private static int mappedClasses = 0;
 
   static {

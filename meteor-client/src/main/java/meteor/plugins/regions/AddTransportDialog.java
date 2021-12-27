@@ -34,7 +34,7 @@ import java.util.concurrent.TimeUnit;
 @Singleton
 public class AddTransportDialog extends JFrame {
     private static final ScheduledExecutorService EXECUTOR = Executors.newSingleThreadScheduledExecutor();
-    private static final Logger logger = new Logger("AddTransportDialog");
+    private static final Logger logger = Logger.Companion.getLogger(AddTransportDialog.class);
 
     private final JTextField fromText;
 

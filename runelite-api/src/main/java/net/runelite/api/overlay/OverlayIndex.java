@@ -36,7 +36,7 @@ public class OverlayIndex {
 
   private static final Set<Integer> overlays = new HashSet<>();
 
-  static Logger log = new Logger("IndexLoader");
+  static Logger log = Logger.Companion.getLogger(OverlayIndex.class);
 
   static {
     InputStream indexStream = OverlayIndex.class.getResourceAsStream("/runelite/index");

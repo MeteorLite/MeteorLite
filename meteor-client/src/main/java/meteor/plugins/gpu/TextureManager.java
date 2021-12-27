@@ -37,7 +37,7 @@ class TextureManager {
   private static final float PERC_64 = 1f / 64f;
   private static final float PERC_128 = 1f / 128f;
   private static final int TEXTURE_SIZE = 128;
-  public Logger log = new Logger("TextureManager");
+  public Logger log = Logger.Companion.getLogger(TextureManager.class);
 
   private static byte[] convertPixels(int[] srcPixels, int width, int height, int textureWidth,
       int textureHeight) {

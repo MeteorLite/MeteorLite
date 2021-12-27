@@ -45,7 +45,7 @@ import meteor.Logger;
 @Singleton
 public class Scheduler
 {
-	private static final Logger log = new Logger("Scheduler");
+	private static final Logger log = Logger.Companion.getLogger(Scheduler.class);
 	private final List<ScheduledMethod> scheduledMethods = new CopyOnWriteArrayList<>();
 
 	@Inject

@@ -13,7 +13,7 @@ import java.util.function.Predicate;
 
 @Singleton
 public class Tiles {
-    private static final Logger log = new Logger("Tiles");
+    private static final Logger log = Logger.Companion.getLogger(Tiles.class);
     public static List<Tile> getTiles(Predicate<Tile> filter) {
         List<Tile> out = new ArrayList<>();
 
