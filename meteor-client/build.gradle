@@ -26,8 +26,8 @@ dependencies {
 
     implementation(group: "com.google.inject", name: "guice", version: "4.1.0", classifier: "no_aop")
 
-    api(project(":runescape-api"))
-    api(project(":runelite-api"))
+    implementation(project(":runescape-api"))
+    implementation(project(":runelite-api"))
     implementation(project(":meteor-logger"))
     implementation(project(":http-api"))
     implementation(project(":runelite-annotations"))
@@ -133,6 +133,9 @@ shadowJar {
     configurations = [project.configurations.runtimeClasspath]
     minimize {
         it.exclude(it.dependency { 'net.runelite.jogl:.*:.*' } as Spec<? super ResolvedDependency>)
+        it.exclude(it.dependency {'xerces:xercesImpl:.*:.*'} as Spec<? super ResolvedDependency>)
+        it.exclude(it.project(":runelite-api") as Spec<? super ResolvedDependency>)
+        it.exclude(it.project(":runescape-api") as Spec<? super ResolvedDependency>)
     }
     applicationDefaultJvmArgs = [
             "-noverify",
