@@ -3,7 +3,10 @@ package meteor.ui
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.awt.SwingPanel
 import androidx.compose.ui.graphics.Color
@@ -16,6 +19,7 @@ import androidx.compose.ui.unit.dp
 import meteor.rs.Applet
 import java.awt.BorderLayout
 import javax.swing.JPanel
+import meteor.ui.Components.Toolbar.Position.*
 
 object Components {
     @Composable
@@ -27,13 +31,13 @@ object Components {
     @Composable
     fun OSRSApplet(constraints: Constraints) {
         val mod = when (UI.toolbarPosition.value) {
-            Toolbar.Position.TOP -> {
+            TOP -> {
                 Modifier.fillMaxWidth().fillMaxHeight()
             }
-            Toolbar.Position.BOTTOM -> {
+            BOTTOM -> {
                 Modifier.fillMaxWidth().height(constraints.maxHeight.dp - UI.TOOLBAR_WIDTH.dp).background(Color.Black)
             }
-            Toolbar.Position.LEFT, Toolbar.Position.RIGHT -> {
+            LEFT, RIGHT -> {
                 Modifier.fillMaxHeight().width(UI.contentSize.width.dp - UI.TOOLBAR_WIDTH.dp).background(Color.Black)
             }
         }
@@ -50,5 +54,48 @@ object Components {
                         }
                     }
                 })
+    }
+
+    object Toolbar {
+        @Composable
+        fun LeftRightToolbar(position: MutableState<Position>) {
+            return Column(verticalArrangement = Arrangement.Top) {
+                Column(horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Top,
+                        modifier = Modifier.width(UI.TOOLBAR_WIDTH.dp).fillMaxHeight(.5f).background(UI.darkThemeColors.background)) {
+                    MaterialTheme(colors = UI.darkThemeColors) {
+                    }
+                }
+                Column(horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Bottom,
+                        modifier = Modifier.width(UI.TOOLBAR_WIDTH.dp).fillMaxHeight().background(UI.darkThemeColors.background)) {
+                    MaterialTheme(colors = UI.darkThemeColors) {
+                        Components.BrandBadge()
+                    }
+                }
+            }
+        }
+
+        @Composable
+        fun TopBottomToolbar(position: MutableState<Position>) {
+            return Row(horizontalArrangement = Arrangement.Center) {
+                Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.Start,
+                        modifier = Modifier.height(UI.TOOLBAR_WIDTH.dp).fillMaxWidth(.5f).background(UI.darkThemeColors.background)) {
+                    MaterialTheme(colors = UI.darkThemeColors) {
+                    }
+                }
+                Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.End,
+                        modifier = Modifier.height(UI.TOOLBAR_WIDTH.dp).fillMaxWidth().background(UI.darkThemeColors.background)) {
+                    MaterialTheme(colors = UI.darkThemeColors) {
+                        Components.BrandBadge()
+                    }
+                }
+            }
+        }
+
+        enum class Position(position: String) {
+            TOP("Top"),
+            RIGHT("Right"),
+            LEFT("Left"),
+            BOTTOM("Bottom")
+        }
     }
 }

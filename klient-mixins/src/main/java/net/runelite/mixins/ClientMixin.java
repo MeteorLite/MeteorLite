@@ -247,6 +247,22 @@ public abstract class ClientMixin implements RSClient {
   }
 
   @Inject
+  public long delayNanoTime;
+
+  @Inject
+  public void setUnlockedFpsTarget(int var1)
+  {
+    if (var1 <= 0)
+    {
+      delayNanoTime = 0L;
+    }
+    else
+    {
+      delayNanoTime = 1000000000L / (long) var1;
+    }
+  }
+
+  @Inject
   public long lastNanoTime = 0;
 
   @Inject
@@ -258,8 +274,16 @@ public abstract class ClientMixin implements RSClient {
 
     if (this.getGameState() == GameState.LOGGED_IN)
     {
+      setUnlockedFpsTarget(175);
       this.interpolateCamera(diff);
     }
+  }
+
+  @Inject
+  @Override
+  public long getUnlockedFpsTarget()
+  {
+    return delayNanoTime;
   }
 
   @Inject
@@ -285,7 +309,7 @@ public abstract class ClientMixin implements RSClient {
 
     tmpCamAngleY += angleDX / 2;
     tmpCamAngleX += angleDY / 2;
-    tmpCamAngleX = Doubles.constrainToRange(tmpCamAngleX, Perspective.UNIT * STANDARD_PITCH_MIN, false ? Perspective.UNIT * NEW_PITCH_MAX : Perspective.UNIT * STANDARD_PITCH_MAX);
+    tmpCamAngleX = Doubles.constrainToRange(tmpCamAngleX, Perspective.UNIT * STANDARD_PITCH_MIN, Perspective.UNIT * STANDARD_PITCH_MAX);
 
     int yaw = toCameraPos(tmpCamAngleY);
     int pitch = toCameraPos(tmpCamAngleX);
@@ -333,4 +357,7 @@ public abstract class ClientMixin implements RSClient {
     int[] varps = getVarps();
     return varps[varPlayer.getId()];
   }
+
+  @Inject
+  static int skyboxColor = 0;
 }

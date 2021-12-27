@@ -1,12 +1,13 @@
 package meteor.plugins.fishing
 
 import meteor.ui.overlay.Overlay
+import meteor.ui.overlay.OverlayLayer
 import net.runelite.api.coords.WorldPoint
 import java.awt.Color
 import java.awt.Dimension
 import java.awt.Graphics2D
 
-class FishingSpotOverlay(var plugin: FishingPlugin): Overlay() {
+class FishingSpotOverlay(var plugin: FishingPlugin): Overlay(layer = OverlayLayer.ABOVE_SCENE) {
     override fun render(graphics: Graphics2D): Dimension? {
 
         var previousSpot: FishingSpot? = null

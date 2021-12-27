@@ -6,13 +6,12 @@ import meteor.*
 import meteor.Event
 import meteor.eventbus.EventBus
 import meteor.eventbus.events.GameStateChanged
-import meteor.eventbus.events.GameTick
 import meteor.plugins.PluginManager
 import meteor.rs.Applet
 import meteor.rs.AppletConfiguration
+import meteor.ui.Components
 import meteor.ui.OverlayManager
 import meteor.ui.OverlayRenderer
-import meteor.ui.Toolbar
 import meteor.ui.UI
 import meteor.ui.overlay.Overlay
 import meteor.ui.overlay.OverlayLayer
@@ -61,11 +60,13 @@ object Main: KoinComponent {
     }
 }
 
-object TestOverlay : Overlay() {
+object TestOverlay : Overlay(layer = OverlayLayer.ABOVE_SCENE) {
     override fun render(graphics: Graphics2D): Dimension? {
         graphics.color = Color.CYAN
-        if (UI.toolbarPosition.value == Toolbar.Position.TOP)
-        graphics.drawString("Meteor Klient rendering overlays!", 0, 10)
+        val s = "Meteor Klient rendering overlays!"
+        val fm = graphics.fontMetrics;
+        if (UI.toolbarPosition.value == Components.Toolbar.Position.TOP)
+        graphics.drawString(s, 0, fm.getStringBounds(s, graphics).height.toInt())
         return null
     }
 }

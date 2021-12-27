@@ -12,14 +12,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.window.FrameWindowScope
 import meteor.ui.Components.OSRSApplet
+import meteor.ui.Components.Toolbar.LeftRightToolbar
 import meteor.ui.Modifiers.toolbarDragListener
-import meteor.ui.Toolbar.LeftRightToolbar
-import meteor.ui.Toolbar.Position
-import meteor.ui.Toolbar.TopBottomToolbar
 import java.awt.Dimension
+import meteor.ui.Components.Toolbar.Position.*
+import meteor.ui.Components.Toolbar.TopBottomToolbar
 
 object UI {
-    val toolbarPosition = mutableStateOf(Position.TOP)
+    val toolbarPosition = mutableStateOf(TOP)
     var loaded = false
     const val TOOLBAR_WIDTH = 40
     lateinit var contentSize: Dimension
@@ -31,24 +31,24 @@ object UI {
                 BoxWithConstraints(modifier = Modifier.fillMaxSize().then(toolbarDragListener())) {
                     contentSize = Dimension(this.constraints.maxWidth, this.constraints.maxHeight)
                     when (val position = toolbarPosition.value) {
-                        Position.LEFT -> {
+                        LEFT -> {
                             Row {
                                 LeftRightToolbar(toolbarPosition)
                                 OSRSApplet(this@BoxWithConstraints.constraints)
                             }
                         }
-                        Position.RIGHT -> {
+                        RIGHT -> {
                             Row {
                                 OSRSApplet(this@BoxWithConstraints.constraints)
                                 LeftRightToolbar(toolbarPosition)
                             }
                         }
                         else -> Column {
-                            if (position == Position.TOP)
+                            if (position == TOP)
                                 TopBottomToolbar(toolbarPosition)
-                            if (position == Position.TOP || position == Position.BOTTOM)
+                            if (position == TOP || position == BOTTOM)
                                 OSRSApplet(this@BoxWithConstraints.constraints)
-                            if (position == Position.BOTTOM) {
+                            if (position == BOTTOM) {
                                 TopBottomToolbar(toolbarPosition)
                             }
                         }

@@ -83,7 +83,12 @@ class Hooks : Callbacks {
     }
 
     override fun drawScene() {
-        TODO("Not yet implemented")
+        val graphics2d: Graphics2D = getGraphics(client.bufferProvider as MainBufferProvider)
+        try {
+            overlayRenderer.renderOverlayLayer(graphics2d, OverlayLayer.ABOVE_SCENE)
+        } catch (ex: java.lang.Exception) {
+            ex.printStackTrace()
+        }
     }
 
     override fun drawAboveOverheads() {

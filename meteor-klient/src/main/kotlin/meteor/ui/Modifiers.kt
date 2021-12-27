@@ -6,7 +6,7 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.input.pointer.consumeAllChanges
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.input.pointer.positionChange
-import meteor.ui.Toolbar.Position
+import meteor.ui.Components.Toolbar.Position.*
 import meteor.ui.UI.toolbarPosition
 
 object Modifiers {
@@ -21,13 +21,13 @@ object Modifiers {
                             offCurrent?.plus(change.positionChange())
                         change.consumeAllChanges()
                         if (offCurrent!!.y < (((UI.contentSize.height / 4) * 2) * -1))
-                            toolbarPosition.value = Position.TOP
+                            toolbarPosition.value = TOP
                         if (offCurrent!!.y > ((UI.contentSize.height / 4) * 2))
-                            toolbarPosition.value = Position.BOTTOM
+                            toolbarPosition.value = BOTTOM
                         if (offCurrent!!.x < ((UI.contentSize.width / 4) * 2) * -1)
-                            toolbarPosition.value = Position.LEFT
+                            toolbarPosition.value = LEFT
                         if (offCurrent!!.x > ((UI.contentSize.width / 4) * 2))
-                            toolbarPosition.value = Position.RIGHT
+                            toolbarPosition.value = RIGHT
                     },
                     onDragStart = {
                         offCurrent = null

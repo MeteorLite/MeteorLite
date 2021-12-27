@@ -33,7 +33,7 @@ import net.runelite.api.widgets.WidgetInfo
 import java.awt.*
 
 abstract class Overlay(plugin: Plugin? = null,
-                       var layer: OverlayLayer = OverlayLayer.ALWAYS_ON_TOP)
+                       var layer: OverlayLayer = OverlayLayer.ABOVE_SCENE)
     : LayoutableRenderableEntity {
     val client = Main.client
     val drawHooks: MutableList<Int> = ArrayList()
