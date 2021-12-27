@@ -34,12 +34,12 @@ object UI {
                         Position.LEFT -> {
                             Row {
                                 LeftRightToolbar(toolbarPosition)
-                                OSRSApplet()
+                                OSRSApplet(this@BoxWithConstraints.constraints)
                             }
                         }
                         Position.RIGHT -> {
                             Row {
-                                OSRSApplet()
+                                OSRSApplet(this@BoxWithConstraints.constraints)
                                 LeftRightToolbar(toolbarPosition)
                             }
                         }
@@ -47,7 +47,7 @@ object UI {
                             if (position == Position.TOP)
                                 TopBottomToolbar(toolbarPosition)
                             if (position == Position.TOP || position == Position.BOTTOM)
-                                OSRSApplet()
+                                OSRSApplet(this@BoxWithConstraints.constraints)
                             if (position == Position.BOTTOM) {
                                 TopBottomToolbar(toolbarPosition)
                             }

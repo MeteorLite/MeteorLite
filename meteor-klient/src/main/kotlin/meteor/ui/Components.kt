@@ -11,6 +11,7 @@ import androidx.compose.ui.graphics.FilterQuality
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.res.loadImageBitmap
 import androidx.compose.ui.res.useResource
+import androidx.compose.ui.unit.Constraints
 import androidx.compose.ui.unit.dp
 import meteor.rs.Applet
 import java.awt.BorderLayout
@@ -24,10 +25,13 @@ object Components {
     }
 
     @Composable
-    fun OSRSApplet() {
+    fun OSRSApplet(constraints: Constraints) {
         val mod = when (UI.toolbarPosition.value) {
-            Toolbar.Position.TOP, Toolbar.Position.BOTTOM -> {
-                Modifier.fillMaxWidth().height(UI.contentSize.height.dp - UI.TOOLBAR_WIDTH.dp + 10.dp).background(Color.Black)
+            Toolbar.Position.TOP -> {
+                Modifier.fillMaxWidth().fillMaxHeight()
+            }
+            Toolbar.Position.BOTTOM -> {
+                Modifier.fillMaxWidth().height(constraints.maxHeight.dp - UI.TOOLBAR_WIDTH.dp).background(Color.Black)
             }
             Toolbar.Position.LEFT, Toolbar.Position.RIGHT -> {
                 Modifier.fillMaxHeight().width(UI.contentSize.width.dp - UI.TOOLBAR_WIDTH.dp).background(Color.Black)
