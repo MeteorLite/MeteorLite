@@ -2,6 +2,7 @@ package meteor.plugins
 
 import meteor.config.ConfigManager
 import meteor.config.legacy.Config
+import meteor.plugins.agility.AgilityPlugin
 import meteor.plugins.fishing.FishingPlugin
 import java.lang.Boolean
 import kotlin.String
@@ -11,6 +12,7 @@ object PluginManager {
     init {
         plugins.add(ExamplePlugin())
         plugins.add(FishingPlugin())
+        plugins.add(AgilityPlugin())
     }
 
     fun startPlugins() {
