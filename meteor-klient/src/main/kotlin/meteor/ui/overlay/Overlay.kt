@@ -29,8 +29,12 @@ import com.google.common.base.Strings
 import meteor.plugins.Plugin
 import meteor.ui.components.LayoutableRenderableEntity
 import meteor.util.ColorUtil
+import net.runelite.api.Client
+import net.runelite.api.Perspective
+import net.runelite.api.coords.LocalPoint
 import net.runelite.api.widgets.WidgetInfo
 import java.awt.*
+import java.awt.image.BufferedImage
 
 abstract class Overlay(plugin: Plugin? = null,
                        var layer: OverlayLayer = OverlayLayer.ABOVE_SCENE)
@@ -123,4 +127,58 @@ abstract class Overlay(plugin: Plugin? = null,
         graphics.drawString(text, x, y)
     }
 
+    open fun outlineImage(image: BufferedImage, color: Color): BufferedImage {
+        return outlineImage(image, color, false)
+    }
+
+    open fun fillImage(image: BufferedImage, color: Color): BufferedImage {
+        val filledImage = BufferedImage(image.width, image.height,
+                BufferedImage.TYPE_INT_ARGB)
+        for (x in 0 until filledImage.width) {
+            for (y in 0 until filledImage.height) {
+                val pixel = image.getRGB(x, y)
+                val a = pixel ushr 24
+                if (a == 0) {
+                    continue
+                }
+                filledImage.setRGB(x, y, color.rgb)
+            }
+        }
+        return filledImage
+    }
+
+    open fun renderImageLocation(graphics: Graphics2D, imgLoc: net.runelite.api.Point, image: BufferedImage) {
+        val x = imgLoc.x
+        val y = imgLoc.y
+        graphics.drawImage(image, x, y, null)
+    }
+
+    open fun renderImageLocation(graphics: Graphics2D, localPoint: LocalPoint,
+                                 image: BufferedImage, zOffset: Int) {
+        val imageLocation = Perspective
+                .getCanvasImageLocation(client, localPoint, image, zOffset)
+        if (imageLocation != null) {
+            renderImageLocation(graphics, imageLocation, image)
+        }
+    }
+
+    open fun outlineImage(image: BufferedImage, color: Color,
+                          outlineCorners: Boolean): BufferedImage {
+        val filledImage: BufferedImage = fillImage(image, color)
+        val outlinedImage = BufferedImage(image.width, image.height,
+                BufferedImage.TYPE_INT_ARGB)
+        val g2d = outlinedImage.createGraphics()
+        for (x in -1..1) {
+            for (y in -1..1) {
+                if (x == 0 && y == 0
+                        || !outlineCorners && Math.abs(x) + Math.abs(y) != 1) {
+                    continue
+                }
+                g2d.drawImage(filledImage, x, y, null)
+            }
+        }
+        g2d.drawImage(image, 0, 0, null)
+        g2d.dispose()
+        return outlinedImage
+    }
 }

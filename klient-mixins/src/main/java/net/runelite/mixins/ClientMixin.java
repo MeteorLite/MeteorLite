@@ -364,4 +364,29 @@ public abstract class ClientMixin implements RSClient {
 
   @Inject
   static int skyboxColor = 0;
+
+  @Inject
+  public RSSpritePixels createItemSprite(int itemId, int quantity, int border, int shadowColor, int stackable, boolean noted)
+  {
+    assert isClientThread() : "createItemSprite must be called on client thread";
+    return createRSItemSprite(itemId, quantity, border, shadowColor, stackable, noted);
+  }
+
+  @Inject
+  @Override
+  public SpritePixels createItemSprite(int itemId, int quantity, int border, int shadowColor, int stackable, boolean noted, int scale)
+  {
+    assert isClientThread() : "createItemSprite must be called on client thread";
+
+    int zoom = get3dZoom();
+    set3dZoom(scale);
+    try
+    {
+      return createItemSprite(itemId, quantity, border, shadowColor, stackable, noted);
+    }
+    finally
+    {
+      set3dZoom(zoom);
+    }
+  }
 }

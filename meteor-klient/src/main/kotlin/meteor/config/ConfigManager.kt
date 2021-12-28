@@ -35,6 +35,7 @@ object ConfigManager {
     private val consumers: HashMap<String, Consumer<in Plugin?>> = HashMap()
     private const val KEY_SPLITTER_GROUP = 0
     private const val KEY_SPLITTER_KEY = 1
+    var loaded = false
 
     fun stringToObject(str: String, type: Class<*>): Any? {
         if (type == Boolean::class.javaPrimitiveType || type == Boolean::class.java) {
@@ -475,16 +476,17 @@ object ConfigManager {
     fun loadSavedProperties() {
         consumers.clear()
         val newProperties = Properties()
-        var loaded = false
+
+        if (CONFIG_FILE.exists())
         try {
             FileInputStream(CONFIG_FILE).use { `in` ->
                 newProperties.load(InputStreamReader(`in`, StandardCharsets.UTF_8))
+                swapProperties(newProperties)
                 loaded = true
             }
         } catch (e: java.lang.Exception) {
             e.printStackTrace()
         }
-        swapProperties(newProperties)
         if (!loaded) {
             saveProperties()
             loaded = true
@@ -507,7 +509,6 @@ object ConfigManager {
             val groupName = split[KEY_SPLITTER_GROUP]
             val key = split[KEY_SPLITTER_KEY]
             val newValue = newProperties[wholeKey] as String?
-            println("$groupName $key $newValue" )
             setConfiguration(groupName, key, newValue!!)
         }
     }

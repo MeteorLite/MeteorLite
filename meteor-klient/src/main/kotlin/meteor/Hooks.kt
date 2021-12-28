@@ -1,13 +1,13 @@
 package meteor
 
 import Main.client
-import Main.overlayRenderer
 import meteor.eventbus.EventBus
 import meteor.eventbus.events.BeforeRender
 import meteor.eventbus.events.GameStateChanged
 import meteor.eventbus.events.GameTick
 import meteor.input.KeyManager
 import meteor.input.MouseManager
+import meteor.ui.OverlayRenderer
 import meteor.ui.overlay.OverlayLayer
 import meteor.util.RSTimeUnit
 import net.runelite.api.BufferProvider
@@ -85,7 +85,7 @@ class Hooks : Callbacks {
     override fun drawScene() {
         val graphics2d: Graphics2D = getGraphics(client.bufferProvider as MainBufferProvider)
         try {
-            overlayRenderer.renderOverlayLayer(graphics2d, OverlayLayer.ABOVE_SCENE)
+            OverlayRenderer.renderOverlayLayer(graphics2d, OverlayLayer.ABOVE_SCENE)
         } catch (ex: java.lang.Exception) {
             ex.printStackTrace()
         }
@@ -103,7 +103,7 @@ class Hooks : Callbacks {
         val graphics2d: Graphics2D = getGraphics(mainBufferProvider)
 
         try {
-            overlayRenderer.renderOverlayLayer(graphics2d, OverlayLayer.ALWAYS_ON_TOP)
+            OverlayRenderer.renderOverlayLayer(graphics2d, OverlayLayer.ALWAYS_ON_TOP)
         } catch (ex: java.lang.Exception) {
             ex.printStackTrace()
         }
@@ -148,7 +148,7 @@ class Hooks : Callbacks {
         val graphics2d: Graphics2D = getGraphics(client.bufferProvider as MainBufferProvider)
 
         try {
-            overlayRenderer.renderAfterInterface(graphics2d, interfaceId, widgetItems)
+            OverlayRenderer.renderAfterInterface(graphics2d, interfaceId, widgetItems)
         } catch (ex: java.lang.Exception) {
             ex.printStackTrace()
         }
@@ -159,7 +159,7 @@ class Hooks : Callbacks {
         val graphics2d: Graphics2D = getGraphics(bufferProvider)
 
         try {
-            overlayRenderer.renderAfterLayer(graphics2d, layer, widgetItems)
+            OverlayRenderer.renderAfterLayer(graphics2d, layer, widgetItems)
         } catch (ex: Exception) {
             ex.printStackTrace()
         }

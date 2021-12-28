@@ -38,7 +38,7 @@ class Logger {
         } else {
             name
         }
-        val header = Message.Companion.newMessage()
+        val header = Message.newMessage()
                 .add(DEFAULT_CONTROLLER_COLOR, "[$tempName] ")
                 .build()
         System.out.format(format, header, ansiColor + message)
@@ -78,7 +78,8 @@ class Logger {
         var isDebugEnabled = true
         fun getLogger(loggedClass: Class<*>): Logger {
             val newLogger = Logger()
-            newLogger.name = loggedClass.toString()
+            val split = loggedClass.toString().split(".")
+            newLogger.name = split[split.size - 1]
             return newLogger
         }
 

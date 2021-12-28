@@ -19,6 +19,8 @@ import meteor.ui.overlay.Overlay
 import meteor.ui.overlay.OverlayLayer
 import net.runelite.api.Client
 import net.runelite.api.hooks.Callbacks
+import net.runelite.http.api.chat.ChatClient
+import okhttp3.OkHttpClient
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.get
 import org.koin.core.context.startKoin
@@ -28,9 +30,10 @@ import java.awt.*
 object Main: KoinComponent {
     lateinit var client: Client
     private lateinit var callbacks: Callbacks
+    val httpClient = OkHttpClient()
     val overlayManager = OverlayManager
-    val overlayRenderer = OverlayRenderer
     val fontManager = FontManager
+    val itemManager = ItemManager
 
     @JvmStatic
     fun main(args: Array<String>) = application {
