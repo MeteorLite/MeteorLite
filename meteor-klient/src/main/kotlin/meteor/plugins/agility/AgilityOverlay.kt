@@ -17,11 +17,10 @@ class AgilityOverlay @Inject constructor(var plugin: AgilityPlugin) : Overlay(la
     private lateinit var activeColor: Color
     private lateinit var prevColor: Color
     private lateinit var prevOverlayFillColor: Color
-    private lateinit var agilityShortcut: AgilityShortcut
+    private var agilityShortcut: AgilityShortcut? = null
 
     init {
         position = OverlayPosition.DYNAMIC
-        layer = OverlayLayer.ABOVE_SCENE
     }
 
     override fun render(graphics: Graphics2D): Dimension? {
@@ -38,9 +37,9 @@ class AgilityOverlay @Inject constructor(var plugin: AgilityPlugin) : Overlay(la
         for (o in plugin.obstacles.keys) {
             prevColor = activeColor
             prevOverlayFillColor = overlayFillColor
-            agilityShortcut = plugin.obstacles[o]?.shortcut!!
+            agilityShortcut = plugin.obstacles[o]?.shortcut
             if (agilityShortcut != null) {
-                activeColor = if (agilityShortcut.level > client.getBoostedSkillLevel(Skill.AGILITY)) {
+                activeColor = if (agilityShortcut!!.level > client.getBoostedSkillLevel(Skill.AGILITY)) {
                     Color.red
                 } else {
                     Color.green
@@ -57,7 +56,7 @@ class AgilityOverlay @Inject constructor(var plugin: AgilityPlugin) : Overlay(la
         }
         var p: Point?
         for (tile in plugin.marks) {
-            if (tile!!.plane != client.plane) {
+            if (tile.plane != client.plane) {
                 continue
             }
             graphics.color = activeColor

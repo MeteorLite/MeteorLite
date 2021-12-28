@@ -1,18 +1,17 @@
 package meteor.plugins.agility
 
 import com.google.common.eventbus.Subscribe
+import meteor.eventbus.EventBus
+import meteor.eventbus.events.*
 
 import meteor.plugins.Plugin
 import meteor.plugins.PluginDescriptor
-import meteor.ui.OverlayManager
-import meteor.ui.overlay.OverlayLayer
+import meteor.ui.overlay.Overlay
 import net.runelite.api.GameState
 import net.runelite.api.ItemID
 import net.runelite.api.Tile
 import net.runelite.api.TileObject
-import net.runelite.api.events.*
 import java.util.ArrayList
-import javax.inject.Inject
 
 @Suppress("UnstableApiUsage")
 @PluginDescriptor(
@@ -21,96 +20,94 @@ import javax.inject.Inject
     enabledByDefault = true,
 
 )
-class AgilityPlugin : Plugin() {
+class AgilityPlugin() : Plugin() {
+    override var overlay = AgilityOverlay(this) as Overlay?
     val obstacles: MutableMap<TileObject, Obstacle> = HashMap()
     var marks: MutableList<Tile> = ArrayList()
 
-    @Inject
-     lateinit var om: OverlayManager
-
-    @Inject
-    lateinit var agilityoverlay: AgilityOverlay
-    fun startup() {
-        agilityoverlay.layer = OverlayLayer.ABOVE_SCENE
-        om.add(agilityoverlay)
+    init {
+        EventBus.subscribe {
+            when (it) {
+                is GameStateChanged -> onGameStateChanged(it)
+                is GameObjectSpawned -> onGameObjectSpawned(it)
+                is GameObjectChanged -> onGameObjectChanged(it)
+                is GameObjectDespawned -> onGameObjectDespawned(it)
+                is GroundObjectSpawned -> onGroundObjectSpawned(it)
+                is GroundObjectChanged -> onGroundObjectChanged(it)
+                is GroundObjectDespawned -> onGroundObjectDespawned(it)
+                is WallObjectSpawned -> onWallObjectSpawned(it)
+                is WallObjectChanged -> onWallObjectChanged(it)
+                is WallObjectDespawned -> onWallObjectDespawned(it)
+                is DecorativeObjectSpawned -> onDecorativeObjectSpawned(it)
+                is DecorativeObjectChanged -> onDecorativeObjectChanged(it)
+                is DecorativeObjectDespawned -> onDecorativeObjectDespawned(it)
+                is ItemSpawned -> onItemSpawned(it)
+                is ItemDespawned -> onItemDespawned(it)
+            }
+        }
     }
 
-    @Subscribe
     fun onGameStateChanged(event: GameStateChanged) {
-        if (event.gameState == GameState.LOADING) {
+        if (event.new == GameState.LOADING) {
             marks.clear()
             obstacles.clear()
         }
     }
 
-    @Subscribe
     fun onGameObjectSpawned(event: GameObjectSpawned) {
         onTileObject(event.tile, null, event.gameObject)
     }
 
-    @Subscribe
     fun onGameObjectChanged(event: GameObjectChanged) {
         onTileObject(event.tile, event.oldObject, event.newObject)
     }
 
-    @Subscribe
     fun onGameObjectDespawned(event: GameObjectDespawned) {
         onTileObject(event.tile, event.gameObject, null)
     }
 
-    @Subscribe
     fun onGroundObjectSpawned(event: GroundObjectSpawned) {
         onTileObject(event.tile, null, event.groundObject)
     }
 
-    @Subscribe
     fun onGroundObjectChanged(event: GroundObjectChanged) {
         onTileObject(event.tile, event.previous, event.groundObject)
     }
 
-    @Subscribe
     fun onGroundObjectDespawned(event: GroundObjectDespawned) {
         onTileObject(event.tile, event.groundObject, null)
     }
 
-    @Subscribe
     fun onWallObjectSpawned(event: WallObjectSpawned) {
         onTileObject(event.tile, null, event.wallObject)
     }
 
-    @Subscribe
     fun onWallObjectChanged(event: WallObjectChanged) {
         onTileObject(event.tile, event.previous, event.wallObject)
     }
 
-    @Subscribe
     fun onWallObjectDespawned(event: WallObjectDespawned) {
         onTileObject(event.tile, event.wallObject, null)
     }
 
-    @Subscribe
     fun onDecorativeObjectSpawned(event: DecorativeObjectSpawned) {
         onTileObject(event.tile, null, event.decorativeObject)
     }
 
-    @Subscribe
     fun onDecorativeObjectChanged(event: DecorativeObjectChanged) {
         onTileObject(event.tile, event.previous, event.decorativeObject)
     }
 
-    @Subscribe
     fun onDecorativeObjectDespawned(event: DecorativeObjectDespawned) {
         onTileObject(event.tile, event.decorativeObject, null)
     }
 
-    @Subscribe
     fun onItemSpawned(event: ItemSpawned) {
         if (event.item.id == ItemID.MARK_OF_GRACE) {
             marks.add(event.tile)
         }
     }
 
-    @Subscribe
     fun onItemDespawned(event: ItemDespawned) {
         if (event.item.id == ItemID.MARK_OF_GRACE) {
             marks.remove(event.tile)

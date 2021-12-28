@@ -8,15 +8,15 @@ package meteor.config.legacy
 @MustBeDocumented
 annotation class Units(val value: String) {
     companion object {
-        var MILLISECONDS = "ms"
-        var MINUTES = " mins"
-        var PERCENT = "%"
-        var PIXELS = "px"
-        var POINTS = "pt"
-        var SECONDS = "s"
-        var TICKS = " ticks"
-        var LEVELS = " lvls"
-        var FPS = " fps"
-        var GP = " GP"
+        const val MILLISECONDS = "ms"
+        const val MINUTES = " mins"
+        const val PERCENT = "%"
+        const val PIXELS = "px"
+        const val POINTS = "pt"
+        const val SECONDS = "s"
+        const val TICKS = " ticks"
+        const val LEVELS = " lvls"
+        const val FPS = " fps"
+        const val GP = " GP"
     }
 }

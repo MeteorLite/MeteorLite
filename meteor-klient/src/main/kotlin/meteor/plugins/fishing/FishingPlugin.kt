@@ -13,13 +13,16 @@ import meteor.ui.overlay.Overlay
 import net.runelite.api.Actor
 import net.runelite.api.GameState
 import net.runelite.api.NPC
+
 @PluginDescriptor("Fishing")
 class FishingPlugin: Plugin() {
-    override var overlay = FishingSpotOverlay(this) as Overlay?
     override var config = ConfigManager.getConfig(FishingConfig::class.java) as Config?
+    override var overlay = FishingSpotOverlay(this, config as FishingConfig) as Overlay?
+
 
     val fishingSpots: ArrayList<NPC> = ArrayList()
-    private var currentSpot: FishingSpot? = null
+    val minnowSpots: HashMap<Int, MinnowSpot> = HashMap()
+    var currentSpot: FishingSpot? = null
 
     init {
         EventBus.subscribe {
@@ -38,6 +41,7 @@ class FishingPlugin: Plugin() {
             GameState.LOGIN_SCREEN,
             GameState.HOPPING -> {
                 fishingSpots.clear()
+                minnowSpots.clear()
             }
         }
     }

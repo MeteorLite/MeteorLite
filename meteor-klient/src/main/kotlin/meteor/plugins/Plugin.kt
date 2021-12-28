@@ -4,7 +4,7 @@ import meteor.config.ConfigManager
 import meteor.config.legacy.Config
 import meteor.ui.overlay.Overlay
 
-open class Plugin(configuration: Config? = null) {
+open class Plugin(val configuration: Config? = null) {
     val client = Main.client
     val overlayManager = Main.overlayManager
     open var overlay: Overlay? = null

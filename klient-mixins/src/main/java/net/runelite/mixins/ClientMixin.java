@@ -26,6 +26,11 @@ public abstract class ClientMixin implements RSClient {
 
   @Inject
   public static Logger logger = Logger.Companion.getLogger(Class.class);
+  @Inject
+  @Override
+  public Logger getLogger() {
+    return logger;
+  }
 
   @Inject
   private static GameState oldGameState;
@@ -229,9 +234,6 @@ public abstract class ClientMixin implements RSClient {
   }
 
   @Inject
-  public static HashMap<Integer, RSNPCComposition> npcDefCache = new HashMap<>();
-
-  @Inject
   @Override
   public void uncacheNPC(int id) {
     npcDefCache.remove(id);
@@ -388,5 +390,75 @@ public abstract class ClientMixin implements RSClient {
     {
       set3dZoom(zoom);
     }
+  }
+
+  @Inject
+  private static RSTileItem lastItemDespawn;
+
+  @Inject
+  @Override
+  public RSTileItem getLastItemDespawn() {
+    return lastItemDespawn;
+  }
+
+  @Inject
+  @Override
+  public void setLastItemDespawn(RSTileItem lastItemDespawn) {
+    ClientMixin.lastItemDespawn = lastItemDespawn;
+  }
+
+  @Inject
+  public static HashMap<Integer, RSNPCComposition> npcDefCache = new HashMap<>();
+  @Inject
+  public static HashMap<Integer, RSObjectComposition> objDefCache = new HashMap<>();
+  @Inject
+  public static HashMap<Integer, RSItemComposition> itemDefCache = new HashMap<>();
+
+
+  @Inject
+  @Override
+  public ObjectComposition getObjectComposition(int objectId) {
+    if (objDefCache.containsKey(objectId)) {
+      return objDefCache.get(objectId);
+    }
+
+    assert this.isClientThread() : "getObjectDefinition must be called on client thread";
+    RSObjectComposition objectComposition = getRSObjectComposition(objectId);
+    objDefCache.put(objectId, objectComposition);
+    return objectComposition;
+  }
+
+  @Inject
+  @Override
+  public ItemComposition getItemComposition(int id) {
+    if (itemDefCache.containsKey(id)) {
+      return itemDefCache.get(id);
+    }
+
+    assert this.isClientThread() : "getItemComposition must be called on client thread";
+    RSItemComposition def = getRSItemDefinition(id);
+    itemDefCache.put(id, def);
+    return def;
+  }
+
+  @Inject
+  @Override
+  public NPCComposition getNpcComposition(int id) {
+    assert this.isClientThread() : "getNpcDefinition must be called on client thread";
+    return getRSNpcComposition(id);
+  }
+
+  @Inject
+  @Override
+  public int getBoostedSkillLevel(Skill skill) {
+    int[] boostedLevels = getBoostedSkillLevels();
+    return boostedLevels[skill.ordinal()];
+  }
+
+  @Inject
+  @Override
+  public int getRealSkillLevel(Skill skill) {
+    int[] realLevels = getRealSkillLevels();
+    return realLevels[skill.ordinal()];
   }
 }
