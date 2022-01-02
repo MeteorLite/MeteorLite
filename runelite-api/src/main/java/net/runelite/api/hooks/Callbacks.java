@@ -29,6 +29,8 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
 import java.util.List;
+
+import meteor.Event;
 import net.runelite.api.MainBufferProvider;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetItem;
@@ -45,6 +47,7 @@ public interface Callbacks {
    * @param event the event
    */
   void post(Object event);
+  void post(Class<?> type, Event event);
 
   /**
    * Post a deferred event, which gets delayed until the next cycle.

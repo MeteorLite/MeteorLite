@@ -87,17 +87,17 @@ object OverlayManager {
         val key: String = overlay.name + OVERLAY_CONFIG_PREFERRED_POSITION
     }
 
-    private fun loadOverlayLocation(overlay: Overlay): Point? {
+    private fun loadOverlayLocation(overlay: Overlay): Point {
         val key: String = overlay.name + OVERLAY_CONFIG_PREFERRED_LOCATION
         return overlay.preferredLocation
     }
 
-    private fun loadOverlaySize(overlay: Overlay): Dimension? {
+    private fun loadOverlaySize(overlay: Overlay): Dimension {
         val key: String = overlay.name + OVERLAY_CONFIG_PREFERRED_SIZE
         return overlay.preferredSize
     }
 
-    private fun loadOverlayPosition(overlay: Overlay): OverlayPosition? {
+    private fun loadOverlayPosition(overlay: Overlay): OverlayPosition {
         val locationKey: String = overlay.name + OVERLAY_CONFIG_PREFERRED_POSITION
         return overlay.preferredPosition
         TODO()

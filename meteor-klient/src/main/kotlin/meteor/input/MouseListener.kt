@@ -27,11 +27,11 @@ package meteor.input
 import java.awt.event.MouseEvent
 
 interface MouseListener {
-    fun mouseClicked(mouseEvent: MouseEvent?): MouseEvent?
-    fun mousePressed(mouseEvent: MouseEvent?): MouseEvent?
-    fun mouseReleased(mouseEvent: MouseEvent?): MouseEvent?
-    fun mouseEntered(mouseEvent: MouseEvent?): MouseEvent?
-    fun mouseExited(mouseEvent: MouseEvent?): MouseEvent?
-    fun mouseDragged(mouseEvent: MouseEvent?): MouseEvent?
-    fun mouseMoved(mouseEvent: MouseEvent?): MouseEvent?
+    fun mouseClicked(mouseEvent: MouseEvent): MouseEvent
+    fun mousePressed(mouseEvent: MouseEvent): MouseEvent
+    fun mouseReleased(mouseEvent: MouseEvent): MouseEvent
+    fun mouseEntered(mouseEvent: MouseEvent): MouseEvent
+    fun mouseExited(mouseEvent: MouseEvent): MouseEvent
+    fun mouseDragged(mouseEvent: MouseEvent): MouseEvent
+    fun mouseMoved(mouseEvent: MouseEvent): MouseEvent
 }

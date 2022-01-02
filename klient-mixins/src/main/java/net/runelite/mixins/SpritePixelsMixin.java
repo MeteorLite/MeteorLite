@@ -39,6 +39,9 @@ public abstract class SpritePixelsMixin implements RSSpritePixels {
   @Shadow("client")
   private static RSClient client;
 
+  @Shadow("hdMinimapEnabled")
+  private static boolean hdMinimapEnabled;
+
   @Inject
   @Override
   public BufferedImage toBufferedImage() {
@@ -189,5 +192,6 @@ public abstract class SpritePixelsMixin implements RSSpritePixels {
     } catch (Exception e) {
       // ignored
     }
+
   }
 }

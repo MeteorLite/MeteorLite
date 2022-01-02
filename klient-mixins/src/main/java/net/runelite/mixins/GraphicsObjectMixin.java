@@ -3,11 +3,7 @@ package net.runelite.mixins;
 import net.runelite.api.RuneLiteObject;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.events.GraphicsObjectCreated;
-import net.runelite.api.mixins.Copy;
-import net.runelite.api.mixins.Inject;
-import net.runelite.api.mixins.Mixin;
-import net.runelite.api.mixins.Replace;
-import net.runelite.api.mixins.Shadow;
+import net.runelite.api.mixins.*;
 import net.runelite.rs.api.RSClient;
 import net.runelite.rs.api.RSGraphicsObject;
 import net.runelite.rs.api.RSModel;
@@ -22,8 +18,7 @@ public abstract class GraphicsObjectMixin implements RSGraphicsObject
 	@Inject
 	GraphicsObjectMixin()
 	{
-		final GraphicsObjectCreated event = new GraphicsObjectCreated(this);
-		client.getCallbacks().post(event);
+		client.getCallbacks().post(GraphicsObjectCreated.class, new meteor.eventbus.events.GraphicsObjectCreated(this));
 	}
 
 	@Override
@@ -53,8 +48,6 @@ public abstract class GraphicsObjectMixin implements RSGraphicsObject
 	@Replace("getModel")
 	public RSModel copy$getModel()
 	{
-		return copy$getModel();
-		/*
 		if (this instanceof RuneLiteObject)
 		{
 			return ((RSRuneLiteObject) this).getModelRl();
@@ -63,6 +56,5 @@ public abstract class GraphicsObjectMixin implements RSGraphicsObject
 		{
 			return copy$getModel();
 		}
-		*/
 	}
 }

@@ -1,7 +1,9 @@
 package meteor.rs
 
+import Main.client
 import meteor.eventbus.EventBus
 import meteor.eventbus.events.AppletLoaded
+import meteor.ui.Components
 import net.runelite.api.Client
 import java.applet.Applet
 import java.applet.AppletContext
@@ -15,8 +17,11 @@ import java.net.URL
 import java.util.*
 
 class Applet : AppletStub, AppletContext {
+
     companion object {
         lateinit var applet: Applet
+        var mainThread: Thread? = null
+        var clientThread: Thread? = null
 
         fun asClient(applet: Applet): Client {
             return applet as Client
@@ -27,9 +32,19 @@ class Applet : AppletStub, AppletContext {
     private var parameters: Map<String, String> = AppletConfiguration.parameters
 
     fun init() {
-        applet = configureApplet()
-        applet.size = applet.minimumSize
-        EventBus.post(AppletLoaded())
+        mainThread = Thread.currentThread()
+        clientThread = Thread {
+            applet = configureApplet()
+            applet.size = applet.minimumSize
+            EventBus.post(AppletLoaded::class.java, AppletLoaded())
+            Components.awtFrame()
+            client = asClient(applet)
+            client.callbacks = Main.callbacks
+            client.gameDrawingMode = 2
+            Main.finishStartup()
+        }
+        clientThread!!.name = "client"
+        clientThread!!.start()
     }
 
     private fun configureApplet(): Applet {

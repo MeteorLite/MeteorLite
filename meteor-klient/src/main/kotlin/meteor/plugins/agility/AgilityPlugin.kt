@@ -1,12 +1,10 @@
 package meteor.plugins.agility
 
-import com.google.common.eventbus.Subscribe
-import meteor.eventbus.EventBus
+import meteor.Event
 import meteor.eventbus.events.*
 
 import meteor.plugins.Plugin
 import meteor.plugins.PluginDescriptor
-import meteor.ui.overlay.Overlay
 import net.runelite.api.GameState
 import net.runelite.api.ItemID
 import net.runelite.api.Tile
@@ -20,97 +18,79 @@ import java.util.ArrayList
     enabledByDefault = true,
 
 )
-class AgilityPlugin() : Plugin() {
-    override var overlay = AgilityOverlay(this) as Overlay?
+class AgilityPlugin : Plugin() {
+    var overlay = overlay<AgilityOverlay>(AgilityOverlay(this))
     val obstacles: MutableMap<TileObject, Obstacle> = HashMap()
     var marks: MutableList<Tile> = ArrayList()
 
     init {
-        EventBus.subscribe {
-            when (it) {
-                is GameStateChanged -> onGameStateChanged(it)
-                is GameObjectSpawned -> onGameObjectSpawned(it)
-                is GameObjectChanged -> onGameObjectChanged(it)
-                is GameObjectDespawned -> onGameObjectDespawned(it)
-                is GroundObjectSpawned -> onGroundObjectSpawned(it)
-                is GroundObjectChanged -> onGroundObjectChanged(it)
-                is GroundObjectDespawned -> onGroundObjectDespawned(it)
-                is WallObjectSpawned -> onWallObjectSpawned(it)
-                is WallObjectChanged -> onWallObjectChanged(it)
-                is WallObjectDespawned -> onWallObjectDespawned(it)
-                is DecorativeObjectSpawned -> onDecorativeObjectSpawned(it)
-                is DecorativeObjectChanged -> onDecorativeObjectChanged(it)
-                is DecorativeObjectDespawned -> onDecorativeObjectDespawned(it)
-                is ItemSpawned -> onItemSpawned(it)
-                is ItemDespawned -> onItemDespawned(it)
-            }
-        }
+        registerSubscribers()
     }
 
-    fun onGameStateChanged(event: GameStateChanged) {
-        if (event.new == GameState.LOADING) {
+    override fun onGameStateChanged(): ((Event) -> Unit) =  { it as GameStateChanged
+        if (it.new == GameState.LOADING) {
             marks.clear()
             obstacles.clear()
         }
     }
 
-    fun onGameObjectSpawned(event: GameObjectSpawned) {
-        onTileObject(event.tile, null, event.gameObject)
+    override fun onGameObjectSpawned(): ((Event) -> Unit) =  { it as GameObjectSpawned
+        onTileObject(it.tile, null, it.gameObject)
     }
 
-    fun onGameObjectChanged(event: GameObjectChanged) {
-        onTileObject(event.tile, event.oldObject, event.newObject)
+    override fun onGameObjectChanged(): ((Event) -> Unit) =  { it as GameObjectChanged
+        onTileObject(it.tile, it.oldObject, it.newObject)
     }
 
-    fun onGameObjectDespawned(event: GameObjectDespawned) {
-        onTileObject(event.tile, event.gameObject, null)
+    override fun onGameObjectDespawned(): ((Event) -> Unit) =  { it as GameObjectDespawned
+        onTileObject(it.tile, it.gameObject, null)
     }
 
-    fun onGroundObjectSpawned(event: GroundObjectSpawned) {
-        onTileObject(event.tile, null, event.groundObject)
+    override fun onGroundObjectSpawned(): ((Event) -> Unit) =  { it as GroundObjectSpawned
+        onTileObject(it.tile, null, it.groundObject)
     }
 
-    fun onGroundObjectChanged(event: GroundObjectChanged) {
-        onTileObject(event.tile, event.previous, event.groundObject)
+    override fun onGroundObjectChanged(): ((Event) -> Unit) =  { it as GroundObjectChanged
+        onTileObject(it.tile, it.previous, it.groundObject)
     }
 
-    fun onGroundObjectDespawned(event: GroundObjectDespawned) {
-        onTileObject(event.tile, event.groundObject, null)
+    override fun onGroundObjectDespawned(): ((Event) -> Unit) =  { it as GroundObjectDespawned
+        onTileObject(it.tile, it.groundObject, null)
     }
 
-    fun onWallObjectSpawned(event: WallObjectSpawned) {
-        onTileObject(event.tile, null, event.wallObject)
+    override fun onWallObjectSpawned(): ((Event) -> Unit) =  { it as WallObjectSpawned
+        onTileObject(it.tile, null, it.wallObject)
     }
 
-    fun onWallObjectChanged(event: WallObjectChanged) {
-        onTileObject(event.tile, event.previous, event.wallObject)
+    override fun onWallObjectChanged(): ((Event) -> Unit) =  { it as WallObjectChanged
+        onTileObject(it.tile, it.previous, it.wallObject)
     }
 
-    fun onWallObjectDespawned(event: WallObjectDespawned) {
-        onTileObject(event.tile, event.wallObject, null)
+    override fun onWallObjectDespawned(): ((Event) -> Unit) =  { it as WallObjectDespawned
+        onTileObject(it.tile, it.wallObject, null)
     }
 
-    fun onDecorativeObjectSpawned(event: DecorativeObjectSpawned) {
-        onTileObject(event.tile, null, event.decorativeObject)
+    override fun onDecorativeObjectSpawned(): ((Event) -> Unit) =  { it as DecorativeObjectSpawned
+        onTileObject(it.tile, null, it.decorativeObject)
     }
 
-    fun onDecorativeObjectChanged(event: DecorativeObjectChanged) {
-        onTileObject(event.tile, event.previous, event.decorativeObject)
+    override fun onDecorativeObjectChanged(): ((Event) -> Unit) =  { it as DecorativeObjectChanged
+        onTileObject(it.tile, it.previous, it.decorativeObject)
     }
 
-    fun onDecorativeObjectDespawned(event: DecorativeObjectDespawned) {
-        onTileObject(event.tile, event.decorativeObject, null)
+    override fun onDecorativeObjectDespawned(): ((Event) -> Unit) =  { it as DecorativeObjectDespawned
+        onTileObject(it.tile, it.decorativeObject, null)
     }
 
-    fun onItemSpawned(event: ItemSpawned) {
-        if (event.item.id == ItemID.MARK_OF_GRACE) {
-            marks.add(event.tile)
+    override fun onItemSpawned(): ((Event) -> Unit) =  { it as ItemSpawned
+        if (it.item.id == ItemID.MARK_OF_GRACE) {
+            marks.add(it.tile)
         }
     }
 
-    fun onItemDespawned(event: ItemDespawned) {
-        if (event.item.id == ItemID.MARK_OF_GRACE) {
-            marks.remove(event.tile)
+    override fun onItemDespawned(): ((Event) -> Unit) =  { it as ItemDespawned
+        if (it.item.id == ItemID.MARK_OF_GRACE) {
+            marks.remove(it.tile)
         }
     }
 

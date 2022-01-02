@@ -449,15 +449,13 @@ public class GpuHDPlugin extends Plugin implements DrawCallbacks
 				modelBufferSmall = new GpuIntBuffer();
 				modelBuffer = new GpuIntBuffer();
 
-				if (Logger.Companion.isDebugEnabled())
-				{
-					System.setProperty("jogl.debug", "true");
-				}
+				//System.setProperty("jogl.debug", "true");
 
 				GLProfile.initSingleton();
-
+				System.out.println(Thread.currentThread().getName());
 				invokeOnMainThread(() ->
 				{
+					System.out.println(Thread.currentThread().getName());
 					// Get and display the device and driver used by the GPU plugin
 					GLDrawable dummyDrawable = GLDrawableFactory.getFactory(GLProfile.getDefault())
 						.createDummyDrawable(GLProfile.getDefaultDevice(), true, new GLCapabilities(GLProfile.getDefault()), null);
@@ -491,7 +489,7 @@ public class GpuHDPlugin extends Plugin implements DrawCallbacks
 						if (Logger.Companion.isDebugEnabled())
 						{
 							// Debug config on context needs to be set before .makeCurrent call
-							glContext.enableGLDebugMessage(true);
+							//glContext.enableGLDebugMessage(true);
 						}
 					}
 					finally

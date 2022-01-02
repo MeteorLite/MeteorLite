@@ -26,10 +26,10 @@
 package net.runelite.mixins;
 
 import meteor.Logger;
-import meteor.eventbus.events.*;
 import net.runelite.api.*;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.events.*;
 import net.runelite.api.mixins.FieldHook;
 import net.runelite.api.mixins.Inject;
 import net.runelite.api.mixins.Mixin;
@@ -246,17 +246,24 @@ public abstract class TileMixin implements RSTile
 
     if (current == null && previous != null)
     {
-      WallObjectDespawned wallObjectDespawned = new WallObjectDespawned(this, previous);
+      WallObjectDespawned wallObjectDespawned = new WallObjectDespawned();
+      wallObjectDespawned.setTile(this);
+      wallObjectDespawned.setWallObject(previous);
       client.getCallbacks().post(wallObjectDespawned);
     }
     else if (current != null && previous == null)
     {
-      WallObjectSpawned wallObjectSpawned = new WallObjectSpawned(this, current);
+      WallObjectSpawned wallObjectSpawned = new WallObjectSpawned();
+      wallObjectSpawned.setTile(this);
+      wallObjectSpawned.setWallObject(current);
       client.getCallbacks().post(wallObjectSpawned);
     }
     else if (current != null)
     {
-      WallObjectChanged wallObjectChanged = new WallObjectChanged(this, previous, current);
+      WallObjectChanged wallObjectChanged = new WallObjectChanged();
+      wallObjectChanged.setTile(this);
+      wallObjectChanged.setPrevious(previous);
+      wallObjectChanged.setWallObject(current);
       client.getCallbacks().post(wallObjectChanged);
     }
   }
@@ -284,17 +291,24 @@ public abstract class TileMixin implements RSTile
 
     if (current == null && previous != null)
     {
-      DecorativeObjectDespawned decorativeObjectDespawned = new DecorativeObjectDespawned(this, previous);
+      DecorativeObjectDespawned decorativeObjectDespawned = new DecorativeObjectDespawned();
+      decorativeObjectDespawned.setTile(this);
+      decorativeObjectDespawned.setDecorativeObject(previous);
       client.getCallbacks().post(decorativeObjectDespawned);
     }
     else if (current != null && previous == null)
     {
-      DecorativeObjectSpawned decorativeObjectSpawned = new DecorativeObjectSpawned(this, current);
+      DecorativeObjectSpawned decorativeObjectSpawned = new DecorativeObjectSpawned();
+      decorativeObjectSpawned.setTile(this);
+      decorativeObjectSpawned.setDecorativeObject(current);
       client.getCallbacks().post(decorativeObjectSpawned);
     }
     else if (current != null)
     {
-      DecorativeObjectChanged decorativeObjectChanged = new DecorativeObjectChanged(this, previous, current);
+      DecorativeObjectChanged decorativeObjectChanged = new DecorativeObjectChanged();
+      decorativeObjectChanged.setTile(this);
+      decorativeObjectChanged.setPrevious(previous);
+      decorativeObjectChanged.setDecorativeObject(current);
       client.getCallbacks().post(decorativeObjectChanged);
     }
   }
@@ -322,17 +336,24 @@ public abstract class TileMixin implements RSTile
 
     if (current == null && previous != null)
     {
-      GroundObjectDespawned groundObjectDespawned = new GroundObjectDespawned(this, previous);
+      GroundObjectDespawned groundObjectDespawned = new GroundObjectDespawned();
+      groundObjectDespawned.setTile(this);
+      groundObjectDespawned.setGroundObject(previous);
       client.getCallbacks().post(groundObjectDespawned);
     }
     else if (current != null && previous == null)
     {
-      GroundObjectSpawned groundObjectSpawned = new GroundObjectSpawned(this, current);
+      GroundObjectSpawned groundObjectSpawned = new GroundObjectSpawned();
+      groundObjectSpawned.setTile(this);
+      groundObjectSpawned.setGroundObject(current);
       client.getCallbacks().post(groundObjectSpawned);
     }
     else if (current != null)
     {
-      GroundObjectChanged groundObjectChanged = new GroundObjectChanged(this, previous, current);
+      GroundObjectChanged groundObjectChanged = new GroundObjectChanged();
+      groundObjectChanged.setTile(this);
+      groundObjectChanged.setPrevious(previous);
+      groundObjectChanged.setGroundObject(current);
       client.getCallbacks().post(groundObjectChanged);
     }
   }
@@ -403,7 +424,9 @@ public abstract class TileMixin implements RSTile
         return;
       }
 
-      GameObjectDespawned gameObjectDespawned = new GameObjectDespawned(this, previous);
+      GameObjectDespawned gameObjectDespawned = new GameObjectDespawned();
+      gameObjectDespawned.setTile(this);
+      gameObjectDespawned.setGameObject(previous);
       client.getCallbacks().post(gameObjectDespawned);
     }
     else if (previous == null)
@@ -413,7 +436,9 @@ public abstract class TileMixin implements RSTile
         return;
       }
 
-      GameObjectSpawned gameObjectSpawned = new GameObjectSpawned(this, current);
+      GameObjectSpawned gameObjectSpawned = new GameObjectSpawned();
+      gameObjectSpawned.setTile(this);
+      gameObjectSpawned.setGameObject(current);
       client.getCallbacks().post(gameObjectSpawned);
     }
     else
@@ -423,7 +448,10 @@ public abstract class TileMixin implements RSTile
         return;
       }
 
-      GameObjectChanged gameObjectsChanged = new GameObjectChanged(this, previous, current);
+      GameObjectChanged gameObjectsChanged = new GameObjectChanged();
+      gameObjectsChanged.setTile(this);
+      gameObjectsChanged.setOldObject(previous);
+      gameObjectsChanged.setNewObject(current);
       client.getCallbacks().post(gameObjectsChanged);
     }
   }

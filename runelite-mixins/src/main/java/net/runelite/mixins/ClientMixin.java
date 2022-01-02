@@ -1248,6 +1248,7 @@ public abstract class ClientMixin implements RSClient {
   @Inject
   public static void canvasWidthChanged(int idx)
   {
+    if (client.getCallbacks() != null)
     client.getCallbacks().post(CanvasSizeChanged.INSTANCE);
   }
 
@@ -1255,6 +1256,7 @@ public abstract class ClientMixin implements RSClient {
   @Inject
   public static void canvasHeightChanged(int idx)
   {
+    if (client.getCallbacks() != null)
     client.getCallbacks().post(CanvasSizeChanged.INSTANCE);
   }
 

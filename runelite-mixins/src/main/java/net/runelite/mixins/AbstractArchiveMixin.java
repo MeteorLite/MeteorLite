@@ -59,7 +59,7 @@ public abstract class AbstractArchiveMixin implements RSAbstractArchive {
 
     if (scriptNames == null) {
       try {
-        scriptNames = new HashMap<String, String>();
+        scriptNames = new HashMap<>();
         InputStream is = ClassLoader.getSystemClassLoader().getResourceAsStream("scripts/");
         if (is != null) {
           List<String> files = IOUtils.readLines(is, Charsets.UTF_8);

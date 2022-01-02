@@ -32,21 +32,21 @@ class Obstacle(val tile: Tile, val shortcut: AgilityShortcut?) {
     override fun equals(o: Any?): Boolean {
         if (o === this) return true
         if (o !is Obstacle) return false
-        val `this$tile`: Any = tile
-        val `other$tile`: Any = o.tile
-        if (`this$tile` != `other$tile`) return false
-        val `this$shortcut` = shortcut
-        val `other$shortcut` = o.shortcut
-        return !if (`this$shortcut` == null) `other$shortcut` != null else `this$shortcut` != `other$shortcut`
+        val thisTile: Any = tile
+        val otherTile: Any = o.tile
+        if (thisTile != otherTile) return false
+        val thisShortcut = shortcut
+        val otherShortcut = o.shortcut
+        return !if (thisShortcut == null) otherShortcut != null else thisShortcut != otherShortcut
     }
 
     override fun hashCode(): Int {
-        val PRIME = 59
+        val prime = 59
         var result = 1
-        val `$tile`: Any = tile
-        result = result * PRIME + `$tile`.hashCode()
-        val `$shortcut`: Any? = shortcut
-        result = result * PRIME + (`$shortcut`?.hashCode() ?: 43)
+        val thisTile: Any = tile
+        result = result * prime + thisTile.hashCode()
+        val thisShortcut: Any? = shortcut
+        result = result * prime + (thisShortcut?.hashCode() ?: 43)
         return result
     }
 

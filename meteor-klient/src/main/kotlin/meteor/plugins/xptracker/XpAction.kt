@@ -24,5 +24,4 @@
  */
 package meteor.plugins.xptracker
 class XpAction(var actions: Int = 0, val actionsSinceReset: Int = 0, val actionsHistoryInitialized: Boolean = false,
-               actionExps: IntArray = IntArray(10), val actionExpIndex: Int = 0) {
-}
+               actionExps: IntArray = IntArray(10), val actionExpIndex: Int = 0)

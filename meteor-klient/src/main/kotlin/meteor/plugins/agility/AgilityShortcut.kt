@@ -794,8 +794,7 @@ enum class AgilityShortcut(
         location,
         location,
         *obstacleIds
-    ) {
-    }
+    )
 
     val tooltip: String
         get() = "$description - Level $level"

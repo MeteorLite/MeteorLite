@@ -29,6 +29,7 @@ import java.awt.Color
 import java.lang.NumberFormatException
 import java.util.regex.Pattern
 import javax.annotation.Nonnull
+import kotlin.math.roundToInt
 
 object ColorUtil {
     const val MAX_RGB_VALUE = 255
@@ -96,7 +97,9 @@ object ColorUtil {
         val g2 = b.green.toDouble()
         val b1 = a.blue.toDouble()
         val b2 = b.blue.toDouble()
-        return Color(Math.round(r1 + t * (r2 - r1)).toInt(), Math.round(g1 + t * (g2 - g1)).toInt(), Math.round(b1 + t * (b2 - b1)).toInt())
+        return Color((r1 + t * (r2 - r1)).roundToInt(),
+            (g1 + t * (g2 - g1)).roundToInt(), (b1 + t * (b2 - b1)).roundToInt()
+        )
     }
 
     /**

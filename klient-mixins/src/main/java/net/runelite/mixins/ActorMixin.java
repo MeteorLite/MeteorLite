@@ -114,8 +114,8 @@ public abstract class ActorMixin implements RSActor {
   @Inject
   public void animationChanged(int idx)
   {
-    AnimationChanged animationChange = new AnimationChanged(this);
-    client.getCallbacks().post(animationChange);
+
+    client.getCallbacks().post(AnimationChanged.class, new AnimationChanged(this));
   }
 
 
@@ -177,14 +177,13 @@ public abstract class ActorMixin implements RSActor {
   {
     if (healthRatio == 0)
     {
-      final ActorDeath event = new ActorDeath(this);
-      client.getCallbacks().post(event);
+
+      client.getCallbacks().post(ActorDeath.class, new ActorDeath(this));
 
       this.setDead(true);
     }
 
-    final HealthBarUpdated event = new HealthBarUpdated(this, healthRatio);
-    client.getCallbacks().post(event);
+    client.getCallbacks().post(HealthBarUpdated.class, new HealthBarUpdated(this, healthRatio));
   }
 
   @Inject
@@ -198,7 +197,7 @@ public abstract class ActorMixin implements RSActor {
   @Inject
   public void interactingChanged(int idx)
   {
-    InteractingChanged interactingChanged = new InteractingChanged(this, getInteracting());
-    client.getCallbacks().post(interactingChanged);
+
+    client.getCallbacks().post(InteractingChanged.class, new InteractingChanged(this, getInteracting()));
   }
 }

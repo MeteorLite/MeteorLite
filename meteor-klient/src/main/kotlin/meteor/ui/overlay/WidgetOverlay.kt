@@ -24,13 +24,10 @@
  */
 package meteor.ui.overlay
 
-import Main.client
 import net.runelite.api.widgets.WidgetInfo
 import java.awt.Graphics2D
-import net.runelite.api.Varbits
 import net.runelite.api.widgets.Widget
 import java.awt.Dimension
-import java.awt.Point
 import java.awt.Rectangle
 import java.util.*
 
@@ -81,7 +78,7 @@ open class WidgetOverlay private constructor( private val widgetInfo: WidgetInfo
 
     companion object {
         fun createOverlays(): Collection<WidgetOverlay> {
-            return Arrays.asList(
+            return listOf(
                     WidgetOverlay(WidgetInfo.RESIZABLE_MINIMAP_WIDGET,
                             OverlayPosition.CANVAS_TOP_RIGHT),
                     WidgetOverlay(WidgetInfo.RESIZABLE_MINIMAP_STONES_WIDGET,

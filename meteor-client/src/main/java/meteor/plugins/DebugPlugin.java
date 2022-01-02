@@ -39,7 +39,7 @@ public class DebugPlugin extends Plugin {
   public boolean shouldPaint = true;
 
   {
-    logger.name = name;
+    logger.setName(name);
   }
 
   @Subscribe

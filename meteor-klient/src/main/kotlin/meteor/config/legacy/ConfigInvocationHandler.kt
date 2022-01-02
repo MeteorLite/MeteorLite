@@ -26,7 +26,6 @@ package meteor.config.legacy
 
 import com.google.common.cache.CacheBuilder
 import meteor.config.ConfigManager
-import meteor.util.ReflectUtil
 import java.lang.invoke.MethodHandle
 import java.lang.invoke.MethodHandles
 import java.lang.reflect.InvocationHandler
@@ -51,11 +50,11 @@ internal class ConfigInvocationHandler(private val manager: ConfigManager) : Inv
         val group = iface.getAnnotation(ConfigGroup::class.java)
         val item = method.getAnnotation(ConfigItem::class.java)
         if (group == null) {
-            println("Configuration proxy class {} has no @ConfigGroup! $proxy");
+            println("Configuration proxy class {} has no @ConfigGroup! $proxy")
             return null
         }
         if (item == null) {
-            println("Configuration method {} has no @ConfigItem! $method");
+            println("Configuration method {} has no @ConfigItem! $method")
             return null
         }
         return if (args == null) {
@@ -66,7 +65,7 @@ internal class ConfigInvocationHandler(private val manager: ConfigManager) : Inv
             if (value == null) {
                 if (method.isDefault) {
                     val defaultValue = callDefaultMethod(proxy, method, null)
-                    cache.put(method, defaultValue ?: NULL)
+                    cache.put(method, defaultValue)
                     return defaultValue
                 }
                 cache.put(method, NULL)

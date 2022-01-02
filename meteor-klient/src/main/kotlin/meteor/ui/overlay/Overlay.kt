@@ -26,22 +26,20 @@ package meteor.ui.overlay
 
 import Main
 import com.google.common.base.Strings
-import meteor.plugins.Plugin
 import meteor.ui.components.LayoutableRenderableEntity
 import meteor.util.ColorUtil
-import net.runelite.api.Client
 import net.runelite.api.Perspective
 import net.runelite.api.coords.LocalPoint
 import net.runelite.api.widgets.WidgetInfo
 import java.awt.*
 import java.awt.image.BufferedImage
+import kotlin.math.abs
 
-abstract class Overlay(plugin: Plugin? = null,
-                       var layer: OverlayLayer = OverlayLayer.ABOVE_SCENE)
+abstract class Overlay(var layer: OverlayLayer = OverlayLayer.ABOVE_SCENE)
     : LayoutableRenderableEntity {
     val client = Main.client
     val drawHooks: MutableList<Int> = ArrayList()
-    val menuEntries: List<OverlayMenuEntry> = ArrayList<OverlayMenuEntry>()
+    val menuEntries: List<OverlayMenuEntry> = ArrayList()
     override var preferredLocation: Point = Point(0,0)
     override var preferredSize: Dimension = Dimension(50,50)
     var preferredPosition= OverlayPosition.TOP_LEFT
@@ -105,11 +103,11 @@ abstract class Overlay(plugin: Plugin? = null,
         val canvasCenterPoint = net.runelite.api.Point(
                 canvasPoint.x,
                 canvasPoint.y + yOffset)
-        val canvasCenterPoint_shadow = net.runelite.api.Point(
+        val canvasCenterPointShadow = net.runelite.api.Point(
                 canvasPoint.x + 1,
                 canvasPoint.y + 1 + yOffset)
         if (shadows) {
-            renderTextLocation(graphics, canvasCenterPoint_shadow, txtString, Color.BLACK)
+            renderTextLocation(graphics, canvasCenterPointShadow, txtString, Color.BLACK)
         }
         renderTextLocation(graphics, canvasCenterPoint, txtString, fontColor)
     }
@@ -123,7 +121,7 @@ abstract class Overlay(plugin: Plugin? = null,
         val y = txtLoc.y
         graphics.color = Color.BLACK
         graphics.drawString(text, x + 1, y + 1)
-        graphics.color = ColorUtil.colorWithAlpha(color!!, 0xFF)
+        graphics.color = ColorUtil.colorWithAlpha(color, 0xFF)
         graphics.drawString(text, x, y)
     }
 
@@ -171,7 +169,7 @@ abstract class Overlay(plugin: Plugin? = null,
         for (x in -1..1) {
             for (y in -1..1) {
                 if (x == 0 && y == 0
-                        || !outlineCorners && Math.abs(x) + Math.abs(y) != 1) {
+                        || !outlineCorners && abs(x) + abs(y) != 1) {
                     continue
                 }
                 g2d.drawImage(filledImage, x, y, null)

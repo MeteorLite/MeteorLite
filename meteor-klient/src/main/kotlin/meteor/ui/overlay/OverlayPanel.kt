@@ -25,13 +25,12 @@
 package meteor.ui.overlay
 
 import meteor.FontManager
-import meteor.plugins.Plugin
 import meteor.ui.components.ComponentConstants
 import java.awt.Color
 import java.awt.Dimension
 import java.awt.Graphics2D
 
-abstract class OverlayPanel : Overlay {
+abstract class OverlayPanel protected constructor() : Overlay() {
     private val panelComponent: PanelComponent = PanelComponent()
 
     /**
@@ -51,11 +50,7 @@ abstract class OverlayPanel : Overlay {
      */
     var preferredColor: Color? = null
 
-    protected constructor() : super() {
-        resizable = true
-    }
-
-    protected constructor(plugin: Plugin?) : super(plugin) {
+    init {
         resizable = true
     }
 

@@ -105,7 +105,7 @@ object ConfigManager {
             try {
                 val substring = str.substring(str.indexOf("{") + 1, str.length - 1)
                 val splitStr = substring.split(", ").toTypedArray()
-                var enumClass: Class<out Enum<*>>
+                val enumClass: Class<out Enum<*>>
                 if (!str.contains("{")) {
                     return null
                 }
@@ -179,12 +179,16 @@ object ConfigManager {
             val strings = `class`.substring(0, `class`.indexOf("{")).split("\\.").toTypedArray()
             var i = 0
             while (i != strings.size) {
-                if (i == 0) {
-                    transformedString.append(strings[i])
-                } else if (i == strings.size - 1) {
-                    transformedString.append("$").append(strings[i])
-                } else {
-                    transformedString.append(".").append(strings[i])
+                when (i) {
+                    0 -> {
+                        transformedString.append(strings[i])
+                    }
+                    strings.size - 1 -> {
+                        transformedString.append("$").append(strings[i])
+                    }
+                    else -> {
+                        transformedString.append(".").append(strings[i])
+                    }
                 }
                 i++
             }
@@ -238,6 +242,7 @@ object ConfigManager {
             } catch (ex: java.lang.Exception) {
                 Files.move(tempFile.toPath(), CONFIG_FILE.toPath(), StandardCopyOption.REPLACE_EXISTING)
             }
+            tempFile.delete()
         } catch (e: java.lang.Exception) {
             //ignore
         }
@@ -293,7 +298,7 @@ object ConfigManager {
         configChanged.group = groupName
         configChanged.key = key
         configChanged.oldValue = oldValue
-        EventBus.post(configChanged)
+        EventBus.post(ConfigChanged::class.java, configChanged)
     }
 
     private fun getAllDeclaredInterfaceFields(clazz: Class<*>): Collection<Field> {
@@ -401,7 +406,7 @@ object ConfigManager {
         configChanged.key = key
         configChanged.oldValue = oldValue
         configChanged.newValue = "$value"
-        EventBus.post(configChanged)
+        EventBus.post(ConfigChanged::class.java, configChanged)
 
         saveProperties()
     }

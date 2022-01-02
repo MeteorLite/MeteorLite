@@ -11,5 +11,5 @@ repositories {
 
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib"
-    implementation(project(":runelite-api"))
+    compileOnly(project(":runelite-api"))
 }

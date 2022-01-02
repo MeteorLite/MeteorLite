@@ -23,10 +23,11 @@ object UI {
     var loaded = false
     const val TOOLBAR_WIDTH = 40
     lateinit var contentSize: Dimension
+    var window: FrameWindowScope? = null
 
     fun Window(): (@Composable FrameWindowScope.() -> Unit) {
         return {
-
+            println(window.renderApi)
             MaterialTheme(colors = darkThemeColors) {
                 BoxWithConstraints(modifier = Modifier.fillMaxSize().then(toolbarDragListener())) {
                     contentSize = Dimension(this.constraints.maxWidth, this.constraints.maxHeight)
@@ -55,6 +56,7 @@ object UI {
                     }
                 }
             }
+            this@UI.window = this
         }
     }
 

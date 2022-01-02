@@ -1,4 +1,4 @@
-package themes
+package meteor.ui.themes
 
 import com.formdev.flatlaf.IntelliJTheme
 

@@ -7,6 +7,7 @@ import meteor.eventbus.events.GameStateChanged
 import meteor.eventbus.events.GameTick
 import meteor.input.KeyManager
 import meteor.input.MouseManager
+import meteor.rs.ClientThread
 import meteor.ui.OverlayRenderer
 import meteor.ui.overlay.OverlayLayer
 import meteor.util.RSTimeUnit
@@ -23,7 +24,9 @@ import java.awt.event.KeyEvent
 import java.awt.event.MouseEvent
 import java.awt.event.MouseWheelEvent
 import java.awt.image.BufferedImage
+import java.awt.image.VolatileImage
 
+@Suppress("UNCHECKED_CAST")
 class Hooks : Callbacks {
     private var lastCheck: Long = 0
     private val CHECK: Long = RSTimeUnit.GAME_TICKS.duration
@@ -34,22 +37,28 @@ class Hooks : Callbacks {
     private var lastMainBufferProvider: MainBufferProvider? = null
     private var lastGraphics: Graphics2D? = null
     private var drawManager = meteor.ui.DrawManager
+    private var lastStretchedDimensions: Dimension? = null
+    private var stretchedImage: VolatileImage? = null
+    private var stretchedGraphics: Graphics2D? = null
 
     init {
-        EventBus.subscribe {
-            if (it is GameStateChanged)
-                when (it.new) {
-                    GameState.LOGGING_IN, GameState.HOPPING -> {
-                        ignoreNextNpcUpdate = true
-                    }
+        EventBus.subscribe(GameStateChanged::class.java) { it as GameStateChanged
+            when (it.new) {
+                GameState.LOGGING_IN, GameState.HOPPING -> {
+                    ignoreNextNpcUpdate = true
                 }
+            }
         }
     }
 
-    override fun post(obj: Any?) {
-        if (obj is Event)
-            EventBus.post(obj)
+    override fun post(event: Any?) {
+        //TODO("Should never be called in klient")
     }
+
+    override fun post(type: Class<*>, obj: Event) {
+            EventBus.post(type as Class<out Event>, obj)
+    }
+
 
     override fun postDeferred(event: Any?) {
         //TODO
@@ -58,8 +67,12 @@ class Hooks : Callbacks {
     override fun tick() {
         if (shouldProcessGameTick) {
             shouldProcessGameTick = false
-            EventBus.post(GAME_TICK as Event)
+            EventBus.post(GameTick::class.java, GAME_TICK)
+
+            client.tickCount = client.tickCount + 1
         }
+
+        ClientThread.invoke()
 
         val now = System.nanoTime()
 
@@ -71,7 +84,7 @@ class Hooks : Callbacks {
     }
 
     override fun frame() {
-        EventBus.post(BeforeRender)
+        EventBus.post(BeforeRender.javaClass, BeforeRender)
     }
 
     override fun updateNpcs() {
@@ -92,7 +105,7 @@ class Hooks : Callbacks {
     }
 
     override fun drawAboveOverheads() {
-        TODO("Not yet implemented")
+        //TODO("Not yet implemented")
     }
 
     override fun draw(mainBufferProvider: MainBufferProvider, graphics: Graphics?, x: Int, y: Int) {
@@ -119,9 +132,34 @@ class Hooks : Callbacks {
         // Stretch the game image if the user has that enabled
         val image = mainBufferProvider.image
         val finalImage: Image
-        finalImage = image
+        if (client.isStretchedEnabled) {
+            val gc: GraphicsConfiguration = client.canvas.graphicsConfiguration
+            val stretchedDimensions: Dimension = client.stretchedDimensions
+            if (lastStretchedDimensions == null || lastStretchedDimensions != stretchedDimensions
+                    || (stretchedImage != null
+                            && stretchedImage!!.validate(gc) == VolatileImage.IMAGE_INCOMPATIBLE)) {
+                /*
+					Reuse the resulting image instance to avoid creating an extreme amount of objects
+				 */
+                stretchedImage = gc
+                        .createCompatibleVolatileImage(stretchedDimensions.width, stretchedDimensions.height)
+                stretchedGraphics?.dispose()
+                stretchedGraphics = stretchedImage!!.graphics as Graphics2D
+                lastStretchedDimensions = stretchedDimensions
 
-        // Draw the image onto the game canvas
+                /*
+					Fill Canvas before drawing stretched image to prevent artifacts.
+				*/graphics.color = Color.BLACK
+                graphics.fillRect(0, 0, client.canvas.width, client.canvas.height)
+            }
+            stretchedGraphics!!.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
+                    if (client.isStretchedFast) RenderingHints.VALUE_INTERPOLATION_NEAREST_NEIGHBOR else RenderingHints.VALUE_INTERPOLATION_BILINEAR)
+            stretchedGraphics!!
+                    .drawImage(image, 0, 0, stretchedDimensions.width, stretchedDimensions.height, null)
+            finalImage = stretchedImage!!
+        } else {
+            finalImage = image
+        }
 
         // Draw the image onto the game canvas
         graphics.drawImage(finalImage, 0, 0, client.canvas)
@@ -166,7 +204,7 @@ class Hooks : Callbacks {
     }
 
     private fun getGraphics(mainBufferProvider: MainBufferProvider): Graphics2D {
-        if (lastGraphics == null || lastMainBufferProvider !== mainBufferProvider) {
+        if (lastGraphics == null || lastMainBufferProvider != mainBufferProvider) {
             lastGraphics?.dispose()
             lastMainBufferProvider = mainBufferProvider
             lastGraphics = mainBufferProvider.image.graphics as Graphics2D

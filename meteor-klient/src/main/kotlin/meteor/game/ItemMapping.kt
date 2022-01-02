@@ -197,8 +197,8 @@ enum class ItemMapping(val tradeableItem: Int, val untradeable: Boolean, val qua
             ItemID.TATTERED_TEMPLE_PAGE),
     ITEM_LONG_BONE(ItemID.COINS_995, true, 1000L, ItemID.LONG_BONE), ITEM_CURVED_BONE(ItemID.COINS_995, true, 2000L, ItemID.CURVED_BONE), ITEM_PERFECT_SHELL(ItemID.COINS_995, true, 600L, ItemID.PERFECT_SHELL), ITEM_PERFECT_SNAIL_SHELL(ItemID.COINS_995, true, 600L, ItemID.PERFECT_SNAIL_SHELL), ITEM_SNAIL_SHELL(ItemID.COINS_995, true, 600L, ItemID.SNAIL_SHELL), ITEM_TORTOISE_SHELL(ItemID.COINS_995, true, 250L, ItemID.TORTOISE_SHELL);
 
-    constructor(tradeableItem: Int, quantity: Long, vararg untradableItems: Int) : this(tradeableItem, false, quantity, *untradableItems) {}
-    constructor(tradeableItem: Int, vararg untradableItems: Int) : this(tradeableItem, 1L, *untradableItems) {}
+    constructor(tradeableItem: Int, quantity: Long, vararg untradableItems: Int) : this(tradeableItem, false, quantity, *untradableItems)
+    constructor(tradeableItem: Int, vararg untradableItems: Int) : this(tradeableItem, 1L, *untradableItems)
 
     companion object {
         private val MAPPINGS: Multimap<Int, ItemMapping> = HashMultimap.create()

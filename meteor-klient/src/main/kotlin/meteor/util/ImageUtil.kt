@@ -9,8 +9,7 @@ object ImageUtil {
         try {
             c.getResourceAsStream(path).use { `in` -> synchronized(ImageIO::class.java) { return ImageIO.read(`in`) } }
         } catch (e: IllegalArgumentException) {
-            val filePath: String
-            filePath = if (path.startsWith("/")) {
+            val filePath: String = if (path.startsWith("/")) {
                 path
             } else {
                 c.getPackage().name.replace('.', '/') + "/" + path

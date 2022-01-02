@@ -20,8 +20,10 @@ import meteor.rs.Applet
 import java.awt.BorderLayout
 import javax.swing.JPanel
 import meteor.ui.Components.Toolbar.Position.*
+import javax.swing.JFrame
 
 object Components {
+    var jpanel: JPanel? = null
     @Composable
     fun BrandBadge() {
         val bitmap: ImageBitmap = useResource("brand/badge.png") { loadImageBitmap(it) }
@@ -45,8 +47,9 @@ object Components {
                 modifier = mod,
                 factory = {
                     JPanel().apply {
+                        jpanel = this
                         layout = BorderLayout()
-                        add(Applet.applet, BorderLayout.CENTER)
+                        add(Applet.applet)
                         if (!UI.loaded) {
                             Applet.applet.init()
                             Applet.applet.start()
@@ -56,6 +59,18 @@ object Components {
                 })
     }
 
+    fun awtFrame() {
+        val frame = JFrame("Meteor")
+        frame.setSize(1920, 1080)
+        val jpanel = JPanel()
+        jpanel.setSize(1920, 1080)
+        jpanel.layout = BorderLayout()
+        jpanel.add(Applet.applet)
+        frame.add(jpanel)
+        frame.isVisible = true
+        Applet.applet.init()
+        Applet.applet.start()
+    }
     object Toolbar {
         @Composable
         fun LeftRightToolbar(position: MutableState<Position>) {
@@ -68,7 +83,7 @@ object Components {
                 Column(horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Bottom,
                         modifier = Modifier.width(UI.TOOLBAR_WIDTH.dp).fillMaxHeight().background(UI.darkThemeColors.background)) {
                     MaterialTheme(colors = UI.darkThemeColors) {
-                        Components.BrandBadge()
+                        BrandBadge()
                     }
                 }
             }
@@ -85,7 +100,7 @@ object Components {
                 Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.End,
                         modifier = Modifier.height(UI.TOOLBAR_WIDTH.dp).fillMaxWidth().background(UI.darkThemeColors.background)) {
                     MaterialTheme(colors = UI.darkThemeColors) {
-                        Components.BrandBadge()
+                        BrandBadge()
                     }
                 }
             }

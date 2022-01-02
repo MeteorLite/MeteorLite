@@ -1,8 +1,6 @@
 package meteor.plugins.agility
 
-import com.google.inject.Inject
 import meteor.ui.overlay.Overlay
-import meteor.ui.overlay.OverlayLayer
 import meteor.ui.overlay.OverlayPosition
 import net.runelite.api.*
 import java.awt.Color
@@ -10,7 +8,7 @@ import java.awt.Dimension
 import java.awt.Graphics2D
 import java.awt.Shape
 
-class AgilityOverlay @Inject constructor(var plugin: AgilityPlugin) : Overlay(layer = OverlayLayer.ABOVE_SCENE) {
+class AgilityOverlay(val plugin: AgilityPlugin) : Overlay() {
     private val MARK_OF_GRACE = "Mark of Grace"
     private val OFFSET_Z = 20
     private lateinit var overlayFillColor: Color

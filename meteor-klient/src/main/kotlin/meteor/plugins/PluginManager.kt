@@ -1,9 +1,10 @@
 package meteor.plugins
 
 import meteor.config.ConfigManager
-import meteor.config.legacy.Config
 import meteor.plugins.agility.AgilityPlugin
 import meteor.plugins.fishing.FishingPlugin
+import meteor.plugins.stretchedmode.StretchedModePlugin
+import rs117.hd.GpuHDPlugin
 import java.lang.Boolean
 import kotlin.String
 
@@ -13,6 +14,8 @@ object PluginManager {
         plugins.add(ExamplePlugin())
         plugins.add(FishingPlugin())
         plugins.add(AgilityPlugin())
+        plugins.add(GpuHDPlugin())
+        //plugins.add(StretchedModePlugin())
     }
 
     fun startPlugins() {
@@ -30,20 +33,25 @@ object PluginManager {
                 ConfigManager.setConfiguration(plugin.javaClass.simpleName, "pluginEnabled", false)
             }
 
-            val config: Config? = plugin.config
-            if (config != null) {
-                ConfigManager.setDefaultConfiguration(config, false)
-            }
-
             var shouldEnable = false
 
             if (Boolean.parseBoolean(ConfigManager.getConfiguration(plugin.javaClass.simpleName, "pluginEnabled")))
                 shouldEnable = true else if (plugin.javaClass.getAnnotation(PluginDescriptor::class.java).cantDisable) shouldEnable = true
 
             if (shouldEnable) {
-                plugin.start()
-                plugin.onStart()
+                Thread {
+                    plugin.start()
+                    plugin.onStart()
+                }.start()
             }
         }
+    }
+
+    inline fun <reified T : Plugin> getPlugin(): T? {
+        for (plugin in plugins) {
+            if (plugin is T)
+                return plugin
+        }
+        return null
     }
 }

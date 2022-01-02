@@ -32,7 +32,6 @@ import java.util.concurrent.CopyOnWriteArrayList
 import java.util.concurrent.ConcurrentLinkedQueue
 import java.util.function.Consumer
 import java.util.function.Supplier
-import javax.inject.Singleton
 
 object DrawManager {
     private val everyFrame: MutableList<Runnable> = CopyOnWriteArrayList()

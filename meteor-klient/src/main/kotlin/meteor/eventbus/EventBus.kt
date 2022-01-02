@@ -11,8 +11,15 @@ import kotlin.coroutines.CoroutineContext
 class EventBus(override val coroutineContext: CoroutineContext
                = Executors.newSingleThreadExecutor().asCoroutineDispatcher())
     : CoroutineScope {
+    val handlers = HashMap<Class<out Event>, EventBus>()
 
     private val channel = BroadcastChannel<Event>(1)
+
+    fun getHandler(type: Class<out Event>): EventBus {
+        if (!handlers.keys.contains(type))
+            handlers[type] = EventBus()
+        return handlers[type]!!
+    }
 
     fun post(event: Event, context: CoroutineContext = coroutineContext) {
         this.launch(context) {
@@ -35,18 +42,15 @@ class EventBus(override val coroutineContext: CoroutineContext
     }
 
     companion object {
-        private val instance: EventBus = EventBus()
+        var instance = EventBus()
 
-        fun post(event: Event) {
-            instance.post(event)
+
+        fun post(type: Class<out Event>, event: Event) {
+            instance.getHandler(type).post(event)
         }
 
-        fun subscribe(unit: (Event) -> Unit) {
-            instance.subscribe(unit)
-        }
-
-        fun subscribe(unit: (Event) -> Unit, filter: ((event: Event) -> Boolean)? = null) {
-            instance.subscribe(unit, Dispatchers.Main, filter)
+        fun subscribe(type: Class<out Event>, unit: (Event) -> Unit) {
+            instance.getHandler(type).subscribe(unit)
         }
     }
 }

@@ -52,7 +52,7 @@ public class Plugin implements Module {
   private MeteorUI meteorUI;
 
   public Plugin() {
-    logger.name = getDescriptor().name();
+    logger.setName(getDescriptor().name());
   }
 
   public void startup() { }

@@ -31,8 +31,8 @@ import java.util.concurrent.CopyOnWriteArrayList
 
 object MouseManager {
     private const val MOUSE_BUTTON_4 = 4
-    private val mouseListeners: MutableList<MouseListener> = CopyOnWriteArrayList<MouseListener>()
-    private val mouseWheelListeners: MutableList<MouseWheelListener> = CopyOnWriteArrayList<MouseWheelListener>()
+    private val mouseListeners: MutableList<MouseListener> = CopyOnWriteArrayList()
+    private val mouseWheelListeners: MutableList<MouseWheelListener> = CopyOnWriteArrayList()
     fun registerMouseListener(mouseListener: MouseListener) {
         if (!mouseListeners.contains(mouseListener)) {
             mouseListeners.add(mouseListener)
@@ -77,7 +77,7 @@ object MouseManager {
         }
         checkExtraMouseButtons(mouseEvent)
         for (mouseListener in mouseListeners) {
-            mouseEvent = mouseListener.mousePressed(mouseEvent)!!
+            mouseEvent = mouseListener.mousePressed(mouseEvent)
             if (mouseEvent.isConsumed) {
                 break
             }
@@ -92,7 +92,7 @@ object MouseManager {
         }
         checkExtraMouseButtons(mouseEvent)
         for (mouseListener in mouseListeners) {
-            mouseEvent = mouseListener.mouseReleased(mouseEvent)!!
+            mouseEvent = mouseListener.mouseReleased(mouseEvent)
             if (mouseEvent.isConsumed) {
                 break
             }
@@ -107,7 +107,7 @@ object MouseManager {
         }
         checkExtraMouseButtons(mouseEvent)
         for (mouseListener in mouseListeners) {
-            mouseEvent = mouseListener.mouseClicked(mouseEvent)!!
+            mouseEvent = mouseListener.mouseClicked(mouseEvent)
             if (mouseEvent.isConsumed) {
                 break
             }
@@ -121,7 +121,7 @@ object MouseManager {
             return mouseEvent
         }
         for (mouseListener in mouseListeners) {
-            mouseEvent = mouseListener.mouseEntered(mouseEvent)!!
+            mouseEvent = mouseListener.mouseEntered(mouseEvent)
             if (mouseEvent.isConsumed) {
                 break
             }
@@ -135,7 +135,7 @@ object MouseManager {
             return mouseEvent
         }
         for (mouseListener in mouseListeners) {
-            mouseEvent = mouseListener.mouseExited(mouseEvent)!!
+            mouseEvent = mouseListener.mouseExited(mouseEvent)
             if (mouseEvent.isConsumed) {
                 break
             }
@@ -149,7 +149,7 @@ object MouseManager {
             return mouseEvent
         }
         for (mouseListener in mouseListeners) {
-            mouseEvent = mouseListener.mouseDragged(mouseEvent)!!
+            mouseEvent = mouseListener.mouseDragged(mouseEvent)
             if (mouseEvent.isConsumed) {
                 break
             }
@@ -163,7 +163,7 @@ object MouseManager {
             return mouseEvent
         }
         for (mouseListener in mouseListeners) {
-            mouseEvent = mouseListener.mouseMoved(mouseEvent)!!
+            mouseEvent = mouseListener.mouseMoved(mouseEvent)
             if (mouseEvent.isConsumed) {
                 break
             }
@@ -177,7 +177,7 @@ object MouseManager {
             return mouseWheelEvent
         }
         for (mouseWheelListener in mouseWheelListeners) {
-            mouseWheelEvent = mouseWheelListener.mouseWheelMoved(mouseWheelEvent)!!
+            mouseWheelEvent = mouseWheelListener.mouseWheelMoved(mouseWheelEvent)
             if (mouseWheelEvent.isConsumed) {
                 break
             }

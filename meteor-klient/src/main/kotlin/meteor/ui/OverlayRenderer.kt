@@ -7,6 +7,7 @@ import com.google.common.base.MoreObjects
 import com.google.common.primitives.Ints
 import meteor.Event
 import meteor.eventbus.EventBus
+import meteor.eventbus.events.BeforeRender
 import meteor.ui.overlay.*
 import meteor.util.JagexColors
 import net.runelite.api.*
@@ -19,15 +20,11 @@ import java.awt.Point
 object OverlayRenderer {
 
     init {
-        EventBus.subscribe(onEvent())
+        EventBus.subscribe(BeforeRender.javaClass, beforeRender())
     }
 
-    private fun onEvent(): (Event) -> Unit {
-        return {
-            if (it is meteor.eventbus.events.BeforeRender) {
-                onBeforeRender()
-            }
-        }
+    private fun beforeRender(): (Event) -> Unit = {
+        onBeforeRender()
     }
 
     private const val BORDER = 5
@@ -43,8 +40,8 @@ object OverlayRenderer {
     private val MOVING_OVERLAY_RESIZING_COLOR = Color(255, 0, 255, 200)
 
     // Overlay movement variables
-    private val overlayOffset = java.awt.Point()
-    private val mousePosition = java.awt.Point()
+    private val overlayOffset = Point()
+    private val mousePosition = Point()
     private val currentManagedOverlay: Overlay? = null
     private var dragTargetOverlay: Overlay? = null
     private val currentManagedBounds: Rectangle? = null
@@ -77,6 +74,7 @@ object OverlayRenderer {
     }
 
     private fun shouldInvalidateBounds(): Boolean {
+        return false
         val chatbox = client.getWidget(WidgetInfo.CHATBOX)
         val resizeableChanged = isResizeable != client.isResized
         var changed = false
@@ -116,27 +114,30 @@ object OverlayRenderer {
             if (shouldInvalidateBounds()) {
                 emptySnapCorners = buildSnapCorners()
             }
-
+            if (emptySnapCorners == null)
+            emptySnapCorners = buildSnapCorners()
             // Create copy of snap corners because overlays will modify them
             snapCorners = OverlayBounds(other = emptySnapCorners!!)
         }
     }
 
-    private fun buildSnapCorners(): OverlayBounds? {
-        val topLeftPoint = java.awt.Point(
-                viewportBounds!!.x + BORDER,
-                viewportBounds!!.y + BORDER_TOP)
-        val topCenterPoint = java.awt.Point(
-                viewportBounds!!.x + viewportBounds!!.width / 2,
-                viewportBounds!!.y + BORDER
+    private fun buildSnapCorners(): OverlayBounds {
+        val viewportWidget: Widget? = getViewportLayer()
+        val viewport = if (viewportWidget != null) viewportWidget.bounds else Rectangle()
+        val topLeftPoint = Point(
+            viewport!!.x + BORDER,
+            viewport!!.y + BORDER_TOP)
+        val topCenterPoint = Point(
+                viewport!!.x + viewport!!.width / 2,
+                viewport!!.y + BORDER
         )
-        val topRightPoint = java.awt.Point(
-                viewportBounds!!.x + viewportBounds!!.width - BORDER,
+        val topRightPoint = Point(
+                viewport!!.x + viewport!!.width - BORDER,
                 topCenterPoint.y)
-        val bottomLeftPoint = java.awt.Point(
+        val bottomLeftPoint = Point(
                 topLeftPoint.x,
-                viewportBounds!!.y + viewportBounds!!.height - BORDER)
-        val bottomRightPoint = java.awt.Point(
+                viewport!!.y + viewport!!.height - BORDER)
+        val bottomRightPoint = Point(
                 topRightPoint.x,
                 bottomLeftPoint.y)
 
@@ -144,10 +145,10 @@ object OverlayRenderer {
         if (isResizeable && chatboxHidden) {
             bottomLeftPoint.y += chatboxBounds!!.height
         }
-        val rightChatboxPoint = if (isResizeable) java.awt.Point(
-                viewportBounds!!.x + chatboxBounds!!.width - BORDER,
+        val rightChatboxPoint = if (isResizeable) Point(
+                viewport!!.x + chatboxBounds!!.width - BORDER,
                 bottomLeftPoint.y) else bottomRightPoint
-        val canvasTopRightPoint = if (isResizeable) java.awt.Point(client.realDimensions.getWidth().toInt(),
+        val canvasTopRightPoint = if (isResizeable) Point(client.realDimensions.getWidth().toInt(),
                 0) else topRightPoint
         return OverlayBounds(
                 Rectangle(topLeftPoint, SNAP_CORNER_SIZE),
@@ -169,7 +170,7 @@ object OverlayRenderer {
                          widgetItems: Collection<WidgetItem>) {
         val overlays = overlayManager.getForLayer(layer.id)
         overlayManager.widgetItems = widgetItems
-        renderOverlays(graphics!!, overlays, OverlayLayer.ABOVE_WIDGETS)
+        renderOverlays(graphics, overlays, OverlayLayer.ABOVE_WIDGETS)
         overlayManager.widgetItems = emptyList()
     }
 
@@ -178,10 +179,8 @@ object OverlayRenderer {
     }
 
     private fun getCorrectedOverlayPosition(overlay: Overlay): OverlayPosition {
-        var overlayPosition: OverlayPosition = overlay.position
-        if (overlay.preferredPosition != null) {
-            overlayPosition = overlay.preferredPosition!!
-        }
+        var overlayPosition: OverlayPosition
+        overlayPosition = overlay.preferredPosition
         if (!isResizeable) {
             // On fixed mode, ABOVE_CHATBOX_RIGHT is in the same location as
             // BOTTOM_RIGHT and CANVAS_TOP_RIGHT is same as TOP_RIGHT.
@@ -195,7 +194,7 @@ object OverlayRenderer {
         return overlayPosition
     }
 
-    fun transformPosition(position: OverlayPosition?, dimension: Dimension): java.awt.Point {
+    fun transformPosition(position: OverlayPosition?, dimension: Dimension): Point {
         val result = Point()
         when (position) {
             OverlayPosition.DYNAMIC, OverlayPosition.TOOLTIP, OverlayPosition.TOP_LEFT -> {}
@@ -211,7 +210,7 @@ object OverlayRenderer {
     }
 
     fun padPosition(position: OverlayPosition, dimension: Dimension,
-                    padding: Int): java.awt.Point {
+                    padding: Int): Point {
         val result = Point()
         when (position) {
             OverlayPosition.DYNAMIC, OverlayPosition.TOOLTIP -> {}
@@ -224,7 +223,7 @@ object OverlayRenderer {
     }
 
     private fun clampOverlayLocation(overlayX: Int, overlayY: Int, overlayWidth: Int,
-                                     overlayHeight: Int, overlay: Overlay): java.awt.Point {
+                                     overlayHeight: Int, overlay: Overlay): Point {
         var parentBounds: Rectangle? = overlay.parentBounds
         if (parentBounds == null || parentBounds.isEmpty) {
             // If no bounds are set, use the full client bounds
@@ -233,11 +232,13 @@ object OverlayRenderer {
         }
 
         // Constrain overlay position to be within the parent bounds
-        return java.awt.Point(
+        return Point(
                 Ints.constrainToRange(overlayX, parentBounds.x,
-                        Math.max(parentBounds.x, parentBounds.width - overlayWidth)),
+                    parentBounds.x.coerceAtLeast(parentBounds.width - overlayWidth)
+                ),
                 Ints.constrainToRange(overlayY, parentBounds.y,
-                        Math.max(parentBounds.y, parentBounds.height - overlayHeight))
+                    parentBounds.y.coerceAtLeast(parentBounds.height - overlayHeight)
+                )
         )
     }
 
@@ -284,16 +285,17 @@ object OverlayRenderer {
                     -SNAP_CORNER_SIZE.height)
             val previous = graphics.color
             for (corner in translatedSnapCorners.bounds) {
-                graphics.setColor(
-                        if (corner.contains(mousePosition)) SNAP_CORNER_ACTIVE_COLOR else SNAP_CORNER_COLOR)
-                graphics.fill(corner)
+                corner?.also {
+                    graphics.color = if (corner.contains(mousePosition)) SNAP_CORNER_ACTIVE_COLOR else SNAP_CORNER_COLOR
+                    graphics.fill(corner)
+                }
             }
             graphics.color = previous
         }
 
         // Get mouse position
         val mouseCanvasPosition: net.runelite.api.Point = client.mouseCanvasPosition
-        val mouse = java.awt.Point(mouseCanvasPosition.x, mouseCanvasPosition.y)
+        val mouse = Point(mouseCanvasPosition.x, mouseCanvasPosition.y)
 
         // Save graphics2d properties so we can restore them later
         val transform = graphics.transform
@@ -318,13 +320,13 @@ object OverlayRenderer {
             } else {
                 val bounds: Rectangle = overlay.bounds
                 val dimension = bounds.size
-                val preferredLocation: java.awt.Point = overlay.preferredLocation
-                var location: java.awt.Point
+                val preferredLocation: Point = overlay.preferredLocation
+                var location: Point
 
                 // If the final position is not modified, layout it
                 if (overlayPosition != OverlayPosition.DETACHED && snapCorners != null) {
                     val snapCorner: Rectangle = snapCorners!!.forPosition(overlayPosition)
-                    val translation: java.awt.Point = transformPosition(overlayPosition,
+                    val translation: Point = transformPosition(overlayPosition,
                             dimension) // offset from corner
                     // Target x/y to draw the overlay
                     val destX = snapCorner.getX().toInt() + translation.x
@@ -336,12 +338,12 @@ object OverlayRenderer {
                     // addition to its normal dimensions.
                     val dX = location.x - destX
                     val dY = location.y - destY
-                    val padding: java.awt.Point = padPosition(overlayPosition, dimension,
+                    val padding: Point = padPosition(overlayPosition, dimension,
                             PADDING) // overlay size + fixed padding
                     // translate corner for padding and any difference due to the position clamping
                     snapCorner.translate(padding.x + dX, padding.y + dY)
                 } else {
-                    location = preferredLocation ?: bounds.location
+                    location = preferredLocation
 
                     // Clamp the overlay position to ensure it is on screen or within parent bounds
                     location = clampOverlayLocation(location.x, location.y, dimension.width, dimension.height,
@@ -368,7 +370,7 @@ object OverlayRenderer {
                                 && currentManagedOverlay!!.dragTargetable
                                 && currentManagedOverlay.bounds.intersects(bounds)) {
                             boundsColor = MOVING_OVERLAY_TARGET_COLOR
-                            assert(currentManagedOverlay !== overlay)
+                            assert(currentManagedOverlay != overlay)
                             dragTargetOverlay = overlay
                         } else {
                             boundsColor = MOVING_OVERLAY_COLOR
@@ -383,7 +385,7 @@ object OverlayRenderer {
                         }
                         if (focusedOverlay == null) {
                             focusedOverlay = overlay
-                            if (focusedOverlay !== prevFocusedOverlay) {
+                            if (focusedOverlay != prevFocusedOverlay) {
                                 prevFocusedOverlay?.onMouseExit()
                                 overlay.onMouseEnter()
                             }
@@ -395,7 +397,7 @@ object OverlayRenderer {
         }
     }
     private fun safeRender(client: Client, overlay: Overlay, layer: OverlayLayer, graphics: Graphics2D,
-                           point: java.awt.Point) {
+                           point: Point) {
         if (!isResizeable && (layer == OverlayLayer.ABOVE_SCENE
                         || layer == OverlayLayer.UNDER_WIDGETS)) {
             graphics.setClip(client.viewportXOffset,

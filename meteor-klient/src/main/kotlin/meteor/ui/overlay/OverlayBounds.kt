@@ -92,7 +92,6 @@ internal class OverlayBounds(private var topLeft: Rectangle? = null, private var
         }
     }
 
-    val bounds: Collection<Rectangle>
-        get() = Arrays.asList(topLeft!!, topCenter, topRight, bottomLeft, bottomRight, aboveChatboxRight,
-                canvasTopRight)
+    val bounds = listOf(topLeft!!, topCenter, topRight, bottomLeft, bottomRight, aboveChatboxRight,
+        canvasTopRight)
 }

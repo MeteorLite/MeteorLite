@@ -40,14 +40,14 @@ abstract class WidgetItemOverlay protected constructor() : Overlay() {
 
     override fun render(graphics: Graphics2D): Dimension? {
         val widgetItems: Collection<WidgetItem> = overlayManager.widgetItems
-        val originalClipBounds: Rectangle = graphics.getClipBounds()
+        val originalClipBounds: Rectangle = graphics.clipBounds
         var curClipParent: Widget? = null
         for (widgetItem in widgetItems) {
-            val widget: Widget = widgetItem.getWidget()
+            val widget: Widget = widgetItem.widget
             val parent = widget.parent
             val parentBounds = parent.bounds
-            val itemCanvasBounds: Rectangle = widgetItem.getCanvasBounds()
-            val dragging = widgetItem.getDraggingCanvasBounds() != null
+            val itemCanvasBounds: Rectangle = widgetItem.canvasBounds
+            val dragging = widgetItem.draggingCanvasBounds != null
             var shouldClip: Boolean
             if (dragging) {
                 // If dragging, clip if the dragged item is outside of the parent bounds
@@ -68,15 +68,15 @@ abstract class WidgetItemOverlay protected constructor() : Overlay() {
                         && itemCanvasBounds.x + itemCanvasBounds.width >= parentBounds.x + parentBounds.width)
             }
             if (shouldClip) {
-                if (curClipParent !== parent) {
-                    graphics.setClip(parentBounds)
+                if (curClipParent != parent) {
+                    graphics.clip = parentBounds
                     curClipParent = parent
                 }
-            } else if (curClipParent != null && curClipParent !== parent) {
-                graphics.setClip(originalClipBounds)
+            } else if (curClipParent != null && curClipParent != parent) {
+                graphics.clip = originalClipBounds
                 curClipParent = null
             }
-            renderItemOverlay(graphics, widgetItem.getId(), widgetItem)
+            renderItemOverlay(graphics, widgetItem.id, widgetItem)
         }
         return null
     }

@@ -27,31 +27,31 @@ package meteor.input
 import java.awt.event.MouseEvent
 
 abstract class MouseAdapter : MouseListener {
-    override fun mouseClicked(mouseEvent: MouseEvent?): MouseEvent? {
+    override fun mouseClicked(mouseEvent: MouseEvent): MouseEvent {
         return mouseEvent
     }
 
-    override fun mousePressed(mouseEvent: MouseEvent?): MouseEvent? {
+    override fun mousePressed(mouseEvent: MouseEvent): MouseEvent {
         return mouseEvent
     }
 
-    override fun mouseReleased(mouseEvent: MouseEvent?): MouseEvent? {
+    override fun mouseReleased(mouseEvent: MouseEvent): MouseEvent {
         return mouseEvent
     }
 
-    override fun mouseEntered(mouseEvent: MouseEvent?): MouseEvent? {
+    override fun mouseEntered(mouseEvent: MouseEvent): MouseEvent {
         return mouseEvent
     }
 
-    override fun mouseExited(mouseEvent: MouseEvent?): MouseEvent? {
+    override fun mouseExited(mouseEvent: MouseEvent): MouseEvent {
         return mouseEvent
     }
 
-    override fun mouseDragged(mouseEvent: MouseEvent?): MouseEvent? {
+    override fun mouseDragged(mouseEvent: MouseEvent): MouseEvent {
         return mouseEvent
     }
 
-    override fun mouseMoved(mouseEvent: MouseEvent?): MouseEvent? {
+    override fun mouseMoved(mouseEvent: MouseEvent): MouseEvent {
         return mouseEvent
     }
 }

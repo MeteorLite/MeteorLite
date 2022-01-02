@@ -25,17 +25,13 @@
 package meteor.rs
 
 import Main.client
-import com.google.inject.Inject
 import io.reactivex.rxjava3.core.Scheduler
 import java.util.concurrent.ConcurrentLinkedQueue
 import io.reactivex.rxjava3.plugins.RxJavaPlugins
 import io.reactivex.rxjava3.schedulers.Schedulers
-import meteor.eventbus.EventBus
-import net.runelite.api.Client
 import java.lang.Runnable
 import java.util.concurrent.Executor
 import java.util.function.BooleanSupplier
-import javax.inject.Singleton
 
 
 object ClientThread : Executor {
@@ -67,7 +63,7 @@ object ClientThread : Executor {
             }
             return
         }
-        invokeLater(r)
+        invokeLaterSecondary(r)
     }
 
     /**
@@ -75,13 +71,13 @@ object ClientThread : Executor {
      * again, at a later point
      */
     fun invokeLater(r: Runnable) {
-        invokeLater(BooleanSupplier {
+        invokeLaterSecondary {
             r.run()
             true
-        })
+        }
     }
 
-    fun invokeLater(r: BooleanSupplier) {
+    private fun invokeLaterSecondary(r: BooleanSupplier) {
         invokes.add(r)
     }
 

@@ -15,49 +15,53 @@ public abstract class NanoClockMixin implements RSNanoClock {
 	@Copy("wait")
 	@Replace("wait")
 	public int copy$wait(int cycleDurationMillis, int var2) {
-		long nanoTime = System.nanoTime();
-
-		if (nanoTime >= getLastTimeNano() && nanoTime >= tmpNanoTime) {
-			long cycleDuration;
-			long diff;
-
-			if (client.getUnlockedFpsTarget() > 0L) {
-				cycleDuration = nanoTime - tmpNanoTime;
-				diff = client.getUnlockedFpsTarget() - cycleDuration;
-				diff /= 1000000L;
-				if (diff > 0L) {
-					try {
-						if (diff % 10L == 0L) {
-							Thread.sleep(diff - 1L);
-							Thread.sleep(1L);
-						} else {
-							Thread.sleep(diff);
-						}
-					} catch (InterruptedException var22) {
-					}
-
-					nanoTime = System.nanoTime();
-				}
-			}
-
-			tmpNanoTime = nanoTime;
-
-			cycleDuration = (long) cycleDurationMillis * 1000000L;
-			diff = nanoTime - getLastTimeNano();
-
-			int cycles = (int) (diff / cycleDuration);
-
-			setLastTimeNano(getLastTimeNano() + (long) cycles * cycleDuration);
-
-			if (cycles > 10) {
-				cycles = 10;
-			}
-
-			return cycles;
+		if (!client.isUnlockedFps()) {
+			return copy$wait(cycleDurationMillis, var2);
 		} else {
-			setLastTimeNano(tmpNanoTime = nanoTime);
+			long nanoTime = System.nanoTime();
 
-			return 1;
+			if (nanoTime >= getLastTimeNano() && nanoTime >= tmpNanoTime) {
+				long cycleDuration;
+				long diff;
+
+				if (client.getUnlockedFpsTarget() > 0L) {
+					cycleDuration = nanoTime - tmpNanoTime;
+					diff = client.getUnlockedFpsTarget() - cycleDuration;
+					diff /= 1000000L;
+					if (diff > 0L) {
+						try {
+							if (diff % 10L == 0L) {
+								Thread.sleep(diff - 1L);
+								Thread.sleep(1L);
+							} else {
+								Thread.sleep(diff);
+							}
+						} catch (InterruptedException var22) {
+						}
+
+						nanoTime = System.nanoTime();
+					}
+				}
+
+				tmpNanoTime = nanoTime;
+
+				cycleDuration = (long) cycleDurationMillis * 1000000L;
+				diff = nanoTime - getLastTimeNano();
+
+				int cycles = (int) (diff / cycleDuration);
+
+				setLastTimeNano(getLastTimeNano() + (long) cycles * cycleDuration);
+
+				if (cycles > 10) {
+					cycles = 10;
+				}
+
+				return cycles;
+			} else {
+				setLastTimeNano(tmpNanoTime = nanoTime);
+
+				return 1;
+			}
 		}
 	}
 }

@@ -8,16 +8,15 @@ import java.awt.Dimension
 import java.awt.Graphics2D
 @PluginDescriptor("Example")
 class ExamplePlugin: Plugin() {
-    override var overlay = ExampleOverlay as Overlay?
+    var exampleOverlay = overlay<ExampleOverlay>(ExampleOverlay)
 
     override fun onStart() {
-        EventBus.subscribe {
-            if (it is GameStateChanged)
-                when (it.new) {
-                    GameState.LOGGING_IN, GameState.HOPPING -> {
-                        //println("Shits pretty slick")
-                    }
+        EventBus.subscribe(GameStateChanged::class.java) { it as GameStateChanged
+            when (it.new) {
+                GameState.LOGGING_IN, GameState.HOPPING -> {
+                    //println("Shits pretty slick")
                 }
+            }
         }
     }
 }

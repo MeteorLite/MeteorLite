@@ -25,9 +25,9 @@
  */
 package net.runelite.mixins;
 
-import net.runelite.api.events.ScriptCallbackEvent;
-import net.runelite.api.events.ScriptPostFired;
-import net.runelite.api.events.ScriptPreFired;
+import meteor.eventbus.events.ScriptCallbackEvent;
+import meteor.eventbus.events.ScriptPostFired;
+import meteor.eventbus.events.ScriptPreFired;
 import net.runelite.api.mixins.*;
 import net.runelite.api.widgets.JavaScriptCallback;
 import net.runelite.rs.api.RSClient;
@@ -62,7 +62,7 @@ public abstract class ScriptVMMixin implements RSClient {
     if (rootScriptEvent != null) {
       if (script != null) {
         ScriptPreFired event = new ScriptPreFired((int) script.getHash(), rootScriptEvent);
-        client.getCallbacks().post(event);
+        client.getCallbacks().post(ScriptPreFired.class, event);
       }
 
       rootScriptEvent = null;
@@ -111,17 +111,15 @@ public abstract class ScriptVMMixin implements RSClient {
           return true;
         }
 
-        ScriptCallbackEvent event = new ScriptCallbackEvent();
-        event.setScript(currentScript);
-        event.setEventName(stringOp);
-        client.getCallbacks().post(event);
+        ScriptCallbackEvent event = new ScriptCallbackEvent(currentScript, stringOp);
+        client.getCallbacks().post(ScriptCallbackEvent.class, event);
         return true;
       case INVOKE:
         int scriptId = currentScript.getIntOperands()[currentScriptPC];
-        client.getCallbacks().post(new ScriptPreFired(scriptId, null));
+        client.getCallbacks().post(ScriptPreFired.class, new ScriptPreFired(scriptId, null));
         return false;
       case RETURN:
-        client.getCallbacks().post(new ScriptPostFired((int) currentScript.getHash()));
+        client.getCallbacks().post(ScriptPostFired.class, new ScriptPostFired((int) currentScript.getHash()));
         return false;
       case CAM_FORCEANGLE:
         int[] intStack = client.getIntStack();

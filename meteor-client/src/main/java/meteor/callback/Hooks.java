@@ -41,6 +41,8 @@ import java.awt.image.VolatileImage;
 import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Singleton;
+
+import meteor.Event;
 import meteor.chat.ChatMessageManager;
 import meteor.eventbus.DeferredEventBus;
 import meteor.eventbus.EventBus;
@@ -207,6 +209,11 @@ public class Hooks implements Callbacks {
   @Override
   public void post(Object event) {
     eventBus.post(event);
+  }
+
+  @Override
+  public void post(Class<?> type, Event event) {
+
   }
 
   @Override

@@ -119,7 +119,7 @@ enum class FishingSpot(val spotName: String, private val worldMapTooltip: String
             NpcID.FISHING_SPOT_4079, NpcID.FISHING_SPOT_4080, NpcID.FISHING_SPOT_4081, NpcID.FISHING_SPOT_4082
     );
 
-    constructor(spot: String, fishSpriteId: Int, vararg ids: Int) : this(spot, spot, fishSpriteId, *ids) {}
+    constructor(spot: String, fishSpriteId: Int, vararg ids: Int) : this(spot, spot, fishSpriteId, *ids)
 
     companion object {
         private var SPOTS: Map<Int, FishingSpot>? = null

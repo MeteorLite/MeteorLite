@@ -35,7 +35,7 @@ class ProgressPieComponent : RenderableEntity {
     private var stroke: Stroke = BasicStroke(1F)
     var progress = 0.0
     var position: Point? = null
-    override fun render(graphics: Graphics2D): Dimension? {
+    override fun render(graphics: Graphics2D): Dimension {
         val position: Point = position!!
         //Construct the arc
         val arc = Arc2D.Float(Arc2D.PIE)

@@ -3,7 +3,6 @@ package meteor.plugins.fishing
 import meteor.ItemManager
 import meteor.ui.components.ProgressPieComponent
 import meteor.ui.overlay.Overlay
-import meteor.ui.overlay.OverlayLayer
 import net.runelite.api.GraphicID
 import net.runelite.api.NpcID
 import net.runelite.api.Perspective
@@ -15,7 +14,7 @@ import java.awt.image.BufferedImage
 import java.time.Duration
 import java.time.Instant
 
-class FishingSpotOverlay(var plugin: FishingPlugin, var config: FishingConfig): Overlay(layer = OverlayLayer.ABOVE_SCENE) {
+class FishingSpotOverlay(val plugin: FishingPlugin, var config: FishingConfig): Overlay() {
     private val ONE_TICK_AERIAL_FISHING = 3
     private val MINNOW_MOVE = Duration.ofSeconds(15)
     private val MINNOW_WARN = Duration.ofSeconds(3)

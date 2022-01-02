@@ -4,8 +4,7 @@ import java.lang.Exception
 import java.lang.StringBuilder
 import java.util.*
 
-class Logger {
-    lateinit var name: String
+class Logger(var name: String) {
     var plugin: String? = null
     var format = "%-35s%s%n"
     fun info(message: Any, vararg replacers: Any) {
@@ -58,7 +57,7 @@ class Logger {
         }
         val finalMessage = StringBuilder()
         val replacersArray = Arrays.stream(replacers).toArray()
-        for ((i, s) in sRef.split("\\{}").toTypedArray().withIndex()) {
+        for ((i, s) in sRef.split("{}").toTypedArray().withIndex()) {
             if (i != replacersArray.size) finalMessage.append(s).append(replacersArray[i]) else finalMessage.append(s)
         }
         printColorMessage(ansiColor, finalMessage)
@@ -75,9 +74,9 @@ class Logger {
         const val ANSI_CYAN = "\u001B[36m"
         const val ANSI_WHITE = "\u001B[37m"
         var DEFAULT_CONTROLLER_COLOR = ANSI_CYAN
-        var isDebugEnabled = true
+        var isDebugEnabled = false
         fun getLogger(loggedClass: Class<*>): Logger {
-            val newLogger = Logger()
+            val newLogger = Logger(loggedClass.name)
             val split = loggedClass.toString().split(".")
             newLogger.name = split[split.size - 1]
             return newLogger
@@ -87,7 +86,7 @@ class Logger {
             if (s.length < 5) return ""
             val lines = s.split(" at ").toTypedArray()
             val output = StringBuilder()
-            if (lines.size > 0) {
+            if (lines.isNotEmpty()) {
                 for (line in lines) {
                     if (line.length < 10) continue
                     output.append(line.replace("\n", "")).append("\n")

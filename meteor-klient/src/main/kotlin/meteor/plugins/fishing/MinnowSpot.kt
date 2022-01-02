@@ -26,5 +26,4 @@ package meteor.plugins.fishing
 import net.runelite.api.coords.WorldPoint
 import java.time.Instant
 
-class MinnowSpot(var loc: WorldPoint? = null, var time: Instant? = null) {
-}
+class MinnowSpot(var loc: WorldPoint? = null, var time: Instant? = null)

@@ -45,7 +45,7 @@ object ItemVariationMapping {
         val geLimitData = ItemVariationMapping::class.java
                 .getResourceAsStream("/item_variations.json")
         val itemVariations: Map<String, Collection<Int>> = gson
-                .fromJson<Map<String, Collection<Int>>>(InputStreamReader(geLimitData, StandardCharsets.UTF_8), typeToken.getType())
+                .fromJson(InputStreamReader(geLimitData, StandardCharsets.UTF_8), typeToken.type)
         val builder = ImmutableMap.Builder<Int, Int>()
         val invertedBuilder = ImmutableMultimap.Builder<Int, Int>()
         for (value in itemVariations.values) {

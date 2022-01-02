@@ -67,12 +67,12 @@ open class Keybind @JvmOverloads constructor(keyCode: Int, modifiers: Int, ignor
         if (mod.isEmpty() && key.isEmpty()) {
             return "Not set"
         }
-        if (!mod.isEmpty() && !key.isEmpty()) {
+        if (mod.isNotEmpty() && key.isNotEmpty()) {
             return "$mod+$key"
         }
-        return if (mod.isEmpty()) {
+        return mod.ifEmpty {
             key
-        } else mod
+        }
     }
 
     companion object {
