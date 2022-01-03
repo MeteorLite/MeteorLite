@@ -11,12 +11,15 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.window.FrameWindowScope
+import meteor.Logger
+import meteor.plugins.PluginManager
 import meteor.ui.Components.OSRSApplet
 import meteor.ui.Components.Toolbar.LeftRightToolbar
 import meteor.ui.Modifiers.toolbarDragListener
 import java.awt.Dimension
 import meteor.ui.Components.Toolbar.Position.*
 import meteor.ui.Components.Toolbar.TopBottomToolbar
+import rs117.hd.GpuHDPlugin
 
 object UI {
     val toolbarPosition = mutableStateOf(TOP)
@@ -24,24 +27,31 @@ object UI {
     const val TOOLBAR_WIDTH = 40
     lateinit var contentSize: Dimension
     var window: FrameWindowScope? = null
-
+    var log = Logger(UI::class.java.name)
+    var lastPosition: Components.Toolbar.Position? = null
     fun Window(): (@Composable FrameWindowScope.() -> Unit) {
         return {
-            println(window.renderApi)
+            log.info("Creating ${window.renderApi} Compose window")
             MaterialTheme(colors = darkThemeColors) {
                 BoxWithConstraints(modifier = Modifier.fillMaxSize().then(toolbarDragListener())) {
                     contentSize = Dimension(this.constraints.maxWidth, this.constraints.maxHeight)
+
+                    if (lastPosition != null && lastPosition != toolbarPosition.value) {
+                        PluginManager.restartPlugin<GpuHDPlugin>()
+                    }
                     when (val position = toolbarPosition.value) {
                         LEFT -> {
                             Row {
                                 LeftRightToolbar(toolbarPosition)
                                 OSRSApplet(this@BoxWithConstraints.constraints)
+                                lastPosition = toolbarPosition.value
                             }
                         }
                         RIGHT -> {
                             Row {
                                 OSRSApplet(this@BoxWithConstraints.constraints)
                                 LeftRightToolbar(toolbarPosition)
+                                lastPosition = toolbarPosition.value
                             }
                         }
                         else -> Column {
@@ -52,6 +62,7 @@ object UI {
                             if (position == BOTTOM) {
                                 TopBottomToolbar(toolbarPosition)
                             }
+                            lastPosition = toolbarPosition.value
                         }
                     }
                 }

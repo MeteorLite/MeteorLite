@@ -26,8 +26,8 @@ package net.runelite.mixins;
 
 import net.runelite.api.Point;
 import net.runelite.api.*;
-import net.runelite.api.events.WidgetHiddenChanged;
-import net.runelite.api.events.WidgetPositioned;
+import meteor.eventbus.events.WidgetHiddenChanged;
+import meteor.eventbus.events.WidgetPositioned;
 import net.runelite.api.mixins.*;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetItem;
@@ -70,11 +70,9 @@ public abstract class WidgetMixin implements RSWidget
   @Override
   public void broadcastHidden(boolean hidden)
   {
-    WidgetHiddenChanged event = new WidgetHiddenChanged();
-    event.setWidget(this);
-    event.setHidden(hidden);
+    WidgetHiddenChanged event = new WidgetHiddenChanged(this, hidden);
 
-    client.getCallbacks().post(event);
+    client.getCallbacks().post(WidgetHiddenChanged.class, event);
 
     RSWidget[] children = getChildren();
 

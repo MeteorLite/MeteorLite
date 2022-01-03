@@ -54,6 +54,7 @@ object Components {
                             Applet.applet.init()
                             Applet.applet.start()
                             UI.loaded = true
+                            Main.finishStartup()
                         }
                     }
                 })
@@ -71,6 +72,7 @@ object Components {
         Applet.applet.init()
         Applet.applet.start()
     }
+
     object Toolbar {
         @Composable
         fun LeftRightToolbar(position: MutableState<Position>) {

@@ -28,17 +28,18 @@ package rs117.hd;
 import com.google.common.base.Stopwatch;
 import com.google.common.primitives.Ints;
 import com.jogamp.opengl.math.VectorUtil;
+import lombok.extern.slf4j.Slf4j;
 import meteor.Refs;
 import net.runelite.api.*;
 import rs117.hd.config.WaterEffects;
 import rs117.hd.materials.*;
 
+import javax.inject.Inject;
 import javax.inject.Singleton;
 
 @Singleton
 class SceneUploader
 {
-
 	public SceneUploader(GpuHDPlugin hdPlugin, ProceduralGenerator proceduralGenerator) {
 		this.hdPlugin = hdPlugin;
 		this.proceduralGenerator = proceduralGenerator;
@@ -46,6 +47,7 @@ class SceneUploader
 	private Client client = Refs.INSTANCE.getClient();
 	private GpuHDPlugin hdPlugin;
 	ProceduralGenerator proceduralGenerator;
+
 
 	int sceneId = (int) (System.currentTimeMillis() / 1000L);
 	private int offset;
@@ -531,7 +533,7 @@ class SceneUploader
 		int nwVertexKey = vertexKeys[2];
 		int neVertexKey = vertexKeys[3];
 
-/*		if (hdPlugin.configWaterEffects == WaterEffects.ALL && proceduralGenerator.tileIsWater[tileZ][tileX][tileY])
+		if (hdPlugin.configWaterEffects == WaterEffects.ALL && proceduralGenerator.tileIsWater[tileZ][tileX][tileY])
 		{
 			// underwater terrain
 
@@ -609,7 +611,7 @@ class SceneUploader
 			uvBuffer.put(packedTextureDataNW, 0.0f, 1.0f, 0f);
 
 			uvBufferLength += 6;
-		}*/
+		}
 
 		return new int[]{bufferLength, uvBufferLength, underwaterTerrain};
 	}
@@ -641,7 +643,7 @@ class SceneUploader
 		int uvBufferLength = 0;
 		int underwaterTerrain = 0;
 
-		if (false)
+		if (proceduralGenerator.skipTile[tileZ][tileX][tileY])
 		{
 			return new int[]{bufferLength, uvBufferLength, underwaterTerrain};
 		}
@@ -821,7 +823,7 @@ class SceneUploader
 		int uvBufferLength = 0;
 		int underwaterTerrain = 0;
 
-		if (false)
+		if (proceduralGenerator.skipTile[tileZ][tileX][tileY])
 		{
 			return new int[]{bufferLength, uvBufferLength, underwaterTerrain};
 		}
@@ -841,7 +843,7 @@ class SceneUploader
 			return new int[]{bufferLength, uvBufferLength, underwaterTerrain};
 		}
 
-/*		if (hdPlugin.configWaterEffects == WaterEffects.ALL && proceduralGenerator.tileIsWater[tileZ][tileX][tileY])
+		if (hdPlugin.configWaterEffects == WaterEffects.ALL && proceduralGenerator.tileIsWater[tileZ][tileX][tileY])
 		{
 			underwaterTerrain = 1;
 
@@ -935,7 +937,7 @@ class SceneUploader
 
 				uvBufferLength += 3;
 			}
-		}*/
+		}
 
 		return new int[]{bufferLength, uvBufferLength, underwaterTerrain};
 	}

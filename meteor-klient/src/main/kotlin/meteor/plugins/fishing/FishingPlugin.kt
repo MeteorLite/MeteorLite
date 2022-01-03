@@ -1,6 +1,5 @@
 package meteor.plugins.fishing
 
-import meteor.Event
 import meteor.eventbus.events.GameStateChanged
 import meteor.eventbus.events.InteractingChanged
 import meteor.eventbus.events.NpcDespawned
@@ -24,7 +23,7 @@ class FishingPlugin: Plugin() {
         registerSubscribers()
     }
 
-    override fun onGameStateChanged(): ((Event) -> Unit) = { it as GameStateChanged
+    override fun onGameStateChanged(): ((Any) -> Unit) = { it as GameStateChanged
         when (it.new) {
             GameState.CONNECTION_LOST,
             GameState.LOGIN_SCREEN,
@@ -32,15 +31,13 @@ class FishingPlugin: Plugin() {
                 fishingSpots.clear()
                 minnowSpots.clear()
             }
-            else -> println("Overrides work")
         }
     }
 
-    override fun onInteractingChanged(): ((Event) -> Unit) = {
-        val event = it as InteractingChanged
-        if (event.source == client.localPlayer) {
-            if (event.target is NPC) {
-                val target: Actor = event.target as NPC
+    override fun onInteractingChanged(): ((Any) -> Unit) = { it as InteractingChanged
+        if (it.source == client.localPlayer) {
+            if (it.target is NPC) {
+                val target: Actor = it.target as NPC
 
                 val npc = target as NPC
                 val spot: FishingSpot? = FishingSpot.findSpot(npc.id)
@@ -50,17 +47,15 @@ class FishingPlugin: Plugin() {
         }
     }
 
-    override fun onNPCSpawned(): ((Event) -> Unit) =  {
-        val event = it as NpcSpawned
-        if (FishingSpot.findSpot(event.npc.id) != null) {
-            fishingSpots.add(event.npc)
+    override fun onNPCSpawned(): ((Any) -> Unit) =  { it as NpcSpawned
+        if (FishingSpot.findSpot(it.npc.id) != null) {
+            fishingSpots.add(it.npc)
         }
     }
 
-    override fun onNPCDespawned(): ((Event) -> Unit) =  {
-        val event = it as NpcDespawned
-        if (FishingSpot.findSpot(event.npc.id) != null) {
-            fishingSpots.remove(event.npc)
+    override fun onNPCDespawned(): ((Any) -> Unit) =  { it as NpcDespawned
+        if (FishingSpot.findSpot(it.npc.id) != null) {
+            fishingSpots.remove(it.npc)
         }
     }
 }

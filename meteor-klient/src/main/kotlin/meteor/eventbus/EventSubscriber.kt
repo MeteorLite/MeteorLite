@@ -30,36 +30,36 @@ open class EventSubscriber {
         registerSubscriber(ConfigChanged::class.java, onConfigChanged())
     }
 
-    open fun onGameStateChanged() : ((Event) -> Unit)? = stub()
-    open fun onInteractingChanged() : ((Event) -> Unit)? = stub()
-    open fun onNPCSpawned() : ((Event) -> Unit)? = stub()
-    open fun onNPCDespawned() : ((Event) -> Unit)? = stub()
-    open fun onGameObjectSpawned() : ((Event) -> Unit)? = stub()
-    open fun onGameObjectChanged() : ((Event) -> Unit)? = stub()
-    open fun onGameObjectDespawned(): ((Event) -> Unit)? = stub()
-    open fun onGroundObjectSpawned(): ((Event) -> Unit)? = stub()
-    open fun onGroundObjectChanged(): ((Event) -> Unit)? = stub()
-    open fun onGroundObjectDespawned(): ((Event) -> Unit)? = stub()
-    open fun onWallObjectSpawned(): ((Event) -> Unit)? = stub()
-    open fun onWallObjectChanged(): ((Event) -> Unit)? = stub()
-    open fun onWallObjectDespawned(): ((Event) -> Unit)? = stub()
-    open fun onDecorativeObjectSpawned(): ((Event) -> Unit)? = stub()
-    open fun onDecorativeObjectChanged(): ((Event) -> Unit)? = stub()
-    open fun onDecorativeObjectDespawned(): ((Event) -> Unit)? = stub()
-    open fun onItemSpawned(): ((Event) -> Unit)? = stub()
-    open fun onItemDespawned(): ((Event) -> Unit)? = stub()
-    open fun onNpcSpawned(): ((Event) -> Unit)? = stub()
-    open fun onNpcChanged(): ((Event) -> Unit)? = stub()
-    open fun onNpcDespawned(): ((Event) -> Unit)? = stub()
-    open fun onProjectileMoved(): ((Event) -> Unit)? = stub()
-    open fun onConfigChanged(): ((Event) -> Unit)? = stub()
+    open fun onGameStateChanged() = stub()
+    open fun onInteractingChanged() = stub()
+    open fun onNPCSpawned() = stub()
+    open fun onNPCDespawned() = stub()
+    open fun onGameObjectSpawned() = stub()
+    open fun onGameObjectChanged() = stub()
+    open fun onGameObjectDespawned() = stub()
+    open fun onGroundObjectSpawned() = stub()
+    open fun onGroundObjectChanged() = stub()
+    open fun onGroundObjectDespawned() = stub()
+    open fun onWallObjectSpawned() = stub()
+    open fun onWallObjectChanged() = stub()
+    open fun onWallObjectDespawned() = stub()
+    open fun onDecorativeObjectSpawned() = stub()
+    open fun onDecorativeObjectChanged() = stub()
+    open fun onDecorativeObjectDespawned() = stub()
+    open fun onItemSpawned() = stub()
+    open fun onItemDespawned() = stub()
+    open fun onNpcSpawned() = stub()
+    open fun onNpcChanged() = stub()
+    open fun onNpcDespawned() = stub()
+    open fun onProjectileMoved() = stub()
+    open fun onConfigChanged() = stub()
     
-    private fun stub(): ((Event) -> Unit)? {
+    private fun stub(): ((Any) -> Unit)? {
         return null
     }
 
     companion object {
-        private fun registerSubscriber(type: Class<out Event>, execution: ((Event) -> Unit)?) {
+        private fun registerSubscriber(type: Any, execution: ((Any) -> Unit)?) {
             execution?.also { EventBus.subscribe(type, execution) }
         }
     }

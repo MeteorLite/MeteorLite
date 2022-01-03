@@ -25,8 +25,8 @@
 package net.runelite.mixins;
 
 import net.runelite.api.clan.ClanChannelMember;
-import net.runelite.api.events.ClanMemberJoined;
-import net.runelite.api.events.ClanMemberLeft;
+import meteor.eventbus.events.ClanMemberJoined;
+import meteor.eventbus.events.ClanMemberLeft;
 import net.runelite.api.mixins.Inject;
 import net.runelite.api.mixins.MethodHook;
 import net.runelite.api.mixins.Mixin;
@@ -81,13 +81,13 @@ public abstract class ClanChannelMixin implements RSClanChannel
 	@MethodHook("removeMember")
 	public void onMemberRemoved(int index)
 	{
-		client.getCallbacks().post(new ClanMemberLeft(this, getMembers().get(index)));
+		client.getCallbacks().post(ClanMemberLeft.class, new ClanMemberLeft(this, getMembers().get(index)));
 	}
 
 	@Inject
 	@MethodHook(value = "addMember", end = true)
 	public void onMemberAdded(RSClanChannelMember member)
 	{
-		client.getCallbacks().post(new ClanMemberJoined(this, member));
+		client.getCallbacks().post(ClanMemberJoined.class, new ClanMemberJoined(this, member));
 	}
 }

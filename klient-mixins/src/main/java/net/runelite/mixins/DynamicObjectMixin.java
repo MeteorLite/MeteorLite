@@ -1,6 +1,6 @@
 package net.runelite.mixins;
 
-import net.runelite.api.events.DynamicObjectAnimationChanged;
+import meteor.eventbus.events.DynamicObjectAnimationChanged;
 import net.runelite.api.mixins.*;
 import net.runelite.rs.api.RSClient;
 import net.runelite.rs.api.RSDynamicObject;
@@ -56,10 +56,10 @@ public abstract class DynamicObjectMixin implements RSDynamicObject {
 	{
 		if (animationID != -1)
 		{
-			DynamicObjectAnimationChanged dynamicObjectAnimationChanged = new DynamicObjectAnimationChanged();
-			dynamicObjectAnimationChanged.setObject(id);
+			DynamicObjectAnimationChanged dynamicObjectAnimationChanged = new DynamicObjectAnimationChanged(id, animationID);
+			dynamicObjectAnimationChanged.setObjectId(id);
 			dynamicObjectAnimationChanged.setAnimation(animationID);
-			client.getCallbacks().post(dynamicObjectAnimationChanged);
+			client.getCallbacks().post(DynamicObjectAnimationChanged.class, dynamicObjectAnimationChanged);
 		}
 	}
 

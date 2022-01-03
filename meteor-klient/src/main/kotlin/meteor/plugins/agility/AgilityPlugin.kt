@@ -27,68 +27,68 @@ class AgilityPlugin : Plugin() {
         registerSubscribers()
     }
 
-    override fun onGameStateChanged(): ((Event) -> Unit) =  { it as GameStateChanged
+    override fun onGameStateChanged(): ((Any) -> Unit) =  { it as GameStateChanged
         if (it.new == GameState.LOADING) {
             marks.clear()
             obstacles.clear()
         }
     }
 
-    override fun onGameObjectSpawned(): ((Event) -> Unit) =  { it as GameObjectSpawned
+    override fun onGameObjectSpawned(): ((Any) -> Unit) =  { it as GameObjectSpawned
         onTileObject(it.tile, null, it.gameObject)
     }
 
-    override fun onGameObjectChanged(): ((Event) -> Unit) =  { it as GameObjectChanged
+    override fun onGameObjectChanged(): ((Any) -> Unit) =  { it as GameObjectChanged
         onTileObject(it.tile, it.oldObject, it.newObject)
     }
 
-    override fun onGameObjectDespawned(): ((Event) -> Unit) =  { it as GameObjectDespawned
+    override fun onGameObjectDespawned(): ((Any) -> Unit) =  { it as GameObjectDespawned
         onTileObject(it.tile, it.gameObject, null)
     }
 
-    override fun onGroundObjectSpawned(): ((Event) -> Unit) =  { it as GroundObjectSpawned
+    override fun onGroundObjectSpawned(): ((Any) -> Unit) =  { it as GroundObjectSpawned
         onTileObject(it.tile, null, it.groundObject)
     }
 
-    override fun onGroundObjectChanged(): ((Event) -> Unit) =  { it as GroundObjectChanged
+    override fun onGroundObjectChanged(): ((Any) -> Unit) =  { it as GroundObjectChanged
         onTileObject(it.tile, it.previous, it.groundObject)
     }
 
-    override fun onGroundObjectDespawned(): ((Event) -> Unit) =  { it as GroundObjectDespawned
+    override fun onGroundObjectDespawned(): ((Any) -> Unit) =  { it as GroundObjectDespawned
         onTileObject(it.tile, it.groundObject, null)
     }
 
-    override fun onWallObjectSpawned(): ((Event) -> Unit) =  { it as WallObjectSpawned
+    override fun onWallObjectSpawned(): ((Any) -> Unit) =  { it as WallObjectSpawned
         onTileObject(it.tile, null, it.wallObject)
     }
 
-    override fun onWallObjectChanged(): ((Event) -> Unit) =  { it as WallObjectChanged
+    override fun onWallObjectChanged(): ((Any) -> Unit) =  { it as WallObjectChanged
         onTileObject(it.tile, it.previous, it.wallObject)
     }
 
-    override fun onWallObjectDespawned(): ((Event) -> Unit) =  { it as WallObjectDespawned
+    override fun onWallObjectDespawned(): ((Any) -> Unit) =  { it as WallObjectDespawned
         onTileObject(it.tile, it.wallObject, null)
     }
 
-    override fun onDecorativeObjectSpawned(): ((Event) -> Unit) =  { it as DecorativeObjectSpawned
+    override fun onDecorativeObjectSpawned(): ((Any) -> Unit) =  { it as DecorativeObjectSpawned
         onTileObject(it.tile, null, it.decorativeObject)
     }
 
-    override fun onDecorativeObjectChanged(): ((Event) -> Unit) =  { it as DecorativeObjectChanged
+    override fun onDecorativeObjectChanged(): ((Any) -> Unit) =  { it as DecorativeObjectChanged
         onTileObject(it.tile, it.previous, it.decorativeObject)
     }
 
-    override fun onDecorativeObjectDespawned(): ((Event) -> Unit) =  { it as DecorativeObjectDespawned
+    override fun onDecorativeObjectDespawned(): ((Any) -> Unit) =  { it as DecorativeObjectDespawned
         onTileObject(it.tile, it.decorativeObject, null)
     }
 
-    override fun onItemSpawned(): ((Event) -> Unit) =  { it as ItemSpawned
+    override fun onItemSpawned(): ((Any) -> Unit) =  { it as ItemSpawned
         if (it.item.id == ItemID.MARK_OF_GRACE) {
             marks.add(it.tile)
         }
     }
 
-    override fun onItemDespawned(): ((Event) -> Unit) =  { it as ItemDespawned
+    override fun onItemDespawned(): ((Any) -> Unit) =  { it as ItemDespawned
         if (it.item.id == ItemID.MARK_OF_GRACE) {
             marks.remove(it.tile)
         }

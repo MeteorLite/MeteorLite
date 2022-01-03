@@ -1,6 +1,6 @@
 package net.runelite.mixins;
 
-import net.runelite.api.events.PostItemComposition;
+import meteor.eventbus.events.PostItemComposition;
 import net.runelite.api.mixins.*;
 import net.runelite.rs.api.RSClient;
 import net.runelite.rs.api.RSItemComposition;
@@ -63,9 +63,8 @@ public abstract class ItemCompositionMixin implements RSItemComposition {
   @Replace("post")
   public void rl$post() {
     rs$post();
-    final PostItemComposition event = new PostItemComposition();
-    event.setItemComposition(this);
-    client.getCallbacks().post(event);
+    final PostItemComposition event = new PostItemComposition(this);
+    client.getCallbacks().post(PostItemComposition.class, event);
   }
 
   @Copy("getModel")

@@ -2,6 +2,7 @@ package meteor
 
 import Main.client
 import meteor.eventbus.EventBus
+import meteor.eventbus.events.BeforeMenuRender
 import meteor.eventbus.events.BeforeRender
 import meteor.eventbus.events.GameStateChanged
 import meteor.eventbus.events.GameTick
@@ -40,6 +41,7 @@ class Hooks : Callbacks {
     private var lastStretchedDimensions: Dimension? = null
     private var stretchedImage: VolatileImage? = null
     private var stretchedGraphics: Graphics2D? = null
+    private var clientThread = ClientThread
 
     init {
         EventBus.subscribe(GameStateChanged::class.java) { it as GameStateChanged
@@ -52,11 +54,11 @@ class Hooks : Callbacks {
     }
 
     override fun post(event: Any?) {
-        //TODO("Should never be called in klient")
+        TODO("Should never be called in klient")
     }
 
-    override fun post(type: Class<*>, obj: Event) {
-            EventBus.post(type as Class<out Event>, obj)
+    override fun post(type: Class<*>, obj: Any) {
+            EventBus.post(type, obj)
     }
 
 
@@ -68,11 +70,11 @@ class Hooks : Callbacks {
         if (shouldProcessGameTick) {
             shouldProcessGameTick = false
             EventBus.post(GameTick::class.java, GAME_TICK)
-
-            client.tickCount = client.tickCount + 1
+            val tick: Int = client.tickCount
+            client.tickCount = tick + 1
         }
 
-        ClientThread.invoke()
+        clientThread.invoke()
 
         val now = System.nanoTime()
 
@@ -183,24 +185,24 @@ class Hooks : Callbacks {
     }
 
     override fun drawInterface(interfaceId: Int, widgetItems: MutableList<WidgetItem>) {
-        val graphics2d: Graphics2D = getGraphics(client.bufferProvider as MainBufferProvider)
+/*        val graphics2d: Graphics2D = getGraphics(client.bufferProvider as MainBufferProvider)
 
         try {
             OverlayRenderer.renderAfterInterface(graphics2d, interfaceId, widgetItems)
         } catch (ex: java.lang.Exception) {
             ex.printStackTrace()
-        }
+        }*/
     }
 
     override fun drawLayer(layer: Widget, widgetItems: MutableList<WidgetItem>) {
-        val bufferProvider = client.bufferProvider as MainBufferProvider
+/*        val bufferProvider = client.bufferProvider as MainBufferProvider
         val graphics2d: Graphics2D = getGraphics(bufferProvider)
 
         try {
             OverlayRenderer.renderAfterLayer(graphics2d, layer, widgetItems)
         } catch (ex: Exception) {
             ex.printStackTrace()
-        }
+        }*/
     }
 
     private fun getGraphics(mainBufferProvider: MainBufferProvider): Graphics2D {
@@ -262,8 +264,10 @@ class Hooks : Callbacks {
             val bp: BufferProvider = client.bufferProvider
             val canvasWidth = bp.width
             val pixels = bp.pixels
+
             var pixelPos = y * canvasWidth + x
             val pixelJump = canvasWidth - width
+
             for (cy in y until y + height) {
                 for (cx in x until x + width) {
                     pixels[pixelPos++] = 0
@@ -286,8 +290,8 @@ class Hooks : Callbacks {
 
         @JvmStatic
         fun drawMenu(): Boolean {
-            val event = meteor.eventbus.events.BeforeMenuRender()
-            client.callbacks.post(event)
+            val event = BeforeMenuRender()
+            client.callbacks.post(BeforeMenuRender::class.java, event)
             return event.consumed
         }
     }

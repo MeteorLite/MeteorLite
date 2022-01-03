@@ -2,7 +2,7 @@ package net.runelite.mixins;
 
 import net.runelite.api.RuneLiteObject;
 import net.runelite.api.coords.LocalPoint;
-import net.runelite.api.events.GraphicsObjectCreated;
+import meteor.eventbus.events.GraphicsObjectCreated;
 import net.runelite.api.mixins.*;
 import net.runelite.rs.api.RSClient;
 import net.runelite.rs.api.RSGraphicsObject;

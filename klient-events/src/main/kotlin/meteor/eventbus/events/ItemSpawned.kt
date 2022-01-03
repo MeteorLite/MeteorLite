@@ -32,7 +32,4 @@ import net.runelite.api.TileItem
  * Called when an item pile spawns on the ground. When the client loads a new scene, all item piles
  * are implicitly reset and a new spawn event will be sent.
  */
-class ItemSpawned(var tile: Tile, var item: TileItem) : Event() {
-
-
-}
+class ItemSpawned(var tile: Tile, var item: TileItem) : Event()

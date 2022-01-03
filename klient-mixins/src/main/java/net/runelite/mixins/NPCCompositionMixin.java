@@ -1,7 +1,7 @@
 package net.runelite.mixins;
 
 import net.runelite.api.HeadIcon;
-import net.runelite.api.events.NpcActionChanged;
+import meteor.eventbus.events.NpcActionChanged;
 import net.runelite.api.mixins.FieldHook;
 import net.runelite.api.mixins.Inject;
 import net.runelite.api.mixins.Mixin;
@@ -40,9 +40,7 @@ public abstract class NPCCompositionMixin implements RSNPCComposition
 	@Inject
 	public void actionsHook(int idx)
 	{
-		NpcActionChanged npcActionChanged = new NpcActionChanged();
-		npcActionChanged.setNpcComposition(this);
-		npcActionChanged.setIdx(idx);
-		client.getCallbacks().post(npcActionChanged);
+		NpcActionChanged npcActionChanged = new NpcActionChanged(this, idx);
+		client.getCallbacks().post(NpcActionChanged.class, npcActionChanged);
 	}
 }

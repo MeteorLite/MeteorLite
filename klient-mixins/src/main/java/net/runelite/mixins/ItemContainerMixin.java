@@ -26,9 +26,9 @@
 package net.runelite.mixins;
 
 import net.runelite.api.Item;
-import net.runelite.api.events.InventoryChanged;
-import net.runelite.api.events.ItemContainerChanged;
-import net.runelite.api.events.ItemObtained;
+import meteor.eventbus.events.InventoryChanged;
+import meteor.eventbus.events.ItemContainerChanged;
+import meteor.eventbus.events.ItemObtained;
 import net.runelite.api.mixins.FieldHook;
 import net.runelite.api.mixins.Inject;
 import net.runelite.api.mixins.Mixin;

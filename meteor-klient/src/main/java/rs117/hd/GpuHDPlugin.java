@@ -85,6 +85,7 @@ public class GpuHDPlugin extends Plugin implements DrawCallbacks
 	public GpuHDPlugin() {
 		registerSubscribers();
 	}
+
 	// This is the maximum number of triangles the compute shaders support
 	static final int MAX_TRIANGLE = 4096;
 	static final int SMALL_TRIANGLE_COUNT = 512;
@@ -100,20 +101,20 @@ public class GpuHDPlugin extends Plugin implements DrawCallbacks
 	private static final int SCALAR_BYTES = 4;
 	Logger log = Logger.Companion.getLogger(getClass());
 
-	private Client client = Refs.INSTANCE.getClient();
-	private OpenCLManager openCLManager = new OpenCLManager();
-	private ClientThread clientThread = ClientThread.INSTANCE;
+	private final Client client = Refs.INSTANCE.getClient();
+	private final OpenCLManager openCLManager = new OpenCLManager();
+	private final ClientThread clientThread = ClientThread.INSTANCE;
 	public  HdPluginConfig config = new HdPluginConfig() {
 	};
-	private TextureManager textureManager = new TextureManager();
+	private final TextureManager textureManager = new TextureManager();
 
-	private LightManager lightManager = new LightManager(config, this);
-	private EnvironmentManager environmentManager = new EnvironmentManager(config, this);
-	private DrawManager drawManager = DrawManager.INSTANCE;
-	private PluginManager pluginManager = PluginManager.INSTANCE;
-	private ProceduralGenerator proceduralGenerator = new ProceduralGenerator(this);
-	private SceneUploader sceneUploader = new SceneUploader(this, proceduralGenerator);
-	private ConfigManager configManager = ConfigManager.INSTANCE;
+	private final LightManager lightManager = new LightManager(config, this);
+	private final EnvironmentManager environmentManager = new EnvironmentManager(config, this);
+	private final DrawManager drawManager = DrawManager.INSTANCE;
+	private final PluginManager pluginManager = PluginManager.INSTANCE;
+	private final ProceduralGenerator proceduralGenerator = new ProceduralGenerator(this);
+	private final SceneUploader sceneUploader = new SceneUploader(this, proceduralGenerator);
+	private final ConfigManager configManager = ConfigManager.INSTANCE;
 
 	enum ComputeMode
 	{
@@ -130,10 +131,12 @@ public class GpuHDPlugin extends Plugin implements DrawCallbacks
 	private GLDrawable glDrawable;
 
 	static final String LINUX_VERSION_HEADER =
-		"#version 420\n" +
-			"#extension GL_ARB_compute_shader : require\n" +
-			"#extension GL_ARB_shader_storage_buffer_object : require\n" +
-			"#extension GL_ARB_explicit_attrib_location : require\n";
+			"""
+					#version 420
+					#extension GL_ARB_compute_shader : require
+					#extension GL_ARB_shader_storage_buffer_object : require
+					#extension GL_ARB_explicit_attrib_location : require
+					""";
 	static final String WINDOWS_VERSION_HEADER = "#version 430\n";
 
 	static final Shader PROGRAM = new Shader()
@@ -332,8 +335,6 @@ public class GpuHDPlugin extends Plugin implements DrawCallbacks
 	@Override
 	public void onStart()
 	{
-		convertOldBrightnessConfig();
-
 		configGroundTextures = config.groundTextures();
 		configGroundBlending = config.groundBlending();
 		configWaterEffects = config.waterEffects();
@@ -376,10 +377,8 @@ public class GpuHDPlugin extends Plugin implements DrawCallbacks
 				//System.setProperty("jogl.debug", "true");
 
 				GLProfile.initSingleton();
-				System.out.println(Thread.currentThread().getName());
 				invokeOnMainThread(() ->
 				{
-					System.out.println(Thread.currentThread().getName());
 					// Get and display the device and driver used by the GPU plugin
 					GLDrawable dummyDrawable = GLDrawableFactory.getFactory(GLProfile.getDefault())
 						.createDummyDrawable(GLProfile.getDefaultDevice(), true, new GLCapabilities(GLProfile.getDefault()), null);
@@ -389,8 +388,8 @@ public class GpuHDPlugin extends Plugin implements DrawCallbacks
 					// Due to probable JOGL spaghetti, calling .getGL() once results in versionGL being set to null
 					// I have no idea exactly why the second call works, but it results in the correct GL being gotten.
 					GL versionGL = versionContext.getGL().getGL();
-					log.info("Using device: {}", versionGL.glGetString(GL.GL_RENDERER));
-					log.info("Using driver: {}", versionGL.glGetString(GL.GL_VERSION));
+					//log.info("Using device: {}", versionGL.glGetString(GL.GL_RENDERER));
+					//log.info("Using driver: {}", versionGL.glGetString(GL.GL_VERSION));
 					versionContext.destroy();
 
 					GLProfile glProfile = GLProfile.get(GLProfile.GL4);
@@ -1981,25 +1980,21 @@ public class GpuHDPlugin extends Plugin implements DrawCallbacks
 		textureManager.animate(texture, diff);
 	}
 
-	@Override
-	public Function1<Event, Unit> onGameStateChanged()
+
+	public void onGameStateChanged(meteor.eventbus.events.GameStateChanged event)
 	{
-		return event -> {
-			System.out.println("GSC");
-			meteor.eventbus.events.GameStateChanged gameStateChanged = (meteor.eventbus.events.GameStateChanged) event;
-			if (gameStateChanged.getNew() != GameState.LOGGED_IN)
-			{
-				lightManager.reset();
-			}
+		meteor.eventbus.events.GameStateChanged gameStateChanged = (meteor.eventbus.events.GameStateChanged) event;
+		if (gameStateChanged.getNew() != GameState.LOGGED_IN)
+		{
+			lightManager.reset();
+		}
 
-			if (gameStateChanged.getNew() != GameState.LOGGED_IN)
-			{
-				return null;
-			}
+		if (gameStateChanged.getNew() != GameState.LOGGED_IN)
+		{
+			return;
+		}
 
-			invokeOnMainThread(GpuHDPlugin.this::uploadScene);
-			return null;
-		};
+		invokeOnMainThread(GpuHDPlugin.this::uploadScene);
 	}
 
 	private void uploadScene()
@@ -2049,10 +2044,10 @@ public class GpuHDPlugin extends Plugin implements DrawCallbacks
 		proceduralGenerator.generateTerrainData(client.getScene());
 		timerGenerateTerrainData = (int)(System.currentTimeMillis() - startTime);
 
-		log.error("procedural data generation took {}ms to complete", (System.currentTimeMillis() - procGenTimer));
-		log.error("-- calculateTerrainNormals: {}ms", timerCalculateTerrainNormals);
-		log.error("-- generateTerrainData: {}ms", timerGenerateTerrainData);
-		log.error("-- generateUnderwaterTerrain: {}ms", timerGenerateUnderwaterTerrain);
+		//log.error("procedural data generation took {}ms to complete", (System.currentTimeMillis() - procGenTimer));
+		//log.error("-- calculateTerrainNormals: {}ms", timerCalculateTerrainNormals);
+		//log.error("-- generateTerrainData: {}ms", timerGenerateTerrainData);
+		//log.error("-- generateUnderwaterTerrain: {}ms", timerGenerateUnderwaterTerrain);
 	}
 
 	public void onConfigChanged(ConfigChanged event)

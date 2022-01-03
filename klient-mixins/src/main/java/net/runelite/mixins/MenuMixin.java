@@ -25,7 +25,7 @@
 package net.runelite.mixins;
 
 import net.runelite.api.MenuEntry;
-import net.runelite.api.events.WidgetPressed;
+import meteor.eventbus.events.WidgetPressed;
 import net.runelite.api.mixins.FieldHook;
 import net.runelite.api.mixins.Inject;
 import net.runelite.api.mixins.Mixin;
@@ -199,7 +199,7 @@ public abstract class MenuMixin implements RSClient
 	{
 		if (tempMenuAction != null)
 		{
-			client.getCallbacks().post(WidgetPressed.INSTANCE);
+			client.getCallbacks().post(WidgetPressed.class, WidgetPressed.INSTANCE);
 		}
 	}
 
