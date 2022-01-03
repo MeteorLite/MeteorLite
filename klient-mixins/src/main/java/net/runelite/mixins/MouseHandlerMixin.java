@@ -138,9 +138,10 @@ public abstract class MouseHandlerMixin implements RSMouseHandler {
      * both the mouserecorder and the click packet are properly sent. If rev updates remove this added condition,
      * make sure to re-add it.
      */
-    if (button == 1) {
+    //TODO This breaks input atm, investigate...
+/*    if (button == 1) {
       btn = 1337;
-    }
+    }*/
     client.setFocused(true);
     setIdleCycles(0);
     setLastPressedX(x);

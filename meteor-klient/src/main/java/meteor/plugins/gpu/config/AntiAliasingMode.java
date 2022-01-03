@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, WooxSolo <https://github.com/WooxSolo>
+ * Copyright (c) 2018, Lotto <https://github.com/devLotto>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,12 +22,25 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package meteor.eventbus.events
+package meteor.plugins.gpu.config;
 
-import net.runelite.api.Actor
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
-class SoundEffectPlayed(var source: Actor?, var soundId: Int = 0, var delay: Int = 0, var npcid: Int = 0, var consumed: Boolean = false) {
-    fun consume() {
-        consumed = true
-    }
+@Getter
+@RequiredArgsConstructor
+public enum AntiAliasingMode {
+  DISABLED("Disabled", 0),
+  MSAA_2("MSAA x2", 2),
+  MSAA_4("MSAA x4", 4),
+  MSAA_8("MSAA x8", 8),
+  MSAA_16("MSAA x16", 16);
+
+  private final String name;
+  private final int samples;
+
+  @Override
+  public String toString() {
+    return name;
+  }
 }

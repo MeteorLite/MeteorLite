@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, WooxSolo <https://github.com/WooxSolo>
+ * Copyright (c) 2020 Ben Poulson <https://github.com/benpoulson>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,12 +22,11 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package meteor.eventbus.events
+package meteor.plugins.gpu.config;
 
-import net.runelite.api.Actor
-
-class SoundEffectPlayed(var source: Actor?, var soundId: Int = 0, var delay: Int = 0, var npcid: Int = 0, var consumed: Boolean = false) {
-    fun consume() {
-        consumed = true
-    }
+public enum ColorBlindMode {
+  NONE,
+  PROTANOPE,
+  DEUTERANOPE,
+  TRITANOPE
 }

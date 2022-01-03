@@ -1,6 +1,5 @@
 package meteor.plugins.fishing
 
-import meteor.Event
 import meteor.eventbus.events.GameStateChanged
 import meteor.eventbus.events.InteractingChanged
 import meteor.eventbus.events.NpcDespawned

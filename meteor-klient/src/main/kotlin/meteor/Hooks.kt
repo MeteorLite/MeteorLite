@@ -263,8 +263,10 @@ class Hooks : Callbacks {
             val bp: BufferProvider = client.bufferProvider
             val canvasWidth = bp.width
             val pixels = bp.pixels
+
             var pixelPos = y * canvasWidth + x
             val pixelJump = canvasWidth - width
+
             for (cy in y until y + height) {
                 for (cx in x until x + width) {
                     pixels[pixelPos++] = 0

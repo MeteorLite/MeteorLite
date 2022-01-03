@@ -3,6 +3,7 @@ package meteor.plugins
 import meteor.config.ConfigManager
 import meteor.plugins.agility.AgilityPlugin
 import meteor.plugins.fishing.FishingPlugin
+import meteor.plugins.gpu.GpuPlugin
 import meteor.plugins.stretchedmode.StretchedModePlugin
 import rs117.hd.GpuHDPlugin
 import java.lang.Boolean
@@ -14,8 +15,9 @@ object PluginManager {
         plugins.add(ExamplePlugin())
         plugins.add(FishingPlugin())
         plugins.add(AgilityPlugin())
+        plugins.add(GpuPlugin())
         //plugins.add(GpuHDPlugin())
-        //plugins.add(StretchedModePlugin())
+        plugins.add(StretchedModePlugin())
     }
 
     fun startPlugins() {

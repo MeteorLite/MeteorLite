@@ -16,6 +16,7 @@ import meteor.ui.OverlayManager
 import meteor.ui.UI
 import meteor.ui.overlay.Overlay
 import meteor.ui.overlay.OverlayLayer
+import meteor.ui.themes.MeteorliteTheme
 import net.runelite.api.Client
 import net.runelite.api.hooks.Callbacks
 import okhttp3.OkHttpClient
@@ -36,7 +37,7 @@ object Main: KoinComponent {
     fun main(args: Array<String>) = application {
         startKoin { modules(Module.CLIENT_MODULE) }
         callbacks = get()
-        //MeteorliteTheme.install()
+        MeteorliteTheme.install()
         EventBus.subscribe(GameStateChanged::class.java, onEvent())
         AppletConfiguration.init()
         Applet().init()
@@ -53,7 +54,6 @@ object Main: KoinComponent {
     fun finishStartup() {
         client = Applet.asClient(Applet.applet)
         client.callbacks = callbacks
-        client.gameDrawingMode = 2
         ConfigManager.loadSavedProperties()
         PluginManager.startPlugins()
     }

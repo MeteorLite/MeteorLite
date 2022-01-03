@@ -82,6 +82,5 @@ class MenuOptionClicked(var actionParam: Int, var menuOption: String?, var menuT
         this.canvasY = (entry.param1)
     }
 
-    val isAutomated: Boolean
-        get() = menuOption != null && menuOption == "Automated"
+    val isAutomated = false
 }
