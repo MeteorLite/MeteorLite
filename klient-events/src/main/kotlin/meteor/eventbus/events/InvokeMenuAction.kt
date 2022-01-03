@@ -26,7 +26,7 @@ package meteor.eventbus.events
 
 import net.runelite.api.MenuEntry
 
-class InvokeMenuActionEvent(identifier: Int, opcode: Int, param0: Int, param1: Int) :
+class InvokeMenuAction(identifier: Int, opcode: Int, param0: Int, param1: Int) :
     MenuEntry("Automated", "", identifier, opcode, param0, param1, false) {
     var clickX = 0
     var clickY = 0

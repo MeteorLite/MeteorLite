@@ -1560,11 +1560,11 @@ public abstract class ClientMixin implements RSClient {
   @Override
   public void interact(final int identifier, final int opcode, final int param0, final int param1,
                        final int screenX, final int screenY) {
-    InvokeMenuActionEvent event = new InvokeMenuActionEvent(identifier, opcode, param0, param1);
+    InvokeMenuAction event = new InvokeMenuAction(identifier, opcode, param0, param1);
     event.setClickX(screenX);
     event.setClickY(screenY);
 
-    client.getCallbacks().post(InvokeMenuActionEvent.class, event);
+    client.getCallbacks().post(InvokeMenuAction.class, event);
   }
 
   @Inject
