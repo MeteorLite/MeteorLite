@@ -97,7 +97,8 @@ compose.desktop {
             targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)
             includeAllModules = true
         }
-        jvmArgs("--add-exports", "java.base/java.lang=ALL-UNNAMED",
+        jvmArgs("-noverify",
+                "--add-exports", "java.base/java.lang=ALL-UNNAMED",
                 "--add-exports", "java.desktop/sun.awt=ALL-UNNAMED",
                 "--add-exports", "java.desktop/sun.java2d=ALL-UNNAMED")
     }

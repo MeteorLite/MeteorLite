@@ -108,7 +108,6 @@ int count_prio_offset(int priority) {
         case 0:
         return total;
     }
-    return -1;
 }
 
 void get_face(uint localId, modelinfo minfo, int cameraYaw, int cameraPitch,

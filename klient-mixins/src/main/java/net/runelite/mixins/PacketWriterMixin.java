@@ -1,6 +1,6 @@
 package net.runelite.mixins;
 
-import net.runelite.api.events.PacketSent;
+import meteor.eventbus.events.PacketSent;
 import net.runelite.api.mixins.Inject;
 import net.runelite.api.mixins.MethodHook;
 import net.runelite.api.mixins.Mixin;
@@ -24,6 +24,6 @@ public abstract class PacketWriterMixin implements RSPacketWriter {
     @Inject
     @MethodHook("addNode")
     public void addNode(RSPacketBufferNode packet) {
-        client.getCallbacks().post(new PacketSent(packet));
+        client.getCallbacks().post(PacketSent.class, new PacketSent(packet));
     }
 }

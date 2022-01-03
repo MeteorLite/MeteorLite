@@ -1,3 +1,8 @@
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.Window
+import androidx.compose.ui.window.application
+import androidx.compose.ui.window.rememberWindowState
 import meteor.*
 import meteor.Event
 import meteor.config.ConfigManager
@@ -28,29 +33,32 @@ object Main: KoinComponent {
     val itemManager = ItemManager
 
     @JvmStatic
-    fun main(args: Array<String>) {
+    fun main(args: Array<String>) = application {
         startKoin { modules(Module.CLIENT_MODULE) }
         callbacks = get()
         //MeteorliteTheme.install()
         EventBus.subscribe(GameStateChanged::class.java, onEvent())
         AppletConfiguration.init()
         Applet().init()
-        /*       Window(
-                       onCloseRequest = ::exitApplication,
-                       title = "Meteor",
-                       icon = painterResource("Meteor_icon.png"),
-                       state = rememberWindowState(width = 1280.dp, height = 720.dp),
-                       content = UI.Window()
-               )*/
+        Window(
+            onCloseRequest = ::exitApplication,
+            title = "Meteor",
+            icon = painterResource("Meteor_icon.png"),
+            state = rememberWindowState(width = 1280.dp, height = 720.dp),
+            content = UI.Window()
+        )
+        finishStartup()
     }
 
     fun finishStartup() {
-        overlayManager.add(TestOverlay)
+        client = Applet.asClient(Applet.applet)
+        client.callbacks = callbacks
+        client.gameDrawingMode = 2
         ConfigManager.loadSavedProperties()
         PluginManager.startPlugins()
     }
 
-    private fun onEvent(): (Event) -> Unit  = {
+    private fun onEvent(): (Any) -> Unit  = {
         it as GameStateChanged
         println("GameStateChanged: ${it.new}")
     }

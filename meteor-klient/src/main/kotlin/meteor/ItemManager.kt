@@ -120,14 +120,14 @@ object ItemManager {
         }
     }
 
-    fun onGameStateChanged(): ((Event) -> Unit) = { it as GameStateChanged
+    fun onGameStateChanged(): ((Any) -> Unit) = { it as GameStateChanged
         if (it.new == GameState.HOPPING
                 || it.new == GameState.LOGIN_SCREEN) {
             itemCompositions.invalidateAll()
         }
     }
 
-    fun onPostItemComposition(): ((Event) -> Unit) = { it as PostItemComposition
+    fun onPostItemComposition(): ((Any) -> Unit) = { it as PostItemComposition
         itemCompositions.put(it.itemComposition.id, it.itemComposition)
     }
 

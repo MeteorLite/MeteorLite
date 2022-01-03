@@ -26,8 +26,8 @@ package net.runelite.mixins;
 
 import net.runelite.api.Actor;
 import net.runelite.api.coords.LocalPoint;
-import net.runelite.api.events.ProjectileMoved;
-import net.runelite.api.events.ProjectileSpawned;
+import meteor.eventbus.events.ProjectileMoved;
+import meteor.eventbus.events.ProjectileSpawned;
 import net.runelite.api.mixins.Inject;
 import net.runelite.api.mixins.MethodHook;
 import net.runelite.api.mixins.Mixin;
@@ -46,9 +46,8 @@ public abstract class ProjectileMixin implements RSProjectile
 	@Inject
 	ProjectileMixin()
 	{
-		final ProjectileSpawned projectileSpawned = new ProjectileSpawned();
-		projectileSpawned.setProjectile(this);
-		client.getCallbacks().post(projectileSpawned);
+		final ProjectileSpawned projectileSpawned = new ProjectileSpawned(this);
+		client.getCallbacks().post(ProjectileSpawned.class, projectileSpawned);
 	}
 
 	@Inject
@@ -105,10 +104,7 @@ public abstract class ProjectileMixin implements RSProjectile
 	public void projectileMoved(int targetX, int targetY, int targetZ, int cycle)
 	{
 		final LocalPoint position = new LocalPoint(targetX, targetY);
-		final ProjectileMoved projectileMoved = new ProjectileMoved();
-		projectileMoved.setProjectile(this);
-		projectileMoved.setPosition(position);
-		projectileMoved.setZ(targetZ);
-		client.getCallbacks().post(projectileMoved);
+		final ProjectileMoved projectileMoved = new ProjectileMoved(this, position, targetZ);
+		client.getCallbacks().post(ProjectileMoved.class, projectileMoved);
 	}
 }

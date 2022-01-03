@@ -2,6 +2,7 @@ package meteor
 
 import Main.client
 import meteor.eventbus.EventBus
+import meteor.eventbus.events.BeforeMenuRender
 import meteor.eventbus.events.BeforeRender
 import meteor.eventbus.events.GameStateChanged
 import meteor.eventbus.events.GameTick
@@ -55,8 +56,8 @@ class Hooks : Callbacks {
         //TODO("Should never be called in klient")
     }
 
-    override fun post(type: Class<*>, obj: Event) {
-            EventBus.post(type as Class<out Event>, obj)
+    override fun post(type: Class<*>, obj: Any) {
+            EventBus.post(type, obj)
     }
 
 
@@ -286,8 +287,8 @@ class Hooks : Callbacks {
 
         @JvmStatic
         fun drawMenu(): Boolean {
-            val event = meteor.eventbus.events.BeforeMenuRender()
-            client.callbacks.post(event)
+            val event = BeforeMenuRender()
+            client.callbacks.post(BeforeMenuRender::class.java, event)
             return event.consumed
         }
     }

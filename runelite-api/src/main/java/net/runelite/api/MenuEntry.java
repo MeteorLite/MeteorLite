@@ -26,6 +26,7 @@ package net.runelite.api;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import meteor.Event;
 
 /**
  * A menu entry in a right-click menu.

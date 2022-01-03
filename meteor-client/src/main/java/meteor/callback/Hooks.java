@@ -212,7 +212,7 @@ public class Hooks implements Callbacks {
   }
 
   @Override
-  public void post(Class<?> type, Event event) {
+  public void post(Class<?> type, Object event) {
 
   }
 

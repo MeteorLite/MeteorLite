@@ -29,7 +29,7 @@ import meteor.Logger;
 import net.runelite.api.*;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
-import net.runelite.api.events.*;
+import meteor.eventbus.events.*;
 import net.runelite.api.mixins.FieldHook;
 import net.runelite.api.mixins.Inject;
 import net.runelite.api.mixins.Mixin;
@@ -246,25 +246,18 @@ public abstract class TileMixin implements RSTile
 
     if (current == null && previous != null)
     {
-      WallObjectDespawned wallObjectDespawned = new WallObjectDespawned();
-      wallObjectDespawned.setTile(this);
-      wallObjectDespawned.setWallObject(previous);
-      client.getCallbacks().post(wallObjectDespawned);
+      WallObjectDespawned wallObjectDespawned = new WallObjectDespawned(this, previous);
+      client.getCallbacks().post(WallObjectDespawned.class, wallObjectDespawned);
     }
     else if (current != null && previous == null)
     {
-      WallObjectSpawned wallObjectSpawned = new WallObjectSpawned();
-      wallObjectSpawned.setTile(this);
-      wallObjectSpawned.setWallObject(current);
-      client.getCallbacks().post(wallObjectSpawned);
+      WallObjectSpawned wallObjectSpawned = new WallObjectSpawned(this, current);
+      client.getCallbacks().post(WallObjectSpawned.class, wallObjectSpawned);
     }
     else if (current != null)
     {
-      WallObjectChanged wallObjectChanged = new WallObjectChanged();
-      wallObjectChanged.setTile(this);
-      wallObjectChanged.setPrevious(previous);
-      wallObjectChanged.setWallObject(current);
-      client.getCallbacks().post(wallObjectChanged);
+      WallObjectChanged wallObjectChanged = new WallObjectChanged(this, previous, current);
+      client.getCallbacks().post(WallObjectChanged.class, wallObjectChanged);
     }
   }
 
@@ -291,25 +284,18 @@ public abstract class TileMixin implements RSTile
 
     if (current == null && previous != null)
     {
-      DecorativeObjectDespawned decorativeObjectDespawned = new DecorativeObjectDespawned();
-      decorativeObjectDespawned.setTile(this);
-      decorativeObjectDespawned.setDecorativeObject(previous);
-      client.getCallbacks().post(decorativeObjectDespawned);
+      DecorativeObjectDespawned decorativeObjectDespawned = new DecorativeObjectDespawned(this, previous);
+      client.getCallbacks().post(DecorativeObjectDespawned.class, decorativeObjectDespawned);
     }
     else if (current != null && previous == null)
     {
-      DecorativeObjectSpawned decorativeObjectSpawned = new DecorativeObjectSpawned();
-      decorativeObjectSpawned.setTile(this);
-      decorativeObjectSpawned.setDecorativeObject(current);
-      client.getCallbacks().post(decorativeObjectSpawned);
+      DecorativeObjectSpawned decorativeObjectSpawned = new DecorativeObjectSpawned(this, current);
+      client.getCallbacks().post(DecorativeObjectSpawned.class, decorativeObjectSpawned);
     }
     else if (current != null)
     {
-      DecorativeObjectChanged decorativeObjectChanged = new DecorativeObjectChanged();
-      decorativeObjectChanged.setTile(this);
-      decorativeObjectChanged.setPrevious(previous);
-      decorativeObjectChanged.setDecorativeObject(current);
-      client.getCallbacks().post(decorativeObjectChanged);
+      DecorativeObjectChanged decorativeObjectChanged = new DecorativeObjectChanged(this, previous, current);
+      client.getCallbacks().post(DecorativeObjectChanged.class, decorativeObjectChanged);
     }
   }
 
@@ -336,25 +322,18 @@ public abstract class TileMixin implements RSTile
 
     if (current == null && previous != null)
     {
-      GroundObjectDespawned groundObjectDespawned = new GroundObjectDespawned();
-      groundObjectDespawned.setTile(this);
-      groundObjectDespawned.setGroundObject(previous);
-      client.getCallbacks().post(groundObjectDespawned);
+      GroundObjectDespawned groundObjectDespawned = new GroundObjectDespawned(this, previous);
+      client.getCallbacks().post(GroundObjectDespawned.class, groundObjectDespawned);
     }
     else if (current != null && previous == null)
     {
-      GroundObjectSpawned groundObjectSpawned = new GroundObjectSpawned();
-      groundObjectSpawned.setTile(this);
-      groundObjectSpawned.setGroundObject(current);
-      client.getCallbacks().post(groundObjectSpawned);
+      GroundObjectSpawned groundObjectSpawned = new GroundObjectSpawned(this, current);
+      client.getCallbacks().post(GroundObjectSpawned.class, groundObjectSpawned);
     }
     else if (current != null)
     {
-      GroundObjectChanged groundObjectChanged = new GroundObjectChanged();
-      groundObjectChanged.setTile(this);
-      groundObjectChanged.setPrevious(previous);
-      groundObjectChanged.setGroundObject(current);
-      client.getCallbacks().post(groundObjectChanged);
+      GroundObjectChanged groundObjectChanged = new GroundObjectChanged(this, previous, current);
+      client.getCallbacks().post(GroundObjectChanged.class, groundObjectChanged);
     }
   }
 
@@ -424,10 +403,8 @@ public abstract class TileMixin implements RSTile
         return;
       }
 
-      GameObjectDespawned gameObjectDespawned = new GameObjectDespawned();
-      gameObjectDespawned.setTile(this);
-      gameObjectDespawned.setGameObject(previous);
-      client.getCallbacks().post(gameObjectDespawned);
+      GameObjectDespawned gameObjectDespawned = new GameObjectDespawned(this, previous);
+      client.getCallbacks().post(GameObjectDespawned.class, gameObjectDespawned);
     }
     else if (previous == null)
     {
@@ -436,10 +413,8 @@ public abstract class TileMixin implements RSTile
         return;
       }
 
-      GameObjectSpawned gameObjectSpawned = new GameObjectSpawned();
-      gameObjectSpawned.setTile(this);
-      gameObjectSpawned.setGameObject(current);
-      client.getCallbacks().post(gameObjectSpawned);
+      GameObjectSpawned gameObjectSpawned = new GameObjectSpawned(this, current);
+      client.getCallbacks().post(GameObjectSpawned.class, gameObjectSpawned);
     }
     else
     {
@@ -448,11 +423,8 @@ public abstract class TileMixin implements RSTile
         return;
       }
 
-      GameObjectChanged gameObjectsChanged = new GameObjectChanged();
-      gameObjectsChanged.setTile(this);
-      gameObjectsChanged.setOldObject(previous);
-      gameObjectsChanged.setNewObject(current);
-      client.getCallbacks().post(gameObjectsChanged);
+      GameObjectChanged gameObjectsChanged = new GameObjectChanged(this, previous, current);
+      client.getCallbacks().post(GameObjectChanged.class, gameObjectsChanged);
     }
   }
 
@@ -485,7 +457,7 @@ public abstract class TileMixin implements RSTile
         {
           RSTileItem item = (RSTileItem) cur;
           ItemDespawned itemDespawned = new ItemDespawned(this, item);
-          client.getCallbacks().post(itemDespawned);
+          client.getCallbacks().post(ItemDespawned.class, itemDespawned);
         }
       }
       lastGroundItems[z][x][y] = newQueue;
@@ -503,7 +475,7 @@ public abstract class TileMixin implements RSTile
       if (lastUnlink != null)
       {
         ItemDespawned itemDespawned = new ItemDespawned(this, lastUnlink);
-        client.getCallbacks().post(itemDespawned);
+        client.getCallbacks().post(ItemDespawned.class, itemDespawned);
       }
       return;
     }
@@ -513,7 +485,7 @@ public abstract class TileMixin implements RSTile
       if (lastUnlink != null)
       {
         ItemDespawned itemDespawned = new ItemDespawned(this, lastUnlink);
-        client.getCallbacks().post(itemDespawned);
+        client.getCallbacks().post(ItemDespawned.class, itemDespawned);
       }
       return;
     }
@@ -545,16 +517,14 @@ public abstract class TileMixin implements RSTile
 
     if (lastUnlink != null && lastUnlink != next && lastUnlink != previous)
     {
-      ItemDespawned itemDespawned = new ItemDespawned(this, lastUnlink);
-      client.getCallbacks().post(itemDespawned);
+      client.getCallbacks().post(meteor.eventbus.events.ItemDespawned.class, new meteor.eventbus.events.ItemDespawned(this, lastUnlink));
     }
 
     if (current != null)
     {
       current.setX(x);
       current.setY(y);
-      ItemSpawned event = new ItemSpawned(this, current);
-      client.getCallbacks().post(event);
+      client.getCallbacks().post(ItemSpawned.class, new meteor.eventbus.events.ItemSpawned(this, current));
     }
   }
 

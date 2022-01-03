@@ -32,19 +32,9 @@ class Applet : AppletStub, AppletContext {
     private var parameters: Map<String, String> = AppletConfiguration.parameters
 
     fun init() {
-        mainThread = Thread.currentThread()
-        clientThread = Thread {
-            applet = configureApplet()
-            applet.size = applet.minimumSize
-            EventBus.post(AppletLoaded::class.java, AppletLoaded())
-            Components.awtFrame()
-            client = asClient(applet)
-            client.callbacks = Main.callbacks
-            client.gameDrawingMode = 2
-            Main.finishStartup()
-        }
-        clientThread!!.name = "client"
-        clientThread!!.start()
+        applet = configureApplet()
+        applet.size = applet.minimumSize
+        EventBus.post(AppletLoaded::class.java, AppletLoaded())
     }
 
     private fun configureApplet(): Applet {

@@ -23,7 +23,7 @@ object OverlayRenderer {
         EventBus.subscribe(BeforeRender.javaClass, beforeRender())
     }
 
-    private fun beforeRender(): (Event) -> Unit = {
+    private fun beforeRender(): (Any) -> Unit = {
         onBeforeRender()
     }
 

@@ -25,8 +25,8 @@
 package net.runelite.mixins;
 
 import net.runelite.api.SoundEffectVolume;
-import net.runelite.api.events.AreaSoundEffectPlayed;
-import net.runelite.api.events.SoundEffectPlayed;
+import meteor.eventbus.events.AreaSoundEffectPlayed;
+import meteor.eventbus.events.SoundEffectPlayed;
 import net.runelite.api.mixins.*;
 import net.runelite.rs.api.*;
 
@@ -75,13 +75,10 @@ public abstract class SoundEffectMixin implements RSClient
 			if (packedLocation == 0)
 			{
 				// Regular sound effect
-				SoundEffectPlayed event = new SoundEffectPlayed(lastSoundEffectSourceActor);
-				event.setNpcid(lastSoundEffectSourceNPCid);
-				lastSoundEffectSourceNPCid = -1;
-				event.setSoundId(client.getQueuedSoundEffectIDs()[soundIndex]);
-				event.setDelay(client.getQueuedSoundEffectDelays()[soundIndex]);
-				client.getCallbacks().post(event);
-				consumed = event.isConsumed();
+				SoundEffectPlayed event = new SoundEffectPlayed(lastSoundEffectSourceActor, lastSoundEffectSourceNPCid,
+						client.getQueuedSoundEffectIDs()[soundIndex], client.getQueuedSoundEffectDelays()[soundIndex], false);
+				client.getCallbacks().post(SoundEffectPlayed.class, event);
+				consumed = event.getConsumed();
 			}
 			else
 			{
@@ -91,14 +88,10 @@ public abstract class SoundEffectMixin implements RSClient
 				int y = (packedLocation >> 8) & 0xFF;
 				int range = (packedLocation) & 0xFF;
 
-				AreaSoundEffectPlayed event = new AreaSoundEffectPlayed(lastSoundEffectSourceActor);
-				event.setSoundId(client.getQueuedSoundEffectIDs()[soundIndex]);
-				event.setSceneX(x);
-				event.setSceneY(y);
-				event.setRange(range);
-				event.setDelay(client.getQueuedSoundEffectDelays()[soundIndex]);
-				client.getCallbacks().post(event);
-				consumed = event.isConsumed();
+				AreaSoundEffectPlayed event = new AreaSoundEffectPlayed(lastSoundEffectSourceActor, client.getQueuedSoundEffectIDs()[soundIndex],
+						x, y, range, client.getQueuedSoundEffectDelays()[soundIndex], false);
+				client.getCallbacks().post(AreaSoundEffectPlayed.class, event);
+				consumed = event.getConsumed();
 			}
 
 			if (consumed)

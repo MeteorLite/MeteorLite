@@ -25,7 +25,7 @@
 package net.runelite.mixins;
 
 import net.runelite.api.WorldType;
-import net.runelite.api.events.WorldListLoad;
+import meteor.eventbus.events.WorldListLoad;
 import net.runelite.api.mixins.FieldHook;
 import net.runelite.api.mixins.Inject;
 import net.runelite.api.mixins.Mixin;
@@ -64,7 +64,7 @@ public abstract class WorldMixin implements RSWorld
 		{
 			// this is the last world in the list.
 			WorldListLoad worldLoad = new WorldListLoad(worlds);
-			client.getCallbacks().post(worldLoad);
+			client.getCallbacks().post(WorldListLoad.class, worldLoad);
 		}
 	}
 }

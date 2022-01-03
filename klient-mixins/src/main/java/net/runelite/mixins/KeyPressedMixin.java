@@ -24,7 +24,7 @@
  */
 package net.runelite.mixins;
 
-import net.runelite.api.events.FocusChanged;
+import meteor.eventbus.events.FocusChanged;
 import net.runelite.api.mixins.*;
 import net.runelite.rs.api.RSClient;
 import net.runelite.rs.api.RSKeyHandler;

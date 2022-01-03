@@ -14,7 +14,7 @@ object PluginManager {
         plugins.add(ExamplePlugin())
         plugins.add(FishingPlugin())
         plugins.add(AgilityPlugin())
-        plugins.add(GpuHDPlugin())
+        //plugins.add(GpuHDPlugin())
         //plugins.add(StretchedModePlugin())
     }
 

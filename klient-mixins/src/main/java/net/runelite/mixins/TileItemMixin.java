@@ -2,7 +2,7 @@ package net.runelite.mixins;
 
 import net.runelite.api.*;
 import net.runelite.api.coords.LocalPoint;
-import net.runelite.api.events.ItemQuantityChanged;
+import meteor.eventbus.events.ItemQuantityChanged;
 import net.runelite.api.mixins.FieldHook;
 import net.runelite.api.mixins.Inject;
 import net.runelite.api.mixins.Mixin;
@@ -59,7 +59,7 @@ public abstract class TileItemMixin implements RSTileItem {
     if (rl$sceneX != -1) {
       ItemQuantityChanged itemQuantityChanged = new ItemQuantityChanged(this, getTile(),
               getQuantity(), quantity);
-      client.getCallbacks().post(itemQuantityChanged);
+      client.getCallbacks().post(ItemQuantityChanged.class, itemQuantityChanged);
     }
   }
 

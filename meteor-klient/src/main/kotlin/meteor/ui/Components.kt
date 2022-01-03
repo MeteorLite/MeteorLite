@@ -71,6 +71,7 @@ object Components {
         Applet.applet.init()
         Applet.applet.start()
     }
+
     object Toolbar {
         @Composable
         fun LeftRightToolbar(position: MutableState<Position>) {
