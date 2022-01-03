@@ -54,6 +54,7 @@ object Components {
                             Applet.applet.init()
                             Applet.applet.start()
                             UI.loaded = true
+                            Main.finishStartup()
                         }
                     }
                 })

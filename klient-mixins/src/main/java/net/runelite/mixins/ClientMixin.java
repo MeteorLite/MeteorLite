@@ -18,6 +18,7 @@ import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.api.widgets.WidgetItem;
 import net.runelite.api.widgets.WidgetType;
+import net.runelite.rs.Reflection;
 import net.runelite.rs.api.*;
 
 import javax.annotation.Nullable;
@@ -1987,5 +1988,35 @@ public abstract class ClientMixin implements RSClient {
   @FieldHook("Client_plane")
   public static void clientPlaneChanged(int idx) {
     client.getCallbacks().post(PlaneChanged.class, new PlaneChanged(client.getPlane()));
+  }
+
+  @Replace("doCheat")
+  public static void doCheat$api(String s) {
+    boolean foundCustomCheat = false;
+    if (s.equals("reflection")) {
+      Reflection.printDebugMessages = !Reflection.printDebugMessages;
+      client.getLogger().debug("Toggled Reflection debug messages");
+      foundCustomCheat = true;
+    }
+    if (s.equals("occluder")) {
+      client.setOccluderEnabled(!client.getOccluderEnabled());
+      client.getLogger().debug("Toggled Occluder");
+      foundCustomCheat = true;
+    }
+    if (s.equals("toolbar")) {
+      client.getCallbacks().post(ToolbarToggled.INSTANCE);
+      client.getLogger().debug("Toggled Toolbar");
+      foundCustomCheat = true;
+    }
+
+    if (!foundCustomCheat) {
+      rs$doCheat(s);
+    }
+  }
+
+  @Inject
+  @Copy("doCheat")
+  public static void rs$doCheat(String s) {
+
   }
 }

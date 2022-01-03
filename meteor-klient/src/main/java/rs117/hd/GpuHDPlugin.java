@@ -388,8 +388,8 @@ public class GpuHDPlugin extends Plugin implements DrawCallbacks
 					// Due to probable JOGL spaghetti, calling .getGL() once results in versionGL being set to null
 					// I have no idea exactly why the second call works, but it results in the correct GL being gotten.
 					GL versionGL = versionContext.getGL().getGL();
-					log.info("Using device: {}", versionGL.glGetString(GL.GL_RENDERER));
-					log.info("Using driver: {}", versionGL.glGetString(GL.GL_VERSION));
+					//log.info("Using device: {}", versionGL.glGetString(GL.GL_RENDERER));
+					//log.info("Using driver: {}", versionGL.glGetString(GL.GL_VERSION));
 					versionContext.destroy();
 
 					GLProfile glProfile = GLProfile.get(GLProfile.GL4);
@@ -1828,8 +1828,7 @@ public class GpuHDPlugin extends Plugin implements DrawCallbacks
 		tempUvOffset = 0;
 
 		// Texture on UI
-		if (client.getGameState() != GameState.LOGGED_IN)
-			drawUi(overlayColor, canvasHeight, canvasWidth);
+		drawUi(overlayColor, canvasHeight, canvasWidth);
 
 		try {
 			glDrawable.swapBuffers();
@@ -1981,24 +1980,21 @@ public class GpuHDPlugin extends Plugin implements DrawCallbacks
 		textureManager.animate(texture, diff);
 	}
 
-	@Override
-	public Function1<Object, Unit> onGameStateChanged()
+
+	public void onGameStateChanged(meteor.eventbus.events.GameStateChanged event)
 	{
-		return event -> {
-			meteor.eventbus.events.GameStateChanged gameStateChanged = (meteor.eventbus.events.GameStateChanged) event;
-			if (gameStateChanged.getNew() != GameState.LOGGED_IN)
-			{
-				lightManager.reset();
-			}
+		meteor.eventbus.events.GameStateChanged gameStateChanged = (meteor.eventbus.events.GameStateChanged) event;
+		if (gameStateChanged.getNew() != GameState.LOGGED_IN)
+		{
+			lightManager.reset();
+		}
 
-			if (gameStateChanged.getNew() != GameState.LOGGED_IN)
-			{
-				return null;
-			}
+		if (gameStateChanged.getNew() != GameState.LOGGED_IN)
+		{
+			return;
+		}
 
-			invokeOnMainThread(GpuHDPlugin.this::uploadScene);
-			return null;
-		};
+		invokeOnMainThread(GpuHDPlugin.this::uploadScene);
 	}
 
 	private void uploadScene()
@@ -2048,10 +2044,10 @@ public class GpuHDPlugin extends Plugin implements DrawCallbacks
 		proceduralGenerator.generateTerrainData(client.getScene());
 		timerGenerateTerrainData = (int)(System.currentTimeMillis() - startTime);
 
-		log.error("procedural data generation took {}ms to complete", (System.currentTimeMillis() - procGenTimer));
-		log.error("-- calculateTerrainNormals: {}ms", timerCalculateTerrainNormals);
-		log.error("-- generateTerrainData: {}ms", timerGenerateTerrainData);
-		log.error("-- generateUnderwaterTerrain: {}ms", timerGenerateUnderwaterTerrain);
+		//log.error("procedural data generation took {}ms to complete", (System.currentTimeMillis() - procGenTimer));
+		//log.error("-- calculateTerrainNormals: {}ms", timerCalculateTerrainNormals);
+		//log.error("-- generateTerrainData: {}ms", timerGenerateTerrainData);
+		//log.error("-- generateUnderwaterTerrain: {}ms", timerGenerateUnderwaterTerrain);
 	}
 
 	public void onConfigChanged(ConfigChanged event)

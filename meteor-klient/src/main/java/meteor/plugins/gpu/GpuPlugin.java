@@ -40,7 +40,9 @@ import kotlin.jvm.functions.Function1;
 import meteor.Logger;
 import meteor.Refs;
 import meteor.config.ConfigManager;
+import meteor.eventbus.EventBus;
 import meteor.eventbus.events.ConfigChanged;
+import meteor.eventbus.events.GameStateChanged;
 import meteor.plugins.Plugin;
 import meteor.plugins.PluginDescriptor;
 import meteor.plugins.gpu.config.AntiAliasingMode;
@@ -49,7 +51,6 @@ import meteor.plugins.gpu.template.Template;
 import meteor.rs.ClientThread;
 import meteor.ui.DrawManager;
 import net.runelite.api.*;
-import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.hooks.DrawCallbacks;
 import org.jocl.CL;
 import rs117.hd.GpuHDPlugin;
@@ -1251,25 +1252,13 @@ public class GpuPlugin extends Plugin implements DrawCallbacks {
     textureManager.animate(texture, diff);
   }
 
-  @Override
-  public Function1<Object, Unit> onGameStateChanged()
-  {
-    return event -> {
-      meteor.eventbus.events.GameStateChanged gameStateChanged = (meteor.eventbus.events.GameStateChanged) event;
-      switch (gameStateChanged.getNew())
-      {
-        case LOGGED_IN:
-          if (computeMode != ComputeMode.NONE)
-          {
-            invokeOnMainThread(this::uploadScene);
-          }
-          break;
-        case LOGIN_SCREEN:
-          // Avoid drawing the last frame's buffer during LOADING after LOGIN_SCREEN
-          targetBufferOffset = 0;
-      }
-      return null;
-    };
+  public void onGameState(GameStateChanged event) {
+    switch (event.getNew()) {
+      case LOGGED_IN -> invokeOnMainThread(this::uploadScene);
+      case LOGIN_SCREEN ->
+              // Avoid drawing the last frame's buffer during LOADING after LOGIN_SCREEN
+              targetBufferOffset = 0;
+    }
   }
 
   private void uploadScene() {

@@ -98,6 +98,8 @@ compose.desktop {
             includeAllModules = true
         }
         jvmArgs("-noverify",
+                "-ea",
+                "-Xmx2048m",
                 "--add-exports", "java.base/java.lang=ALL-UNNAMED",
                 "--add-exports", "java.desktop/sun.awt=ALL-UNNAMED",
                 "--add-exports", "java.desktop/sun.java2d=ALL-UNNAMED")
@@ -147,6 +149,8 @@ shadowJar {
     minimize()
 }
 tasks {
+    processResources.outputs.upToDateWhen {false}
+    processResources.dependsOn(":openosrs-injector:inject")
     compileJava.dependsOn project(":fernflower").tasks.getByName("decompileInjected")
     compileJava.dependsOn(":klient-mixins:compileJava")
     compileKotlin {

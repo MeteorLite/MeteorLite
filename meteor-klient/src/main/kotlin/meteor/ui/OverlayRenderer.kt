@@ -8,6 +8,7 @@ import com.google.common.primitives.Ints
 import meteor.Event
 import meteor.eventbus.EventBus
 import meteor.eventbus.events.BeforeRender
+import meteor.rs.ClientThread
 import meteor.ui.overlay.*
 import meteor.util.JagexColors
 import net.runelite.api.*
@@ -24,7 +25,9 @@ object OverlayRenderer {
     }
 
     private fun beforeRender(): (Any) -> Unit = {
-        onBeforeRender()
+        ClientThread.invoke {
+            onBeforeRender()
+        }
     }
 
     private const val BORDER = 5

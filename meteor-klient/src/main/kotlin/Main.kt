@@ -8,7 +8,9 @@ import meteor.Event
 import meteor.config.ConfigManager
 import meteor.eventbus.EventBus
 import meteor.eventbus.events.GameStateChanged
+import meteor.eventbus.events.GameTick
 import meteor.plugins.PluginManager
+import meteor.plugins.gpu.GpuPlugin
 import meteor.rs.Applet
 import meteor.rs.AppletConfiguration
 import meteor.ui.Components
@@ -18,11 +20,13 @@ import meteor.ui.overlay.Overlay
 import meteor.ui.overlay.OverlayLayer
 import meteor.ui.themes.MeteorliteTheme
 import net.runelite.api.Client
+import net.runelite.api.GameState
 import net.runelite.api.hooks.Callbacks
 import okhttp3.OkHttpClient
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.get
 import org.koin.core.context.startKoin
+import rs117.hd.GpuHDPlugin
 import java.awt.*
 
 object Main: KoinComponent {
@@ -32,13 +36,18 @@ object Main: KoinComponent {
     val overlayManager = OverlayManager
     val fontManager = FontManager
     val itemManager = ItemManager
+    var gpuLoaded = false
 
     @JvmStatic
     fun main(args: Array<String>) = application {
         startKoin { modules(Module.CLIENT_MODULE) }
         callbacks = get()
         MeteorliteTheme.install()
-        EventBus.subscribe(GameStateChanged::class.java, onEvent())
+        EventBus.subscribe(GameTick::class.java) {
+            if (client.gameDrawingMode != 2)
+                client.gameDrawingMode = 2
+        }
+        gpuHDSceneFux()
         AppletConfiguration.init()
         Applet().init()
         Window(
@@ -48,7 +57,6 @@ object Main: KoinComponent {
             state = rememberWindowState(width = 1280.dp, height = 720.dp),
             content = UI.Window()
         )
-        finishStartup()
     }
 
     fun finishStartup() {
@@ -58,9 +66,16 @@ object Main: KoinComponent {
         PluginManager.startPlugins()
     }
 
-    private fun onEvent(): (Any) -> Unit  = {
-        it as GameStateChanged
-        println("GameStateChanged: ${it.new}")
+    fun gpuHDSceneFux() {
+        EventBus.subscribe(GameStateChanged::class.java) { it as GameStateChanged
+            if (it.new == GameState.LOGGED_IN)
+                if (!gpuLoaded) {
+                    PluginManager.initPlugin(GpuHDPlugin())
+                    gpuLoaded = true
+                } else {
+                    PluginManager.restartPlugin<GpuHDPlugin>()
+                }
+        }
     }
 }
 

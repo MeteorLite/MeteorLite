@@ -25,6 +25,7 @@
 package meteor.plugins.gpu;
 
 import com.google.common.base.Stopwatch;
+import meteor.Refs;
 import net.runelite.api.*;
 
 import javax.inject.Inject;
@@ -33,8 +34,7 @@ import javax.inject.Singleton;
 @Singleton
 class SceneUploader
 {
-  @Inject
-  private Client client;
+  private final Client client = Refs.INSTANCE.getClient();
 
   int sceneId = (int) (System.currentTimeMillis() / 1000L);
   private int offset;

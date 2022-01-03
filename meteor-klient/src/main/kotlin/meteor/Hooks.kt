@@ -41,6 +41,7 @@ class Hooks : Callbacks {
     private var lastStretchedDimensions: Dimension? = null
     private var stretchedImage: VolatileImage? = null
     private var stretchedGraphics: Graphics2D? = null
+    private var clientThread = ClientThread
 
     init {
         EventBus.subscribe(GameStateChanged::class.java) { it as GameStateChanged
@@ -53,7 +54,7 @@ class Hooks : Callbacks {
     }
 
     override fun post(event: Any?) {
-        //TODO("Should never be called in klient")
+        TODO("Should never be called in klient")
     }
 
     override fun post(type: Class<*>, obj: Any) {
@@ -69,11 +70,11 @@ class Hooks : Callbacks {
         if (shouldProcessGameTick) {
             shouldProcessGameTick = false
             EventBus.post(GameTick::class.java, GAME_TICK)
-
-            client.tickCount = client.tickCount + 1
+            val tick: Int = client.tickCount
+            client.tickCount = tick + 1
         }
 
-        ClientThread.invoke()
+        clientThread.invoke()
 
         val now = System.nanoTime()
 
@@ -184,24 +185,24 @@ class Hooks : Callbacks {
     }
 
     override fun drawInterface(interfaceId: Int, widgetItems: MutableList<WidgetItem>) {
-        val graphics2d: Graphics2D = getGraphics(client.bufferProvider as MainBufferProvider)
+/*        val graphics2d: Graphics2D = getGraphics(client.bufferProvider as MainBufferProvider)
 
         try {
             OverlayRenderer.renderAfterInterface(graphics2d, interfaceId, widgetItems)
         } catch (ex: java.lang.Exception) {
             ex.printStackTrace()
-        }
+        }*/
     }
 
     override fun drawLayer(layer: Widget, widgetItems: MutableList<WidgetItem>) {
-        val bufferProvider = client.bufferProvider as MainBufferProvider
+/*        val bufferProvider = client.bufferProvider as MainBufferProvider
         val graphics2d: Graphics2D = getGraphics(bufferProvider)
 
         try {
             OverlayRenderer.renderAfterLayer(graphics2d, layer, widgetItems)
         } catch (ex: Exception) {
             ex.printStackTrace()
-        }
+        }*/
     }
 
     private fun getGraphics(mainBufferProvider: MainBufferProvider): Graphics2D {

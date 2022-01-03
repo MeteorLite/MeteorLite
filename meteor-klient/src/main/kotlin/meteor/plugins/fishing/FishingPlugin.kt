@@ -31,7 +31,6 @@ class FishingPlugin: Plugin() {
                 fishingSpots.clear()
                 minnowSpots.clear()
             }
-            else -> println("Overrides work")
         }
     }
 

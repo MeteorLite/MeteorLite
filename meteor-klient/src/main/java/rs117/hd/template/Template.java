@@ -25,7 +25,6 @@
 package rs117.hd.template;
 
 import com.google.common.io.CharStreams;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -33,7 +32,9 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 public class Template
 {
 	private final List<Function<String, String>> resourceLoaders = new ArrayList<>();
@@ -91,7 +92,7 @@ public class Template
 			}
 			catch (IOException ex)
 			{
-				ex.printStackTrace();
+				log.warn(null, ex);
 			}
 			return null;
 		});
