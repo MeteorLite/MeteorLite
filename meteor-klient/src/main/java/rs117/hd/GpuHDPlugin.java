@@ -102,11 +102,11 @@ public class GpuHDPlugin extends Plugin implements DrawCallbacks
 	Logger log = Logger.Companion.getLogger(getClass());
 
 	private final Client client = Refs.INSTANCE.getClient();
-	private final OpenCLManager openCLManager = new OpenCLManager();
+	private final OpenCLManager openCLManager = OpenCLManager.INSTANCE;
 	private final ClientThread clientThread = ClientThread.INSTANCE;
 	public  HdPluginConfig config = new HdPluginConfig() {
 	};
-	private final TextureManager textureManager = new TextureManager();
+	private final TextureManager textureManager = TextureManager.INSTANCE;
 
 	private final LightManager lightManager = new LightManager(config, this);
 	private final EnvironmentManager environmentManager = new EnvironmentManager(config, this);
@@ -121,7 +121,7 @@ public class GpuHDPlugin extends Plugin implements DrawCallbacks
 		OPENGL,
 		OPENCL,
 	}
-	
+
 	private ComputeMode computeMode = ComputeMode.OPENGL;
 
 	private Canvas canvas;
@@ -488,7 +488,7 @@ public class GpuHDPlugin extends Plugin implements DrawCallbacks
 			}
 			catch (Throwable e)
 			{
-				log.error("Error starting HD plugin", e);
+				e.printStackTrace();
 				onStop();
 			}
 			return;
@@ -813,7 +813,7 @@ public class GpuHDPlugin extends Plugin implements DrawCallbacks
 
 	private void initGlBuffer(GLBuffer glBuffer)
 	{
-		glBuffer.glBufferId = (glGenBuffers(gl));
+		glBuffer.setGlBufferId((glGenBuffers(gl)));
 	}
 
 	private void shutdownBuffers()
@@ -835,17 +835,17 @@ public class GpuHDPlugin extends Plugin implements DrawCallbacks
 
 	private void destroyGlBuffer(GLBuffer glBuffer)
 	{
-		if (glBuffer.glBufferId != -1)
+		if (glBuffer.getGlBufferId() != -1)
 		{
-			glDeleteBuffer(gl, glBuffer.glBufferId);
-			glBuffer.glBufferId = (-1);
+			glDeleteBuffer(gl, glBuffer.getGlBufferId());
+			glBuffer.setGlBufferId(-1);
 		}
-		glBuffer.size =(-1);
+		glBuffer.setSize(-1);
 
-		if (glBuffer.cl_mem != null)
+		if (glBuffer.getCl_mem() != null)
 		{
-			CL.clReleaseMemObject(glBuffer.cl_mem);
-			glBuffer.cl_mem = (null);
+			CL.clReleaseMemObject(glBuffer.getCl_mem());
+			glBuffer.setCl_mem(null);
 		}
 	}
 
@@ -1047,16 +1047,16 @@ public class GpuHDPlugin extends Plugin implements DrawCallbacks
 				.put(cameraZ);
 			uniformBuf.flip();
 
-			gl.glBindBuffer(GL_UNIFORM_BUFFER, uniformBuffer.glBufferId);
+			gl.glBindBuffer(GL_UNIFORM_BUFFER, uniformBuffer.getGlBufferId());
 			gl.glBufferSubData(GL_UNIFORM_BUFFER, 0, uniformBuf.limit() * Integer.BYTES, uniformBuf);
 			gl.glBindBuffer(GL_UNIFORM_BUFFER, 0);
 
-			gl.glBindBufferBase(GL_UNIFORM_BUFFER, 0, uniformBuffer.glBufferId);
+			gl.glBindBufferBase(GL_UNIFORM_BUFFER, 0, uniformBuffer.getGlBufferId());
 			uniformBuf.clear();
 
 			// Bind materials UBO
-			gl.glBindBuffer(GL_UNIFORM_BUFFER, materialsUniformBuffer.glBufferId);
-			gl.glBindBufferBase(GL_UNIFORM_BUFFER, 1, materialsUniformBuffer.glBufferId);
+			gl.glBindBuffer(GL_UNIFORM_BUFFER, materialsUniformBuffer.getGlBufferId());
+			gl.glBindBufferBase(GL_UNIFORM_BUFFER, 1, materialsUniformBuffer.getGlBufferId());
 			gl.glBindBuffer(GL_UNIFORM_BUFFER, 0);
 
 			if (config.maxDynamicLights().getValue() > 0)
@@ -1066,25 +1066,25 @@ public class GpuHDPlugin extends Plugin implements DrawCallbacks
 				ArrayList<LightManager.Light> visibleLights = lightManager.getVisibleLights(getDrawDistance(), config.maxDynamicLights().getValue());
 				for (LightManager.Light light : visibleLights)
 				{
-					lightsUniformBuf.putInt(light.x);
-					lightsUniformBuf.putInt(light.y);
-					lightsUniformBuf.putInt(light.z);
-					lightsUniformBuf.putFloat(light.currentSize);
-					lightsUniformBuf.putFloat(light.currentColor[0]);
-					lightsUniformBuf.putFloat(light.currentColor[1]);
-					lightsUniformBuf.putFloat(light.currentColor[2]);
-					lightsUniformBuf.putFloat(light.currentStrength);
+					lightsUniformBuf.putInt(light.getX());
+					lightsUniformBuf.putInt(light.getY());
+					lightsUniformBuf.putInt(light.getZ());
+					lightsUniformBuf.putFloat(light.getCurrentSize());
+					lightsUniformBuf.putFloat(light.getCurrentColor()[0]);
+					lightsUniformBuf.putFloat(light.getCurrentColor()[1]);
+					lightsUniformBuf.putFloat(light.getCurrentColor()[2]);
+					lightsUniformBuf.putFloat(light.getCurrentStrength());
 
 					// UBO elements must be divisible by groups of 4 scalars. Pad any remaining space
 					lightsUniformBuf.put(new byte[(((int) Math.ceil(LIGHT_PROPERTIES_COUNT / 4f) * 4) - LIGHT_PROPERTIES_COUNT) * SCALAR_BYTES]);
 				}
 				lightsUniformBuf.flip();
 
-				gl.glBindBuffer(GL_UNIFORM_BUFFER, lightsUniformBuffer.glBufferId);
+				gl.glBindBuffer(GL_UNIFORM_BUFFER, lightsUniformBuffer.getGlBufferId());
 				gl.glBufferSubData(GL_UNIFORM_BUFFER, 0, MAX_LIGHTS * LIGHT_PROPERTIES_COUNT * SCALAR_BYTES, lightsUniformBuf);
 				lightsUniformBuf.clear();
 			}
-			gl.glBindBufferBase(GL_UNIFORM_BUFFER, 2, lightsUniformBuffer.glBufferId);
+			gl.glBindBufferBase(GL_UNIFORM_BUFFER, 2, lightsUniformBuffer.getGlBufferId());
 			gl.glBindBuffer(GL_UNIFORM_BUFFER, 0);
 		});
 	}
@@ -1172,48 +1172,48 @@ public class GpuHDPlugin extends Plugin implements DrawCallbacks
 		// unordered
 		gl.glUseProgram(glUnorderedComputeProgram);
 
-		gl.glBindBufferBase(gl.GL_SHADER_STORAGE_BUFFER, 0, tmpModelBufferUnordered.glBufferId);
-		gl.glBindBufferBase(gl.GL_SHADER_STORAGE_BUFFER, 1, sceneVertexBuffer.glBufferId);
-		gl.glBindBufferBase(gl.GL_SHADER_STORAGE_BUFFER, 2, tmpVertexBuffer.glBufferId);
-		gl.glBindBufferBase(gl.GL_SHADER_STORAGE_BUFFER, 3, tmpOutBuffer.glBufferId);
-		gl.glBindBufferBase(gl.GL_SHADER_STORAGE_BUFFER, 4, tmpOutUvBuffer.glBufferId);
-		gl.glBindBufferBase(gl.GL_SHADER_STORAGE_BUFFER, 5, sceneUvBuffer.glBufferId);
-		gl.glBindBufferBase(gl.GL_SHADER_STORAGE_BUFFER, 6, tmpUvBuffer.glBufferId);
-		gl.glBindBufferBase(gl.GL_SHADER_STORAGE_BUFFER, 7, tmpOutNormalBuffer.glBufferId);
-		gl.glBindBufferBase(gl.GL_SHADER_STORAGE_BUFFER, 8, sceneNormalBuffer.glBufferId);
-		gl.glBindBufferBase(gl.GL_SHADER_STORAGE_BUFFER, 9, tmpNormalBuffer.glBufferId);
+		gl.glBindBufferBase(gl.GL_SHADER_STORAGE_BUFFER, 0, tmpModelBufferUnordered.getGlBufferId());
+		gl.glBindBufferBase(gl.GL_SHADER_STORAGE_BUFFER, 1, sceneVertexBuffer.getGlBufferId());
+		gl.glBindBufferBase(gl.GL_SHADER_STORAGE_BUFFER, 2, tmpVertexBuffer.getGlBufferId());
+		gl.glBindBufferBase(gl.GL_SHADER_STORAGE_BUFFER, 3, tmpOutBuffer.getGlBufferId());
+		gl.glBindBufferBase(gl.GL_SHADER_STORAGE_BUFFER, 4, tmpOutUvBuffer.getGlBufferId());
+		gl.glBindBufferBase(gl.GL_SHADER_STORAGE_BUFFER, 5, sceneUvBuffer.getGlBufferId());
+		gl.glBindBufferBase(gl.GL_SHADER_STORAGE_BUFFER, 6, tmpUvBuffer.getGlBufferId());
+		gl.glBindBufferBase(gl.GL_SHADER_STORAGE_BUFFER, 7, tmpOutNormalBuffer.getGlBufferId());
+		gl.glBindBufferBase(gl.GL_SHADER_STORAGE_BUFFER, 8, sceneNormalBuffer.getGlBufferId());
+		gl.glBindBufferBase(gl.GL_SHADER_STORAGE_BUFFER, 9, tmpNormalBuffer.getGlBufferId());
 
 		gl.glDispatchCompute(unorderedModels, 1, 1);
 
 		// small
 		gl.glUseProgram(glSmallComputeProgram);
 
-		gl.glBindBufferBase(gl.GL_SHADER_STORAGE_BUFFER, 0, tmpModelBufferSmall.glBufferId);
-		gl.glBindBufferBase(gl.GL_SHADER_STORAGE_BUFFER, 1, sceneVertexBuffer.glBufferId);
-		gl.glBindBufferBase(gl.GL_SHADER_STORAGE_BUFFER, 2, tmpVertexBuffer.glBufferId);
-		gl.glBindBufferBase(gl.GL_SHADER_STORAGE_BUFFER, 3, tmpOutBuffer.glBufferId);
-		gl.glBindBufferBase(gl.GL_SHADER_STORAGE_BUFFER, 4, tmpOutUvBuffer.glBufferId);
-		gl.glBindBufferBase(gl.GL_SHADER_STORAGE_BUFFER, 5, sceneUvBuffer.glBufferId);
-		gl.glBindBufferBase(gl.GL_SHADER_STORAGE_BUFFER, 6, tmpUvBuffer.glBufferId);
-		gl.glBindBufferBase(gl.GL_SHADER_STORAGE_BUFFER, 7, tmpOutNormalBuffer.glBufferId);
-		gl.glBindBufferBase(gl.GL_SHADER_STORAGE_BUFFER, 8, sceneNormalBuffer.glBufferId);
-		gl.glBindBufferBase(gl.GL_SHADER_STORAGE_BUFFER, 9, tmpNormalBuffer.glBufferId);
+		gl.glBindBufferBase(gl.GL_SHADER_STORAGE_BUFFER, 0, tmpModelBufferSmall.getGlBufferId());
+		gl.glBindBufferBase(gl.GL_SHADER_STORAGE_BUFFER, 1, sceneVertexBuffer.getGlBufferId());
+		gl.glBindBufferBase(gl.GL_SHADER_STORAGE_BUFFER, 2, tmpVertexBuffer.getGlBufferId());
+		gl.glBindBufferBase(gl.GL_SHADER_STORAGE_BUFFER, 3, tmpOutBuffer.getGlBufferId());
+		gl.glBindBufferBase(gl.GL_SHADER_STORAGE_BUFFER, 4, tmpOutUvBuffer.getGlBufferId());
+		gl.glBindBufferBase(gl.GL_SHADER_STORAGE_BUFFER, 5, sceneUvBuffer.getGlBufferId());
+		gl.glBindBufferBase(gl.GL_SHADER_STORAGE_BUFFER, 6, tmpUvBuffer.getGlBufferId());
+		gl.glBindBufferBase(gl.GL_SHADER_STORAGE_BUFFER, 7, tmpOutNormalBuffer.getGlBufferId());
+		gl.glBindBufferBase(gl.GL_SHADER_STORAGE_BUFFER, 8, sceneNormalBuffer.getGlBufferId());
+		gl.glBindBufferBase(gl.GL_SHADER_STORAGE_BUFFER, 9, tmpNormalBuffer.getGlBufferId());
 
 		gl.glDispatchCompute(smallModels, 1, 1);
 
 		// large
 		gl.glUseProgram(glComputeProgram);
 
-		gl.glBindBufferBase(gl.GL_SHADER_STORAGE_BUFFER, 0, tmpModelBufferLarge.glBufferId);
-		gl.glBindBufferBase(gl.GL_SHADER_STORAGE_BUFFER, 1, sceneVertexBuffer.glBufferId);
-		gl.glBindBufferBase(gl.GL_SHADER_STORAGE_BUFFER, 2, tmpVertexBuffer.glBufferId);
-		gl.glBindBufferBase(gl.GL_SHADER_STORAGE_BUFFER, 3, tmpOutBuffer.glBufferId);
-		gl.glBindBufferBase(gl.GL_SHADER_STORAGE_BUFFER, 4, tmpOutUvBuffer.glBufferId);
-		gl.glBindBufferBase(gl.GL_SHADER_STORAGE_BUFFER, 5, sceneUvBuffer.glBufferId);
-		gl.glBindBufferBase(gl.GL_SHADER_STORAGE_BUFFER, 6, tmpUvBuffer.glBufferId);
-		gl.glBindBufferBase(gl.GL_SHADER_STORAGE_BUFFER, 7, tmpOutNormalBuffer.glBufferId);
-		gl.glBindBufferBase(gl.GL_SHADER_STORAGE_BUFFER, 8, sceneNormalBuffer.glBufferId);
-		gl.glBindBufferBase(gl.GL_SHADER_STORAGE_BUFFER, 9, tmpNormalBuffer.glBufferId);
+		gl.glBindBufferBase(gl.GL_SHADER_STORAGE_BUFFER, 0, tmpModelBufferLarge.getGlBufferId());
+		gl.glBindBufferBase(gl.GL_SHADER_STORAGE_BUFFER, 1, sceneVertexBuffer.getGlBufferId());
+		gl.glBindBufferBase(gl.GL_SHADER_STORAGE_BUFFER, 2, tmpVertexBuffer.getGlBufferId());
+		gl.glBindBufferBase(gl.GL_SHADER_STORAGE_BUFFER, 3, tmpOutBuffer.getGlBufferId());
+		gl.glBindBufferBase(gl.GL_SHADER_STORAGE_BUFFER, 4, tmpOutUvBuffer.getGlBufferId());
+		gl.glBindBufferBase(gl.GL_SHADER_STORAGE_BUFFER, 5, sceneUvBuffer.getGlBufferId());
+		gl.glBindBufferBase(gl.GL_SHADER_STORAGE_BUFFER, 6, tmpUvBuffer.getGlBufferId());
+		gl.glBindBufferBase(gl.GL_SHADER_STORAGE_BUFFER, 7, tmpOutNormalBuffer.getGlBufferId());
+		gl.glBindBufferBase(gl.GL_SHADER_STORAGE_BUFFER, 8, sceneNormalBuffer.getGlBufferId());
+		gl.glBindBufferBase(gl.GL_SHADER_STORAGE_BUFFER, 9, tmpNormalBuffer.getGlBufferId());
 
 		gl.glDispatchCompute(largeModels, 1, 1);
 	}
@@ -1357,6 +1357,12 @@ public class GpuHDPlugin extends Plugin implements DrawCallbacks
 				glfboDrawable.resetSize(gl);
 			}
 		}
+	}
+
+	static int glGetInteger(GL4 gl, int pname) {
+		int[] tmpbf = new int[1];
+		gl.glGetIntegerv(pname, tmpbf, 0);
+		return tmpbf[0];
 	}
 
 	private void drawFrame(int overlayColor)
@@ -1507,9 +1513,9 @@ public class GpuHDPlugin extends Plugin implements DrawCallbacks
 			}
 
 			// Draw using the output buffer of the compute
-			vertexBuffer = tmpOutBuffer.glBufferId;
-			uvBuffer = tmpOutUvBuffer.glBufferId;
-			normalBuffer = tmpOutNormalBuffer.glBufferId;
+			vertexBuffer = tmpOutBuffer.getGlBufferId();
+			uvBuffer = tmpOutUvBuffer.getGlBufferId();
+			normalBuffer = tmpOutNormalBuffer.getGlBufferId();
 
 			for (int id = 0; id < textures.length; ++id)
 			{
@@ -1529,7 +1535,7 @@ public class GpuHDPlugin extends Plugin implements DrawCallbacks
 			float lightPitch = -128;
 			float lightYaw = 55;
 
-			if (client.getGameState() == GameState.LOGGED_IN && configShadowsEnabled && fboShadowMap != -1 && environmentManager.currentDirectionalStrength > 0.0f)
+			if (client.getGameState() == GameState.LOGGED_IN && configShadowsEnabled && fboShadowMap != -1 && environmentManager.getCurrentDirectionalStrength() > 0.0f)
 			{
 				// render shadow depth map
 				gl.glViewport(0, 0, config.shadowResolution().getValue(), config.shadowResolution().getValue());
@@ -1656,7 +1662,7 @@ public class GpuHDPlugin extends Plugin implements DrawCallbacks
 
 			if (config.fogDepthMode() == FogDepthMode.DYNAMIC)
 			{
-				fogDepth = environmentManager.currentFogDepth;
+				fogDepth = environmentManager.getCurrentFogDepth();
 			}
 			else if (config.fogDepthMode() == FogDepthMode.NONE)
 			{
@@ -1670,7 +1676,7 @@ public class GpuHDPlugin extends Plugin implements DrawCallbacks
 			gl.glUniform1i(uniDrawDistance, drawDistance * Perspective.LOCAL_TILE_SIZE);
 			gl.glUniform1i(uniColorBlindMode, config.colorBlindMode().ordinal());
 
-			float[] waterColor = environmentManager.currentWaterColor;
+			float[] waterColor = environmentManager.getCurrentWaterColor();
 			float[] waterColorHSB = Color.RGBtoHSB((int) (waterColor[0] * 255f), (int) (waterColor[1] * 255f), (int) (waterColor[2] * 255f), null);
 			float lightBrightnessMultiplier = 0.8f;
 			float midBrightnessMultiplier = 0.45f;
@@ -1695,42 +1701,42 @@ public class GpuHDPlugin extends Plugin implements DrawCallbacks
 			gl.glUniform3f(uniWaterColorDark, waterColorDark[0], waterColorDark[1], waterColorDark[2]);
 
 			// get ambient light strength from either the config or the current area
-			float ambientStrength = environmentManager.currentAmbientStrength;
+			float ambientStrength = environmentManager.getCurrentAmbientStrength();
 			ambientStrength *= (double)config.brightness() / 20;
 			gl.glUniform1f(uniAmbientStrength, ambientStrength);
 
 			// and ambient color
-			float[] ambientColor = environmentManager.currentAmbientColor;
+			float[] ambientColor = environmentManager.getCurrentAmbientColor();
 			gl.glUniform3f(uniAmbientColor, ambientColor[0], ambientColor[1], ambientColor[2]);
 
 			// get light strength from either the config or the current area
-			float lightStrength = environmentManager.currentDirectionalStrength;
+			float lightStrength = environmentManager.getCurrentDirectionalStrength();
 			lightStrength *= (double)config.brightness() / 20;
 			gl.glUniform1f(uniLightStrength, lightStrength);
 
 			// and light color
-			float[] lightColor = environmentManager.currentDirectionalColor;
+			float[] lightColor = environmentManager.getCurrentDirectionalColor();
 			gl.glUniform3f(uniLightColor, lightColor[0], lightColor[1], lightColor[2]);
 
 			// get underglow light strength from the current area
-			float underglowStrength = environmentManager.currentUnderglowStrength;
+			float underglowStrength = environmentManager.getCurrentUnderglowStrength();
 			gl.glUniform1f(uniUnderglowStrength, underglowStrength);
 			// and underglow color
-			float[] underglowColor = environmentManager.currentUnderglowColor;
+			float[] underglowColor = environmentManager.getCurrentUnderglowColor();
 			gl.glUniform3f(uniUnderglowColor, underglowColor[0], underglowColor[1], underglowColor[2]);
 
 			// get ground fog variables
-			float groundFogStart = environmentManager.currentGroundFogStart;
+			float groundFogStart = environmentManager.getCurrentGroundFogStart();
 			gl.glUniform1f(uniGroundFogStart, groundFogStart);
-			float groundFogEnd = environmentManager.currentGroundFogEnd;
+			float groundFogEnd = environmentManager.getCurrentGroundFogEnd();
 			gl.glUniform1f(uniGroundFogEnd, groundFogEnd);
-			float groundFogOpacity = environmentManager.currentGroundFogOpacity;
+			float groundFogOpacity = environmentManager.getCurrentGroundFogOpacity();
 			groundFogOpacity = config.groundFog() ? groundFogOpacity : 0;
 			gl.glUniform1f(uniGroundFogOpacity, groundFogOpacity);
 
 			// lightning
-			gl.glUniform1f(uniLightningBrightness, environmentManager.lightningBrightness);
-			gl.glUniform1i(uniPointLightsCount, config.maxDynamicLights().getValue() > 0 ? lightManager.visibleLightsCount : 0);
+			gl.glUniform1f(uniLightningBrightness, environmentManager.getLightningBrightness());
+			gl.glUniform1i(uniPointLightsCount, config.maxDynamicLights().getValue() > 0 ? lightManager.getVisibleLightsCount() : 0);
 
 			gl.glUniform1i(uniWaterEffects, configWaterEffects.getMode());
 			gl.glUniform1f(uniSaturation, config.saturation().getAmount());
@@ -2213,7 +2219,7 @@ public class GpuHDPlugin extends Plugin implements DrawCallbacks
 		int drawObjectCutoff = configLevelOfDetail.getDistance() * Perspective.LOCAL_TILE_SIZE;
 
 		// Model may be in the scene buffer
-		if (renderable instanceof Model && ((Model) renderable).getSceneId() == sceneUploader.sceneId)
+		if (renderable instanceof Model && ((Model) renderable).getSceneId() == sceneUploader.getSceneId())
 		{
 			Model model = (Model) renderable;
 
@@ -2403,31 +2409,31 @@ public class GpuHDPlugin extends Plugin implements DrawCallbacks
 
 	private void updateBuffer(GLBuffer glBuffer, int target, int size, Buffer data, int usage, long clFlags)
 	{
-		gl.glBindBuffer(target, glBuffer.glBufferId);
-		if (size > glBuffer.size)
+		gl.glBindBuffer(target, glBuffer.getGlBufferId());
+		if (size > glBuffer.getSize())
 		{
 			//log.trace("Buffer resize: {} {} -> {}", glBuffer, glBuffer.size, size);
 
-			glBuffer.size = (size);
+			glBuffer.setSize(size);
 			gl.glBufferData(target, size, data, usage);
 			
 			if (computeMode == ComputeMode.OPENCL)
 			{
 				// cleanup previous buffer
-				if (glBuffer.cl_mem != null)
+				if (glBuffer.getCl_mem() != null)
 				{
-					CL.clReleaseMemObject(glBuffer.cl_mem);
+					CL.clReleaseMemObject(glBuffer.getCl_mem());
 				}
 				
 				// allocate new
 				if (size == 0)
 				{
 					// opencl does not allow 0-size gl buffers, it will segfault on macos
-					glBuffer.cl_mem = (null);
+					glBuffer.setCl_mem(null);
 				}
 				else
 				{
-					glBuffer.cl_mem = (clCreateFromGLBuffer(openCLManager.context, clFlags, glBuffer.glBufferId, null));
+					glBuffer.setCl_mem((clCreateFromGLBuffer(openCLManager.getContext(), clFlags, glBuffer.getGlBufferId(), null)));
 				}
 			}
 		}
