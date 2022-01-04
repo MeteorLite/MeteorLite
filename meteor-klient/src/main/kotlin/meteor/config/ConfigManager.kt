@@ -39,7 +39,7 @@ object ConfigManager {
 
     fun stringToObject(str: String, type: Class<*>): Any? {
         if (type == Boolean::class.javaPrimitiveType || type == Boolean::class.java) {
-            return java.lang.Boolean.parseBoolean(str)
+            return (str).toBoolean()
         }
         if (type == Int::class.javaPrimitiveType || type == Int::class.java) {
             return try {

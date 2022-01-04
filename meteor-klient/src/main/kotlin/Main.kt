@@ -4,13 +4,11 @@ import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.application
 import androidx.compose.ui.window.rememberWindowState
 import meteor.*
-import meteor.Event
 import meteor.config.ConfigManager
 import meteor.eventbus.EventBus
 import meteor.eventbus.events.GameStateChanged
 import meteor.eventbus.events.GameTick
 import meteor.plugins.PluginManager
-import meteor.plugins.gpu.GpuPlugin
 import meteor.rs.Applet
 import meteor.rs.AppletConfiguration
 import meteor.ui.Components
@@ -20,7 +18,6 @@ import meteor.ui.overlay.Overlay
 import meteor.ui.overlay.OverlayLayer
 import meteor.ui.themes.MeteorliteTheme
 import net.runelite.api.Client
-import net.runelite.api.GameState
 import net.runelite.api.hooks.Callbacks
 import okhttp3.OkHttpClient
 import org.koin.core.component.KoinComponent

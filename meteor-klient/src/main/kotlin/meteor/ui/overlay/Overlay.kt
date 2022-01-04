@@ -26,6 +26,7 @@ package meteor.ui.overlay
 
 import Main
 import com.google.common.base.Strings
+import meteor.eventbus.EventSubscriber
 import meteor.ui.components.LayoutableRenderableEntity
 import meteor.util.ColorUtil
 import net.runelite.api.Perspective
@@ -36,7 +37,7 @@ import java.awt.image.BufferedImage
 import kotlin.math.abs
 
 abstract class Overlay(var layer: OverlayLayer = OverlayLayer.ABOVE_SCENE)
-    : LayoutableRenderableEntity {
+    : LayoutableRenderableEntity,EventSubscriber() {
     val client = Main.client
     val drawHooks: MutableList<Int> = ArrayList()
     val menuEntries: List<OverlayMenuEntry> = ArrayList()
