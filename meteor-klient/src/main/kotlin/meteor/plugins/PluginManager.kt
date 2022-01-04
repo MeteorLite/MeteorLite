@@ -5,6 +5,7 @@ import meteor.plugins.agility.AgilityPlugin
 import meteor.plugins.fishing.FishingPlugin
 import meteor.plugins.gpu.GpuPlugin
 import meteor.plugins.stretchedmode.StretchedModePlugin
+import meteor.plugins.worldmap.WorldMapPlugin
 import rs117.hd.GpuHDPlugin
 import java.lang.Boolean
 import kotlin.String
@@ -17,6 +18,7 @@ object PluginManager {
         plugins.add(AgilityPlugin())
         plugins.add(GpuHDPlugin())
         plugins.add(StretchedModePlugin())
+        plugins.add(WorldMapPlugin())
     }
 
     fun startPlugins() {
@@ -41,7 +43,7 @@ object PluginManager {
 
         var shouldEnable = false
 
-        if (Boolean.parseBoolean(ConfigManager.getConfiguration(plugin.javaClass.simpleName, "pluginEnabled")))
+        if (ConfigManager.getConfiguration(plugin.javaClass.simpleName, "pluginEnabled").toBoolean())
             shouldEnable = true else if (plugin.javaClass.getAnnotation(PluginDescriptor::class.java).cantDisable) shouldEnable = true
 
         if (shouldEnable) {

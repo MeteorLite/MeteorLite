@@ -28,7 +28,7 @@ import com.google.common.collect.ImmutableMap
 import net.runelite.api.ItemID
 import net.runelite.api.NpcID
 
-enum class FishingSpot(val spotName: String, private val worldMapTooltip: String, val fishSpriteId: Int, private vararg val ids: Int) {
+enum class FishingSpot(val spotName: String, val worldMapTooltip: String, val fishSpriteId: Int, private vararg val ids: Int) {
     SHRIMP("Shrimp, Anchovies", "Anchovies", ItemID.RAW_SHRIMPS,
             NpcID.FISHING_SPOT_1514, NpcID.FISHING_SPOT_1517, NpcID.FISHING_SPOT_1518,
             NpcID.FISHING_SPOT_1521, NpcID.FISHING_SPOT_1523, NpcID.FISHING_SPOT_1524,
