@@ -423,7 +423,7 @@ internal class SceneUploader(private val hdPlugin: GpuHDPlugin, var proceduralGe
                 val groundMaterial: GroundMaterial
                 if (client.scene.overlayIds[tileZ][tileX][tileY].toInt() != 0) {
                     val overlay = Overlay.getOverlay(
-                        client.scene.overlayIds[tileZ][tileX][tileY].toInt(), tile, client
+                        client.scene.overlayIds[tileZ][tileX][tileY].toInt(), tile!!, client
                     )
                     groundMaterial = overlay.groundMaterial
                     swColor = HDUtils.colorHSLToInt(
@@ -453,7 +453,7 @@ internal class SceneUploader(private val hdPlugin: GpuHDPlugin, var proceduralGe
                 } else {
                     val underlay = Underlay.getUnderlay(
                         client.scene.underlayIds[tileZ][tileX][tileY].toInt(),
-                        tile,
+                        tile!!,
                         client
                     )
                     groundMaterial = underlay.groundMaterial
@@ -1177,7 +1177,7 @@ internal class SceneUploader(private val hdPlugin: GpuHDPlugin, var proceduralGe
             color2L = color3L
             color1L = color2L
         }
-        if (objectProperties != null && objectProperties.isInheritTileColor) {
+        if (objectProperties != null && objectProperties.inheritTileColor) {
             val tile = client.scene.tiles[tileZ][tileX][tileY]
             if (tile != null && (tile.sceneTilePaint != null || tile.sceneTileModel != null)) {
                 val tileColorHSL: IntArray
@@ -1273,7 +1273,7 @@ internal class SceneUploader(private val hdPlugin: GpuHDPlugin, var proceduralGe
         normalBuffer.ensureCapacity(12)
 
         // if color3 is -1, the object is flat-shaded
-        if (color3s[face] == -1 || objectProperties != null && objectProperties.isFlatNormals) {
+        if (color3s[face] == -1 || objectProperties != null && objectProperties.flatNormals) {
             normalBuffer.put(0f, 0f, 0f, 0f)
             normalBuffer.put(0f, 0f, 0f, 0f)
             normalBuffer.put(0f, 0f, 0f, 0f)

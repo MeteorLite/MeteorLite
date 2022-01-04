@@ -25,6 +25,7 @@
 package rs117.hd.environments
 
 import rs117.hd.HDUtils.gammaToLinear
+import rs117.hd.RGB.rgb
 import java.awt.Color
 
 enum class Environment(val area: Area, properties: Properties) {
@@ -940,16 +941,6 @@ enum class Environment(val area: Area, properties: Properties) {
         fun enableLightning(): Properties {
             lightningEnabled = true
             return this
-        }
-    }
-
-    companion object {
-        private fun rgb(r: Int, g: Int, b: Int): FloatArray {
-            return floatArrayOf(
-                gammaToLinear(r / 255f),
-                gammaToLinear(g / 255f),
-                gammaToLinear(b / 255f)
-            )
         }
     }
 

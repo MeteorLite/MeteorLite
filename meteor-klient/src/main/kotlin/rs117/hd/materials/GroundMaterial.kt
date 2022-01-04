@@ -112,7 +112,7 @@ enum class GroundMaterial(vararg materials: Material) {
     ),
     ICE(Material.ICE), ICE_FLAT(Material.ICE_FLAT);
 
-    private val materials: Array<Material>
+    val materials: Array<Material>
     fun getRandomMaterial(plane: Int, worldX: Int, worldY: Int): Material {
         val randomTex = Random()
         // Generate a seed from the tile coordinates for

@@ -35,7 +35,7 @@ class GLUtil {
   private static final float[] fbuf = new float[1];
 
   static int glGetInteger(GL4 gl, int pname) {
-    gl.glGetIntegerv(pname, buf, 0);
+    gl.glGetIntegerv(pname, new int[1], 0);
     return buf[0];
   }
 

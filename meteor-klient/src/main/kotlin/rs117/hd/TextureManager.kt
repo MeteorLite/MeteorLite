@@ -194,7 +194,7 @@ object TextureManager {
         }
     }
 
-    fun freeTextureArray(gl: GL4?, textureArrayId: Int) {
+    fun freeTextureArray(gl: GL4, textureArrayId: Int) {
         GLUtil.glDeleteTexture(gl, textureArrayId)
     }
 

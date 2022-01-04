@@ -45,7 +45,7 @@ import java.nio.charset.StandardCharsets
 import java.util.*
 import javax.inject.Singleton
 
-class OpenCLManager() {
+object OpenCLManager {
     // The number of faces each worker processes in the two kernels
     private var largeFaceCount = 0
     private var smallFaceCount = 0

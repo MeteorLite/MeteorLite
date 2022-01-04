@@ -102,7 +102,7 @@ public class GpuHDPlugin extends Plugin implements DrawCallbacks
 	Logger log = Logger.Companion.getLogger(getClass());
 
 	private final Client client = Refs.INSTANCE.getClient();
-	private final OpenCLManager openCLManager = new OpenCLManager();
+	private final OpenCLManager openCLManager = OpenCLManager.INSTANCE;
 	private final ClientThread clientThread = ClientThread.INSTANCE;
 	public  HdPluginConfig config = new HdPluginConfig() {
 	};
@@ -121,7 +121,7 @@ public class GpuHDPlugin extends Plugin implements DrawCallbacks
 		OPENGL,
 		OPENCL,
 	}
-	
+
 	private ComputeMode computeMode = ComputeMode.OPENGL;
 
 	private Canvas canvas;
@@ -488,7 +488,7 @@ public class GpuHDPlugin extends Plugin implements DrawCallbacks
 			}
 			catch (Throwable e)
 			{
-				log.error("Error starting HD plugin", e);
+				e.printStackTrace();
 				onStop();
 			}
 			return;
@@ -1357,6 +1357,12 @@ public class GpuHDPlugin extends Plugin implements DrawCallbacks
 				glfboDrawable.resetSize(gl);
 			}
 		}
+	}
+
+	static int glGetInteger(GL4 gl, int pname) {
+		int[] tmpbf = new int[1];
+		gl.glGetIntegerv(pname, tmpbf, 0);
+		return tmpbf[0];
 	}
 
 	private void drawFrame(int overlayColor)

@@ -39,7 +39,7 @@ interface HdPluginConfig : Config {
         section = generalSettings
     )
     fun drawDistance(): Int {
-        return 90
+        return 40
     }
 
     @ConfigItem(
@@ -217,7 +217,7 @@ interface HdPluginConfig : Config {
         section = lightingSettings
     )
     fun shadowDistance(): ShadowDistance? {
-        return ShadowDistance.DISTANCE_90
+        return ShadowDistance.DISTANCE_40
     }
 
     @ConfigItem(

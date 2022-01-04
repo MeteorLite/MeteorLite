@@ -821,12 +821,12 @@ enum class ObjectProperties {
     ),
     UNKNOWN_11(Material.GRUNGE_2, 7057, 7103, 7104, 7105, 7106, 7107);
 
-    private val id: IntArray
-    private val material: Material
-    private val flatNormals: Boolean
-    private val uvType: UvType
+    val id: IntArray
+    val material: Material
+    val flatNormals: Boolean
+    val uvType: UvType
     val tzHaarRecolorType: TzHaarRecolorType
-    private val inheritTileColor: Boolean
+    val inheritTileColor: Boolean
 
     private class Properties {
         var flatNormals = false

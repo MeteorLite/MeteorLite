@@ -644,18 +644,18 @@ class LightManager(private val config: HdPluginConfig, private val hdPlugin: Gpu
         var type = defaultType
         val lineNo = 1
         try {
-            BufferedReader(InputStreamReader(javaClass.getResourceAsStream(filename))).use { br ->
+            BufferedReader(InputStreamReader(javaClass.getResourceAsStream(filename)!!)).use { br ->
                 val m = PATTERN.matcher("")
-                var line: String
-                while (br.readLine().also { line = it } != null) {
+                var line: String? = br.readLine()
+                while (line != null) {
                     m.reset(line)
                     var end = 0
                     while (end < line.length) {
                         m.region(end, line.length)
-                        require(m.find()) { "Unexpected: \"" + line.substring(end) + "\" (" + filename + ":" + lineNo + ")" }
+                        require(m.find()) { "Unexpected: \"" + line!!.substring(end) + "\" (" + filename + ":" + lineNo + ")" }
                         end = m.end()
                         val expr = m.group("expr")
-                        if (expr == null || expr.length <= 0 || expr.startsWith("//")) {
+                        if (expr == null || expr.isEmpty() || expr.startsWith("//")) {
                             continue
                         }
                         if (expr.startsWith("/*")) {
@@ -753,6 +753,7 @@ class LightManager(private val config: HdPluginConfig, private val hdPlugin: Gpu
                             }
                         }
                     }
+                    line = br.readLine()
                 }
             }
         } catch (ex: NumberFormatException) {

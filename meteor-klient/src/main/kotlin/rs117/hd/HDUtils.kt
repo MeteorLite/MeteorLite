@@ -32,11 +32,6 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 object HDUtils {
-    private val client = Main.client
-    private val sceneUploader = SceneUploader
-    private val hdPlugin: GpuHDPlugin? = null
-    private val proceduralGenerator = ProceduralGenerator
-
     @JvmStatic
     fun vectorAdd(vec1: FloatArray, vec2: FloatArray): FloatArray {
         val out = FloatArray(vec1.size)
