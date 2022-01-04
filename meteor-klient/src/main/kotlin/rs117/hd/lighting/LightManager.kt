@@ -413,7 +413,7 @@ class LightManager(private val config: HdPluginConfig, private val hdPlugin: Gpu
         }
     }
 
-    fun updateNpcChanged(npcChanged: NpcChanged) {
+    fun updateNpcChanged(npcChanged: meteor.eventbus.events.NpcChanged) {
         removeNpcLight(npcChanged)
         addNpcLight(npcChanged.npc)
     }
@@ -501,11 +501,11 @@ class LightManager(private val config: HdPluginConfig, private val hdPlugin: Gpu
         sceneLights.add(light)
     }
 
-    fun removeNpcLight(npcDespawned: NpcDespawned) {
+    fun removeNpcLight(npcDespawned: meteor.eventbus.events.NpcDespawned) {
         sceneLights.removeIf { light: Light -> light.npc === npcDespawned.npc }
     }
 
-    fun removeNpcLight(npcChanged: NpcChanged) {
+    fun removeNpcLight(npcChanged: meteor.eventbus.events.NpcChanged) {
         sceneLights.removeIf { light: Light -> light.npc === npcChanged.npc }
     }
 
@@ -761,7 +761,7 @@ class LightManager(private val config: HdPluginConfig, private val hdPlugin: Gpu
         }
     }
 
-    fun addGroundItemLight(itemSpawned: ItemSpawned?) {
+    fun addGroundItemLight(itemSpawned: meteor.eventbus.events.ItemSpawned?) {
         val lowValueColor = configManager.getConfiguration("grounditems", "lowValueColor", Color::class.java)
         val mediumValueColor = configManager.getConfiguration("grounditems", "mediumValueColor", Color::class.java)
         val highValueColor = configManager.getConfiguration("grounditems", "highValueColor", Color::class.java)
@@ -772,7 +772,7 @@ class LightManager(private val config: HdPluginConfig, private val hdPlugin: Gpu
         val insaneValuePrice = configManager.getConfiguration("grounditems", "insaneValuePrice", Int::class.java)
     }
 
-    fun removeGroundItemLight(itemDespawned: ItemDespawned) {
+    fun removeGroundItemLight(itemDespawned: meteor.eventbus.events.ItemDespawned) {
         sceneLights.removeIf { light: Light -> light.tileItem === itemDespawned.item }
     }
 

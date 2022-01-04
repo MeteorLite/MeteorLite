@@ -3,12 +3,10 @@ package meteor.plugins
 import meteor.config.ConfigManager
 import meteor.plugins.agility.AgilityPlugin
 import meteor.plugins.fishing.FishingPlugin
-import meteor.plugins.gpu.GpuPlugin
 import meteor.plugins.stretchedmode.StretchedModePlugin
 import meteor.plugins.worldmap.WorldMapPlugin
+import rs117.hd.GpuHDEventAdapter.registerEvents
 import rs117.hd.GpuHDPlugin
-import java.lang.Boolean
-import kotlin.String
 
 object PluginManager {
     var plugins = ArrayList<Plugin>()
@@ -17,6 +15,7 @@ object PluginManager {
         plugins.add(FishingPlugin())
         plugins.add(AgilityPlugin())
         plugins.add(GpuHDPlugin())
+        registerEvents()
         plugins.add(StretchedModePlugin())
         plugins.add(WorldMapPlugin())
     }

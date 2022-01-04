@@ -36,20 +36,17 @@ import jogamp.nativewindow.SurfaceScaleUtils;
 import jogamp.nativewindow.jawt.x11.X11JAWTWindow;
 import jogamp.nativewindow.macosx.OSXUtil;
 import jogamp.newt.awt.NewtFactoryAWT;
-import kotlin.Unit;
-import kotlin.jvm.functions.Function1;
-import meteor.Event;
 import meteor.Logger;
 import meteor.Refs;
 import meteor.config.ConfigManager;
 import meteor.eventbus.events.ConfigChanged;
+import meteor.eventbus.events.ItemSpawned;
 import meteor.plugins.Plugin;
 import meteor.plugins.PluginDescriptor;
 import meteor.plugins.PluginManager;
 import meteor.rs.ClientThread;
 import meteor.ui.DrawManager;
 import net.runelite.api.*;
-import net.runelite.api.events.*;
 import net.runelite.api.hooks.DrawCallbacks;
 import org.jocl.CL;
 import rs117.hd.config.*;
@@ -81,11 +78,6 @@ import static rs117.hd.GLUtil.*;
 )
 public class GpuHDPlugin extends Plugin implements DrawCallbacks
 {
-
-	public GpuHDPlugin() {
-		registerSubscribers();
-	}
-
 	// This is the maximum number of triangles the compute shaders support
 	static final int MAX_TRIANGLE = 4096;
 	static final int SMALL_TRIANGLE_COUNT = 512;
@@ -2473,38 +2465,38 @@ public class GpuHDPlugin extends Plugin implements DrawCallbacks
 	}
 
 
-	public void onProjectileMoved(ProjectileMoved projectileMoved)
+	public void onProjectileMoved(meteor.eventbus.events.ProjectileMoved projectileMoved)
 	{
 		lightManager.addProjectileLight(projectileMoved.getProjectile());
 	}
 
 
-	public void onNpcSpawned(NpcSpawned npcSpawned)
+	public void onNpcSpawned(meteor.eventbus.events.NpcSpawned npcSpawned)
 	{
 		lightManager.addNpcLight(npcSpawned.getNpc());
 	}
 
 
-	public void onNpcDespawned(NpcDespawned npcDespawned)
+	public void onNpcDespawned(meteor.eventbus.events.NpcDespawned npcDespawned)
 	{
-		//lightManager.removeNpcLight(npcDespawned);
+		lightManager.removeNpcLight(npcDespawned);
 	}
 
 
-	public void onNpcChanged(NpcChanged npcChanged)
+	public void onNpcChanged(meteor.eventbus.events.NpcChanged npcChanged)
 	{
-		//lightManager.updateNpcChanged(npcChanged);
+		lightManager.updateNpcChanged(npcChanged);
 	}
 
 
-	public void onGameObjectSpawned(GameObjectSpawned gameObjectSpawned)
+	public void onGameObjectSpawned(meteor.eventbus.events.GameObjectSpawned gameObjectSpawned)
 	{
 		GameObject gameObject = gameObjectSpawned.getGameObject();
 		lightManager.addObjectLight(gameObject, gameObjectSpawned.getTile().getRenderLevel(), gameObject.sizeX(), gameObject.sizeY(), gameObject.getOrientation().getAngle());
 	}
 
 
-	public void onGameObjectChanged(GameObjectChanged gameObjectChanged)
+	public void onGameObjectChanged(meteor.eventbus.events.GameObjectChanged gameObjectChanged)
 	{
 		GameObject previous = gameObjectChanged.getOldObject();
 		GameObject gameObject = gameObjectChanged.getNewObject();
@@ -2513,21 +2505,21 @@ public class GpuHDPlugin extends Plugin implements DrawCallbacks
 	}
 
 
-	public void onGameObjectDespawned(GameObjectDespawned gameObjectDespawned)
+	public void onGameObjectDespawned(meteor.eventbus.events.GameObjectDespawned gameObjectDespawned)
 	{
 		GameObject gameObject = gameObjectDespawned.getGameObject();
 		lightManager.removeObjectLight(gameObject);
 	}
 
 
-	public void onWallObjectSpawned(WallObjectSpawned wallObjectSpawned)
+	public void onWallObjectSpawned(meteor.eventbus.events.WallObjectSpawned wallObjectSpawned)
 	{
 		WallObject wallObject = wallObjectSpawned.getWallObject();
 		lightManager.addObjectLight(wallObject, wallObjectSpawned.getTile().getRenderLevel(), 1, 1, wallObject.getOrientationA());
 	}
 
 
-	public void onWallObjectChanged(WallObjectChanged wallObjectChanged)
+	public void onWallObjectChanged(meteor.eventbus.events.WallObjectChanged wallObjectChanged)
 	{
 		WallObject previous = wallObjectChanged.getPrevious();
 		WallObject wallObject = wallObjectChanged.getWallObject();
@@ -2536,21 +2528,21 @@ public class GpuHDPlugin extends Plugin implements DrawCallbacks
 	}
 
 
-	public void onWallObjectDespawned(WallObjectDespawned wallObjectDespawned)
+	public void onWallObjectDespawned(meteor.eventbus.events.WallObjectDespawned wallObjectDespawned)
 	{
 		WallObject wallObject = wallObjectDespawned.getWallObject();
 		lightManager.removeObjectLight(wallObject);
 	}
 
 
-	public void onDecorativeObjectSpawned(DecorativeObjectSpawned decorativeObjectSpawned)
+	public void onDecorativeObjectSpawned(meteor.eventbus.events.DecorativeObjectSpawned decorativeObjectSpawned)
 	{
 		DecorativeObject decorativeObject = decorativeObjectSpawned.getDecorativeObject();
 		lightManager.addObjectLight(decorativeObject, decorativeObjectSpawned.getTile().getRenderLevel());
 	}
 
 
-	public void onDecorativeObjectChanged(DecorativeObjectChanged decorativeObjectChanged)
+	public void onDecorativeObjectChanged(meteor.eventbus.events.DecorativeObjectChanged decorativeObjectChanged)
 	{
 		DecorativeObject previous = decorativeObjectChanged.getPrevious();
 		DecorativeObject decorativeObject = decorativeObjectChanged.getDecorativeObject();
@@ -2559,21 +2551,21 @@ public class GpuHDPlugin extends Plugin implements DrawCallbacks
 	}
 
 
-	public void onDecorativeObjectDespawned(DecorativeObjectDespawned decorativeObjectDespawned)
+	public void onDecorativeObjectDespawned(meteor.eventbus.events.DecorativeObjectDespawned decorativeObjectDespawned)
 	{
 		DecorativeObject decorativeObject = decorativeObjectDespawned.getDecorativeObject();
 		lightManager.removeObjectLight(decorativeObject);
 	}
 
 
-	public void onGroundObjectSpawned(GroundObjectSpawned groundObjectSpawned)
+	public void onGroundObjectSpawned(meteor.eventbus.events.GroundObjectSpawned groundObjectSpawned)
 	{
 		GroundObject groundObject = groundObjectSpawned.getGroundObject();
 		lightManager.addObjectLight(groundObject, groundObjectSpawned.getTile().getRenderLevel());
 	}
 
 
-	public void onGroundObjectChanged(GroundObjectChanged groundObjectChanged)
+	public void onGroundObjectChanged(meteor.eventbus.events.GroundObjectChanged groundObjectChanged)
 	{
 		GroundObject previous = groundObjectChanged.getPrevious();
 		GroundObject groundObject = groundObjectChanged.getGroundObject();
@@ -2582,14 +2574,14 @@ public class GpuHDPlugin extends Plugin implements DrawCallbacks
 	}
 
 
-	public void onGroundObjectDespawned(GroundObjectDespawned groundObjectDespawned)
+	public void onGroundObjectDespawned(meteor.eventbus.events.GroundObjectDespawned groundObjectDespawned)
 	{
 		GroundObject groundObject = groundObjectDespawned.getGroundObject();
 		lightManager.removeObjectLight(groundObject);
 	}
 
 
-	public void onItemDespawned(ItemDespawned itemDespawned)
+	public void onItemDespawned(meteor.eventbus.events.ItemDespawned itemDespawned)
 	{
 		//lightManager.removeGroundItemLight(itemDespawned);
 	}
