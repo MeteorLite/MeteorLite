@@ -1980,21 +1980,19 @@ public class GpuHDPlugin extends Plugin implements DrawCallbacks
 		textureManager.animate(texture, diff);
 	}
 
-
 	public void onGameStateChanged(meteor.eventbus.events.GameStateChanged event)
 	{
-		meteor.eventbus.events.GameStateChanged gameStateChanged = (meteor.eventbus.events.GameStateChanged) event;
-		if (gameStateChanged.getNew() != GameState.LOGGED_IN)
+		if (event.getNew() != GameState.LOGGED_IN)
 		{
 			lightManager.reset();
 		}
 
-		if (gameStateChanged.getNew() != GameState.LOGGED_IN)
+		if (event.getNew() != GameState.LOGGED_IN)
 		{
 			return;
 		}
 
-		invokeOnMainThread(GpuHDPlugin.this::uploadScene);
+		invokeOnMainThread(this::uploadScene);
 	}
 
 	private void uploadScene()

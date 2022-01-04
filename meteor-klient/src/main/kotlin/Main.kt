@@ -68,13 +68,7 @@ object Main: KoinComponent {
 
     fun gpuHDSceneFux() {
         EventBus.subscribe(GameStateChanged::class.java) { it as GameStateChanged
-            if (it.new == GameState.LOGGED_IN)
-                if (!gpuLoaded) {
-                    PluginManager.initPlugin(GpuHDPlugin())
-                    gpuLoaded = true
-                } else {
-                    PluginManager.restartPlugin<GpuHDPlugin>()
-                }
+            PluginManager.getPlugin<GpuHDPlugin>()!!.onGameStateChanged(it)
         }
     }
 }

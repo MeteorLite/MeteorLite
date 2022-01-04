@@ -149,9 +149,7 @@ open class EventSubscriber {
     open fun onProjectileMoved() = stub()
     open fun onConfigChanged() = stub()
     
-    private fun stub(): ((Any) -> Unit)? {
-        return null
-    }
+    private fun stub(): ((Any) -> Unit)? { return null }
 
     companion object {
         private fun registerSubscriber(type: Any, execution: ((Any) -> Unit)?) {
