@@ -9,8 +9,7 @@ import java.util.concurrent.Executors
 import kotlin.coroutines.CoroutineContext
 
 @Suppress("EXPERIMENTAL_IS_NOT_ENABLED")
-class EventBus(override val coroutineContext: CoroutineContext
-               = Executors.newSingleThreadExecutor().asCoroutineDispatcher())
+class EventBus(override val coroutineContext: CoroutineDispatcher = Dispatchers.Unconfined)
     : CoroutineScope {
     private val handlers = HashMap<Any, EventBus>()
 
@@ -46,7 +45,6 @@ class EventBus(override val coroutineContext: CoroutineContext
 
     companion object {
         var instance = EventBus()
-
 
         fun post(type: Any, event: Any) {
             instance.getHandler(type).post(event)
