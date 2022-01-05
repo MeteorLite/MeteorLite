@@ -6,7 +6,6 @@ import androidx.compose.ui.window.rememberWindowState
 import meteor.*
 import meteor.config.ConfigManager
 import meteor.eventbus.EventBus
-import meteor.eventbus.events.GameStateChanged
 import meteor.eventbus.events.GameTick
 import meteor.plugins.PluginManager
 import meteor.rs.Applet
@@ -23,8 +22,6 @@ import okhttp3.OkHttpClient
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.get
 import org.koin.core.context.startKoin
-import rs117.hd.GpuHDPlugin
-import java.awt.*
 
 object Main: KoinComponent {
     lateinit var client: Client
@@ -33,10 +30,10 @@ object Main: KoinComponent {
     val overlayManager = OverlayManager
     val fontManager = FontManager
     val itemManager = ItemManager
-    var gpuLoaded = false
 
     @JvmStatic
     fun main(args: Array<String>) = application {
+        processArguments(args)
         startKoin { modules(Module.CLIENT_MODULE) }
         callbacks = get()
         MeteorliteTheme.install()
@@ -44,7 +41,6 @@ object Main: KoinComponent {
             if (client.gameDrawingMode != 2)
                 client.gameDrawingMode = 2
         }
-        gpuHDSceneFux()
         AppletConfiguration.init()
         Applet().init()
         Window(
@@ -60,23 +56,16 @@ object Main: KoinComponent {
         client = Applet.asClient(Applet.applet)
         client.callbacks = callbacks
         ConfigManager.loadSavedProperties()
-        PluginManager.startPlugins()
+        PluginManager
     }
 
-    fun gpuHDSceneFux() {
-        EventBus.subscribe(GameStateChanged::class.java) { it as GameStateChanged
-            PluginManager.getPlugin<GpuHDPlugin>()!!.onGameStateChanged(it)
+    fun processArguments(args: Array<String>) {
+        for(arg in args) {
+            when (arg.lowercase()) {
+                "disableGPU".lowercase() -> {
+                    Configuration.allowGPU = false
+                }
+            }
         }
-    }
-}
-
-object TestOverlay : Overlay(layer = OverlayLayer.ABOVE_SCENE) {
-    override fun render(graphics: Graphics2D): Dimension? {
-        graphics.color = Color.CYAN
-        val s = "Meteor Klient rendering overlays!"
-        val fm = graphics.fontMetrics
-        if (UI.toolbarPosition.value == Components.Toolbar.Position.TOP)
-        graphics.drawString(s, 0, fm.getStringBounds(s, graphics).height.toInt())
-        return null
     }
 }

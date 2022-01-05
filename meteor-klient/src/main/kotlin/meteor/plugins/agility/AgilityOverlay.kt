@@ -58,7 +58,8 @@ class AgilityOverlay(val plugin: AgilityPlugin) : Overlay() {
                 continue
             }
             graphics.color = activeColor
-            graphics.draw(Perspective.getCanvasTileAreaPoly(client, tile.localLocation, 1))
+            val poly = Perspective.getCanvasTileAreaPoly(client, tile.localLocation, 1)
+            poly?.let { graphics.draw(poly) }
             graphics.color = Color.white
             p = Perspective
                 .getCanvasTextLocation(

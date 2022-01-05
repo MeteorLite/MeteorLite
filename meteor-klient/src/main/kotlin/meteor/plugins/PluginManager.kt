@@ -1,32 +1,34 @@
 package meteor.plugins
 
+import meteor.Configuration
 import meteor.config.ConfigManager
 import meteor.plugins.agility.AgilityPlugin
 import meteor.plugins.fishing.FishingPlugin
 import meteor.plugins.stretchedmode.StretchedModePlugin
 import meteor.plugins.worldmap.WorldMapPlugin
-import rs117.hd.GpuHDEventAdapter.registerEvents
+import rs117.hd.GpuHDEventAdapter
 import rs117.hd.GpuHDPlugin
+import java.lang.RuntimeException
 
 object PluginManager {
     var plugins = ArrayList<Plugin>()
     init {
-        plugins.add(ExamplePlugin())
-        plugins.add(FishingPlugin())
-        plugins.add(AgilityPlugin())
-        plugins.add(GpuHDPlugin())
-        registerEvents()
-        plugins.add(StretchedModePlugin())
-        plugins.add(WorldMapPlugin())
-    }
-
-    fun startPlugins() {
-        for (plugin in plugins) {
-            initPlugin(plugin)
+        initPlugin(ExamplePlugin())
+        initPlugin(FishingPlugin())
+        initPlugin(AgilityPlugin())
+        if (Configuration.allowGPU) {
+            initPlugin(GpuHDPlugin())
+            GpuHDEventAdapter.registerEvents()
         }
+        initPlugin(StretchedModePlugin())
+        initPlugin(WorldMapPlugin())
     }
 
     fun initPlugin(plugin: Plugin) {
+        for (p in plugins)
+            if (p::class == plugin::class)
+                throw RuntimeException("Duplicate plugin ${p::class.simpleName} not allowed")
+        plugins.add(plugin)
         val enabledConfig: String? = ConfigManager.getConfiguration(plugin.javaClass.simpleName, "pluginEnabled")
         val descriptor: PluginDescriptor? = plugin.javaClass.getAnnotation(PluginDescriptor::class.java)
         if (enabledConfig == null) {
@@ -73,5 +75,4 @@ object PluginManager {
         }
         return null
     }
-
 }

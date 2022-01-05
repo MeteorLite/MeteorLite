@@ -97,6 +97,7 @@ compose.desktop {
             targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)
             includeAllModules = true
         }
+        //args("disableGPU")
         jvmArgs("-noverify",
                 "-ea",
                 "-Xmx2048m",
@@ -104,15 +105,6 @@ compose.desktop {
                 "--add-exports", "java.desktop/sun.awt=ALL-UNNAMED",
                 "--add-exports", "java.desktop/sun.java2d=ALL-UNNAMED")
     }
-}
-
-task noCompose(type: JavaExec) {
-    classpath = sourceSets.main.runtimeClasspath
-    main = "Main"
-    setJvmArgs(["-noverify",
-                "--add-exports", "java.base/java.lang=ALL-UNNAMED",
-                "--add-exports", "java.desktop/sun.awt=ALL-UNNAMED",
-                "--add-exports", "java.desktop/sun.java2d=ALL-UNNAMED"])
 }
 
 task createJavadocs (type: Javadoc)
