@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Tomas Slusny <slusnucky@gmail.com>
+ * Copyright (c) 2018, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,48 +22,8 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package meteor.plugins.grounditems;
+package meteor.game
 
-import java.time.Instant;
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import lombok.Builder;
-import lombok.Data;
-import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.coords.LocalPoint
 
-@Data
-@Builder
-public
-class GroundItem
-{
-	private int id;
-	private int itemId;
-	private String name;
-	private int quantity;
-	private WorldPoint location;
-	private int height;
-	private int haPrice;
-	private int gePrice;
-	private int offset;
-	private boolean tradeable;
-	@Nonnull
-	private LootType lootType;
-	@Nullable
-	private Instant spawnTime;
-	private boolean stackable;
-
-	public int getHaPrice()
-	{
-		return haPrice * quantity;
-	}
-
-	public int getGePrice()
-	{
-		return gePrice * quantity;
-	}
-
-	boolean isMine()
-	{
-		return lootType != LootType.UNKNOWN;
-	}
-}
+class ItemStack(val id: Int = 0, val quantity: Int = 0, val location: LocalPoint? = null)

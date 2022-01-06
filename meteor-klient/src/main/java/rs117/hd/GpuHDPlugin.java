@@ -2583,12 +2583,12 @@ public class GpuHDPlugin extends Plugin implements DrawCallbacks
 
 	public void onItemDespawned(meteor.eventbus.events.ItemDespawned itemDespawned)
 	{
-		//lightManager.removeGroundItemLight(itemDespawned);
+		lightManager.removeGroundItemLight(itemDespawned);
 	}
 
 
 	public void onItemSpawned(ItemSpawned itemSpawned)
 	{
-		//lightManager.addGroundItemLight(itemSpawned);
+		lightManager.addGroundItemLight(itemSpawned);
 	}
 }

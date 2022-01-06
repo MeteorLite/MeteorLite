@@ -285,9 +285,9 @@ internal enum class QuestStartLocation {
     val location: WorldPoint
 
 
-    val quests: Array<Quest>
+    val quests: Array<Quest?>
 
-    constructor(quests: Array<Quest>, location: WorldPoint) {
+    constructor(quests: Array<Quest?>, location: WorldPoint) {
         this.location = location
         this.quests = quests
     }

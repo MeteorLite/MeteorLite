@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Kamiel
+ * Copyright (c) 2017, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,42 +22,25 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package meteor.ui.components
+package meteor.util
 
-import net.runelite.api.Point
-import java.awt.*
-import java.awt.geom.Arc2D
+import meteor.Logger.Companion.getLogger
+import lombok.RequiredArgsConstructor
+import java.lang.Runnable
 
-class ProgressPieComponent : RenderableEntity {
-    var diameter = 25
-    var borderColor = Color.WHITE
-    var fill = Color.WHITE
-    var stroke: Stroke = BasicStroke(1F)
-    var progress = 0.0
-    var position: Point? = null
-    override fun render(graphics: Graphics2D): Dimension {
-        val position: Point = position!!
-        //Construct the arc
-        val arc = Arc2D.Float(Arc2D.PIE)
-        arc.angleStart = 90.0
-        arc.angleExtent = progress * 360
-        arc.setFrame((position.x - diameter / 2).toDouble(), (position.y - diameter / 2).toDouble(), diameter.toDouble(),
-                diameter.toDouble())
-
-        //Draw the inside of the arc
-        graphics.color = fill
-        graphics.fill(arc)
-
-        //Draw the outlines of the arc
-        graphics.stroke = stroke
-        graphics.color = borderColor
-        graphics.drawOval(position.x - diameter / 2, position.y - diameter / 2, diameter,
-                diameter)
-        return Dimension(diameter, diameter)
+class RunnableExceptionLogger(var runnable: Runnable) : Runnable {
+    var log = getLogger(RunnableExceptionLogger::class.java)
+    override fun run() {
+        try {
+            runnable.run()
+        } catch (ex: Throwable) {
+            ex.printStackTrace()
+        }
     }
 
-    fun setBorder(border: Color, size: Int) {
-        borderColor = border
-        stroke = BasicStroke(size.toFloat())
+    companion object {
+        fun wrap(runnable: Runnable): RunnableExceptionLogger {
+            return RunnableExceptionLogger(runnable)
+        }
     }
 }

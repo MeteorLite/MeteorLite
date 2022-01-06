@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020, dekvall <https://github.com/dekvall>
+ * Copyright (c) 2018, Tomas Slusny <slusnucky@gmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,20 +22,36 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package meteor.plugins.grounditems;
+package meteor.plugins.grounditems
 
-import lombok.RequiredArgsConstructor;
-import lombok.Value;
+import com.google.common.base.Strings
+import com.google.common.cache.CacheLoader
+import meteor.util.WildcardMatcher.matches
+import java.util.*
+import java.util.stream.Collectors
+import javax.annotation.Nonnull
 
-@Value
-@RequiredArgsConstructor
-class NamedQuantity
-{
-	private final String name;
-	private final int quantity;
+internal class WildcardMatchLoader(configEntries: List<String?>) : CacheLoader<NamedQuantity, Boolean>() {
+    private val itemThresholds: MutableList<ItemThreshold>
+    override fun load(@Nonnull key: NamedQuantity): Boolean {
+        if (Strings.isNullOrEmpty(key.name)) {
+            return false
+        }
+        val filteredName = key.name.trim { it <= ' ' }
+        for (entry in itemThresholds) {
+            if (matches(entry.itemName, filteredName)
+                && entry.quantity == (key.quantity)
+            ) {
+                return true
+            }
+        }
+        return false
+    }
 
-	NamedQuantity(GroundItem groundItem)
-	{
-		this(groundItem.getName(), groundItem.getQuantity());
-	}
+    init {
+        itemThresholds = configEntries.stream()
+            .map { entry: String? -> ItemThreshold.fromConfigEntry(entry!!) }
+            .filter { obj: ItemThreshold? -> Objects.nonNull(obj) }
+            .collect(Collectors.toList())
+    }
 }

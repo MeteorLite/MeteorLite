@@ -27,6 +27,7 @@ package meteor.plugins.worldmap
 
 import com.google.inject.Inject
 import meteor.eventbus.events.ConfigChanged
+import meteor.eventbus.events.GameStateChanged
 import meteor.plugins.Plugin
 import meteor.plugins.PluginDescriptor
 import meteor.plugins.agility.AgilityShortcut
@@ -53,10 +54,8 @@ import java.util.function.Predicate
 class WorldMapPlugin : Plugin() {
     val config = configuration<WorldMapConfig>()
 
-    @Inject
-    lateinit var  clientThread:ClientThread
-    @Inject
-    private val worldMapPointManager: WorldMapPointManager? = null
+    var clientThread = ClientThread
+    private val worldMapPointManager = WorldMapPointManager
     private var agilityLevel = 0
     private var woodcuttingLevel = 0
 
@@ -70,7 +69,7 @@ class WorldMapPlugin : Plugin() {
     }
 
     override fun onStart() {
-        worldMapPointManager?.removeIf(WorldMapPoint::class.java::isInstance)
+        worldMapPointManager.removeIf(WorldMapPoint::class.java::isInstance)
         agilityLevel = 0
         woodcuttingLevel = 0
     }
@@ -82,6 +81,10 @@ class WorldMapPlugin : Plugin() {
         }
     }
 
+    override fun onGameStateChanged(): ((Any) -> Unit) = { it as GameStateChanged
+        if (it.new == GameState.LOGGED_IN)
+            updateShownIcons()
+    }
 
     override fun onStatChanged():((Any)->Unit) = { it as  StatChanged
         when (it.skill) {
@@ -170,7 +173,7 @@ class WorldMapPlugin : Plugin() {
         updateAgilityCourseIcons()
         updateRareTreeIcons()
         updateQuestStartPointIcons()
-        worldMapPointManager!!.removeIf(isType(MapPoint.Type.FAIRY_RING))
+        worldMapPointManager.removeIf(isType(MapPoint.Type.FAIRY_RING))
         if (config.fairyRingIcon() || config.fairyRingTooltips()) {
             Arrays.stream(FairyRingLocation.values())
                 .map { l: FairyRingLocation ->
@@ -181,7 +184,7 @@ class WorldMapPlugin : Plugin() {
                         .tooltip(if (config.fairyRingTooltips()) "Fairy Ring - " + l.code else null)
                         .build()
                 }
-                .forEach { worldMapPoint: WorldMapPoint? -> worldMapPointManager.add(worldMapPoint) }
+                .forEach { worldMapPoint: WorldMapPoint -> worldMapPointManager.add(worldMapPoint) }
         }
         worldMapPointManager.removeIf(isType(MapPoint.Type.MINIGAME))
         if (config.minigameTooltip()) {
@@ -194,7 +197,7 @@ class WorldMapPlugin : Plugin() {
                         .tooltip(l.tooltip)
                         .build()
                 }
-                .forEach { worldMapPoint: WorldMapPoint? -> worldMapPointManager.add(worldMapPoint) }
+                .forEach { worldMapPoint: WorldMapPoint -> worldMapPointManager.add(worldMapPoint) }
         }
         worldMapPointManager.removeIf(isType(MapPoint.Type.TRANSPORTATION))
         if (config.transportationTeleportTooltips()) {
@@ -210,7 +213,7 @@ class WorldMapPlugin : Plugin() {
                         .tooltip(l.tooltip)
                         .build()
                 }
-                .forEach { worldMapPoint: WorldMapPoint? -> worldMapPointManager.add(worldMapPoint) }
+                .forEach { worldMapPoint: WorldMapPoint -> worldMapPointManager.add(worldMapPoint) }
         }
         worldMapPointManager.removeIf(isType(MapPoint.Type.FARMING_PATCH))
         if (config.farmingPatchTooltips()) {
@@ -224,7 +227,7 @@ class WorldMapPlugin : Plugin() {
                             .tooltip(location.tooltip)
                             .build()
                     }
-                    .forEach { worldMapPoint: WorldMapPoint? -> worldMapPointManager.add(worldMapPoint) }
+                    .forEach { worldMapPoint: WorldMapPoint -> worldMapPointManager.add(worldMapPoint) }
             }
         }
         worldMapPointManager.removeIf(isType(MapPoint.Type.TELEPORT))
@@ -249,7 +252,7 @@ class WorldMapPlugin : Plugin() {
                     .image(ImageUtil.loadImageResource(WorldMapPlugin::class.java, l.iconPath))
                     .build()
             }
-            .forEach { worldMapPoint: WorldMapPoint? -> worldMapPointManager.add(worldMapPoint) }
+            .forEach { worldMapPoint: WorldMapPoint -> worldMapPointManager.add(worldMapPoint) }
         worldMapPointManager.removeIf(isType(MapPoint.Type.RUNECRAFT_ALTAR))
         if (config.runecraftingAltarIcon()) {
             Arrays.stream(RunecraftingAltarLocation.values())
@@ -261,7 +264,7 @@ class WorldMapPlugin : Plugin() {
                         .tooltip(l.tooltip)
                         .build()
                 }
-                .forEach { worldMapPoint: WorldMapPoint? -> worldMapPointManager.add(worldMapPoint) }
+                .forEach { worldMapPoint: WorldMapPoint -> worldMapPointManager.add(worldMapPoint) }
         }
         worldMapPointManager.removeIf(isType(MapPoint.Type.MINING_SITE))
         if (config.miningSiteTooltips()) {
@@ -274,7 +277,7 @@ class WorldMapPlugin : Plugin() {
                         .tooltip(l.tooltip)
                         .build()
                 }
-                .forEach { worldMapPoint: WorldMapPoint? -> worldMapPointManager.add(worldMapPoint) }
+                .forEach { worldMapPoint: WorldMapPoint -> worldMapPointManager.add(worldMapPoint) }
         }
         worldMapPointManager.removeIf(isType(MapPoint.Type.DUNGEON))
         if (config.dungeonTooltips()) {
@@ -287,7 +290,7 @@ class WorldMapPlugin : Plugin() {
                         .tooltip(l.tooltip)
                         .build()
                 }
-                .forEach { worldMapPoint: WorldMapPoint? -> worldMapPointManager.add(worldMapPoint) }
+                .forEach { worldMapPoint: WorldMapPoint -> worldMapPointManager.add(worldMapPoint) }
         }
         worldMapPointManager.removeIf(isType(MapPoint.Type.HUNTER))
         if (config.hunterAreaTooltips()) {
@@ -300,7 +303,7 @@ class WorldMapPlugin : Plugin() {
                         .tooltip(l.tooltip)
                         .build()
                 }
-                .forEach { worldMapPoint: WorldMapPoint? -> worldMapPointManager.add(worldMapPoint) }
+                .forEach { worldMapPoint: WorldMapPoint -> worldMapPointManager.add(worldMapPoint) }
         }
         worldMapPointManager.removeIf(isType(MapPoint.Type.FISHING))
         if (config.fishingSpotTooltips()) {
@@ -313,7 +316,7 @@ class WorldMapPlugin : Plugin() {
                             .image(BLANK_ICON)
                             .build()
                     }
-                    .forEach { worldMapPoint: WorldMapPoint? -> worldMapPointManager.add(worldMapPoint) }
+                    .forEach { worldMapPoint: WorldMapPoint -> worldMapPointManager.add(worldMapPoint) }
             }
         }
         worldMapPointManager.removeIf(isType(MapPoint.Type.KOUREND_TASK))
@@ -327,12 +330,12 @@ class WorldMapPlugin : Plugin() {
                         .tooltip(l.tooltip)
                         .build()
                 }
-                .forEach { worldMapPoint: WorldMapPoint? -> worldMapPointManager.add(worldMapPoint) }
+                .forEach { worldMapPoint: WorldMapPoint -> worldMapPointManager.add(worldMapPoint) }
         }
     }
 
     private fun updateQuestStartPointIcons() {
-        worldMapPointManager?.removeIf(isType(MapPoint.Type.QUEST))
+        worldMapPointManager.removeIf(isType(MapPoint.Type.QUEST))
         if (!config.questStartTooltips()) {
             return
         }
@@ -344,7 +347,7 @@ class WorldMapPlugin : Plugin() {
             }
             Arrays.stream(QuestStartLocation.values())
                 .map { data: QuestStartLocation -> createQuestStartPoint(data) }
-                .forEach { worldMapPoint: WorldMapPoint? -> worldMapPointManager?.add(worldMapPoint) }
+                .forEach { worldMapPoint: WorldMapPoint? -> worldMapPointManager.add(worldMapPoint) }
 
         })
     }
@@ -355,7 +358,7 @@ class WorldMapPlugin : Plugin() {
         // Get first uncompleted quest. Else, return the last quest.
         var quest: Quest? = null
         for (q in quests) {
-            if (q.getState(client) != QuestState.FINISHED) {
+            if (q?.getState(client) != QuestState.FINISHED) {
                 quest = q
                 break
             }

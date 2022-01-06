@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018, Tomas Slusny <slusnucky@gmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,13 +22,28 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package meteor.plugins.grounditems;
+package meteor.util
 
-enum LootType
-{
-	UNKNOWN,
-	TABLE,
-	DROPPED,
-	PVP,
-	PVM;
+import meteor.Logger.Companion.getLogger
+import java.lang.Exception
+import java.util.concurrent.Callable
+
+class CallableExceptionLogger<V>(var callable: Callable<V>?) : Callable<V> {
+    var log = getLogger(CallableExceptionLogger::class.java)
+    @Throws(Exception::class)
+    override fun call(): V {
+        return try {
+            callable!!.call()
+        } catch (ex: Throwable) {
+            log.warn("Uncaught exception in callable $callable")
+            ex.printStackTrace()
+            throw ex
+        }
+    }
+
+    companion object {
+        fun <V> wrap(callable: Callable<V>?): CallableExceptionLogger<V> {
+            return CallableExceptionLogger(callable)
+        }
+    }
 }

@@ -57,6 +57,7 @@ object ColorUtil {
      * @param color The color to be used in the color tag.
      * @return The passed str with a prepended color tag.
      */
+    @JvmStatic
     fun prependColorTag(str: String, color: Color): String {
         return colorTag(color) + str
     }
@@ -68,6 +69,7 @@ object ColorUtil {
      * @param color The color to be used in the color tag.
      * @return The passed str wrapped with opening and closing color tags.
      */
+    @JvmStatic
     fun wrapWithColorTag(str: String, color: Color): String {
         return prependColorTag(str, color) + CLOSING_COLOR_TAG
     }
@@ -129,6 +131,7 @@ object ColorUtil {
      * @param alpha The alpha value to use (0-255).
      * @return A Color with the given RGB and alpha.
      */
+    @JvmStatic
     fun colorWithAlpha(color: Color, alpha: Int): Color {
         var alpha = alpha
         if (color.alpha == alpha) {

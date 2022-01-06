@@ -27,30 +27,23 @@ package rs117.hd.lighting
 
 import com.google.common.primitives.Floats
 import com.google.common.primitives.Ints
-import meteor.Refs.client
-import rs117.hd.HDUtils.lerp
-import meteor.config.ConfigManager.getConfiguration
 import meteor.Refs
 import meteor.config.ConfigManager
+import meteor.plugins.PluginManager
+import meteor.plugins.grounditems.GroundItemsPlugin
 import net.runelite.api.*
 import net.runelite.api.coords.LocalPoint
-import java.util.function.ToIntFunction
 import net.runelite.api.coords.WorldPoint
-import net.runelite.api.events.ItemDespawned
 import net.runelite.api.events.ItemSpawned
-import net.runelite.api.events.NpcChanged
-import net.runelite.api.events.NpcDespawned
 import rs117.hd.GpuHDPlugin
+import rs117.hd.HDUtils.lerp
 import rs117.hd.HdPluginConfig
 import java.awt.Color
-import java.io.IOException
 import java.io.BufferedReader
+import java.io.IOException
 import java.io.InputStreamReader
-import java.lang.IllegalArgumentException
-import java.lang.NumberFormatException
 import java.util.*
 import java.util.regex.Pattern
-import javax.inject.Singleton
 
 class LightManager(private val config: HdPluginConfig, private val hdPlugin: GpuHDPlugin) {
     private val client = Refs.client
@@ -761,15 +754,77 @@ class LightManager(private val config: HdPluginConfig, private val hdPlugin: Gpu
         }
     }
 
-    fun addGroundItemLight(itemSpawned: meteor.eventbus.events.ItemSpawned?) {
-        val lowValueColor = configManager.getConfiguration("grounditems", "lowValueColor", Color::class.java)
-        val mediumValueColor = configManager.getConfiguration("grounditems", "mediumValueColor", Color::class.java)
-        val highValueColor = configManager.getConfiguration("grounditems", "highValueColor", Color::class.java)
-        val insaneValueColor = configManager.getConfiguration("grounditems", "insaneValueColor", Color::class.java)
+    fun addGroundItemLight(itemSpawned: meteor.eventbus.events.ItemSpawned) {
+        val lowValueColor = configManager.getConfiguration(
+            "grounditems", "lowValueColor",
+            Color::class.java
+        )
+        val mediumValueColor = configManager.getConfiguration(
+            "grounditems", "mediumValueColor",
+            Color::class.java
+        )
+        val highValueColor = configManager.getConfiguration(
+            "grounditems", "highValueColor",
+            Color::class.java
+        )
+        val insaneValueColor = configManager.getConfiguration(
+            "grounditems", "insaneValueColor",
+            Color::class.java
+        )
         val lowValuePrice = configManager.getConfiguration("grounditems", "lowValuePrice", Int::class.java)
         val mediumValuePrice = configManager.getConfiguration("grounditems", "mediumValuePrice", Int::class.java)
         val highValuePrice = configManager.getConfiguration("grounditems", "highValuePrice", Int::class.java)
         val insaneValuePrice = configManager.getConfiguration("grounditems", "insaneValuePrice", Int::class.java)
+        for (groundItem in GroundItemsPlugin.collectedGroundItems.values()) {
+            if (groundItem == null)
+                continue
+            if (itemSpawned.item.id == groundItem.itemId) if (groundItem.location!!.distanceTo(itemSpawned.tile.worldLocation) == 0) {
+
+                // prevent duplicate lights being spawned for the same GroundItem
+                for (light in sceneLights) {
+                    if (light.tileItem == null)
+                        continue
+                    if (light.tileItem!!.name == groundItem.name) {
+                        return
+                    }
+                }
+                val haPrice = groundItem.haPrice
+                val gePrice = groundItem.gePrice
+                val topValue = Math.max(haPrice, gePrice)
+                var finalColor: Color? = null
+                if (topValue > insaneValuePrice) finalColor =
+                    insaneValueColor else if (topValue > highValuePrice) finalColor =
+                    highValueColor else if (topValue > mediumValuePrice) finalColor =
+                    mediumValueColor else if (topValue > lowValuePrice) finalColor = lowValueColor
+                else if (PluginManager.getPlugin<GroundItemsPlugin>()!!.highlightedItemsList!!.contains(itemSpawned.item.name)) {
+                    finalColor = Color(150, 0, 200)
+                }
+
+                if (finalColor == null) return
+                val rgb = rgb(finalColor.red, finalColor.green, finalColor.blue)
+                val r = rgb ushr 16
+                val g = rgb shr 8 and 0xff
+                val b = rgb and 0xff
+                val localPoint = LocalPoint.fromWorld(client, groundItem.location)
+                val light = Light(
+                    localPoint!!.x,
+                    localPoint.y,
+                    groundItem.location!!.plane,
+                    25,
+                    Alignment.CENTER,
+                    120,
+                    7f,
+                    floatArrayOf(r.toFloat(), g.toFloat(), b.toFloat()),
+                    LightType.FLICKER,
+                    0f,
+                    0f,
+                    0
+                )
+                light.tileItem = itemSpawned.item
+                light.visible = false
+                sceneLights.add(light)
+            }
+        }
     }
 
     fun removeGroundItemLight(itemDespawned: meteor.eventbus.events.ItemDespawned) {

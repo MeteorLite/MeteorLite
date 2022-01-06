@@ -22,24 +22,12 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package meteor.plugins.grounditems;
+package meteor.plugins.grounditems
 
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-import net.runelite.api.MenuEntry;
+import net.runelite.api.MenuEntry
 
-@RequiredArgsConstructor
-class MenuEntryWithCount
-{
-	@Getter
-	private final MenuEntry entry;
-
-	@Getter
-	private int count = 1;
-
-	void increment()
-	{
-		count++;
-	}
+internal class MenuEntryWithCount(var entry: MenuEntry, var count: Int = 1) {
+    fun increment() {
+        count++
+    }
 }
-

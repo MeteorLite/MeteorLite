@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Tomas Slusny <slusnucky@gmail.com>
+ * Copyright (c) 2019, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,47 +22,8 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package meteor.plugins.grounditems;
+package meteor.plugins.grounditems
 
-import com.google.common.base.Strings;
-import com.google.common.cache.CacheLoader;
-import java.util.List;
-import java.util.Objects;
-import java.util.stream.Collectors;
-import javax.annotation.Nonnull;
-import meteor.util.WildcardMatcher;
-
-class WildcardMatchLoader extends CacheLoader<NamedQuantity, Boolean>
-{
-	private final List<ItemThreshold> itemThresholds;
-
-	WildcardMatchLoader(List<String> configEntries)
-	{
-		this.itemThresholds = configEntries.stream()
-			.map(ItemThreshold::fromConfigEntry)
-			.filter(Objects::nonNull)
-			.collect(Collectors.toList());
-	}
-
-	@Override
-	public Boolean load(@Nonnull final NamedQuantity key)
-	{
-		if (Strings.isNullOrEmpty(key.getName()))
-		{
-			return false;
-		}
-
-		final String filteredName = key.getName().trim();
-
-		for (final ItemThreshold entry : itemThresholds)
-		{
-			if (WildcardMatcher.matches(entry.getItemName(), filteredName)
-				&& entry.quantityHolds(key.getQuantity()))
-			{
-				return true;
-			}
-		}
-
-		return false;
-	}
+enum class LootType {
+    UNKNOWN, TABLE, DROPPED, PVP, PVM
 }
