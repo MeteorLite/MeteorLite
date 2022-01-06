@@ -1,12 +1,14 @@
 package meteor.plugins.keyboardbankpin
 
 import meteor.plugins.Plugin
+import meteor.plugins.PluginDescriptor
 import meteor.rs.ClientThread
 import net.runelite.api.ScriptEvent
 import net.runelite.api.ScriptID
 import net.runelite.api.VarClientStr
 import net.runelite.api.widgets.JavaScriptCallback
 
+@PluginDescriptor("KeyboardBankPin")
 class KeyboardBankPinPlugin : Plugin() {
     override fun onScriptCallbackEvent(): ((Any) -> Unit) = { it as meteor.eventbus.events.ScriptCallbackEvent
         val intStack = client.intStack

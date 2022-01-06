@@ -5,6 +5,7 @@ import meteor.config.ConfigManager
 import meteor.plugins.agility.AgilityPlugin
 import meteor.plugins.fishing.FishingPlugin
 import meteor.plugins.grounditems.GroundItemsPlugin
+import meteor.plugins.keyboardbankpin.KeyboardBankPinPlugin
 import meteor.plugins.stretchedmode.StretchedModePlugin
 import meteor.plugins.worldmap.WorldMapPlugin
 import rs117.hd.GpuHDEventAdapter
@@ -18,6 +19,7 @@ object PluginManager {
         initPlugin(FishingPlugin())
         initPlugin(AgilityPlugin())
         initPlugin(GroundItemsPlugin())
+        initPlugin(KeyboardBankPinPlugin())
         if (Configuration.allowGPU) {
             initPlugin(GpuHDPlugin())
             GpuHDEventAdapter.registerEvents()
