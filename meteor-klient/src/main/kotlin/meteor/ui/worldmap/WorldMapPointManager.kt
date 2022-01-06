@@ -24,6 +24,7 @@
  */
 package meteor.ui.worldmap
 
+import meteor.plugins.worldmap.WorldMapPoint
 import java.util.concurrent.CopyOnWriteArrayList
 import java.util.function.Predicate
 

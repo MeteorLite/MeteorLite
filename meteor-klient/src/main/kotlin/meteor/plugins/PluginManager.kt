@@ -51,6 +51,7 @@ object PluginManager {
 
         if (shouldEnable) {
             Thread {
+                plugin.registerSubscribers()
                 plugin.start()
                 plugin.onStart()
             }.start()

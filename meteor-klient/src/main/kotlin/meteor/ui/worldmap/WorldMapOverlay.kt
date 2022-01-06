@@ -27,6 +27,7 @@ package meteor.ui.worldmap
 import com.google.common.base.Splitter
 import com.google.common.base.Strings
 import meteor.FontManager
+import meteor.plugins.worldmap.WorldMapPoint
 import meteor.ui.overlay.Overlay
 import meteor.ui.overlay.OverlayLayer
 import meteor.ui.overlay.OverlayPosition
@@ -164,7 +165,7 @@ class WorldMapOverlay( val worldMapPointManager: WorldMapPointManager) : Overlay
                         entry.type = MenuAction.RUNELITE.id
                         entry.option = FOCUS_ON
                         entry.target = ColorUtil.wrapWithColorTag(worldPoint.name!!, JagexColors.MENU_TARGET)
-                        entry.identifier = target.plane shl 28 or (target.x shl 14) or target.y
+                        entry.identifier = target!!.plane shl 28 or (target.x shl 14) or target.y
                         mapMenuEntries.add(entry)
                     }
                 }
@@ -249,7 +250,7 @@ class WorldMapOverlay( val worldMapPointManager: WorldMapPointManager) : Overlay
 
     private fun drawTooltip(graphics: Graphics2D, worldPoint: WorldMapPoint) {
         val tooltip = worldPoint.tooltip
-        var drawPoint = mapWorldPointToGraphicsPoint(worldPoint.worldPoint)
+        var drawPoint = worldPoint.worldPoint?.let { mapWorldPointToGraphicsPoint(it) }
         if (tooltip == null || tooltip.length <= 0 || drawPoint == null) {
             return
         }

@@ -106,9 +106,6 @@ class GroundItemsPlugin : Plugin() {
     private var lastUsedItem = 0
     private val lootbeams: MutableMap<WorldPoint, Lootbeam> = HashMap()
 
-    init {
-        registerSubscribers()
-    }
     override fun onStart() {
         overlayManager.add(overlay)
         mouseManager.registerMouseListener(inputListener)

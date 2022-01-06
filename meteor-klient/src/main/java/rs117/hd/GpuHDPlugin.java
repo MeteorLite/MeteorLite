@@ -108,12 +108,6 @@ public class GpuHDPlugin extends Plugin implements DrawCallbacks
 	private final SceneUploader sceneUploader = new SceneUploader(this, proceduralGenerator);
 	private final ConfigManager configManager = ConfigManager.INSTANCE;
 
-	enum ComputeMode
-	{
-		OPENGL,
-		OPENCL,
-	}
-
 	private ComputeMode computeMode = ComputeMode.OPENGL;
 
 	private Canvas canvas;

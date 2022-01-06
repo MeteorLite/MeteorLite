@@ -25,20 +25,16 @@
  */
 package meteor.plugins.worldmap
 
-import com.google.inject.Inject
 import meteor.eventbus.events.ConfigChanged
 import meteor.eventbus.events.GameStateChanged
 import meteor.plugins.Plugin
 import meteor.plugins.PluginDescriptor
 import meteor.plugins.agility.AgilityShortcut
 import meteor.rs.ClientThread
-import meteor.ui.worldmap.WorldMapPoint
 import meteor.ui.worldmap.WorldMapPointManager
 import meteor.util.ImageUtil
 import net.runelite.api.*
 import net.runelite.api.coords.WorldPoint
-import net.runelite.api.events.StatChanged
-import net.runelite.api.events.WidgetLoaded
 import net.runelite.api.util.Text
 import net.runelite.api.widgets.WidgetID
 import java.awt.image.BufferedImage
@@ -86,7 +82,7 @@ class WorldMapPlugin : Plugin() {
             updateShownIcons()
     }
 
-    override fun onStatChanged():((Any)->Unit) = { it as  StatChanged
+    override fun onStatChanged():((Any)->Unit) = { it as  meteor.eventbus.events.StatChanged
         when (it.skill) {
             Skill.AGILITY -> {
                 val newAgilityLevel = it.boostedLevel
@@ -106,7 +102,7 @@ class WorldMapPlugin : Plugin() {
     }
 
 
-    override fun onWidgetLoaded():((Any)->Unit) = { it as  WidgetLoaded
+    override fun onWidgetLoaded():((Any)->Unit) = { it as  meteor.eventbus.events.WidgetLoaded
         if (it.groupId == WidgetID.WORLD_MAP_GROUP_ID) {
             updateQuestStartPointIcons()
         }
@@ -118,15 +114,15 @@ class WorldMapPlugin : Plugin() {
             Arrays.stream(AgilityShortcut.values())
                 .filter { value: AgilityShortcut -> value.worldMapLocation != null }
                 .map { l: AgilityShortcut ->
-                    WorldMapPoint.Builder()
+                    WorldMapPoint.builder()
                         .type(MapPoint.Type.AGILITY_SHORTCUT)
-                        .worldPoint(l.worldMapLocation)
+                        .worldPoint(l.worldMapLocation!!)
                         .image(
                             if (agilityLevel > 0 && config.agilityShortcutLevelIcon()
                                 && l.level > agilityLevel
-                            ) NOPE_ICON else BLANK_ICON
+                            ) NOPE_ICON!! else BLANK_ICON!!
                         )
-                        .tooltip(if (config.agilityShortcutTooltips()) l.tooltip else null)
+                        .tooltip(if (config.agilityShortcutTooltips()) l.tooltip else null!!)
                         .build()
                 }
                 .forEach { worldMapPoint: WorldMapPoint? -> worldMapPointManager.add(worldMapPoint!!) }
@@ -139,10 +135,10 @@ class WorldMapPlugin : Plugin() {
             Arrays.stream(AgilityCourseLocation.values())
                 .filter { true }
                 .map { l: AgilityCourseLocation ->
-                    WorldMapPoint.Builder()
+                    WorldMapPoint.builder()
                         .type(MapPoint.Type.AGILITY_COURSE)
                         .worldPoint(l.location)
-                        .image(if (config.agilityCourseRooftop() && l.rooftopCourse) ROOFTOP_COURSE_ICON else BLANK_ICON)
+                        .image(if (config.agilityCourseRooftop() && l.rooftopCourse) ROOFTOP_COURSE_ICON!! else BLANK_ICON!!)
                         .tooltip(if (config.agilityCourseTooltip()) l.tooltip else null)
                         .build()
                 }
@@ -156,10 +152,10 @@ class WorldMapPlugin : Plugin() {
             Arrays.stream(RareTreeLocation.values()).forEach { rareTree: RareTreeLocation ->
                 Arrays.stream(rareTree.locations)
                     .map { point: WorldPoint? ->
-                        WorldMapPoint.Builder()
+                        WorldMapPoint.builder()
                             .type(MapPoint.Type.RARE_TREE)
-                            .worldPoint(point)
-                            .image(if (woodcuttingLevel > 0 && config.rareTreeLevelIcon() && rareTree.levelReq > woodcuttingLevel) NOPE_ICON else BLANK_ICON)
+                            .worldPoint(point!!)
+                            .image(if (woodcuttingLevel > 0 && config.rareTreeLevelIcon() && rareTree.levelReq > woodcuttingLevel) NOPE_ICON!! else BLANK_ICON!!)
                             .tooltip(if (config.rareTreeTooltips()) rareTree.tooltip else null)
                             .build()
                     }
@@ -177,10 +173,10 @@ class WorldMapPlugin : Plugin() {
         if (config.fairyRingIcon() || config.fairyRingTooltips()) {
             Arrays.stream(FairyRingLocation.values())
                 .map { l: FairyRingLocation ->
-                    WorldMapPoint.Builder()
+                    WorldMapPoint.builder()
                         .type(MapPoint.Type.FAIRY_RING)
                         .worldPoint(l.location)
-                        .image(if (config.fairyRingIcon()) FAIRY_TRAVEL_ICON else BLANK_ICON)
+                        .image(if (config.fairyRingIcon()) FAIRY_TRAVEL_ICON!! else BLANK_ICON!!)
                         .tooltip(if (config.fairyRingTooltips()) "Fairy Ring - " + l.code else null)
                         .build()
                 }
@@ -190,10 +186,10 @@ class WorldMapPlugin : Plugin() {
         if (config.minigameTooltip()) {
             Arrays.stream(MinigameLocation.values())
                 .map { l: MinigameLocation ->
-                    WorldMapPoint.Builder()
+                    WorldMapPoint.builder()
                         .type(MapPoint.Type.MINIGAME)
                         .worldPoint(l.location)
-                        .image(BLANK_ICON)
+                        .image(BLANK_ICON!!)
                         .tooltip(l.tooltip)
                         .build()
                 }
@@ -203,11 +199,11 @@ class WorldMapPlugin : Plugin() {
         if (config.transportationTeleportTooltips()) {
             Arrays.stream(TransportationPointLocation.values())
                 .map { l: TransportationPointLocation ->
-                    WorldMapPoint.Builder()
+                    WorldMapPoint.builder()
                         .type(MapPoint.Type.TRANSPORTATION)
-                        .worldPoint(l.location)
-                        .image(BLANK_ICON)
-                        .target(l.target)
+                        .worldPoint(l.location!!)
+                        .image(BLANK_ICON!!)
+                        .target(l.target!!)
                         .jumpOnClick(l.target != null)
                         .name(Text.titleCase(l))
                         .tooltip(l.tooltip)
@@ -220,10 +216,10 @@ class WorldMapPlugin : Plugin() {
             Arrays.stream(FarmingPatchLocation.values()).forEach { location: FarmingPatchLocation ->
                 Arrays.stream(location.locations)
                     .map { point: WorldPoint? ->
-                        WorldMapPoint.Builder()
+                        WorldMapPoint.builder()
                             .type(MapPoint.Type.FARMING_PATCH)
-                            .worldPoint(point)
-                            .image(BLANK_ICON)
+                            .worldPoint(point!!)
+                            .image(BLANK_ICON!!)
                             .tooltip(location.tooltip)
                             .build()
                     }
@@ -245,7 +241,7 @@ class WorldMapPlugin : Plugin() {
                 }
             }
             .map { l: TeleportLocationData ->
-                WorldMapPoint.Builder()
+                WorldMapPoint.builder()
                     .type(MapPoint.Type.TELEPORT)
                     .worldPoint(l.location)
                     .tooltip(l.tooltip)
@@ -257,7 +253,7 @@ class WorldMapPlugin : Plugin() {
         if (config.runecraftingAltarIcon()) {
             Arrays.stream(RunecraftingAltarLocation.values())
                 .map { l: RunecraftingAltarLocation ->
-                    WorldMapPoint.Builder()
+                    WorldMapPoint.builder()
                         .type(MapPoint.Type.RUNECRAFT_ALTAR)
                         .worldPoint(l.location)
                         .image(ImageUtil.loadImageResource(WorldMapPlugin::class.java, l.iconPath))
@@ -270,10 +266,10 @@ class WorldMapPlugin : Plugin() {
         if (config.miningSiteTooltips()) {
             Arrays.stream(MiningSiteLocation.values())
                 .map { l: MiningSiteLocation ->
-                    WorldMapPoint.Builder()
+                    WorldMapPoint.builder()
                         .type(MapPoint.Type.MINING_SITE)
                         .worldPoint(l.location)
-                        .image(if (l.iconRequired) MINING_SITE_ICON else BLANK_ICON)
+                        .image(if (l.iconRequired) MINING_SITE_ICON!! else BLANK_ICON!!)
                         .tooltip(l.tooltip)
                         .build()
                 }
@@ -283,10 +279,10 @@ class WorldMapPlugin : Plugin() {
         if (config.dungeonTooltips()) {
             Arrays.stream(DungeonLocation.values())
                 .map { l: DungeonLocation ->
-                    WorldMapPoint.Builder()
+                    WorldMapPoint.builder()
                         .type(MapPoint.Type.DUNGEON)
                         .worldPoint(l.location)
-                        .image(BLANK_ICON)
+                        .image(BLANK_ICON!!)
                         .tooltip(l.tooltip)
                         .build()
                 }
@@ -296,10 +292,10 @@ class WorldMapPlugin : Plugin() {
         if (config.hunterAreaTooltips()) {
             Arrays.stream(HunterAreaLocation.values())
                 .map { l: HunterAreaLocation ->
-                    WorldMapPoint.Builder()
+                    WorldMapPoint.builder()
                         .type(MapPoint.Type.HUNTER)
                         .worldPoint(l.location)
-                        .image(BLANK_ICON)
+                        .image(BLANK_ICON!!)
                         .tooltip(l.tooltip)
                         .build()
                 }
@@ -310,10 +306,10 @@ class WorldMapPlugin : Plugin() {
             Arrays.stream(FishingSpotLocation.values()).forEach {
                 arrayOf(it)
                     .map { point:FishingSpotLocation ->
-                        WorldMapPoint.Builder()
+                        WorldMapPoint.builder()
                             .type(MapPoint.Type.FISHING)
                             .fishingPoint(point)
-                            .image(BLANK_ICON)
+                            .image(BLANK_ICON!!)
                             .build()
                     }
                     .forEach { worldMapPoint: WorldMapPoint -> worldMapPointManager.add(worldMapPoint) }
@@ -323,10 +319,10 @@ class WorldMapPlugin : Plugin() {
         if (config.kourendTaskTooltips()) {
             Arrays.stream(KourendTaskLocation.values())
                 .map { l: KourendTaskLocation ->
-                    WorldMapPoint.Builder()
+                    WorldMapPoint.builder()
                         .type(MapPoint.Type.KOUREND_TASK)
                         .worldPoint(l.location)
-                        .image(BLANK_ICON)
+                        .image(BLANK_ICON!!)
                         .tooltip(l.tooltip)
                         .build()
                 }
@@ -385,10 +381,10 @@ class WorldMapPlugin : Plugin() {
                 }
             }
         }
-        return WorldMapPoint.Builder()
+        return WorldMapPoint.builder()
             .type(MapPoint.Type.QUEST)
             .worldPoint(data.location)
-            .image(icon)
+            .image(icon!!)
             .tooltip(tooltip)
             .build()
     }

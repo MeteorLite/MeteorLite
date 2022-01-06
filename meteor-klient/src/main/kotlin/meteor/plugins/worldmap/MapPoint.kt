@@ -25,14 +25,9 @@
  */
 package meteor.plugins.worldmap
 
-import lombok.Getter
-
-import meteor.ui.worldmap.WorldMapPoint
 
 
-class MapPoint :WorldMapPoint.Builder()  {
-
-
+class MapPoint : WorldMapPoint()  {
     enum class Type {
         TELEPORT, RUNECRAFT_ALTAR, MINING_SITE, DUNGEON, HUNTER, FISHING, KOUREND_TASK, FARMING_PATCH, TRANSPORTATION, MINIGAME, FAIRY_RING, AGILITY_COURSE, AGILITY_SHORTCUT, QUEST, RARE_TREE
     }
