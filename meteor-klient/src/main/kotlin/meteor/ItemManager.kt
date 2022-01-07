@@ -43,25 +43,26 @@ import net.runelite.http.api.item.ItemPrice
 import net.runelite.http.api.item.ItemStats
 import java.awt.Color
 import java.awt.image.BufferedImage
-import java.lang.Exception
 import java.util.*
 import java.util.concurrent.ExecutionException
 import java.util.concurrent.TimeUnit
 import javax.annotation.Nonnull
+import kotlin.system.exitProcess
 
 object ItemManager {
     private val itemClient: ItemClient = ItemClient(httpClient)
-    private val itemImages: LoadingCache<ImageKey, AsyncBufferedImage>
-    private val itemCompositions: LoadingCache<Int, ItemComposition>
-    private val itemOutlines: LoadingCache<OutlineKey, BufferedImage>
+    var itemImages: LoadingCache<ImageKey, AsyncBufferedImage>
+    var itemCompositions: LoadingCache<Int, ItemComposition>
+    var itemOutlines: LoadingCache<OutlineKey, BufferedImage>
     var log = Logger.getLogger(ItemManager::class.java)
     private var itemPrices = emptyMap<Int, ItemPrice>()
     private var itemStats = emptyMap<Int, ItemStats>()
 
     init {
-        loadPrices()
-        loadStats()
-        itemImages = CacheBuilder.newBuilder()
+        try {
+            loadPrices()
+            loadStats()
+            itemImages = CacheBuilder.newBuilder()
                 .maximumSize(128L)
                 .expireAfterAccess(1, TimeUnit.HOURS)
                 .build(object : CacheLoader<ImageKey, AsyncBufferedImage>() {
@@ -69,7 +70,7 @@ object ItemManager {
                         return loadImage(key.itemId, key.itemQuantity, key.stackable)
                     }
                 })
-        itemCompositions = CacheBuilder.newBuilder()
+            itemCompositions = CacheBuilder.newBuilder()
                 .maximumSize(1024L)
                 .expireAfterAccess(1, TimeUnit.HOURS)
                 .build(object : CacheLoader<Int?, ItemComposition>() {
@@ -77,7 +78,7 @@ object ItemManager {
                         return client.getItemComposition(key!!)
                     }
                 })
-        itemOutlines = CacheBuilder.newBuilder()
+            itemOutlines = CacheBuilder.newBuilder()
                 .maximumSize(128L)
                 .expireAfterAccess(1, TimeUnit.HOURS)
                 .build(object : CacheLoader<OutlineKey, BufferedImage>() {
@@ -85,6 +86,10 @@ object ItemManager {
                         return loadItemOutline(key.itemId, key.itemQuantity, key.outlineColor)
                     }
                 })
+        } catch (e: Exception) {
+            println("No route for RuneLite item prices http-api... System.exit")
+            exitProcess(1)
+        }
         EventBus.subscribe(GameStateChanged::class.java, onGameStateChanged())
         EventBus.subscribe(PostItemComposition::class.java, onPostItemComposition())
     }
@@ -357,9 +362,9 @@ object ItemManager {
         }
     }
 
-    private class ImageKey(val itemId: Int, val itemQuantity: Int, val stackable: Boolean)
+    class ImageKey(val itemId: Int, val itemQuantity: Int, val stackable: Boolean)
 
-    private class OutlineKey(val itemId: Int, val itemQuantity: Int, val outlineColor: Color)
+    class OutlineKey(val itemId: Int, val itemQuantity: Int, val outlineColor: Color)
 
     private val WORN_ITEMS = ImmutableMap
             .builder<Int, Int>().put(ItemID.BOOTS_OF_LIGHTNESS_89, ItemID.BOOTS_OF_LIGHTNESS).put(ItemID.PENANCE_GLOVES_10554, ItemID.PENANCE_GLOVES).put(ItemID.GRACEFUL_HOOD_11851, ItemID.GRACEFUL_HOOD).put(ItemID.GRACEFUL_CAPE_11853, ItemID.GRACEFUL_CAPE).put(ItemID.GRACEFUL_TOP_11855, ItemID.GRACEFUL_TOP).put(ItemID.GRACEFUL_LEGS_11857, ItemID.GRACEFUL_LEGS).put(ItemID.GRACEFUL_GLOVES_11859, ItemID.GRACEFUL_GLOVES).put(ItemID.GRACEFUL_BOOTS_11861, ItemID.GRACEFUL_BOOTS).put(ItemID.GRACEFUL_HOOD_13580, ItemID.GRACEFUL_HOOD_13579).put(ItemID.GRACEFUL_CAPE_13582, ItemID.GRACEFUL_CAPE_13581).put(ItemID.GRACEFUL_TOP_13584, ItemID.GRACEFUL_TOP_13583).put(ItemID.GRACEFUL_LEGS_13586, ItemID.GRACEFUL_LEGS_13585).put(ItemID.GRACEFUL_GLOVES_13588, ItemID.GRACEFUL_GLOVES_13587).put(ItemID.GRACEFUL_BOOTS_13590, ItemID.GRACEFUL_BOOTS_13589).put(ItemID.GRACEFUL_HOOD_13592, ItemID.GRACEFUL_HOOD_13591).put(ItemID.GRACEFUL_CAPE_13594, ItemID.GRACEFUL_CAPE_13593).put(ItemID.GRACEFUL_TOP_13596, ItemID.GRACEFUL_TOP_13595).put(ItemID.GRACEFUL_LEGS_13598, ItemID.GRACEFUL_LEGS_13597).put(ItemID.GRACEFUL_GLOVES_13600, ItemID.GRACEFUL_GLOVES_13599).put(ItemID.GRACEFUL_BOOTS_13602, ItemID.GRACEFUL_BOOTS_13601).put(ItemID.GRACEFUL_HOOD_13604, ItemID.GRACEFUL_HOOD_13603).put(ItemID.GRACEFUL_CAPE_13606, ItemID.GRACEFUL_CAPE_13605).put(ItemID.GRACEFUL_TOP_13608, ItemID.GRACEFUL_TOP_13607).put(ItemID.GRACEFUL_LEGS_13610, ItemID.GRACEFUL_LEGS_13609).put(ItemID.GRACEFUL_GLOVES_13612, ItemID.GRACEFUL_GLOVES_13611).put(ItemID.GRACEFUL_BOOTS_13614, ItemID.GRACEFUL_BOOTS_13613).put(ItemID.GRACEFUL_HOOD_13616, ItemID.GRACEFUL_HOOD_13615).put(ItemID.GRACEFUL_CAPE_13618, ItemID.GRACEFUL_CAPE_13617).put(ItemID.GRACEFUL_TOP_13620, ItemID.GRACEFUL_TOP_13619).put(ItemID.GRACEFUL_LEGS_13622, ItemID.GRACEFUL_LEGS_13621).put(ItemID.GRACEFUL_GLOVES_13624, ItemID.GRACEFUL_GLOVES_13623).put(ItemID.GRACEFUL_BOOTS_13626, ItemID.GRACEFUL_BOOTS_13625).put(ItemID.GRACEFUL_HOOD_13628, ItemID.GRACEFUL_HOOD_13627).put(ItemID.GRACEFUL_CAPE_13630, ItemID.GRACEFUL_CAPE_13629).put(ItemID.GRACEFUL_TOP_13632, ItemID.GRACEFUL_TOP_13631).put(ItemID.GRACEFUL_LEGS_13634, ItemID.GRACEFUL_LEGS_13633).put(ItemID.GRACEFUL_GLOVES_13636, ItemID.GRACEFUL_GLOVES_13635).put(ItemID.GRACEFUL_BOOTS_13638, ItemID.GRACEFUL_BOOTS_13637).put(ItemID.GRACEFUL_HOOD_13668, ItemID.GRACEFUL_HOOD_13667).put(ItemID.GRACEFUL_CAPE_13670, ItemID.GRACEFUL_CAPE_13669).put(ItemID.GRACEFUL_TOP_13672, ItemID.GRACEFUL_TOP_13671).put(ItemID.GRACEFUL_LEGS_13674, ItemID.GRACEFUL_LEGS_13673).put(ItemID.GRACEFUL_GLOVES_13676, ItemID.GRACEFUL_GLOVES_13675).put(ItemID.GRACEFUL_BOOTS_13678, ItemID.GRACEFUL_BOOTS_13677).put(ItemID.GRACEFUL_HOOD_21063, ItemID.GRACEFUL_HOOD_21061).put(ItemID.GRACEFUL_CAPE_21066, ItemID.GRACEFUL_CAPE_21064).put(ItemID.GRACEFUL_TOP_21069, ItemID.GRACEFUL_TOP_21067).put(ItemID.GRACEFUL_LEGS_21072, ItemID.GRACEFUL_LEGS_21070).put(ItemID.GRACEFUL_GLOVES_21075, ItemID.GRACEFUL_GLOVES_21073).put(ItemID.GRACEFUL_BOOTS_21078, ItemID.GRACEFUL_BOOTS_21076).put(ItemID.GRACEFUL_HOOD_24745, ItemID.GRACEFUL_HOOD_24743).put(ItemID.GRACEFUL_CAPE_24748, ItemID.GRACEFUL_CAPE_24746).put(ItemID.GRACEFUL_TOP_24751, ItemID.GRACEFUL_TOP_24749).put(ItemID.GRACEFUL_LEGS_24754, ItemID.GRACEFUL_LEGS_24752).put(ItemID.GRACEFUL_GLOVES_24757, ItemID.GRACEFUL_GLOVES_24755).put(ItemID.GRACEFUL_BOOTS_24760, ItemID.GRACEFUL_BOOTS_24758).put(ItemID.GRACEFUL_HOOD_25071, ItemID.GRACEFUL_HOOD_25069).put(ItemID.GRACEFUL_CAPE_25074, ItemID.GRACEFUL_CAPE_25072).put(ItemID.GRACEFUL_TOP_25077, ItemID.GRACEFUL_TOP_25075).put(ItemID.GRACEFUL_LEGS_25080, ItemID.GRACEFUL_LEGS_25078).put(ItemID.GRACEFUL_GLOVES_25083, ItemID.GRACEFUL_GLOVES_25081).put(ItemID.GRACEFUL_BOOTS_25086, ItemID.GRACEFUL_BOOTS_25084).put(ItemID.MAX_CAPE_13342, ItemID.MAX_CAPE).put(ItemID.SPOTTED_CAPE_10073, ItemID.SPOTTED_CAPE).put(ItemID.SPOTTIER_CAPE_10074, ItemID.SPOTTIER_CAPE).put(ItemID.AGILITY_CAPET_13341, ItemID.AGILITY_CAPET).put(ItemID.AGILITY_CAPE_13340, ItemID.AGILITY_CAPE).build()

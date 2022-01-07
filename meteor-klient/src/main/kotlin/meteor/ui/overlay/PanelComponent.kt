@@ -34,25 +34,25 @@ class PanelComponent : LayoutableRenderableEntity {
     override val bounds = Rectangle()
 
     val children: ArrayList<LayoutableRenderableEntity> = ArrayList<LayoutableRenderableEntity>()
-    private val childDimensions = Dimension()
+    val childDimensions = Dimension()
 
-    override var preferredLocation = Point()
+    override var preferredLocation: Point? = Point()
 
-    override var preferredSize = Dimension(ComponentConstants.STANDARD_WIDTH, 0)
+    override var preferredSize: Dimension? = Dimension(ComponentConstants.STANDARD_WIDTH, 0)
 
-    var backgroundColor: Color = ComponentConstants.STANDARD_BACKGROUND_COLOR
+    var backgroundColor = ComponentConstants.STANDARD_BACKGROUND_COLOR
 
-    private val orientation: ComponentOrientation = ComponentOrientation.VERTICAL
+    val orientation: ComponentOrientation = ComponentOrientation.VERTICAL
 
-    private val wrap = false
+    val wrap = false
 
-    private val border = Rectangle(
+    var border = Rectangle(
             ComponentConstants.STANDARD_BORDER,
             ComponentConstants.STANDARD_BORDER,
             ComponentConstants.STANDARD_BORDER,
             ComponentConstants.STANDARD_BORDER)
 
-    private val gap = Point(0, 0)
+    var gap = Point(0, 0)
 
     override fun render(graphics: Graphics2D): Dimension? {
         if (children.isEmpty()) {
@@ -71,8 +71,8 @@ class PanelComponent : LayoutableRenderableEntity {
         backgroundComponent.render(graphics)
 
         // Offset children
-        val baseX = preferredLocation.x + border.x
-        val baseY = preferredLocation.y + border.y
+        val baseX = preferredLocation!!.x + border.x
+        val baseY = preferredLocation!!.y + border.y
         var width = 0
         var height = 0
         var x = baseX
@@ -80,8 +80,8 @@ class PanelComponent : LayoutableRenderableEntity {
 
         // Create child preferred size
         val childPreferredSize = Dimension(
-                preferredSize.width - border.x - border.width,
-                preferredSize.height - border.y - border.height)
+                preferredSize!!.width - border.x - border.width,
+                preferredSize!!.height - border.y - border.height)
 
         // Calculate max width/height for infoboxes
         var totalHeight = 0

@@ -1,6 +1,7 @@
 package meteor
 
 import Main.client
+import Main.overlayRenderer
 import meteor.eventbus.EventBus
 import meteor.eventbus.events.BeforeMenuRender
 import meteor.eventbus.events.BeforeRender
@@ -100,7 +101,7 @@ class Hooks : Callbacks {
     override fun drawScene() {
         val graphics2d: Graphics2D = getGraphics(client.bufferProvider as MainBufferProvider)
         try {
-            OverlayRenderer.renderOverlayLayer(graphics2d, OverlayLayer.ABOVE_SCENE)
+            overlayRenderer.renderOverlayLayer(graphics2d, OverlayLayer.ABOVE_SCENE)
         } catch (ex: java.lang.Exception) {
             ex.printStackTrace()
         }
@@ -118,7 +119,7 @@ class Hooks : Callbacks {
         val graphics2d: Graphics2D = getGraphics(mainBufferProvider)
 
         try {
-            OverlayRenderer.renderOverlayLayer(graphics2d, OverlayLayer.ALWAYS_ON_TOP)
+            overlayRenderer.renderOverlayLayer(graphics2d, OverlayLayer.ALWAYS_ON_TOP)
         } catch (ex: java.lang.Exception) {
             ex.printStackTrace()
         }
@@ -185,24 +186,24 @@ class Hooks : Callbacks {
     }
 
     override fun drawInterface(interfaceId: Int, widgetItems: MutableList<WidgetItem>) {
-/*        val graphics2d: Graphics2D = getGraphics(client.bufferProvider as MainBufferProvider)
+        val graphics2d: Graphics2D = getGraphics(client.bufferProvider as MainBufferProvider)
 
         try {
-            OverlayRenderer.renderAfterInterface(graphics2d, interfaceId, widgetItems)
+            overlayRenderer.renderAfterInterface(graphics2d, interfaceId, widgetItems)
         } catch (ex: java.lang.Exception) {
             ex.printStackTrace()
-        }*/
+        }
     }
 
     override fun drawLayer(layer: Widget, widgetItems: MutableList<WidgetItem>) {
-/*        val bufferProvider = client.bufferProvider as MainBufferProvider
+        val bufferProvider = client.bufferProvider as MainBufferProvider
         val graphics2d: Graphics2D = getGraphics(bufferProvider)
 
         try {
-            OverlayRenderer.renderAfterLayer(graphics2d, layer, widgetItems)
+            overlayRenderer.renderAfterLayer(graphics2d, layer, widgetItems)
         } catch (ex: Exception) {
             ex.printStackTrace()
-        }*/
+        }
     }
 
     private fun getGraphics(mainBufferProvider: MainBufferProvider): Graphics2D {

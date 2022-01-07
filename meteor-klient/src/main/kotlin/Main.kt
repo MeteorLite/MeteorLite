@@ -7,15 +7,19 @@ import meteor.*
 import meteor.config.ConfigManager
 import meteor.eventbus.EventBus
 import meteor.eventbus.events.GameTick
+import meteor.input.KeyManager
+import meteor.input.MouseManager
 import meteor.plugins.PluginManager
 import meteor.rs.Applet
 import meteor.rs.AppletConfiguration
 import meteor.ui.OverlayManager
+import meteor.ui.OverlayRenderer
 import meteor.ui.UI
 import meteor.ui.themes.MeteorliteTheme
 import meteor.util.ExecutorServiceExceptionLogger
 import net.runelite.api.Client
 import net.runelite.api.hooks.Callbacks
+import net.runelite.http.api.xp.XpClient
 import okhttp3.OkHttpClient
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.get
@@ -26,7 +30,9 @@ object Main: KoinComponent {
     lateinit var client: Client
     lateinit var callbacks: Callbacks
     val httpClient = OkHttpClient()
+    val xpClient = XpClient(httpClient)
     val overlayManager = OverlayManager
+    val overlayRenderer = OverlayRenderer()
     val fontManager = FontManager
     val itemManager = ItemManager
     val executor = ExecutorServiceExceptionLogger(Executors.newSingleThreadScheduledExecutor())

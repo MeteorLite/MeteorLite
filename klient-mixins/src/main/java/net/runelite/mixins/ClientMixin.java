@@ -2019,4 +2019,45 @@ public abstract class ClientMixin implements RSClient {
   public static void rs$doCheat(String s) {
 
   }
+
+  @Copy("menuAction")
+  @Replace("menuAction")
+  static void copy$menuAction(int param0, int param1, int opcode, int id, String option,
+                              String target, int canvasX, int canvasY) {
+    /*
+     * The RuneScape client may deprioritize an action in the menu by incrementing the opcode with 2000,
+     * undo it here so we can get the correct opcode
+     */
+    boolean decremented = false;
+    if (opcode >= 2000) {
+      decremented = true;
+      opcode -= 2000;
+    }
+
+    final MenuOptionClicked menuOptionClicked = new MenuOptionClicked(param0, option, target, MenuAction.of(opcode),
+            id, client.getSelectedItemSlot(), canvasX, canvasY);
+
+    // Do not forward automated interaction events to eventbus
+    if (!menuOptionClicked.isAutomated()) {
+      client.getCallbacks().post(MenuOptionClicked.class, menuOptionClicked);
+    }
+
+    if (menuOptionClicked.isConsumed()) {
+      return;
+    }
+
+    client.getLogger().debug(
+            "|MenuAction|: MenuOption={} MenuTarget={} Id={} Opcode={}/{} Param0={} Param1={} CanvasX={} CanvasY={}",
+            menuOptionClicked.getMenuOption(), menuOptionClicked.getMenuTarget(), menuOptionClicked.getId(),
+            menuOptionClicked.getMenuAction(), opcode + (decremented ? 2000 : 0),
+            menuOptionClicked.getActionParam(), menuOptionClicked.getWidgetId(), canvasX, canvasY
+    );
+    copy$menuAction(menuOptionClicked.getActionParam(), param1,
+            menuOptionClicked.getMenuAction() == UNKNOWN ? opcode
+                    : menuOptionClicked.getMenuAction().getId(),
+            menuOptionClicked.getId(), menuOptionClicked.getMenuOption(),
+            menuOptionClicked.getMenuTarget(),
+            canvasX, canvasY);
+  }
+
 }

@@ -8,6 +8,7 @@ import net.runelite.api.widgets.WidgetItem
 import java.awt.Dimension
 import java.awt.Point
 import java.util.*
+import java.util.function.Predicate
 
 object OverlayManager {
     private const val OVERLAY_CONFIG_PREFERRED_LOCATION = "_preferredLocation"
@@ -61,11 +62,11 @@ object OverlayManager {
 
     private fun loadOverlay(overlay: Overlay) {
         val location: Point? = loadOverlayLocation(overlay)
-        overlay.preferredLocation = location!!
+        overlay.preferredLocation = location
         val size: Dimension? = loadOverlaySize(overlay)
-        overlay.preferredSize = size!!
-        val position: OverlayPosition? = loadOverlayPosition(overlay)
-        overlay.preferredPosition = position!!
+        overlay.preferredSize = size
+        val position: OverlayPosition = loadOverlayPosition(overlay)
+        overlay.preferredPosition = position
     }
 
     private fun updateOverlayConfig(overlay: Overlay) {
@@ -87,20 +88,19 @@ object OverlayManager {
         val key: String = overlay.name + OVERLAY_CONFIG_PREFERRED_POSITION
     }
 
-    private fun loadOverlayLocation(overlay: Overlay): Point {
+    private fun loadOverlayLocation(overlay: Overlay): Point? {
         val key: String = overlay.name + OVERLAY_CONFIG_PREFERRED_LOCATION
         return overlay.preferredLocation
     }
 
-    private fun loadOverlaySize(overlay: Overlay): Dimension {
+    private fun loadOverlaySize(overlay: Overlay): Dimension? {
         val key: String = overlay.name + OVERLAY_CONFIG_PREFERRED_SIZE
         return overlay.preferredSize
     }
 
     private fun loadOverlayPosition(overlay: Overlay): OverlayPosition {
         val locationKey: String = overlay.name + OVERLAY_CONFIG_PREFERRED_POSITION
-        return overlay.preferredPosition
-        TODO()
+        return overlay.preferredPosition!!
     }
 
     @Synchronized
@@ -121,6 +121,27 @@ object OverlayManager {
     fun remove(vararg overlays: Overlay?) {
         for (overlay in overlays) remove(overlay)
     }
+
+    @Synchronized
+    fun removeIf(filter: Predicate<Overlay?>?): Boolean {
+        val removeIf = overlays.removeIf(filter!!)
+        if (removeIf) {
+            rebuildOverlayLayers()
+        }
+        return removeIf
+    }
+
+    /**
+     * Returns whether an overlay exists which matches the given predicate.
+     *
+     * @param filter Filter predicate function
+     * @return `true` if any overlays match the given filter, `false` otherwise
+     */
+    @Synchronized
+    fun anyMatch(filter: Predicate<Overlay?>?): Boolean {
+        return overlays.stream().anyMatch(filter)
+    }
+
 
     @Synchronized
     fun clear() {
@@ -158,5 +179,10 @@ object OverlayManager {
             overlayMap[key].sortWith(OVERLAY_COMPARATOR)
         }
         this.overlayMap = overlayMap
+    }
+
+    @Synchronized
+    fun resetOverlay(overlay: Overlay) {
+        overlay.preferredSize = (null)
     }
 }

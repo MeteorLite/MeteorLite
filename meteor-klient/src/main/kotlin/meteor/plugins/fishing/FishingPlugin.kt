@@ -34,9 +34,8 @@ class FishingPlugin: Plugin() {
         if (it.source == client.localPlayer) {
             if (it.target is NPC) {
                 val target: Actor = it.target as NPC
-
-                val npc = target as NPC
-                val spot: FishingSpot? = FishingSpot.findSpot(npc.id)
+                target as NPC
+                val spot: FishingSpot? = FishingSpot.findSpot(target.id)
 
                 spot.also { currentSpot = spot }
             }

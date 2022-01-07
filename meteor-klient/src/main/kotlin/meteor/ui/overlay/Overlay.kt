@@ -40,16 +40,16 @@ abstract class Overlay(var layer: OverlayLayer = OverlayLayer.ABOVE_SCENE)
     : LayoutableRenderableEntity,EventSubscriber() {
     val client = Main.client
     val drawHooks: MutableList<Int> = ArrayList()
-    val menuEntries: List<OverlayMenuEntry> = ArrayList()
-    override var preferredLocation: Point = Point(0,0)
-    override var preferredSize: Dimension = Dimension(50,50)
-    var preferredPosition= OverlayPosition.TOP_LEFT
+    val menuEntries: ArrayList<OverlayMenuEntry> = ArrayList()
+    override var preferredLocation: Point? = null
+    override var preferredSize: Dimension? = null
+    var preferredPosition : OverlayPosition? = OverlayPosition.TOP_LEFT
     override val bounds = Rectangle()
     var position = OverlayPosition.TOP_LEFT
     var priority: OverlayPriority = OverlayPriority.NONE
     var resizable = false
     private val minimumSize = 32
-    private val resettable = true
+    val resettable = true
 
     /**
      * Whether this overlay can be dragged onto other overlays &amp; have other overlays dragged onto

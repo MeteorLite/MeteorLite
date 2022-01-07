@@ -30,9 +30,9 @@ import java.awt.Color
 import java.awt.Dimension
 import java.awt.Graphics2D
 
-abstract class OverlayPanel protected constructor() : Overlay() {
-    private val panelComponent: PanelComponent = PanelComponent()
+abstract class OverlayPanel : Overlay() {
 
+    val panelComponent: PanelComponent = PanelComponent()
     /**
      * Enables/disables automatic clearing of [OverlayPanel.getPanelComponent] children after
      * rendering (enabled by default)
@@ -55,12 +55,13 @@ abstract class OverlayPanel protected constructor() : Overlay() {
     }
 
     override fun render(graphics: Graphics2D): Dimension? {
-        val oldSize: Dimension = panelComponent.preferredSize
+        val oldSize: Dimension? = panelComponent.preferredSize
+        if (preferredSize != null)
         panelComponent.preferredSize = (preferredSize)
         if (dynamicFont) {
-            if (preferredSize.width >= (ComponentConstants.STANDARD_WIDTH * 1.3)) {
+            if (preferredSize!!.width >= (ComponentConstants.STANDARD_WIDTH * 1.3)) {
                 graphics.font = FontManager.runescapeBoldFont
-            } else if (preferredSize.width <= ComponentConstants.STANDARD_WIDTH * 0.8) {
+            } else if (preferredSize!!.width <= ComponentConstants.STANDARD_WIDTH * 0.8) {
                 graphics.font = FontManager.runescapeSmallFont
             }
         }

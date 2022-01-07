@@ -26,8 +26,4 @@ package meteor.ui.overlay
 
 import net.runelite.api.MenuAction
 
-class OverlayMenuEntry {
-    val menuAction: MenuAction? = null
-    lateinit var option: String
-    lateinit var target: String
-}
+class OverlayMenuEntry(val menuAction: MenuAction, val option: String, val target: String)

@@ -8,6 +8,7 @@ import meteor.plugins.grounditems.GroundItemsPlugin
 import meteor.plugins.keyboardbankpin.KeyboardBankPinPlugin
 import meteor.plugins.stretchedmode.StretchedModePlugin
 import meteor.plugins.worldmap.WorldMapPlugin
+import meteor.plugins.xptracker.XpTrackerPlugin
 import rs117.hd.GpuHDEventAdapter
 import rs117.hd.GpuHDPlugin
 import java.lang.RuntimeException
@@ -26,6 +27,7 @@ object PluginManager {
         }
         initPlugin(StretchedModePlugin())
         initPlugin(WorldMapPlugin())
+        initPlugin(XpTrackerPlugin())
     }
 
     fun initPlugin(plugin: Plugin) {

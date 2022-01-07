@@ -5,9 +5,12 @@ import Main.fontManager
 import Main.overlayManager
 import com.google.common.base.MoreObjects
 import com.google.common.primitives.Ints
-import meteor.Event
 import meteor.eventbus.EventBus
 import meteor.eventbus.events.BeforeRender
+import meteor.input.KeyListener
+import meteor.input.KeyManager
+import meteor.input.MouseAdapter
+import meteor.input.MouseManager
 import meteor.rs.ClientThread
 import meteor.ui.overlay.*
 import meteor.util.JagexColors
@@ -17,23 +20,186 @@ import net.runelite.api.widgets.WidgetInfo
 import net.runelite.api.widgets.WidgetItem
 import java.awt.*
 import java.awt.Point
+import java.awt.event.KeyEvent
+import java.awt.event.MouseEvent
+import javax.swing.SwingUtilities
 
-object OverlayRenderer {
+class OverlayRenderer : KeyListener, MouseAdapter() {
 
     init {
-        EventBus.subscribe(BeforeRender.javaClass, beforeRender())
+        KeyManager.registerKeyListener(this, javaClass)
+        MouseManager.registerMouseListener(this)
+        EventBus.subscribe(BeforeRender::class.java, onBeforeRender())
+        EventBus.subscribe(meteor.eventbus.events.ClientTick::class.java, onClientTick())
     }
 
-    private fun beforeRender(): (Any) -> Unit = {
+    fun onClientTick(): (Any) -> Unit = {
+        if (menuEntries != null) {
+            val shift = client.isKeyPressed(KeyCode.KC_SHIFT)
+
+            if (!client.isMenuOpen) {
+                val clientMenuEntries = client.menuEntries
+                val newEntries = arrayOfNulls<MenuEntry>(clientMenuEntries.size + menuEntries!!.size)
+                newEntries[0] = clientMenuEntries[0] // Keep cancel at 0
+                System.arraycopy(menuEntries, 0, newEntries, 1, menuEntries!!.size) // Add overlay menu entries
+                System.arraycopy(
+                    clientMenuEntries, 1, newEntries, menuEntries!!.size + 1,
+                    clientMenuEntries.size - 1
+                ) // Add remaining menu entries
+                client.menuEntries = newEntries
+            }
+        }
+
+    }
+
+    fun onBeforeRender(): (Any) -> Unit = {
         ClientThread.invoke {
-            onBeforeRender()
+            menuEntries = null
+            if (focusedOverlay == null && prevFocusedOverlay != null) {
+                prevFocusedOverlay!!.onMouseExit()
+            }
+            prevFocusedOverlay = focusedOverlay
+            focusedOverlay = null
+            if (client.gameState == GameState.LOGGED_IN) {
+                if (shouldInvalidateBounds()) {
+                    emptySnapCorners = buildSnapCorners()
+                }
+                if (emptySnapCorners == null)
+                    emptySnapCorners = buildSnapCorners()
+                // Create copy of snap corners because overlays will modify them
+                snapCorners = OverlayBounds(other = emptySnapCorners!!)
+            }
         }
     }
 
-    private const val BORDER = 5
-    private const val BORDER_TOP = 0
-    private const val PADDING = 2
-    private const val OVERLAY_RESIZE_TOLERANCE = 5
+
+    override fun keyTyped(e: KeyEvent?) {
+    }
+
+    override fun keyPressed(e: KeyEvent?) {
+        if (e!!.isAltDown) {
+            println("should be managing")
+            inOverlayManagingMode = true
+        }
+    }
+
+    override fun keyReleased(e: KeyEvent?) {
+        if (!e!!.isAltDown && inOverlayManagingMode) {
+            inOverlayManagingMode = false
+            resetOverlayManagementMode()
+        }
+    }
+
+
+    override fun mousePressed(mouseEvent: MouseEvent): MouseEvent {
+        if (!inOverlayManagingMode) {
+            return mouseEvent
+        }
+        val mousePoint = mouseEvent.point
+        mousePosition.location = mousePoint
+
+        // See if we've clicked on an overlay
+        currentManagedOverlay = findMangedOverlay(mousePoint)
+        if (currentManagedOverlay == null) {
+            return mouseEvent
+        }
+        if (SwingUtilities.isRightMouseButton(mouseEvent)) {
+            if (currentManagedOverlay!!.resettable) {
+                overlayManager.resetOverlay(currentManagedOverlay!!)
+            }
+        } else if (SwingUtilities.isLeftMouseButton(mouseEvent)) {
+            val offset = Point(mousePoint.x, mousePoint.y)
+            offset.translate(-currentManagedOverlay!!.bounds.x, -currentManagedOverlay!!.bounds.y)
+            overlayOffset.location = offset
+            inOverlayResizingMode = (currentManagedOverlay != null && currentManagedOverlay!!.resizable)
+            inOverlayDraggingMode = !inOverlayResizingMode
+            startedMovingOverlay = true
+            currentManagedBounds = Rectangle(currentManagedOverlay!!.bounds)
+        } else {
+            return mouseEvent
+        }
+        mouseEvent.consume()
+        return mouseEvent
+    }
+
+    override fun mouseMoved(mouseEvent: MouseEvent): MouseEvent {
+        if (!inOverlayManagingMode) {
+            return mouseEvent
+        }
+        val mousePoint = mouseEvent.point
+        mousePosition.location = mousePoint
+        if (!inOverlayResizingMode && !inOverlayDraggingMode) {
+            currentManagedOverlay = findMangedOverlay(mousePoint)
+        }
+        if (currentManagedOverlay == null || !currentManagedOverlay!!.resizable) {
+            return mouseEvent
+        }
+        val toleranceRect: Rectangle = Rectangle(currentManagedOverlay!!.bounds)
+        toleranceRect.grow(
+            -OVERLAY_RESIZE_TOLERANCE,
+            -OVERLAY_RESIZE_TOLERANCE
+        )
+        val outcode = toleranceRect.outcode(mouseEvent.point)
+/*            when (outcode) {
+                Rectangle.OUT_TOP -> meteorUI.setCursor(Cursor.getPredefinedCursor(Cursor.N_RESIZE_CURSOR))
+                Rectangle.OUT_TOP or Rectangle.OUT_LEFT -> meteorUI.setCursor(Cursor.getPredefinedCursor(Cursor.NW_RESIZE_CURSOR))
+                Rectangle.OUT_LEFT -> meteorUI.setCursor(Cursor.getPredefinedCursor(Cursor.W_RESIZE_CURSOR))
+                Rectangle.OUT_LEFT or Rectangle.OUT_BOTTOM -> meteorUI.setCursor(Cursor.getPredefinedCursor(Cursor.SW_RESIZE_CURSOR))
+                Rectangle.OUT_BOTTOM -> meteorUI.setCursor(Cursor.getPredefinedCursor(Cursor.S_RESIZE_CURSOR))
+                Rectangle.OUT_BOTTOM or Rectangle.OUT_RIGHT -> meteorUI.setCursor(Cursor.getPredefinedCursor(Cursor.SE_RESIZE_CURSOR))
+                Rectangle.OUT_RIGHT -> meteorUI.setCursor(Cursor.getPredefinedCursor(Cursor.E_RESIZE_CURSOR))
+                Rectangle.OUT_RIGHT or Rectangle.OUT_TOP -> meteorUI.setCursor(Cursor.getPredefinedCursor(Cursor.NE_RESIZE_CURSOR))
+                else ->         // center
+                    meteorUI.setCursor(meteorUI.getDefaultCursor())
+            }*/
+        return mouseEvent
+    }
+
+    override fun mouseReleased(mouseEvent: MouseEvent): MouseEvent {
+        if (!inOverlayManagingMode || currentManagedOverlay == null || (!inOverlayDraggingMode
+                    && !inOverlayResizingMode)
+        ) {
+            return mouseEvent
+        }
+        mousePosition.setLocation(-1, -1)
+        if (dragTargetOverlay != null) {
+            if (dragTargetOverlay!!.onDrag(currentManagedOverlay)) {
+                mouseEvent.consume()
+                resetOverlayManagementMode()
+                return mouseEvent
+            }
+        }
+
+        // Check if the overlay is over a snapcorner and move it if so, unless it is a detached overlay
+        if (currentManagedOverlay!!.position != OverlayPosition.DETACHED && inOverlayDraggingMode) {
+            val snapCorners = emptySnapCorners!!.translated(
+                -SNAP_CORNER_SIZE.width,
+                -SNAP_CORNER_SIZE.height
+            )
+            for (snapCorner in snapCorners.bounds) {
+                if (snapCorner!!.contains(mouseEvent.point)) {
+                    var position: OverlayPosition? = snapCorners.fromBounds(snapCorner)
+                    if (position == currentManagedOverlay!!.position) {
+                        // overlay moves back to default position
+                        //position = null
+                    }
+                    currentManagedOverlay!!.preferredPosition = (position)
+                    currentManagedOverlay!!.preferredLocation = (null) // from dragging
+                    break
+                }
+            }
+        }
+        //overlayManager.saveOverlay(currentManagedOverlay)
+        resetOverlayManagementMode()
+        mouseEvent.consume()
+        return mouseEvent
+    }
+
+
+    private val BORDER = 5
+    private val BORDER_TOP = 0
+    private val PADDING = 2
+    private val OVERLAY_RESIZE_TOLERANCE = 5
     private val SNAP_CORNER_SIZE = Dimension(80, 80)
     private val SNAP_CORNER_COLOR = Color(0, 255, 255, 50)
     private val SNAP_CORNER_ACTIVE_COLOR = Color(0, 255, 0, 100)
@@ -45,13 +211,13 @@ object OverlayRenderer {
     // Overlay movement variables
     private val overlayOffset = Point()
     private val mousePosition = Point()
-    private val currentManagedOverlay: Overlay? = null
+    private var currentManagedOverlay: Overlay? = null
     private var dragTargetOverlay: Overlay? = null
-    private val currentManagedBounds: Rectangle? = null
-    private const val inOverlayManagingMode = false
-    private const val inOverlayResizingMode = false
-    private const val inOverlayDraggingMode = false
-    private const val startedMovingOverlay = false
+    private var currentManagedBounds: Rectangle? = null
+    private var inOverlayManagingMode = false
+    private var inOverlayResizingMode = false
+    private var inOverlayDraggingMode = false
+    private var startedMovingOverlay = false
     private var menuEntries: Array<MenuEntry>? = null
 
     // Overlay state validation
@@ -65,6 +231,7 @@ object OverlayRenderer {
     // focused overlay
     private var focusedOverlay: Overlay? = null
     private var prevFocusedOverlay: Overlay? = null
+
 
     private fun getViewportLayer(): Widget? {
         return if (client.isResized) {
@@ -105,25 +272,6 @@ object OverlayRenderer {
         return changed
     }
 
-
-    fun onBeforeRender() {
-        menuEntries = null
-        if (focusedOverlay == null && prevFocusedOverlay != null) {
-            prevFocusedOverlay!!.onMouseExit()
-        }
-        prevFocusedOverlay = focusedOverlay
-        focusedOverlay = null
-        if (client.gameState == GameState.LOGGED_IN) {
-            if (shouldInvalidateBounds()) {
-                emptySnapCorners = buildSnapCorners()
-            }
-            if (emptySnapCorners == null)
-            emptySnapCorners = buildSnapCorners()
-            // Create copy of snap corners because overlays will modify them
-            snapCorners = OverlayBounds(other = emptySnapCorners!!)
-        }
-    }
-
     private fun buildSnapCorners(): OverlayBounds {
         val viewportWidget: Widget? = getViewportLayer()
         val viewport = if (viewportWidget != null) viewportWidget.bounds else Rectangle()
@@ -131,36 +279,36 @@ object OverlayRenderer {
             viewport!!.x + BORDER,
             viewport!!.y + BORDER_TOP)
         val topCenterPoint = Point(
-                viewport!!.x + viewport!!.width / 2,
-                viewport!!.y + BORDER
+            viewport!!.x + viewport!!.width / 2,
+            viewport!!.y + BORDER
         )
         val topRightPoint = Point(
-                viewport!!.x + viewport!!.width - BORDER,
-                topCenterPoint.y)
+            viewport!!.x + viewport!!.width - BORDER,
+            topCenterPoint.y)
         val bottomLeftPoint = Point(
-                topLeftPoint.x,
-                viewport!!.y + viewport!!.height - BORDER)
+            topLeftPoint.x,
+            viewport!!.y + viewport!!.height - BORDER)
         val bottomRightPoint = Point(
-                topRightPoint.x,
-                bottomLeftPoint.y)
+            topRightPoint.x,
+            bottomLeftPoint.y)
 
         // Check to see if chat box is minimized
         if (isResizeable && chatboxHidden) {
             bottomLeftPoint.y += chatboxBounds!!.height
         }
         val rightChatboxPoint = if (isResizeable) Point(
-                viewport!!.x + chatboxBounds!!.width - BORDER,
-                bottomLeftPoint.y) else bottomRightPoint
+            viewport!!.x + chatboxBounds!!.width - BORDER,
+            bottomLeftPoint.y) else bottomRightPoint
         val canvasTopRightPoint = if (isResizeable) Point(client.realDimensions.getWidth().toInt(),
-                0) else topRightPoint
+            0) else topRightPoint
         return OverlayBounds(
-                Rectangle(topLeftPoint, SNAP_CORNER_SIZE),
-                Rectangle(topCenterPoint, SNAP_CORNER_SIZE),
-                Rectangle(topRightPoint, SNAP_CORNER_SIZE),
-                Rectangle(bottomLeftPoint, SNAP_CORNER_SIZE),
-                Rectangle(bottomRightPoint, SNAP_CORNER_SIZE),
-                Rectangle(rightChatboxPoint, SNAP_CORNER_SIZE),
-                Rectangle(canvasTopRightPoint, SNAP_CORNER_SIZE))
+            Rectangle(topLeftPoint, SNAP_CORNER_SIZE),
+            Rectangle(topCenterPoint, SNAP_CORNER_SIZE),
+            Rectangle(topRightPoint, SNAP_CORNER_SIZE),
+            Rectangle(bottomLeftPoint, SNAP_CORNER_SIZE),
+            Rectangle(bottomRightPoint, SNAP_CORNER_SIZE),
+            Rectangle(rightChatboxPoint, SNAP_CORNER_SIZE),
+            Rectangle(canvasTopRightPoint, SNAP_CORNER_SIZE))
     }
 
 
@@ -182,7 +330,7 @@ object OverlayRenderer {
     }
 
     private fun getCorrectedOverlayPosition(overlay: Overlay): OverlayPosition {
-        var overlayPosition: OverlayPosition
+        var overlayPosition: OverlayPosition?
         overlayPosition = overlay.preferredPosition
         if (!isResizeable) {
             // On fixed mode, ABOVE_CHATBOX_RIGHT is in the same location as
@@ -194,7 +342,7 @@ object OverlayRenderer {
                 OverlayPosition.ABOVE_CHATBOX_RIGHT -> overlayPosition = OverlayPosition.BOTTOM_RIGHT
             }
         }
-        return overlayPosition
+        return overlayPosition!!
     }
 
     fun transformPosition(position: OverlayPosition?, dimension: Dimension): Point {
@@ -236,12 +384,12 @@ object OverlayRenderer {
 
         // Constrain overlay position to be within the parent bounds
         return Point(
-                Ints.constrainToRange(overlayX, parentBounds.x,
-                    parentBounds.x.coerceAtLeast(parentBounds.width - overlayWidth)
-                ),
-                Ints.constrainToRange(overlayY, parentBounds.y,
-                    parentBounds.y.coerceAtLeast(parentBounds.height - overlayHeight)
-                )
+            Ints.constrainToRange(overlayX, parentBounds.x,
+                parentBounds.x.coerceAtLeast(parentBounds.width - overlayWidth)
+            ),
+            Ints.constrainToRange(overlayY, parentBounds.y,
+                parentBounds.y.coerceAtLeast(parentBounds.height - overlayHeight)
+            )
         )
     }
 
@@ -250,7 +398,7 @@ object OverlayRenderer {
         if (menuEntries.isEmpty()) {
             return null
         }
-        val entries = ArrayList<MenuEntry>(menuEntries.size)
+        val entries = ArrayList<MenuEntry>()
 
         // Add in reverse order so they display correctly in the right-click menu
         for (i in menuEntries.indices.reversed()) {
@@ -260,9 +408,9 @@ object OverlayRenderer {
             entry.target = meteor.util.ColorUtil.wrapWithColorTag(overlayMenuEntry.target, JagexColors.MENU_TARGET)
             entry.type = overlayMenuEntry.menuAction!!.id
             entry.identifier = overlayManager.overlays.indexOf(overlay) // overlay id
-            entries[i] = entry
+            entries.add(entry)
         }
-        return entries.toArray() as Array<MenuEntry>?
+        return entries.toArray(arrayOf(MenuEntry()))
     }
 
     fun renderAfterInterface(graphics: Graphics2D, interfaceId: Int,
@@ -276,16 +424,16 @@ object OverlayRenderer {
     private fun renderOverlays(graphics: Graphics2D, overlays: Collection<Overlay>?,
                                layer: OverlayLayer) {
         if ((overlays == null) || overlays.isEmpty()
-                || (client.gameState != GameState.LOGGED_IN)) {
+            || (client.gameState != GameState.LOGGED_IN)) {
             return
         }
         setGraphicProperties(graphics)
 
         // Draw snap corners
-        if (inOverlayDraggingMode && layer == OverlayLayer.UNDER_WIDGETS && currentManagedOverlay != null && currentManagedOverlay.position != OverlayPosition.DETACHED) {
+        if (inOverlayDraggingMode && layer == OverlayLayer.UNDER_WIDGETS && currentManagedOverlay != null && currentManagedOverlay!!.position != OverlayPosition.DETACHED) {
             val translatedSnapCorners: OverlayBounds = snapCorners!!.translated(
-                    -SNAP_CORNER_SIZE.width,
-                    -SNAP_CORNER_SIZE.height)
+                -SNAP_CORNER_SIZE.width,
+                -SNAP_CORNER_SIZE.height)
             val previous = graphics.color
             for (corner in translatedSnapCorners.bounds) {
                 corner?.also {
@@ -308,9 +456,9 @@ object OverlayRenderer {
         val renderingHints = graphics.renderingHints
         val background = graphics.background
         for (overlay in overlays) {
-            val overlayPosition: OverlayPosition = getCorrectedOverlayPosition(overlay)
+            val overlayPosition: OverlayPosition? = getCorrectedOverlayPosition(overlay)
             if (overlayPosition == OverlayPosition.DYNAMIC
-                    || overlayPosition == OverlayPosition.TOOLTIP) {
+                || overlayPosition == OverlayPosition.TOOLTIP) {
                 safeRender(client, overlay, layer, graphics, Point())
 
                 // Restore graphics2d properties
@@ -323,14 +471,14 @@ object OverlayRenderer {
             } else {
                 val bounds: Rectangle = overlay.bounds
                 val dimension = bounds.size
-                val preferredLocation: Point = overlay.preferredLocation
+                val preferredLocation: Point? = overlay.preferredLocation
                 var location: Point
 
                 // If the final position is not modified, layout it
                 if (overlayPosition != OverlayPosition.DETACHED && snapCorners != null) {
                     val snapCorner: Rectangle = snapCorners!!.forPosition(overlayPosition)
                     val translation: Point = transformPosition(overlayPosition,
-                            dimension) // offset from corner
+                        dimension) // offset from corner
                     // Target x/y to draw the overlay
                     val destX = snapCorner.getX().toInt() + translation.x
                     val destY = snapCorner.getY().toInt() + translation.y
@@ -341,18 +489,19 @@ object OverlayRenderer {
                     // addition to its normal dimensions.
                     val dX = location.x - destX
                     val dY = location.y - destY
-                    val padding: Point = padPosition(overlayPosition, dimension,
-                            PADDING) // overlay size + fixed padding
+                    val padding: Point = padPosition(overlayPosition!!, dimension,
+                        PADDING) // overlay size + fixed padding
                     // translate corner for padding and any difference due to the position clamping
                     snapCorner.translate(padding.x + dX, padding.y + dY)
                 } else {
-                    location = preferredLocation
+                    location = preferredLocation!!
 
                     // Clamp the overlay position to ensure it is on screen or within parent bounds
                     location = clampOverlayLocation(location.x, location.y, dimension.width, dimension.height,
-                            overlay)
+                        overlay)
                 }
-                bounds.size = overlay.preferredSize
+                if (overlay.preferredSize != null)
+                    bounds.size = overlay.preferredSize!!
                 safeRender(client, overlay, layer, graphics, location)
 
                 // Restore graphics2d properties prior to drawing bounds
@@ -370,8 +519,8 @@ object OverlayRenderer {
                         } else if (inOverlayDraggingMode && currentManagedOverlay === overlay) {
                             boundsColor = MOVING_OVERLAY_ACTIVE_COLOR
                         } else if (inOverlayDraggingMode && overlay.dragTargetable
-                                && currentManagedOverlay!!.dragTargetable
-                                && currentManagedOverlay.bounds.intersects(bounds)) {
+                            && currentManagedOverlay!!.dragTargetable
+                            && currentManagedOverlay!!.bounds.intersects(bounds)) {
                             boundsColor = MOVING_OVERLAY_TARGET_COLOR
                             assert(currentManagedOverlay != overlay)
                             dragTargetOverlay = overlay
@@ -402,11 +551,11 @@ object OverlayRenderer {
     private fun safeRender(client: Client, overlay: Overlay, layer: OverlayLayer, graphics: Graphics2D,
                            point: Point) {
         if (!isResizeable && (layer == OverlayLayer.ABOVE_SCENE
-                        || layer == OverlayLayer.UNDER_WIDGETS)) {
+                    || layer == OverlayLayer.UNDER_WIDGETS)) {
             graphics.setClip(client.viewportXOffset,
-                    client.viewportYOffset,
-                    client.viewportWidth,
-                    client.viewportHeight)
+                client.viewportYOffset,
+                client.viewportWidth,
+                client.viewportHeight)
         } else {
             graphics.setClip(0, 0, client.canvasWidth, client.canvasHeight)
         }
@@ -425,5 +574,31 @@ object OverlayRenderer {
         }
         val dimension = MoreObjects.firstNonNull(overlayDimension, Dimension())
         overlay.bounds.size = dimension
+    }
+
+    private fun resetOverlayManagementMode() {
+        inOverlayResizingMode = false
+        inOverlayDraggingMode = false
+        currentManagedOverlay = null
+        dragTargetOverlay = null
+        currentManagedBounds = null
+    }
+
+    private fun findMangedOverlay(mousePoint: Point): Overlay? {
+        synchronized(overlayManager) {
+            for (overlay in overlayManager.overlays) {
+                if (overlay.position == OverlayPosition.DYNAMIC
+                    || overlay.position == OverlayPosition.TOOLTIP
+                ) {
+                    // never allow moving dynamic or tooltip overlays
+                    continue
+                }
+                val bounds: Rectangle = overlay.bounds
+                if (bounds.contains(mousePoint)) {
+                    return overlay
+                }
+            }
+        }
+        return null
     }
 }

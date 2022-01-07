@@ -38,7 +38,7 @@ class TextComponent : RenderableEntity {
     /**
      * The text font.
      */
-    private val font: Font? = null
+    var font: Font? = null
     override fun render(graphics: Graphics2D): Dimension? {
         var originalFont: Font? = null
         if (font != null) {
