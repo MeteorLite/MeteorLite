@@ -5,8 +5,6 @@ plugins {
 
 rootProject.name = 'MeteorLite'
 include 'meteor-client'
-include 'meteor-klient'
-include 'klient-mixins'
 include 'runelite-annotations'
 include 'runelite-api'
 include 'runescape-api'
