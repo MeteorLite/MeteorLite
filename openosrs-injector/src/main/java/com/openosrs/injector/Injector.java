@@ -63,6 +63,7 @@ public class Injector extends InjectData implements InjectTaskHandler {
     OptionSet options = parser.parse(args);
     oprsVer = "1.0-SNAPSHOT";
 
+    File clientMixins = new File("../runelite-mixins/build/libs/runelite-mixins-" + oprsVer + ".jar");
     log.info("Injecting Client");
     injector.vanilla = load(
             new File("../runescape-client/build/libs/runescape-client-" + oprsVer + ".jar"));
