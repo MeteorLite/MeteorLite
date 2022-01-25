@@ -82,4 +82,15 @@ public interface OneClickAgilityConfig extends Config
     {
         return true;
     }
+    
+    @ConfigItem(
+            position = 5,
+            keyName = "pickUpCoins",
+            name = "Pick up coins",
+            description = "Pick up coins if you have the fragment enabled"
+    )
+    default boolean pickUpCoins()
+    {
+        return false;
+    }
 }

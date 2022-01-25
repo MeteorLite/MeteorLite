@@ -71,6 +71,7 @@ public class OneClickAgilityPlugin extends Plugin
     }
 
     private static final int MARK_ID = 11849;
+    private static final int COIN_ID = 995;
     private static final Set<Integer> PORTAL_IDS = Set.of(36241,36242,36243,36244,36245,36246);
     private static final Set<Integer> SUMMER_PIE_ID = Set.of(7220,7218);
     private static final WorldPoint SEERS_END = new WorldPoint(2704,3464,0);
@@ -78,6 +79,7 @@ public class OneClickAgilityPlugin extends Plugin
     private static final WorldPoint PYRAMID_TOP_LEFT = new WorldPoint(3042,4697,3);
 
     ArrayList<Tile> marks = new ArrayList<>();
+    ArrayList<Tile> coins = new ArrayList<>();
     ArrayList<GameObject> portals = new ArrayList<>();
     DecorativeObject pyramidTopObstacle;
     GameObject pyramidTop;
@@ -251,6 +253,10 @@ public class OneClickAgilityPlugin extends Plugin
         {
             marks.add(event.getTile());
         }
+        if (event.getItem().getId() == COIN_ID)
+        {
+            coins.add(event.getTile());
+        }
     }
 
     @Subscribe
@@ -259,6 +265,10 @@ public class OneClickAgilityPlugin extends Plugin
         if (event.getItem().getId() == MARK_ID)
         {
             marks.remove(event.getTile());
+        }
+        if (event.getItem().getId() == COIN_ID)
+        {
+            coins.remove(event.getTile());
         }
     }
 
@@ -345,6 +355,32 @@ public class OneClickAgilityPlugin extends Plugin
                 marks.remove(wrongMarkTile);
             }
         }
+        if (config.pickUpCoins() && !coins.isEmpty())
+        {
+            Tile wrongCoinsTile = null;
+            for (Tile coin : coins)
+            {
+                if (obstacleArea.containsObject(coin))
+                {
+                    Tile coinTile = client.getScene().getTiles()[coin.getPlane()][coin.getSceneLocation().getX()][coin.getSceneLocation().getY()];
+
+                    if (coinTile != null && checkTileForCoins(coinTile))
+                    {
+                        event.setMenuEntry(createCoinsMenuEntry(coin));
+                        return;
+                    }
+                    else
+                    {
+                        wrongCoinsTile = coin;
+                    }
+                }
+            }
+
+            if(wrongCoinsTile != null)
+            {
+                coins.remove(wrongCoinsTile);
+            }
+        }
         if (!portals.isEmpty())
         {
             for(GameObject portal:portals)
@@ -381,6 +417,25 @@ public class OneClickAgilityPlugin extends Plugin
                 continue;
 
             if(item.getId() == MARK_ID)
+                return true;
+        }
+        return false;
+    }
+
+    private boolean checkTileForCoins(Tile tile)
+    {
+        List<TileItem> items = tile.getGroundItems();
+        if (items == null)
+        {
+            return false;
+        }
+
+        for (TileItem item:items)
+        {
+            if (item == null)
+                continue;
+
+            if(item.getId() == COIN_ID)
                 return true;
         }
         return false;
@@ -429,6 +484,16 @@ public class OneClickAgilityPlugin extends Plugin
         return new MenuEntry("Take",
                 "Mark of Grace",
                 MARK_ID,MenuAction.GROUND_ITEM_THIRD_OPTION.getId(),
+                tile.getSceneLocation().getX(),
+                tile.getSceneLocation().getY(),
+                true);
+    }
+
+    private MenuEntry createCoinsMenuEntry(Tile tile)
+    {
+        return new MenuEntry("Take",
+                "Coins",
+                COIN_ID,MenuAction.GROUND_ITEM_THIRD_OPTION.getId(),
                 tile.getSceneLocation().getX(),
                 tile.getSceneLocation().getY(),
                 true);
