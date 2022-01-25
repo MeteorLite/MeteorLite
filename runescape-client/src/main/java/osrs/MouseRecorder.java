@@ -1,63 +1,63 @@
 package osrs;
 
-import java.io.IOException;
-import net.runelite.mapping.Export;
-import net.runelite.mapping.Implements;
-import net.runelite.mapping.ObfuscatedGetter;
-import net.runelite.mapping.ObfuscatedName;
-import net.runelite.mapping.ObfuscatedSignature;
+import net.runelite.mapping.*;
 
-@ObfuscatedName("cg")
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.awt.image.PixelGrabber;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+
+@ObfuscatedName("cd")
 @Implements("MouseRecorder")
 public class MouseRecorder implements Runnable {
-	@ObfuscatedName("u")
-	@ObfuscatedGetter(
-		intValue = -1289779463
-	)
-	@Export("canvasHeight")
-	public static int canvasHeight;
-	@ObfuscatedName("de")
+	@ObfuscatedName("j")
 	@ObfuscatedSignature(
-		descriptor = "Lky;"
+		descriptor = "[[Ljm;"
 	)
-	@Export("archive1")
-	static Archive archive1;
-	@ObfuscatedName("l")
+	@Export("Widget_interfaceComponents")
+	public static Widget[][] Widget_interfaceComponents;
+	@ObfuscatedName("ay")
+	@ObfuscatedSignature(
+		descriptor = "Lme;"
+	)
+	static Bounds field1044;
+	@ObfuscatedName("c")
 	@Export("isRunning")
 	boolean isRunning;
-	@ObfuscatedName("q")
+	@ObfuscatedName("b")
 	@Export("lock")
 	Object lock;
-	@ObfuscatedName("f")
+	@ObfuscatedName("p")
 	@ObfuscatedGetter(
-		intValue = 70944461
+		intValue = 1539237497
 	)
 	@Export("index")
 	int index;
-	@ObfuscatedName("j")
+	@ObfuscatedName("m")
 	@Export("xs")
 	int[] xs;
-	@ObfuscatedName("m")
+	@ObfuscatedName("t")
 	@Export("ys")
 	int[] ys;
-	@ObfuscatedName("k")
+	@ObfuscatedName("s")
 	@Export("millis")
 	long[] millis;
 
 	MouseRecorder() {
-		this.isRunning = true;
-		this.lock = new Object();
-		this.index = 0;
-		this.xs = new int[500];
-		this.ys = new int[500];
-		this.millis = new long[500];
-	}
+		this.isRunning = true; // L: 7
+		this.lock = new Object(); // L: 8
+		this.index = 0; // L: 9
+		this.xs = new int[500]; // L: 10
+		this.ys = new int[500]; // L: 11
+		this.millis = new long[500]; // L: 12
+	} // L: 14
 
 	public void run() {
-		for (; this.isRunning; class121.method2542(50L)) {
-			synchronized(this.lock) {
+		for (; this.isRunning; Bounds.method6608(50L)) { // L: 18
+			synchronized(this.lock) { // L: 19
 				if (this.index < 500) {
-					this.xs[this.index] = MouseHandler.MouseHandler_x;
+					this.xs[this.index] = MouseHandler.MouseHandler_x; // L: 21
 					this.ys[this.index] = MouseHandler.MouseHandler_y;
 					this.millis[this.index] = MouseHandler.MouseHandler_millis;
 					++this.index;
@@ -67,46 +67,55 @@ public class MouseRecorder implements Runnable {
 
 	}
 
-	@ObfuscatedName("q")
+	@ObfuscatedName("c")
 	@ObfuscatedSignature(
-		descriptor = "(III)V",
-		garbageValue = "-76927073"
+		descriptor = "([BB)Lpl;",
+		garbageValue = "-5"
 	)
-	public static void method2078(int var0, int var1) {
-		VarbitComposition var2 = AttackOption.method2263(var0);
-		int var3 = var2.baseVar;
-		int var4 = var2.startBit;
-		int var5 = var2.endBit;
-		int var6 = Varps.Varps_masks[var5 - var4];
-		if (var1 < 0 || var1 > var6) {
-			var1 = 0;
+	public static final SpritePixels method2161(byte[] var0) {
+		BufferedImage var1 = null; // L: 20
+
+		try {
+			var1 = ImageIO.read(new ByteArrayInputStream(var0)); // L: 22
+			int var2 = var1.getWidth(); // L: 23
+			int var3 = var1.getHeight(); // L: 24
+			int[] var4 = new int[var2 * var3]; // L: 25
+			PixelGrabber var5 = new PixelGrabber(var1, 0, 0, var2, var3, var4, 0, var2); // L: 26
+			var5.grabPixels(); // L: 27
+			return new SpritePixels(var4, var2, var3);
+		} catch (IOException var7) {
+		} catch (InterruptedException var8) {
 		}
 
-		var6 <<= var4;
-		Varps.Varps_main[var3] = Varps.Varps_main[var3] & ~var6 | var1 << var4 & var6;
+		return new SpritePixels(0, 0);
 	}
 
-	@ObfuscatedName("gn")
+	@ObfuscatedName("p")
 	@ObfuscatedSignature(
-		descriptor = "(ZB)V",
-		garbageValue = "0"
+		descriptor = "(IIB)I",
+		garbageValue = "-41"
 	)
-	static final void method2075(boolean var0) {
-		class356.playPcmPlayers();
-		++Client.packetWriter.pendingWrites;
-		if (Client.packetWriter.pendingWrites >= 50 || var0) {
-			Client.packetWriter.pendingWrites = 0;
-			if (!Client.hadNetworkError && Client.packetWriter.getSocket() != null) {
-				PacketBufferNode var1 = LoginScreenAnimation.getPacketBufferNode(ClientPacket.field2706, Client.packetWriter.isaacCipher);
-				Client.packetWriter.addNode(var1);
+	static int method2160(int var0, int var1) {
+		ItemContainer var2 = (ItemContainer)ItemContainer.itemContainers.get((long)var0); // L: 28
+		if (var2 == null) { // L: 29
+			return 0;
+		} else if (var1 == -1) { // L: 30
+			return 0;
+		} else {
+			int var3 = 0; // L: 31
 
-				try {
-					Client.packetWriter.flush();
-				} catch (IOException var3) {
-					Client.hadNetworkError = true;
+			for (int var4 = 0; var4 < var2.quantities.length; ++var4) { // L: 32
+				if (var2.ids[var4] == var1) {
+					var3 += var2.quantities[var4]; // L: 33
 				}
 			}
 
+			return var3; // L: 35
 		}
+	}
+
+	@ObfuscatedName("s")
+	public static int method2159(long var0) {
+		return (int)(var0 >>> 0 & 127L); // L: 68
 	}
 }

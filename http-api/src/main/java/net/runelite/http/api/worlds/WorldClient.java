@@ -31,7 +31,6 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import net.runelite.http.api.RuneLiteAPI;
 import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
@@ -43,19 +42,19 @@ import org.sponge.util.Logger;
 public class WorldClient
 {
 	private final OkHttpClient client;
-	private Logger log = new Logger("worlds");
+	private Logger log = new Logger("WorldClient");
 
 	public WorldResult lookupWorlds() throws IOException
 	{
 		HttpUrl url = RuneLiteAPI.getApiBase().newBuilder()
-			.addPathSegment("worlds.js")
-			.build();
+						.addPathSegment("worlds.js")
+						.build();
 
 		log.debug("Built URI: {}", url);
 
 		Request request = new Request.Builder()
-			.url(url)
-			.build();
+						.url(url)
+						.build();
 
 		try (Response response = client.newCall(request).execute())
 		{

@@ -28,7 +28,7 @@ import net.runelite.asm.signature.Signature;
  */
 public abstract class InjectData {
 
-  public static final String HOOKS = "meteor/callback/Hooks";
+  public static String HOOKS = "meteor/callback/Hooks";
   public static final String CALLBACKS = "net/runelite/api/hooks/Callbacks";
   /**
    * Strings -> Deobfuscated ClassFiles keys: - Obfuscated name - RSApi implementing name

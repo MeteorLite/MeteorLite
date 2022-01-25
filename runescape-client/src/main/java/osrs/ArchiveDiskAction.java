@@ -6,60 +6,57 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("jx")
+@ObfuscatedName("km")
 @Implements("ArchiveDiskAction")
 public class ArchiveDiskAction extends Node {
-	@ObfuscatedName("mq")
+	@ObfuscatedName("c")
 	@ObfuscatedGetter(
-		intValue = -900370285
-	)
-	@Export("selectedItemSlot")
-	static int selectedItemSlot;
-	@ObfuscatedName("l")
-	@ObfuscatedGetter(
-		intValue = 1004921481
+		intValue = 1029019227
 	)
 	@Export("type")
 	int type;
-	@ObfuscatedName("q")
+	@ObfuscatedName("b")
 	@Export("data")
 	public byte[] data;
-	@ObfuscatedName("f")
+	@ObfuscatedName("p")
 	@ObfuscatedSignature(
-		descriptor = "Lmm;"
+		descriptor = "Lmy;"
 	)
 	@Export("archiveDisk")
 	public ArchiveDisk archiveDisk;
-	@ObfuscatedName("j")
+	@ObfuscatedName("m")
 	@ObfuscatedSignature(
-		descriptor = "Lky;"
+		descriptor = "Lkz;"
 	)
 	@Export("archive")
 	public Archive archive;
 
 	ArchiveDiskAction() {
-	}
+	} // L: 12
 
-	@ObfuscatedName("hf")
+	@ObfuscatedName("c")
 	@ObfuscatedSignature(
-		descriptor = "(IIIII)V",
-		garbageValue = "-1831916314"
+		descriptor = "(Lpl;IIIB)V",
+		garbageValue = "1"
 	)
-	@Export("selectSpell")
-	static void selectSpell(int var0, int var1, int var2, int var3) {
-		Widget var4 = ViewportMouse.getWidgetChild(var0, var1);
-		if (var4 != null && var4.onTargetEnter != null) {
-			ScriptEvent var5 = new ScriptEvent();
-			var5.widget = var4;
-			var5.args = var4.onTargetEnter;
-			ViewportMouse.runScriptEvent(var5);
-		}
+	static void method5526(SpritePixels var0, int var1, int var2, int var3) {
+		DemotingHashTable var4 = WorldMapRegion.WorldMapRegion_cachedSprites; // L: 38
+		long var6 = (long)(var3 << 16 | var1 << 8 | var2); // L: 42
+		var4.put(var0, var6, var0.pixels.length * 4); // L: 44
+	} // L: 45
 
-		Client.field647 = var3;
-		Client.isSpellSelected = true;
-		ModelData0.selectedSpellWidget = var0;
-		Client.selectedSpellChildIndex = var1;
-		ObjectComposition.selectedSpellFlags = var2;
-		class16.invalidateWidget(var4);
-	}
+	@ObfuscatedName("hp")
+	@ObfuscatedSignature(
+		descriptor = "(IIS)V",
+		garbageValue = "128"
+	)
+	static final void method5527(int var0, int var1) {
+		if (Client.hintArrowType == 2) { // L: 5578
+			ModeWhere.worldToScreen((Client.hintArrowX - class131.baseX << 7) + Client.hintArrowSubX, (Client.hintArrowY - TileItem.baseY << 7) + Client.hintArrowSubY, Client.hintArrowHeight * 2); // L: 5579
+			if (Client.viewportTempX > -1 && Client.cycle % 20 < 10) { // L: 5580
+				class260.headIconHintSprites[0].drawTransBgAt(var0 + Client.viewportTempX - 12, Client.viewportTempY + var1 - 28);
+			}
+
+		}
+	} // L: 5581
 }

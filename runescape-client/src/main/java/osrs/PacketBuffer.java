@@ -6,157 +6,157 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("oy")
+@ObfuscatedName("pj")
 @Implements("PacketBuffer")
 public class PacketBuffer extends Buffer {
-	@ObfuscatedName("q")
-	static final int[] field4285;
-	@ObfuscatedName("l")
+	@ObfuscatedName("b")
+	static final int[] field4469;
+	@ObfuscatedName("c")
 	@ObfuscatedSignature(
-		descriptor = "Lpv;"
+		descriptor = "Lph;"
 	)
 	@Export("isaacCipher")
 	IsaacCipher isaacCipher;
-	@ObfuscatedName("f")
+	@ObfuscatedName("p")
 	@ObfuscatedGetter(
-		intValue = 699340495
+		intValue = -359914493
 	)
 	@Export("bitIndex")
 	int bitIndex;
 
 	static {
-		field4285 = new int[]{0, 1, 3, 7, 15, 31, 63, 127, 255, 511, 1023, 2047, 4095, 8191, 16383, 32767, 65535, 131071, 262143, 524287, 1048575, 2097151, 4194303, 8388607, 16777215, 33554431, 67108863, 134217727, 268435455, 536870911, 1073741823, Integer.MAX_VALUE, -1};
+		field4469 = new int[]{0, 1, 3, 7, 15, 31, 63, 127, 255, 511, 1023, 2047, 4095, 8191, 16383, 32767, 65535, 131071, 262143, 524287, 1048575, 2097151, 4194303, 8388607, 16777215, 33554431, 67108863, 134217727, 268435455, 536870911, 1073741823, Integer.MAX_VALUE, -1}; // L: 7
 	}
 
 	public PacketBuffer(int var1) {
-		super(var1);
-	}
+		super(var1); // L: 11
+	} // L: 12
 
-	@ObfuscatedName("l")
+	@ObfuscatedName("c")
 	@ObfuscatedSignature(
-		descriptor = "([II)V",
-		garbageValue = "-1448401984"
+		descriptor = "([IB)V",
+		garbageValue = "-83"
 	)
 	@Export("newIsaacCipher")
 	public void newIsaacCipher(int[] var1) {
-		this.isaacCipher = new IsaacCipher(var1);
-	}
+		this.isaacCipher = new IsaacCipher(var1); // L: 15
+	} // L: 16
 
-	@ObfuscatedName("q")
+	@ObfuscatedName("b")
 	@ObfuscatedSignature(
-		descriptor = "(Lpv;S)V",
-		garbageValue = "30422"
+		descriptor = "(Lph;B)V",
+		garbageValue = "109"
 	)
 	@Export("setIsaacCipher")
 	public void setIsaacCipher(IsaacCipher var1) {
-		this.isaacCipher = var1;
-	}
+		this.isaacCipher = var1; // L: 19
+	} // L: 20
 
-	@ObfuscatedName("f")
+	@ObfuscatedName("p")
 	@ObfuscatedSignature(
-		descriptor = "(IB)V",
-		garbageValue = "2"
+		descriptor = "(II)V",
+		garbageValue = "121178045"
 	)
 	@Export("writeByteIsaac")
 	public void writeByteIsaac(int var1) {
-		super.array[++super.offset - 1] = (byte)(var1 + this.isaacCipher.nextInt());
-	}
-
-	@ObfuscatedName("j")
-	@ObfuscatedSignature(
-		descriptor = "(I)I",
-		garbageValue = "952726655"
-	)
-	@Export("readByteIsaac")
-	public int readByteIsaac() {
-		return super.array[++super.offset - 1] - this.isaacCipher.nextInt() & 255;
-	}
+		super.array[++super.offset - 1] = (byte)(var1 + this.isaacCipher.nextInt()); // L: 23
+	} // L: 24
 
 	@ObfuscatedName("m")
 	@ObfuscatedSignature(
-		descriptor = "(S)Z",
-		garbageValue = "25434"
+		descriptor = "(I)I",
+		garbageValue = "112629238"
 	)
-	public boolean method6848() {
-		int var1 = super.array[super.offset] - this.isaacCipher.method7440() & 255;
-		return var1 >= 128;
-	}
-
-	@ObfuscatedName("k")
-	@ObfuscatedSignature(
-		descriptor = "(B)I",
-		garbageValue = "45"
-	)
-	@Export("readSmartByteShortIsaac")
-	public int readSmartByteShortIsaac() {
-		int var1 = super.array[++super.offset - 1] - this.isaacCipher.nextInt() & 255;
-		return var1 < 128 ? var1 : (var1 - 128 << 8) + (super.array[++super.offset - 1] - this.isaacCipher.nextInt() & 255);
+	@Export("readByteIsaac")
+	public int readByteIsaac() {
+		return super.array[++super.offset - 1] - this.isaacCipher.nextInt() & 255; // L: 27
 	}
 
 	@ObfuscatedName("t")
 	@ObfuscatedSignature(
-		descriptor = "([BIII)V",
-		garbageValue = "-1932587196"
+		descriptor = "(I)Z",
+		garbageValue = "-794374917"
 	)
-	public void method6853(byte[] var1, int var2, int var3) {
-		for (int var4 = 0; var4 < var3; ++var4) {
+	public boolean method7311() {
+		int var1 = super.array[super.offset] - this.isaacCipher.method7874() & 255; // L: 31
+		return var1 >= 128; // L: 32
+	}
+
+	@ObfuscatedName("s")
+	@ObfuscatedSignature(
+		descriptor = "(I)I",
+		garbageValue = "1237962684"
+	)
+	@Export("readSmartByteShortIsaac")
+	public int readSmartByteShortIsaac() {
+		int var1 = super.array[++super.offset - 1] - this.isaacCipher.nextInt() & 255; // L: 37
+		return var1 < 128 ? var1 : (var1 - 128 << 8) + (super.array[++super.offset - 1] - this.isaacCipher.nextInt() & 255); // L: 38 39
+	}
+
+	@ObfuscatedName("j")
+	@ObfuscatedSignature(
+		descriptor = "([BIIB)V",
+		garbageValue = "58"
+	)
+	public void method7312(byte[] var1, int var2, int var3) {
+		for (int var4 = 0; var4 < var3; ++var4) { // L: 43
 			var1[var4 + var2] = (byte)(super.array[++super.offset - 1] - this.isaacCipher.nextInt());
 		}
 
-	}
+	} // L: 44
 
-	@ObfuscatedName("a")
+	@ObfuscatedName("w")
 	@ObfuscatedSignature(
 		descriptor = "(I)V",
-		garbageValue = "-8907389"
+		garbageValue = "-1755218850"
 	)
 	@Export("importIndex")
 	public void importIndex() {
-		this.bitIndex = super.offset * 8;
-	}
+		this.bitIndex = super.offset * 8; // L: 47
+	} // L: 48
 
-	@ObfuscatedName("e")
+	@ObfuscatedName("n")
 	@ObfuscatedSignature(
 		descriptor = "(II)I",
-		garbageValue = "-308052507"
+		garbageValue = "1980661572"
 	)
 	@Export("readBits")
 	public int readBits(int var1) {
-		int var2 = this.bitIndex >> 3;
-		int var3 = 8 - (this.bitIndex & 7);
-		int var4 = 0;
+		int var2 = this.bitIndex >> 3; // L: 51
+		int var3 = 8 - (this.bitIndex & 7); // L: 52
+		int var4 = 0; // L: 53
 
-		for (this.bitIndex += var1; var1 > var3; var3 = 8) {
-			var4 += (super.array[var2++] & field4285[var3]) << var1 - var3;
-			var1 -= var3;
+		for (this.bitIndex += var1; var1 > var3; var3 = 8) { // L: 54 55 58
+			var4 += (super.array[var2++] & field4469[var3]) << var1 - var3; // L: 56
+			var1 -= var3; // L: 57
 		}
 
-		if (var3 == var1) {
-			var4 += super.array[var2] & field4285[var3];
+		if (var3 == var1) { // L: 60
+			var4 += super.array[var2] & field4469[var3];
 		} else {
-			var4 += super.array[var2] >> var3 - var1 & field4285[var1];
+			var4 += super.array[var2] >> var3 - var1 & field4469[var1]; // L: 61
 		}
 
-		return var4;
+		return var4; // L: 62
 	}
 
-	@ObfuscatedName("i")
+	@ObfuscatedName("r")
 	@ObfuscatedSignature(
 		descriptor = "(I)V",
-		garbageValue = "1759118925"
+		garbageValue = "-346490773"
 	)
 	@Export("exportIndex")
 	public void exportIndex() {
-		super.offset = (this.bitIndex + 7) / 8;
-	}
+		super.offset = (this.bitIndex + 7) / 8; // L: 66
+	} // L: 67
 
-	@ObfuscatedName("y")
+	@ObfuscatedName("o")
 	@ObfuscatedSignature(
 		descriptor = "(II)I",
-		garbageValue = "335509391"
+		garbageValue = "-973403408"
 	)
 	@Export("bitsRemaining")
 	public int bitsRemaining(int var1) {
-		return var1 * 8 - this.bitIndex;
+		return var1 * 8 - this.bitIndex; // L: 70
 	}
 }

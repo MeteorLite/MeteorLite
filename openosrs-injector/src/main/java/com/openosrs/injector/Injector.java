@@ -20,13 +20,8 @@ import com.openosrs.injector.injectors.InjectConstruct;
 import com.openosrs.injector.injectors.InterfaceInjector;
 import com.openosrs.injector.injectors.MixinInjector;
 import com.openosrs.injector.injectors.RSApiInjector;
-import com.openosrs.injector.injectors.raw.ClearColorBuffer;
-import com.openosrs.injector.injectors.raw.DrawMenu;
-import com.openosrs.injector.injectors.raw.GraphicsObject;
-import com.openosrs.injector.injectors.raw.RasterizerAlpha;
-import com.openosrs.injector.injectors.raw.RenderDraw;
-import com.openosrs.injector.injectors.raw.RuneliteObject;
-import com.openosrs.injector.injectors.raw.ScriptVM;
+import com.openosrs.injector.injectors.raw.*;
+import com.openosrs.injector.net.DecodeNet;
 import com.openosrs.injector.rsapi.RSApi;
 import com.openosrs.injector.transformers.InjectTransformer;
 import com.openosrs.injector.transformers.Java8Ifier;
@@ -68,26 +63,21 @@ public class Injector extends InjectData implements InjectTaskHandler {
     OptionSet options = parser.parse(args);
     oprsVer = "1.0-SNAPSHOT";
 
+    File clientMixins = new File("../runelite-mixins/build/libs/runelite-mixins-" + oprsVer + ".jar");
+    log.info("Injecting Client");
     injector.vanilla = load(
-        new File("../runescape-client/build/libs/runescape-client-" + oprsVer + ".jar"));
+            new File("../runescape-client/build/libs/runescape-client-" + oprsVer + ".jar"));
     injector.deobfuscated = load(
-        new File("../runescape-client/build/libs/runescape-client-" + oprsVer + ".jar"));
+            new File("../runescape-client/build/libs/runescape-client-" + oprsVer + ".jar"));
     injector.rsApi = new RSApi(Objects.requireNonNull(
-        new File("../runescape-api/build/classes/java/main/net/runelite/rs/api/")
-            .listFiles()));
-    injector.mixins = load(
-        new File("../runelite-mixins/build/libs/runelite-mixins-" + oprsVer + ".jar"));
-
-    File oldInjected = new File(
-        "../runelite-client/src/main/resources/net/runelite/client/injected-client.oprs");
-    if (oldInjected.exists()) {
-      oldInjected.delete();
-    }
+            new File("../runescape-api/build/classes/java/main/net/runelite/rs/api/")
+                    .listFiles()));
+    injector.mixins = load(clientMixins);
 
     injector.initToVanilla();
     injector.injectVanilla();
-    save(injector.getVanilla(), new File("./build/injected/injected-client.jar"),
-        options.valueOf(outModeOption));
+    save(injector.getVanilla(), new File("../meteor-client/src/main/resources/injected-client.osrs"),
+            options.valueOf(outModeOption));
   }
 
   private static void save(ClassGroup group, File output, OutputMode mode) {
@@ -126,6 +116,12 @@ public class Injector extends InjectData implements InjectTaskHandler {
 
     inject(new CreateAnnotations(this));
 
+    inject(new GraphicsObject(this));
+
+    inject(new CopyRuneLiteClasses(this));
+
+    inject(new RuneLiteIterableHashTable(this));
+
     inject(new RuneliteObject(this));
 
     //Injects initial RSAPI
@@ -155,15 +151,15 @@ public class Injector extends InjectData implements InjectTaskHandler {
     inject(new ScriptVM(this));
 
     // All GPU raw injectors should probably be combined, especially RenderDraw and Occluder
-    inject(new ClearColorBuffer(this));
+    inject(new ClearColorBuffer(this, HOOKS));
 
-    inject(new RenderDraw(this));
+    inject(new RenderDraw(this, HOOKS));
 
     //inject(new Occluder(this));
 
-    inject(new DrawMenu(this));
+    inject(new DrawMenu(this, HOOKS));
 
-    inject(new GraphicsObject(this));
+    inject(new DecodeNet(this));
 
     //inject(new AddPlayerToMenu(this));
 

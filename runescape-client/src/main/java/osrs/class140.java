@@ -1,59 +1,73 @@
 package osrs;
 
+import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ej")
-public class class140 extends class116 {
-	@ObfuscatedName("l")
-	@ObfuscatedGetter(
-		intValue = 745806175
+@ObfuscatedName("el")
+public class class140 extends class126 {
+	@ObfuscatedName("ef")
+	@ObfuscatedSignature(
+		descriptor = "Lkz;"
 	)
-	int field1542;
-	@ObfuscatedName("q")
+	@Export("archive5")
+	static Archive archive5;
+	@ObfuscatedName("c")
 	@ObfuscatedGetter(
-		longValue = 5393161811926100225L
+		intValue = 471941729
 	)
-	long field1539;
+	int field1603;
 	// $FF: synthetic field
 	@ObfuscatedSignature(
-		descriptor = "Ldg;"
+		descriptor = "Lda;"
 	)
-	final class119 this$0;
+	final class129 this$0;
 
 	@ObfuscatedSignature(
-		descriptor = "(Ldg;)V"
+		descriptor = "(Lda;)V"
 	)
-	class140(class119 var1) {
+	class140(class129 var1) {
 		this.this$0 = var1;
-	}
+		this.field1603 = -1; // L: 213
+	} // L: 215
 
-	@ObfuscatedName("l")
+	@ObfuscatedName("c")
 	@ObfuscatedSignature(
-		descriptor = "(Lot;I)V",
-		garbageValue = "-912681401"
+		descriptor = "(Lpi;I)V",
+		garbageValue = "1416770155"
 	)
-	void vmethod2767(Buffer var1) {
-		this.field1542 = var1.readInt();
-		this.field1539 = var1.readLong();
-	}
+	void vmethod3029(Buffer var1) {
+		this.field1603 = var1.readUnsignedShort(); // L: 218
+	} // L: 219
 
-	@ObfuscatedName("q")
+	@ObfuscatedName("b")
 	@ObfuscatedSignature(
-		descriptor = "(Ldk;I)V",
-		garbageValue = "-1225074726"
+		descriptor = "(Lej;I)V",
+		garbageValue = "-1531735008"
 	)
-	void vmethod2766(ClanSettings var1) {
-		var1.method2599(this.field1542, this.field1539);
-	}
+	void vmethod3028(ClanSettings var1) {
+		var1.method2854(this.field1603); // L: 222
+	} // L: 223
 
-	@ObfuscatedName("l")
+	@ObfuscatedName("kn")
 	@ObfuscatedSignature(
-		descriptor = "(IIS)I",
-		garbageValue = "28594"
+		descriptor = "(IB)V",
+		garbageValue = "4"
 	)
-	public static int method2770(int var0, int var1) {
-		return (int)Math.round(Math.atan2((double)var0, (double)var1) * 2607.5945876176133D) & 16383;
-	}
+	@Export("Widget_resetModelFrames")
+	static final void Widget_resetModelFrames(int var0) {
+		if (class242.loadInterface(var0)) { // L: 12059
+			Widget[] var1 = MouseRecorder.Widget_interfaceComponents[var0]; // L: 12060
+
+			for (int var2 = 0; var2 < var1.length; ++var2) { // L: 12061
+				Widget var3 = var1[var2]; // L: 12062
+				if (var3 != null) { // L: 12063
+					var3.modelFrame = 0; // L: 12064
+					var3.modelFrameCycle = 0; // L: 12065
+				}
+			}
+
+		}
+	} // L: 12067
 }

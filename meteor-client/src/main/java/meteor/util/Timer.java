@@ -8,6 +8,14 @@ public class Timer {
     reset();
   }
 
+  public long getMilliecondsFromStart() {
+    return System.currentTimeMillis() - start;
+  }
+
+  public int getMilliseconds() {
+    return (int) (getMilliecondsFromStart() % 1000);
+  }
+
   public int getSecondsFromStart() {
     return (int) ((System.currentTimeMillis() - start) / 1000);
   }

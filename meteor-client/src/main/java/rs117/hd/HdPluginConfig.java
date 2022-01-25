@@ -439,4 +439,16 @@ public interface HdPluginConfig extends Config
 	{
 		return false;
 	}
+
+	@ConfigItem(
+					keyName = "unlockFps",
+					name = "Unlock FPS",
+					description = "Removes the 50 FPS cap for camera movement",
+					position = 5,
+					section = generalSettings
+	)
+	default boolean unlockFps()
+	{
+		return false;
+	}
 }

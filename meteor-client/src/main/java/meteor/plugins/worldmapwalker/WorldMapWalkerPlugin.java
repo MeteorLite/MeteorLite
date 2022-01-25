@@ -5,14 +5,10 @@ import meteor.config.ConfigManager;
 import meteor.eventbus.Subscribe;
 import meteor.input.KeyListener;
 import meteor.input.KeyManager;
-import meteor.menus.WidgetMenuOption;
 import meteor.plugins.Plugin;
 import meteor.plugins.PluginDescriptor;
-import meteor.plugins.api.entities.Players;
-import meteor.plugins.api.movement.Movement;
-import meteor.plugins.api.movement.Reachable;
-import meteor.plugins.api.movement.pathfinder.Walker;
-import meteor.plugins.api.widgets.Widgets;
+import dev.hoot.api.entities.Players;
+import dev.hoot.api.movement.Movement;
 import meteor.ui.overlay.OverlayManager;
 import meteor.ui.overlay.worldmap.WorldMapOverlay;
 import net.runelite.api.*;
@@ -24,10 +20,9 @@ import net.runelite.api.widgets.WidgetInfo;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import java.awt.event.KeyEvent;
+import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.LinkedList;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
 
 import static net.runelite.api.widgets.WidgetInfo.MINIMAP_WORLDMAP_OPTIONS;
 
@@ -62,7 +57,8 @@ public class WorldMapWalkerPlugin extends Plugin {
     public void startup() {
         keyManager.registerKeyListener(new KeyListener() {
             @Override
-            public void keyTyped(KeyEvent e) {}
+            public void keyTyped(KeyEvent e) {
+            }
 
             @Override
             public void keyPressed(KeyEvent e) {
@@ -73,7 +69,7 @@ public class WorldMapWalkerPlugin extends Plugin {
             public void keyReleased(KeyEvent e) {
                 hotKeyPressed = e.isShiftDown();
             }
-        },WorldMapWalkerPlugin.class);
+        }, WorldMapWalkerPlugin.class);
         overlayManager.add(overlay);
     }
 
@@ -86,6 +82,7 @@ public class WorldMapWalkerPlugin extends Plugin {
     public WorldMapWalkerConfig getConfig(ConfigManager configManager) {
         return configManager.getConfig(WorldMapWalkerConfig.class);
     }
+
     @Subscribe
     public void onGameTick(GameTick event) {
         if (Movement.isWalking()) {
@@ -107,14 +104,14 @@ public class WorldMapWalkerPlugin extends Plugin {
     }
 
     //Check if menu options have already been added
-    private boolean menuContainsEntries(){
+    private boolean menuContainsEntries() {
         MenuEntry[] entries = client.getMenuEntries();
-        if(entries != null){
+        if (entries != null) {
             for (MenuEntry entry : entries) {
-                if(entry == null){
+                if (entry == null) {
                     continue;
                 }
-                if(entry.getTarget().equals(DESTINATION_MENU_TARGET)){
+                if (entry.getTarget().equals(DESTINATION_MENU_TARGET)) {
                     return true;
                 }
             }
@@ -122,51 +119,62 @@ public class WorldMapWalkerPlugin extends Plugin {
         return false;
     }
 
+    private boolean isUserShiftClicking(){
+        return config.shiftClickToWalk() && hotKeyPressed;
+    }
+
     @Subscribe
-    public void onMenuEntryAdded(MenuEntryAdded event) {
+    public void onClientTick(ClientTick event) {
 
         final Widget map = client.getWidget(WidgetInfo.WORLD_MAP_VIEW);
 
         // If user clicks on map
         if (map != null && map.getBounds().contains(client.getMouseCanvasPosition().getX(), client.getMouseCanvasPosition().getY())) {
             if (!menuContainsEntries()) {
-                if(hotKeyPressed){
-                    addMenuEntryFront(event, "Walk to");
-                    addMenuEntry(event, "Clear",0);
+                if (isUserShiftClicking()) {
+                    addMenuEntryFront("Walk to");
+                    addMenuEntry("Clear", 0);
                 }
-                else{
-                    addMenuEntry(event, "Walk to",0);
-                    addMenuEntry(event, "Clear",0);
-                }
-                return;
             }
         }
         // If user clicks on globe icon on minimap
-        if (event.getActionParam1() == MINIMAP_WORLDMAP_OPTIONS.getId()) {
-            if (!menuContainsEntries()) {
-                addMenuEntry(event, "Clear",1);
+        for (var menuEntry : client.getMenuEntries()) {
+            if (menuEntry.getActionParam1() == MINIMAP_WORLDMAP_OPTIONS.getId()) {
+                if (!menuContainsEntries()) {
+                    addMenuEntry("Clear", 1);
+                    return;
+                }
             }
-            return;
+            if (mapPoint != null && menuEntry.getOption().equals("Walk here")) {
+                if (!menuContainsEntries()) {
+                    addMenuEntry("Clear", 1);
+                    return;
+                }
+            }
         }
-        // If user right clicks on ground
-        if (mapPoint != null && event.getOption().equals("Walk here")) {
+    }
+
+    @Subscribe
+    public void onMenuEntryAdded(MenuEntryAdded event) {
+        final Widget map = client.getWidget(WidgetInfo.WORLD_MAP_VIEW);
+
+        // If user clicks on map
+        if (map != null && map.getBounds().contains(client.getMouseCanvasPosition().getX(), client.getMouseCanvasPosition().getY())) {
             if (!menuContainsEntries()) {
-                addMenuEntry(event, "Clear",1);
+                if (!isUserShiftClicking()) {
+                    addMenuEntry("Walk to", 0);
+                    addMenuEntry("Clear", 0);
+                }
             }
         }
     }
 
     @Subscribe
     public void onMenuOptionClicked(MenuOptionClicked e) {
-        if(e.getMenuTarget().equals(DESTINATION_MENU_TARGET)) {
+        if (e.getMenuTarget().equals(DESTINATION_MENU_TARGET)) {
             if (e.getMenuOption().equals("Walk to")) {
                 mapPoint = calculateMapPoint(client.isMenuOpen() ? lastMenuOpenedPoint : client.getMouseCanvasPosition());
                 logger.debug("Walking to: {}", mapPoint.toString());
-                var mapWidget = Widgets.get(595, 38);
-
-                if (mapWidget != null) {
-                    Widgets.get(595, 38).interact("Close");
-                }
             }
 
             if (e.getMenuOption().equals("Clear")) {
@@ -196,34 +204,25 @@ public class WorldMapWalkerPlugin extends Plugin {
         return mapPoint.dx(dx).dy(dy);
     }
 
-    private void addMenuEntry(MenuEntryAdded event, String option, int index) {
-        List<MenuEntry> entries = new LinkedList<>(Arrays.asList(client.getMenuEntries()));
+    private void addMenuEntry(String option, int index) {
+        List<MenuEntry> entries = new ArrayList<>(Arrays.asList(client.getMenuEntries()));
 
         MenuEntry entry = new MenuEntry();
         entry.setOption(option);
         entry.setTarget(DESTINATION_MENU_TARGET);
         entry.setOpcode(MenuAction.RUNELITE.getId());
-        entries.add(index,entry);
+        entries.add(index, entry);
 
         client.setMenuEntries(entries.toArray(new MenuEntry[0]));
     }
-    private void addMenuEntryFront(MenuEntryAdded event, String option) {
-        List<MenuEntry> entries = new LinkedList<>(Arrays.asList(client.getMenuEntries()));
 
-        MenuEntry entry = new MenuEntry();
-        entry.setOption(option);
-        entry.setTarget(DESTINATION_MENU_TARGET);
-        entry.setOpcode(MenuAction.RUNELITE.getId());
-        entries.add(entry);
-
-        client.setMenuEntries(entries.toArray(new MenuEntry[0]));
+    private void addMenuEntryFront(String option) {
+        client.insertMenuItem(option, DESTINATION_MENU_TARGET, MenuAction.UNKNOWN.getId(), 0, 0, 0, false);
     }
 
     @Subscribe
-    private void onFocusChanged(FocusChanged focusChanged)
-    {
-        if (!focusChanged.isFocused())
-        {
+    private void onFocusChanged(FocusChanged focusChanged) {
+        if (!focusChanged.isFocused()) {
             hotKeyPressed = false;
         }
     }

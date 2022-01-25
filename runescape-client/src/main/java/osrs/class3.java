@@ -3,11 +3,11 @@ package osrs;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("j")
+@ObfuscatedName("m")
 public interface class3 {
-	@ObfuscatedName("l")
+	@ObfuscatedName("c")
 	@ObfuscatedSignature(
-		descriptor = "(Lot;)Lot;"
+		descriptor = "(Lpi;)Lpi;"
 	)
 	Buffer vmethod15(Buffer var1);
 }

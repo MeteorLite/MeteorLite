@@ -7,8 +7,6 @@
  */
 package com.openosrs.injector.injectors.raw;
 
-import static com.openosrs.injector.injection.InjectData.HOOKS;
-
 import com.openosrs.injector.InjectException;
 import com.openosrs.injector.InjectUtil;
 import com.openosrs.injector.injection.InjectData;
@@ -24,15 +22,15 @@ import net.runelite.asm.signature.Signature;
 
 public class RenderDraw extends AbstractInjector {
 
-  private static final net.runelite.asm.pool.Method RENDERDRAW = new net.runelite.asm.pool.Method(
-      new Class(HOOKS),
-      "renderDraw",
-      new Signature("(Lnet/runelite/api/Renderable;IIIIIIIIJ)V")
-  );
+  private  net.runelite.asm.pool.Method RENDERDRAW;
   private static final int EXPECTED = 21;
 
-  public RenderDraw(InjectData inject) {
+  public RenderDraw(InjectData inject, String hooks) {
     super(inject);
+    RENDERDRAW = new net.runelite.asm.pool.Method(
+            new Class(hooks),
+            "renderDraw",
+            new Signature("(Lnet/runelite/api/Renderable;IIIIIIIIJ)V"));
   }
 
   @Override

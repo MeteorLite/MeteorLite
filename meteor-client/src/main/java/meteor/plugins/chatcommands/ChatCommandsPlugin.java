@@ -1865,6 +1865,8 @@ public class ChatCommandsPlugin extends Plugin
 			case "dusk":
 			case "dawn":
 			case "gargs":
+			case "ggs":
+			case "gg":
 				return "Grotesque Guardians";
 
 			case "crazy arch":

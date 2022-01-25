@@ -27,7 +27,7 @@ public interface Interactable {
 
     void interact(int index, int menuAction);
 
-    default boolean hasAction(String action) {
-        return getRawActions() != null && getActions().contains(action);
+    default boolean hasAction(String... actions) {
+        return getRawActions() != null && Arrays.stream(actions).anyMatch(x -> getActions().contains(x));
     }
 }

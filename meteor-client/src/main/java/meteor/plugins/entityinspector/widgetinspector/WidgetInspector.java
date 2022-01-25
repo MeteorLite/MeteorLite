@@ -341,9 +341,9 @@ public class WidgetInspector {
             Widget[] roots = client.getWidgetRoots();
 
             parent = Stream.of(roots)
-                    .filter(w -> w.getType() == WidgetType.LAYER && w.getContentType() == 0 && !w.isSelfHidden()).max(Comparator.comparing((Widget w) -> w.getRelativeX() + w.getRelativeY())
+                    .filter(w -> w.getType() == WidgetType.LAYER && w.getContentType() == 0 && !w.isSelfHidden()).max(Comparator.comparingInt((Widget w) -> w.getRelativeX() + w.getRelativeY())
                             .reversed()
-                            .thenComparing(Widget::getId)).get();
+                            .thenComparingInt(Widget::getId)).get();
             x = 4;
             y = 4;
         }

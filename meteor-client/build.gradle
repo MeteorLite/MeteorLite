@@ -4,6 +4,9 @@ plugins {
     id 'com.github.johnrengelman.shadow'
     id 'org.beryx.runtime'
     id 'org.openjfx.javafxplugin' version '0.0.10'
+    id "org.jetbrains.kotlin.jvm" version "1.5.32"
+    id 'org.jetbrains.kotlin.plugin.lombok' version '1.5.32'
+    id 'io.freefair.lombok' version '6.2.0'
 }
 
 group 'org.meteorlite'
@@ -28,13 +31,11 @@ dependencies {
     implementation(project(":meteor-logger"))
     implementation(project(":http-api"))
     implementation(project(":runelite-annotations"))
-    implementation(files("../openosrs-injector/build/injected/injected-client.jar"))
     implementation group: 'de.jensd', name: 'fontawesomefx-commons', version: '_'
     implementation group: 'de.jensd', name: 'fontawesomefx-fontawesome', version: '_'
     implementation 'de.jensd:fontawesomefx-materialicons:2.2.0-9.1.2'
     implementation 'com.jfoenix:jfoenix:_'
     implementation group: 'org.jetbrains', name: 'annotations', version: '21.0.1'
-    runtimeOnly(files("../openosrs-injector/build/injected/injected-client.jar"))
     compileOnly 'org.projectlombok:lombok:_'
     annotationProcessor 'org.projectlombok:lombok:_'
     annotationProcessor group: 'org.jetbrains', name: 'annotations', version: '_'
@@ -44,6 +45,8 @@ dependencies {
     implementation(group: "io.reactivex.rxjava3", name: "rxjava", version: "_")
     implementation group: 'org.apache.commons', name: 'commons-lang3', version: '_'
     implementation(group: "com.squareup.okhttp3", name: "okhttp", version: "_")
+
+    implementation 'org.controlsfx:controlsfx:11.1.0'
 
     implementation(group: "net.runelite.gluegen", name: "gluegen-rt", version: "2.4.0-rc-20200429")
     implementation(group: "net.runelite.jogl", name: "jogl-all", version: "2.4.0-rc-20200429")
@@ -57,26 +60,30 @@ dependencies {
     runtimeOnly(group: "net.runelite.jogl", name: "jogl-all", version: "2.4.0-rc-20200429", classifier: "natives-windows-amd64")
     runtimeOnly(group: "net.runelite.jogl", name: "jogl-all", version: "2.4.0-rc-20200429", classifier: "natives-windows-i586")
     runtimeOnly(group: "net.runelite.jogl", name: "jogl-all-natives-macosx", version: "2.4.0-rc-20210117")
+    runtimeOnly(group: "net.runelite.jocl", name: "jocl", version: "1.0", classifier: 'macos-x64')
+    runtimeOnly(group: "net.runelite.jocl", name: "jocl", version: "1.0", classifier: 'macos-arm64')
     implementation group: 'com.google.guava', name: 'guava', version: '_'
-    implementation(group : "org.apache.commons", name : "commons-text", version : "_")
-    implementation(group : "commons-io", name : "commons-io", version : "_")
-    implementation(group : "net.sf.jopt-simple", name : "jopt-simple", version : "_")
+    implementation(group: "org.apache.commons", name: "commons-text", version: "_")
+    implementation(group: "commons-io", name: "commons-io", version: "_")
+    implementation(group: "net.sf.jopt-simple", name: "jopt-simple", version: "_")
     annotationProcessor group: 'javax.inject', name: 'javax.inject', version: '1'
-    implementation(group : "io.reactivex.rxjava3", name : "rxjava", version : "_")
+    implementation(group: "io.reactivex.rxjava3", name: "rxjava", version: "_")
     implementation group: 'com.google.code.findbugs', name: 'jsr305', version: '_'
     implementation group: 'com.google.code.gson', name: 'gson', version: '_'
     implementation group: 'net.lingala.zip4j', name: 'zip4j', version: '2.9.0'
-    implementation 'org.jetbrains.kotlin:kotlin-stdlib:1.5.21'
-    implementation(group : "net.runelite", name : "discord", version : "1.4")
+    implementation 'org.jetbrains.kotlin:kotlin-stdlib:1.5.31'
+    implementation(platform("org.jetbrains.kotlin:kotlin-bom"))
+    implementation(group: "net.runelite", name: "discord", version: "1.4")
     implementation 'org.bouncycastle:bcprov-jdk15on:1.52'
     implementation 'org.openjfx:javafx:16'
     implementation 'org.slf4j:slf4j-api:1.7.12'
-    implementation 'xerces:xercesImpl:2.12.1'
+    api 'xerces:xercesImpl:2.12.1'
     implementation("com.formdev:flatlaf:_")
     implementation("com.formdev:flatlaf-intellij-themes:_")
+    implementation 'com.miglayout:miglayout:3.7.4'
 }
 
-task createJavadocs (type: Javadoc)
+task createJavadocs(type: Javadoc)
 {
     source = sourceSets.main.allJava
     classpath = sourceSets.main.getCompileClasspath()
@@ -115,7 +122,7 @@ tasks.withType(JavaCompile) {
     options.encoding = 'UTF-8'
 }
 
-task copyRunBat (type: Copy) {
+task copyRunBat(type: Copy) {
     from "/"
     into "build/libs/"
     include "run.bat"
@@ -125,12 +132,11 @@ shadowJar {
     finalizedBy(copyRunBat)
     configurations = [project.configurations.runtimeClasspath]
     minimize {
-        it.exclude(it.dependency {'net.runelite.jogl:.*:.*'} as Spec<? super ResolvedDependency>)
+        it.exclude(it.dependency { 'net.runelite.jogl:.*:.*' } as Spec<? super ResolvedDependency>)
         it.exclude(it.dependency {'xerces:xercesImpl:.*:.*'} as Spec<? super ResolvedDependency>)
         it.exclude(it.project(":runelite-api") as Spec<? super ResolvedDependency>)
         it.exclude(it.project(":runescape-api") as Spec<? super ResolvedDependency>)
     }
-    minimize()
     applicationDefaultJvmArgs = [
             "-noverify",
             "-Xmx512m",
@@ -164,11 +170,19 @@ shadowJar {
             "-ea"]
 }
 tasks {
+    build.dependsOn(":openosrs-injector:inject")
     compileJava.dependsOn project(":fernflower").tasks.getByName("decompileInjected")
     compileJava.dependsOn(":runelite-mixins:compileJava")
+    compileKotlin {
+        kotlinOptions.jvmTarget = "16"
+    }
+    compileTestKotlin {
+        kotlinOptions.jvmTarget = "16"
+    }
 }
 
 processResources {
+    delete("${buildDir}/scripts")
     dependsOn(":runelite-script-assembler:assembleScripts")
     from("${buildDir}/scripts")
 }
@@ -176,6 +190,14 @@ processResources {
 task bootstrap(type: JavaExec) {
     classpath = sourceSets.main.runtimeClasspath
     main = "meteor.util.bootstrap.Bootstrapper"
+}
+
+distTar {
+    duplicatesStrategy(DuplicatesStrategy.EXCLUDE)
+}
+
+distZip {
+    duplicatesStrategy(DuplicatesStrategy.EXCLUDE)
 }
 
 jar {

@@ -5,140 +5,106 @@ import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
-import net.runelite.rs.ScriptOpcodes;
 
-@ObfuscatedName("jd")
+@ObfuscatedName("kw")
 @Implements("PlayerType")
 public enum PlayerType implements MouseWheel {
-	@ObfuscatedName("l")
+	@ObfuscatedName("c")
 	@ObfuscatedSignature(
-		descriptor = "Ljd;"
+		descriptor = "Lkw;"
 	)
 	@Export("PlayerType_normal")
 	PlayerType_normal(0, -1, true, false, true),
-	@ObfuscatedName("q")
+	@ObfuscatedName("b")
 	@ObfuscatedSignature(
-		descriptor = "Ljd;"
+		descriptor = "Lkw;"
 	)
 	@Export("PlayerType_playerModerator")
 	PlayerType_playerModerator(1, 0, true, true, true),
-	@ObfuscatedName("f")
+	@ObfuscatedName("p")
 	@ObfuscatedSignature(
-		descriptor = "Ljd;"
+		descriptor = "Lkw;"
 	)
 	@Export("PlayerType_jagexModerator")
 	PlayerType_jagexModerator(2, 1, true, true, false),
-	@ObfuscatedName("j")
+	@ObfuscatedName("m")
 	@ObfuscatedSignature(
-		descriptor = "Ljd;"
+		descriptor = "Lkw;"
 	)
 	@Export("PlayerType_ironman")
 	PlayerType_ironman(3, 2, false, false, true),
-	@ObfuscatedName("m")
+	@ObfuscatedName("t")
 	@ObfuscatedSignature(
-		descriptor = "Ljd;"
+		descriptor = "Lkw;"
 	)
 	@Export("PlayerType_ultimateIronman")
 	PlayerType_ultimateIronman(4, 3, false, false, true),
-	@ObfuscatedName("k")
+	@ObfuscatedName("s")
 	@ObfuscatedSignature(
-		descriptor = "Ljd;"
+		descriptor = "Lkw;"
 	)
 	@Export("PlayerType_hardcoreIronman")
 	PlayerType_hardcoreIronman(5, 10, false, false, true),
-	@ObfuscatedName("t")
+	@ObfuscatedName("j")
 	@ObfuscatedSignature(
-		descriptor = "Ljd;"
+		descriptor = "Lkw;"
 	)
-	field3657(6, 22, false, false, true),
-	@ObfuscatedName("a")
+	field3801(6, 22, false, false, true),
+	@ObfuscatedName("w")
 	@ObfuscatedSignature(
-		descriptor = "Ljd;"
+		descriptor = "Lkw;"
 	)
-	field3658(7, 41, false, false, true),
-	@ObfuscatedName("e")
+	field3802(7, 41, false, false, true),
+	@ObfuscatedName("n")
 	@ObfuscatedSignature(
-		descriptor = "Ljd;"
+		descriptor = "Lkw;"
 	)
-	field3654(8, 42, false, false, true);
+	field3795(8, 42, false, false, true);
 
-	@ObfuscatedName("mw")
-	@ObfuscatedSignature(
-		descriptor = "Ljt;"
-	)
-	static Widget field3661;
-	@ObfuscatedName("i")
+	@ObfuscatedName("r")
 	@ObfuscatedGetter(
-		intValue = 1199460545
+		intValue = -1858175947
 	)
 	@Export("id")
 	final int id;
-	@ObfuscatedName("y")
+	@ObfuscatedName("o")
 	@ObfuscatedGetter(
-		intValue = 84538647
+		intValue = -1675383045
 	)
 	@Export("modIcon")
 	public final int modIcon;
-	@ObfuscatedName("w")
+	@ObfuscatedName("v")
 	@Export("isPrivileged")
 	public final boolean isPrivileged;
-	@ObfuscatedName("g")
+	@ObfuscatedName("d")
 	@Export("isUser")
 	public final boolean isUser;
 
 	PlayerType(int var3, int var4, boolean var5, boolean var6, boolean var7) {
-		this.id = var3;
-		this.modIcon = var4;
-		this.isPrivileged = var6;
-		this.isUser = var7;
-	}
+		this.id = var3; // L: 26
+		this.modIcon = var4; // L: 27
+		this.isPrivileged = var6; // L: 28
+		this.isUser = var7; // L: 29
+	} // L: 30
 
-	@ObfuscatedName("l")
+	@ObfuscatedName("b")
 	@ObfuscatedSignature(
-		descriptor = "(I)I",
-		garbageValue = "661199397"
+		descriptor = "(B)I",
+		garbageValue = "48"
 	)
 	@Export("rsOrdinal")
 	public int rsOrdinal() {
-		return this.id;
+		return this.id; // L: 34
 	}
 
-	@ObfuscatedName("aa")
+	@ObfuscatedName("h")
 	@ObfuscatedSignature(
-		descriptor = "(ILbe;ZB)I",
-		garbageValue = "74"
+		descriptor = "(II)V",
+		garbageValue = "1177241334"
 	)
-	static int method5153(int var0, Script var1, boolean var2) {
-		int var3;
-		if (var0 == ScriptOpcodes.CAM_FORCEANGLE) {
-			AbstractByteArrayCopier.Interpreter_intStackSize -= 2;
-			var3 = Interpreter.Interpreter_intStack[AbstractByteArrayCopier.Interpreter_intStackSize];
-			int var4 = Interpreter.Interpreter_intStack[AbstractByteArrayCopier.Interpreter_intStackSize + 1];
-			if (!Client.isCameraLocked) {
-				Client.camAngleX = var3;
-				Client.camAngleY = var4;
-			}
-
-			return 1;
-		} else if (var0 == ScriptOpcodes.CAM_GETANGLE_XA) {
-			Interpreter.Interpreter_intStack[++AbstractByteArrayCopier.Interpreter_intStackSize - 1] = Client.camAngleX;
-			return 1;
-		} else if (var0 == ScriptOpcodes.CAM_GETANGLE_YA) {
-			Interpreter.Interpreter_intStack[++AbstractByteArrayCopier.Interpreter_intStackSize - 1] = Client.camAngleY;
-			return 1;
-		} else if (var0 == ScriptOpcodes.CAM_SETFOLLOWHEIGHT) {
-			var3 = Interpreter.Interpreter_intStack[--AbstractByteArrayCopier.Interpreter_intStackSize];
-			if (var3 < 0) {
-				var3 = 0;
-			}
-
-			Client.camFollowHeight = var3;
-			return 1;
-		} else if (var0 == ScriptOpcodes.CAM_GETFOLLOWHEIGHT) {
-			Interpreter.Interpreter_intStack[++AbstractByteArrayCopier.Interpreter_intStackSize - 1] = Client.camFollowHeight;
-			return 1;
-		} else {
-			return 2;
+	static void method5521(int var0) {
+		if (var0 != Login.loginIndex) { // L: 1986
+			Login.loginIndex = var0; // L: 1987
 		}
-	}
+	} // L: 1988
 }

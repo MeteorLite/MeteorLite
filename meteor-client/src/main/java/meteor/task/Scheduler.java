@@ -29,7 +29,6 @@ import java.lang.invoke.LambdaMetafactory;
 import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;
 import java.lang.invoke.MethodType;
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.time.Duration;
 import java.time.Instant;
@@ -40,11 +39,13 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.ScheduledExecutorService;
 import javax.inject.Inject;
 import javax.inject.Singleton;
-import lombok.extern.slf4j.Slf4j;
+import meteor.eventbus.ReflectUtil;
+import org.sponge.util.Logger;
 
 @Singleton
 public class Scheduler
 {
+	private static final Logger log = new Logger("Scheduler");
 	private final List<ScheduledMethod> scheduledMethods = new CopyOnWriteArrayList<>();
 
 	@Inject
@@ -80,26 +81,27 @@ public class Scheduler
 			try
 			{
 				final Class<?> clazz = method.getDeclaringClass();
-				final MethodHandles.Lookup caller = MethodHandles.lookup();
+				final MethodHandles.Lookup caller = ReflectUtil.privateLookupIn(clazz);
 				final MethodType subscription = MethodType.methodType(method.getReturnType(), method.getParameterTypes());
 				final MethodHandle target = caller.findVirtual(clazz, method.getName(), subscription);
 				final CallSite site = LambdaMetafactory.metafactory(
-					caller,
-					"run",
-					MethodType.methodType(Runnable.class, clazz),
-					subscription,
-					target,
-					subscription);
+								caller,
+								"run",
+								MethodType.methodType(Runnable.class, clazz),
+								subscription,
+								target,
+								subscription);
 
 				final MethodHandle factory = site.getTarget();
 				runnable = (Runnable) factory.bindTo(obj).invokeExact();
 			}
 			catch (Throwable e)
 			{
-				e.printStackTrace();
+				log.warn("Unable to create lambda for method {}", method, e);
 			}
 
 			ScheduledMethod scheduledMethod = new ScheduledMethod(schedule, method, obj, runnable);
+			log.debug("Scheduled task {}", scheduledMethod);
 
 			addScheduledMethod(scheduledMethod);
 		}

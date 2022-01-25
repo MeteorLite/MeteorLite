@@ -58,6 +58,12 @@ public class PutField extends Instruction implements SetFieldInstruction {
     this.myField = field;
   }
 
+  public PutField(Instructions instructions, Field field)
+  {
+    super(instructions, InstructionType.PUTFIELD);
+    this.field = field;
+  }
+
   @Override
   public String toString() {
     Method m = this.getInstructions().getCode().getMethod();

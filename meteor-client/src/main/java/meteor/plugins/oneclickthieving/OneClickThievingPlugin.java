@@ -1,7 +1,7 @@
 package meteor.plugins.oneclickthieving;
 
 import com.google.inject.Provides;
-import meteor.plugins.api.entities.NPCs;
+import dev.hoot.api.entities.NPCs;
 import net.runelite.api.*;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameTick;
@@ -22,7 +22,6 @@ import meteor.plugins.PluginDescriptor;
 import meteor.ui.overlay.OverlayManager;
 
 import javax.inject.Inject;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.Set;

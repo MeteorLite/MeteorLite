@@ -7,8 +7,6 @@
  */
 package com.openosrs.injector.injectors.raw;
 
-import static com.openosrs.injector.injection.InjectData.HOOKS;
-
 import com.openosrs.injector.InjectException;
 import com.openosrs.injector.InjectUtil;
 import com.openosrs.injector.injection.InjectData;
@@ -32,14 +30,14 @@ import net.runelite.asm.signature.Signature;
 
 public class DrawMenu extends AbstractInjector {
 
-  private static final net.runelite.asm.pool.Method DRAWMENU = new net.runelite.asm.pool.Method(
-      new Class(HOOKS),
-      "drawMenu",
-      new Signature("()Z")
-  );
+  private static net.runelite.asm.pool.Method DRAWMENU;
 
-  public DrawMenu(InjectData inject) {
+  public DrawMenu(InjectData inject, String hooks) {
     super(inject);
+    DRAWMENU = new net.runelite.asm.pool.Method(
+            new Class(hooks),
+            "drawMenu",
+            new Signature("()Z"));
   }
 
   public void inject() {

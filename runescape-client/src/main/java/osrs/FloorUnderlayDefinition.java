@@ -6,48 +6,48 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("fk")
+@ObfuscatedName("fl")
 @Implements("FloorUnderlayDefinition")
 public class FloorUnderlayDefinition extends DualNode {
-	@ObfuscatedName("l")
+	@ObfuscatedName("c")
 	@ObfuscatedSignature(
-		descriptor = "Lkl;"
+		descriptor = "Lku;"
 	)
 	@Export("FloorUnderlayDefinition_archive")
 	static AbstractArchive FloorUnderlayDefinition_archive;
-	@ObfuscatedName("q")
+	@ObfuscatedName("b")
 	@ObfuscatedSignature(
-		descriptor = "Lii;"
+		descriptor = "Liq;"
 	)
 	@Export("FloorUnderlayDefinition_cached")
 	public static EvictingDualNodeHashTable FloorUnderlayDefinition_cached;
-	@ObfuscatedName("f")
+	@ObfuscatedName("p")
 	@ObfuscatedGetter(
-		intValue = -532200839
+		intValue = 1774321609
 	)
 	@Export("rgb")
 	int rgb;
-	@ObfuscatedName("j")
+	@ObfuscatedName("m")
 	@ObfuscatedGetter(
-		intValue = 942035901
+		intValue = 553925567
 	)
 	@Export("hue")
 	public int hue;
-	@ObfuscatedName("m")
+	@ObfuscatedName("t")
 	@ObfuscatedGetter(
-		intValue = 1219525369
+		intValue = -2042462735
 	)
 	@Export("saturation")
 	public int saturation;
-	@ObfuscatedName("k")
+	@ObfuscatedName("s")
 	@ObfuscatedGetter(
-		intValue = 1599217659
+		intValue = 94444395
 	)
 	@Export("lightness")
 	public int lightness;
-	@ObfuscatedName("t")
+	@ObfuscatedName("j")
 	@ObfuscatedGetter(
-		intValue = -1588498639
+		intValue = 1721469493
 	)
 	@Export("hueMultiplier")
 	public int hueMultiplier;
@@ -57,154 +57,141 @@ public class FloorUnderlayDefinition extends DualNode {
 	}
 
 	FloorUnderlayDefinition() {
-		this.rgb = 0;
-	}
+		this.rgb = 0; // L: 12
+	} // L: 18
 
-	@ObfuscatedName("f")
+	@ObfuscatedName("p")
 	@ObfuscatedSignature(
 		descriptor = "(I)V",
-		garbageValue = "1183298699"
+		garbageValue = "1836461831"
 	)
 	@Export("postDecode")
 	void postDecode() {
-		this.setHsl(this.rgb);
-	}
+		this.setHsl(this.rgb); // L: 36
+	} // L: 37
 
-	@ObfuscatedName("j")
+	@ObfuscatedName("m")
 	@ObfuscatedSignature(
-		descriptor = "(Lot;IB)V",
-		garbageValue = "-91"
+		descriptor = "(Lpi;IB)V",
+		garbageValue = "-45"
 	)
 	@Export("decode")
 	void decode(Buffer var1, int var2) {
 		while (true) {
-			int var3 = var1.readUnsignedByte();
-			if (var3 == 0) {
-				return;
+			int var3 = var1.readUnsignedByte(); // L: 41
+			if (var3 == 0) { // L: 42
+				return; // L: 45
 			}
 
-			this.decodeNext(var1, var3, var2);
+			this.decodeNext(var1, var3, var2); // L: 43
 		}
 	}
 
-	@ObfuscatedName("m")
+	@ObfuscatedName("t")
 	@ObfuscatedSignature(
-		descriptor = "(Lot;IIB)V",
-		garbageValue = "64"
+		descriptor = "(Lpi;III)V",
+		garbageValue = "1721469493"
 	)
 	@Export("decodeNext")
 	void decodeNext(Buffer var1, int var2, int var3) {
-		if (var2 == 1) {
+		if (var2 == 1) { // L: 48
 			this.rgb = var1.readMedium();
 		}
 
-	}
+	} // L: 50
 
-	@ObfuscatedName("k")
+	@ObfuscatedName("s")
 	@ObfuscatedSignature(
 		descriptor = "(II)V",
-		garbageValue = "156508648"
+		garbageValue = "506647207"
 	)
 	@Export("setHsl")
 	void setHsl(int var1) {
-		double var2 = (double)(var1 >> 16 & 255) / 256.0D;
-		double var4 = (double)(var1 >> 8 & 255) / 256.0D;
-		double var6 = (double)(var1 & 255) / 256.0D;
-		double var8 = var2;
-		if (var4 < var2) {
+		double var2 = (double)(var1 >> 16 & 255) / 256.0D; // L: 53
+		double var4 = (double)(var1 >> 8 & 255) / 256.0D; // L: 54
+		double var6 = (double)(var1 & 255) / 256.0D; // L: 55
+		double var8 = var2; // L: 56
+		if (var4 < var2) { // L: 57
 			var8 = var4;
 		}
 
-		if (var6 < var8) {
+		if (var6 < var8) { // L: 58
 			var8 = var6;
 		}
 
-		double var10 = var2;
-		if (var4 > var2) {
+		double var10 = var2; // L: 59
+		if (var4 > var2) { // L: 60
 			var10 = var4;
 		}
 
-		if (var6 > var10) {
+		if (var6 > var10) { // L: 61
 			var10 = var6;
 		}
 
-		double var12 = 0.0D;
-		double var14 = 0.0D;
-		double var16 = (var8 + var10) / 2.0D;
-		if (var8 != var10) {
-			if (var16 < 0.5D) {
+		double var12 = 0.0D; // L: 62
+		double var14 = 0.0D; // L: 63
+		double var16 = (var8 + var10) / 2.0D; // L: 64
+		if (var10 != var8) { // L: 65
+			if (var16 < 0.5D) { // L: 66
 				var14 = (var10 - var8) / (var8 + var10);
 			}
 
-			if (var16 >= 0.5D) {
+			if (var16 >= 0.5D) { // L: 67
 				var14 = (var10 - var8) / (2.0D - var10 - var8);
 			}
 
-			if (var2 == var10) {
+			if (var10 == var2) { // L: 68
 				var12 = (var4 - var6) / (var10 - var8);
-			} else if (var4 == var10) {
+			} else if (var4 == var10) { // L: 69
 				var12 = 2.0D + (var6 - var2) / (var10 - var8);
-			} else if (var10 == var6) {
-				var12 = 4.0D + (var2 - var4) / (var10 - var8);
+			} else if (var6 == var10) {
+				var12 = (var2 - var4) / (var10 - var8) + 4.0D; // L: 70
 			}
 		}
 
-		var12 /= 6.0D;
-		this.saturation = (int)(256.0D * var14);
-		this.lightness = (int)(var16 * 256.0D);
-		if (this.saturation < 0) {
+		var12 /= 6.0D; // L: 72
+		this.saturation = (int)(var14 * 256.0D); // L: 73
+		this.lightness = (int)(var16 * 256.0D); // L: 74
+		if (this.saturation < 0) { // L: 75
 			this.saturation = 0;
-		} else if (this.saturation > 255) {
+		} else if (this.saturation > 255) { // L: 76
 			this.saturation = 255;
 		}
 
-		if (this.lightness < 0) {
+		if (this.lightness < 0) { // L: 77
 			this.lightness = 0;
-		} else if (this.lightness > 255) {
+		} else if (this.lightness > 255) { // L: 78
 			this.lightness = 255;
 		}
 
-		if (var16 > 0.5D) {
-			this.hueMultiplier = (int)(512.0D * var14 * (1.0D - var16));
+		if (var16 > 0.5D) { // L: 79
+			this.hueMultiplier = (int)((1.0D - var16) * var14 * 512.0D);
 		} else {
-			this.hueMultiplier = (int)(512.0D * var14 * var16);
+			this.hueMultiplier = (int)(512.0D * var14 * var16); // L: 80
 		}
 
-		if (this.hueMultiplier < 1) {
+		if (this.hueMultiplier < 1) { // L: 81
 			this.hueMultiplier = 1;
 		}
 
-		this.hue = (int)(var12 * (double)this.hueMultiplier);
+		this.hue = (int)((double)this.hueMultiplier * var12); // L: 82
+	} // L: 83
+
+	@ObfuscatedName("c")
+	@ObfuscatedSignature(
+		descriptor = "(I)[Lpc;",
+		garbageValue = "1097818392"
+	)
+	static PrivateChatMode[] method3381() {
+		return new PrivateChatMode[]{PrivateChatMode.field4594, PrivateChatMode.field4595, PrivateChatMode.field4596}; // L: 11
 	}
 
-	@ObfuscatedName("l")
+	@ObfuscatedName("c")
 	@ObfuscatedSignature(
-		descriptor = "(I)I",
-		garbageValue = "970537085"
+		descriptor = "(I)[Lca;",
+		garbageValue = "440486773"
 	)
-	static int method3082() {
-		return ++Messages.Messages_count - 1;
-	}
-
-	@ObfuscatedName("q")
-	@ObfuscatedSignature(
-		descriptor = "(II)Ljava/lang/String;",
-		garbageValue = "1547670784"
-	)
-	@Export("colorStartTag")
-	static String colorStartTag(int var0) {
-		return "<col=" + Integer.toHexString(var0) + ">";
-	}
-
-	@ObfuscatedName("i")
-	@ObfuscatedSignature(
-		descriptor = "(Ljava/lang/String;I)V",
-		garbageValue = "-793299621"
-	)
-	static final void method3094(String var0) {
-		StringBuilder var10000 = (new StringBuilder()).append(var0);
-		Object var10001 = null;
-		String var1 = var10000.append(" is already on your friend list").toString();
-		GraphicsDefaults.addGameMessage(30, "", var1);
+	static AttackOption[] method3376() {
+		return new AttackOption[]{AttackOption.field1232, AttackOption.AttackOption_hidden, AttackOption.AttackOption_dependsOnCombatLevels, AttackOption.field1234, AttackOption.AttackOption_alwaysRightClick}; // L: 12748
 	}
 }

@@ -1,9 +1,9 @@
 package meteor.plugins.hootfighter;
 
-import meteor.plugins.api.game.Skills;
-import meteor.plugins.api.magic.Regular;
-import meteor.plugins.api.magic.Rune;
-import meteor.plugins.api.movement.pathfinder.RuneRequirement;
+import dev.hoot.api.game.Skills;
+import dev.hoot.api.magic.Regular;
+import dev.hoot.api.magic.Rune;
+import dev.hoot.api.movement.pathfinder.RuneRequirement;
 import net.runelite.api.Skill;
 
 import java.util.Arrays;

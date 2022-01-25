@@ -1,5 +1,6 @@
 package meteor.config;
 
+import lombok.Getter;
 import meteor.plugins.meteorlite.interaction.InteractType;
 import meteor.ui.ContainableFrame;
 import meteor.ui.overlay.components.ComponentConstants;
@@ -16,6 +17,17 @@ public interface MeteorLiteConfig extends Config {
     /*
       Client settings
      */
+
+    @ConfigItem(
+            keyName = "toolbarPosition",
+            name = "Toolbar Position",
+            description = "Where the toolbar is located.",
+            section = clientSettings,
+            position = 0
+    )
+    default ToolbarPosition toolbarPosition() {
+        return ToolbarPosition.EAST;
+    }
 
     @ConfigSection(
             name = "Client settings",
@@ -535,5 +547,19 @@ public interface MeteorLiteConfig extends Config {
     )
     default boolean useWikiItemPrices() {
         return true;
+    }
+
+    @Getter
+    enum ToolbarPosition {
+        NORTH(BorderLayout.NORTH),
+        SOUTH(BorderLayout.SOUTH),
+        EAST(BorderLayout.EAST),
+        WEST(BorderLayout.WEST);
+
+        final String position;
+
+        ToolbarPosition(String position) {
+            this.position = position;
+        }
     }
 }

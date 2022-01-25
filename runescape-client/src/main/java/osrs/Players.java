@@ -6,92 +6,115 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("cn")
+@ObfuscatedName("cw")
 @Implements("Players")
 public class Players {
-	@ObfuscatedName("f")
-	static byte[] field1247;
-	@ObfuscatedName("j")
-	static byte[] field1245;
+	@ObfuscatedName("qa")
+	@ObfuscatedSignature(
+		descriptor = "Lmc;"
+	)
+	@Export("friendsChat")
+	static FriendsChat friendsChat;
+	@ObfuscatedName("p")
+	static byte[] field1243;
 	@ObfuscatedName("m")
 	@ObfuscatedSignature(
-		descriptor = "[Lot;"
+		descriptor = "[Lgj;"
+	)
+	static class185[] field1246;
+	@ObfuscatedName("t")
+	@ObfuscatedSignature(
+		descriptor = "[Lpi;"
 	)
 	static Buffer[] field1248;
-	@ObfuscatedName("k")
+	@ObfuscatedName("s")
 	@ObfuscatedGetter(
-		intValue = -929860441
+		intValue = 60233761
 	)
 	@Export("Players_count")
 	static int Players_count;
-	@ObfuscatedName("t")
+	@ObfuscatedName("j")
 	@Export("Players_indices")
 	static int[] Players_indices;
-	@ObfuscatedName("a")
+	@ObfuscatedName("w")
 	@ObfuscatedGetter(
-		intValue = 1961381127
+		intValue = -1857354621
 	)
 	@Export("Players_emptyIdxCount")
 	static int Players_emptyIdxCount;
-	@ObfuscatedName("e")
+	@ObfuscatedName("n")
 	@Export("Players_emptyIndices")
 	static int[] Players_emptyIndices;
-	@ObfuscatedName("i")
+	@ObfuscatedName("r")
 	@Export("Players_regions")
 	static int[] Players_regions;
-	@ObfuscatedName("y")
+	@ObfuscatedName("o")
 	@Export("Players_orientations")
 	static int[] Players_orientations;
-	@ObfuscatedName("w")
+	@ObfuscatedName("v")
 	@Export("Players_targetIndices")
 	static int[] Players_targetIndices;
-	@ObfuscatedName("g")
+	@ObfuscatedName("d")
 	@ObfuscatedGetter(
-		intValue = -1631297959
+		intValue = 1591161311
 	)
 	@Export("Players_pendingUpdateCount")
 	static int Players_pendingUpdateCount;
-	@ObfuscatedName("v")
+	@ObfuscatedName("h")
 	@Export("Players_pendingUpdateIndices")
 	static int[] Players_pendingUpdateIndices;
-	@ObfuscatedName("s")
+	@ObfuscatedName("g")
 	@ObfuscatedSignature(
-		descriptor = "Lot;"
+		descriptor = "Lpi;"
 	)
-	static Buffer field1259;
+	static Buffer field1257;
+	@ObfuscatedName("cb")
+	@ObfuscatedGetter(
+		intValue = 1838137179
+	)
+	public static int field1247;
+	@ObfuscatedName("el")
+	@ObfuscatedSignature(
+		descriptor = "Lkz;"
+	)
+	@Export("archive11")
+	static Archive archive11;
 
 	static {
-		field1247 = new byte[2048];
-		field1245 = new byte[2048];
-		field1248 = new Buffer[2048];
-		Players_count = 0;
-		Players_indices = new int[2048];
-		Players_emptyIdxCount = 0;
-		Players_emptyIndices = new int[2048];
-		Players_regions = new int[2048];
+		field1243 = new byte[2048]; // L: 18
+		field1246 = new class185[2048]; // L: 19
+		field1248 = new Buffer[2048]; // L: 20
+		Players_count = 0; // L: 21
+		Players_indices = new int[2048]; // L: 22
+		Players_emptyIdxCount = 0; // L: 23
+		Players_emptyIndices = new int[2048]; // L: 24
+		Players_regions = new int[2048]; // L: 25
 		Players_orientations = new int[2048];
 		Players_targetIndices = new int[2048];
 		Players_pendingUpdateCount = 0;
 		Players_pendingUpdateIndices = new int[2048];
-		field1259 = new Buffer(new byte[5000]);
+		field1257 = new Buffer(new byte[5000]); // L: 30
 	}
 
-	@ObfuscatedName("f")
+	@ObfuscatedName("c")
 	@ObfuscatedSignature(
-		descriptor = "(ILjava/lang/String;Ljava/lang/String;Ljava/lang/String;I)V",
-		garbageValue = "1246868543"
+		descriptor = "(Lku;Ljava/lang/String;Ljava/lang/String;IZI)V",
+		garbageValue = "2062230724"
 	)
-	@Export("addChatMessage")
-	static void addChatMessage(int var0, String var1, String var2, String var3) {
-		ChatChannel var4 = (ChatChannel)Messages.Messages_channels.get(var0);
-		if (var4 == null) {
-			var4 = new ChatChannel();
-			Messages.Messages_channels.put(var0, var4);
-		}
+	public static void method2382(AbstractArchive var0, String var1, String var2, int var3, boolean var4) {
+		int var5 = var0.getGroupId(var1); // L: 26
+		int var6 = var0.getFileId(var5, var2); // L: 27
+		NetSocket.method3118(var0, var5, var6, var3, var4); // L: 28
+	} // L: 29
 
-		Message var5 = var4.addMessage(var0, var1, var2, var3);
-		Messages.Messages_hashTable.put(var5, (long)var5.count);
-		Messages.Messages_queue.add(var5);
-		Client.chatCycle = Client.cycleCntr;
-	}
+	@ObfuscatedName("kz")
+	@ObfuscatedSignature(
+		descriptor = "(II)V",
+		garbageValue = "-733179789"
+	)
+	static final void method2383(int var0) {
+		var0 = Math.min(Math.max(var0, 0), 127); // L: 12155
+		SecureRandomFuture.clientPreferences.areaSoundEffectsVolume = var0; // L: 12156
+		class127.savePreferences(); // L: 12157
+	} // L: 12158
 }

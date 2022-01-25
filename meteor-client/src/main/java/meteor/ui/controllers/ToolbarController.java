@@ -1,14 +1,10 @@
 package meteor.ui.controllers;
 
-import static meteor.ui.MeteorUI.lastButtonPressed;
 import com.jfoenix.controls.JFXButton;
-import java.io.IOException;
 import java.util.ArrayList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.Node;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.paint.Paint;
 import meteor.MeteorLiteClientLauncher;
 import meteor.ui.MeteorUI;
 
@@ -80,13 +76,6 @@ public class ToolbarController {
 
   @FXML
   protected void handlePluginsPressed(ActionEvent event) {
-    if (lastButtonPressed.equals("Plugins"))
-      meteorUI.toggleRightPanel();
-    else {
-      meteorUI.rightPanel.setScene(meteorUI.pluginsRootScene);
-      meteorUI.showRightPanel();
-    }
-
-    lastButtonPressed = "Plugins";
+      meteorUI.showPlugins();
   }
 }

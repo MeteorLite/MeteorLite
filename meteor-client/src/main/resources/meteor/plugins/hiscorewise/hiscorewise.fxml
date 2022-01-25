@@ -3,6 +3,6 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.control.ScrollPane?>
 <ScrollPane xmlns:fx="http://javafx.com/fxml/1" style="-fx-background-color: #212121; -fx-border-color: #121212; -fx-border-width: 3;"  fx:id="hiscorePanel" fitToWidth="true" AnchorPane.bottomAnchor="8.0" AnchorPane.leftAnchor="8.0" AnchorPane.rightAnchor="8.0" AnchorPane.topAnchor="40.0"
-  minHeight="800"
+            minHeight="0" fitToHeight="true"
   fx:controller="meteor.plugins.hiscorewise.BasicSnapshotController">
 </ScrollPane>

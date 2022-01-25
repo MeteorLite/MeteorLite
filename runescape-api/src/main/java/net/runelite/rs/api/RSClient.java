@@ -24,19 +24,16 @@
  */
 package net.runelite.rs.api;
 
-import java.math.BigInteger;
-import java.util.Map;
-import net.runelite.api.Client;
-import net.runelite.api.IndexedSprite;
-import net.runelite.api.SpritePixels;
-import net.runelite.api.World;
+import net.runelite.api.*;
 import net.runelite.api.clan.ClanRank;
 import net.runelite.api.packets.ClientPacket;
 import net.runelite.api.packets.IsaacCipher;
 import net.runelite.api.widgets.Widget;
 import net.runelite.mapping.Construct;
-import net.runelite.mapping.Export;
 import net.runelite.mapping.Import;
+
+import java.math.BigInteger;
+import java.util.Map;
 
 public interface RSClient extends RSGameEngine, Client {
 
@@ -1497,142 +1494,6 @@ public interface RSClient extends RSGameEngine, Client {
   @Override
   RSPacketBufferNode preparePacket(ClientPacket packet, IsaacCipher isaac);
 
-  @Import("Packet_nameInput")
-  @Override
-  RSClientPacket getNameInputPacket();
-
-  @Import("Packet_itemAction")
-  @Override
-  RSClientPacket getItemActionPacket();
-
-  @Import("Packet_itemUseOnGameObjectPacket")
-  @Override
-  RSClientPacket getItemUseOnGameObjectPacket();
-
-  @Import("Packet_gameObjectActionPacket")
-  @Override
-  RSClientPacket getGameObjectActionPacket();
-
-  @Import("Packet_gameObjectAction3Packet")
-  @Override
-  RSClientPacket getGameObjectAction3Packet();
-
-  @Import("Packet_gameObjectAction4Packet")
-  @Override
-  RSClientPacket getGameObjectAction4Packet();
-
-  @Import("Packet_gameObjectAction5Packet")
-  @Override
-  RSClientPacket getGameObjectAction5Packet();
-
-  @Import("Packet_interfaceClosePacket")
-  @Override
-  RSClientPacket getInterfaceClosePacket();
-
-  @Import("Packet_NPCAction3Packet")
-  @Override
-  RSClientPacket getNPCAction3Packet();
-
-  @Import("Packet_gameObjectAction2Packet")
-  @Override
-  RSClientPacket getGameObjectAction2Packet();
-
-  @Import("Packet_NPCActionPacket")
-  @Override
-  RSClientPacket getNPCActionPacket();
-
-  @Import("Packet_NPCAction2Packet")
-  @Override
-  RSClientPacket getNPCAction2Packet();
-
-  @Import("Packet_NPCAction4Packet")
-  @Override
-  RSClientPacket getNPCAction4Packet();
-
-  @Import("Packet_NPCAction5Packet")
-  @Override
-  RSClientPacket getNPCAction5Packet();
-
-  @Import("Packet_spellOnItem")
-  @Override
-  RSClientPacket getSpellOnItemPacket();
-
-  @Import("Packet_numberInput")
-  @Override
-  RSClientPacket getNumberInputPacket();
-
-  @Import("Packet_textInput")
-  @Override
-  RSClientPacket getTextInputPacket();
-
-  @Import("Packet_widgetActionPacket")
-  @Override
-  RSClientPacket getWidgetActionPacket();
-
-  @Import("Packet_widgetAction2Packet")
-  @Override
-  RSClientPacket getWidgetAction2Packet();
-
-  @Import("Packet_widgetAction3Packet")
-  @Override
-  RSClientPacket getWidgetAction3Packet();
-
-  @Import("Packet_widgetAction4Packet")
-  @Override
-  RSClientPacket getWidgetAction4Packet();
-
-  @Import("Packet_widgetAction5Packet")
-  @Override
-  RSClientPacket getWidgetAction5Packet();
-
-  @Import("Packet_widgetAction6Packet")
-  @Override
-  RSClientPacket getWidgetAction6Packet();
-
-  @Import("Packet_widgetAction7Packet")
-  @Override
-  RSClientPacket getWidgetAction7Packet();
-
-  @Import("Packet_widgetAction8Packet")
-  @Override
-  RSClientPacket getWidgetAction8Packet();
-
-  @Import("Packet_widgetAction10Packet")
-  @Override
-  RSClientPacket getWidgetAction10Packet();
-
-  @Import("Packet_clickPacket")
-  @Override
-  RSClientPacket getClickPacket();
-
-  @Import("Packet_itemAction2Packet")
-  @Override
-  RSClientPacket getItemAction2Packet();
-
-  @Import("Packet_itemAction3Packet")
-  @Override
-  RSClientPacket getItemAction3Packet();
-
-  @Import("Packet_itemAction4Packet")
-  @Override
-  RSClientPacket getItemAction4Packet();
-
-  @Import("Packet_itemAction5Packet")
-  @Override
-  RSClientPacket getItemAction5Packet();
-
-  @Import("Packet_itemOnItemPacket")
-  @Override
-  RSClientPacket getItemOnItemPacket();
-
-  @Import("Packet_bankItemActionPacket")
-  @Override
-  RSClientPacket getBankItemActionPacket();
-
-  @Import("Packet_walkPacket")
-  @Override
-  RSClientPacket getWalkPacket();
-
   @Import("loadWorlds")
   @Override
   boolean loadWorlds();
@@ -1778,4 +1639,20 @@ public interface RSClient extends RSGameEngine, Client {
 
   @Import("readStringIntParameters")
   RSIterableNodeHashTable readStringIntParameters(RSBuffer buffer, RSIterableNodeHashTable table);
+
+  @Import("isCameraLocked")
+  boolean isCameraLocked();
+
+  @Import("oculusOrbFocalPointX")
+  @Override
+  void setOculusOrbFocalPointX(int state);
+
+  @Import("oculusOrbFocalPointY")
+  @Override
+  void setOculusOrbFocalPointY(int state);
+
+  @Import("objectSounds")
+  Deque<AmbientSoundEffect> getAmbientSoundEffects();
+
+  long getUnlockedFpsTarget();
 }

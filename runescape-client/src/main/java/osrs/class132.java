@@ -1,151 +1,99 @@
 package osrs;
 
-import java.io.IOException;
-import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("es")
-public abstract class class132 extends Node {
-	@ObfuscatedName("k")
-	@ObfuscatedSignature(
-		descriptor = "Loz;"
-	)
-	@Export("titlebuttonSprite")
-	static IndexedSprite titlebuttonSprite;
-	@ObfuscatedName("jt")
+@ObfuscatedName("eg")
+public class class132 extends class142 {
+	@ObfuscatedName("o")
+	public static short[] field1540;
+	@ObfuscatedName("c")
 	@ObfuscatedGetter(
-		intValue = -1055383279
+		intValue = 1971211247
 	)
-	@Export("oculusOrbFocalPointX")
-	static int oculusOrbFocalPointX;
-
-	class132() {
-	}
-
-	@ObfuscatedName("l")
+	int field1535;
+	@ObfuscatedName("b")
+	byte field1541;
+	@ObfuscatedName("p")
+	@ObfuscatedGetter(
+		intValue = 2049940809
+	)
+	int field1536;
+	@ObfuscatedName("m")
+	String field1538;
+	// $FF: synthetic field
 	@ObfuscatedSignature(
-		descriptor = "(Lot;B)V",
-		garbageValue = "35"
+		descriptor = "Len;"
 	)
-	abstract void vmethod2760(Buffer var1);
+	final class143 this$0;
 
-	@ObfuscatedName("q")
 	@ObfuscatedSignature(
-		descriptor = "(Leb;I)V",
-		garbageValue = "1634989707"
+		descriptor = "(Len;)V"
 	)
-	abstract void vmethod2759(ClanChannel var1);
+	class132(class143 var1) {
+		this.this$0 = var1;
+		this.field1535 = -1; // L: 101
+	} // L: 106
 
-	@ObfuscatedName("l")
+	@ObfuscatedName("c")
 	@ObfuscatedSignature(
-		descriptor = "(Lmk;ZI)V",
-		garbageValue = "1491727456"
+		descriptor = "(Lpi;B)V",
+		garbageValue = "4"
 	)
-	public static void method2698(AbstractSocket var0, boolean var1) {
-		if (NetCache.NetCache_socket != null) {
-			try {
-				NetCache.NetCache_socket.close();
-			} catch (Exception var8) {
-			}
+	void vmethod3022(Buffer var1) {
+		this.field1535 = var1.readUnsignedShort(); // L: 109
+		this.field1541 = var1.readByte(); // L: 110
+		this.field1536 = var1.readUnsignedShort(); // L: 111
+		var1.readLong(); // L: 112
+		this.field1538 = var1.readStringCp1252NullTerminated(); // L: 113
+	} // L: 114
 
-			NetCache.NetCache_socket = null;
+	@ObfuscatedName("b")
+	@ObfuscatedSignature(
+		descriptor = "(Lei;B)V",
+		garbageValue = "40"
+	)
+	void vmethod3021(ClanChannel var1) {
+		ClanChannelMember var2 = (ClanChannelMember)var1.members.get(this.field1535); // L: 117
+		var2.rank = this.field1541; // L: 118
+		var2.world = this.field1536; // L: 119
+		var2.username = new Username(this.field1538); // L: 120
+	} // L: 121
+
+	@ObfuscatedName("c")
+	@ObfuscatedSignature(
+		descriptor = "(I)V",
+		garbageValue = "420472721"
+	)
+	static void method2810() {
+		if (TaskHandler.javaVendor.toLowerCase().indexOf("microsoft") != -1) { // L: 124
+			KeyHandler.KeyHandler_keyCodes[186] = 57; // L: 125
+			KeyHandler.KeyHandler_keyCodes[187] = 27; // L: 126
+			KeyHandler.KeyHandler_keyCodes[188] = 71; // L: 127
+			KeyHandler.KeyHandler_keyCodes[189] = 26; // L: 128
+			KeyHandler.KeyHandler_keyCodes[190] = 72; // L: 129
+			KeyHandler.KeyHandler_keyCodes[191] = 73; // L: 130
+			KeyHandler.KeyHandler_keyCodes[192] = 58; // L: 131
+			KeyHandler.KeyHandler_keyCodes[219] = 42; // L: 132
+			KeyHandler.KeyHandler_keyCodes[220] = 74; // L: 133
+			KeyHandler.KeyHandler_keyCodes[221] = 43; // L: 134
+			KeyHandler.KeyHandler_keyCodes[222] = 59; // L: 135
+			KeyHandler.KeyHandler_keyCodes[223] = 28; // L: 136
+		} else {
+			KeyHandler.KeyHandler_keyCodes[44] = 71; // L: 139
+			KeyHandler.KeyHandler_keyCodes[45] = 26; // L: 140
+			KeyHandler.KeyHandler_keyCodes[46] = 72; // L: 141
+			KeyHandler.KeyHandler_keyCodes[47] = 73; // L: 142
+			KeyHandler.KeyHandler_keyCodes[59] = 57; // L: 143
+			KeyHandler.KeyHandler_keyCodes[61] = 27; // L: 144
+			KeyHandler.KeyHandler_keyCodes[91] = 42; // L: 145
+			KeyHandler.KeyHandler_keyCodes[92] = 74; // L: 146
+			KeyHandler.KeyHandler_keyCodes[93] = 43; // L: 147
+			KeyHandler.KeyHandler_keyCodes[192] = 28; // L: 148
+			KeyHandler.KeyHandler_keyCodes[222] = 58; // L: 149
+			KeyHandler.KeyHandler_keyCodes[520] = 59; // L: 150
 		}
 
-		NetCache.NetCache_socket = var0;
-		Buffer var2;
-		if (NetCache.NetCache_socket != null) {
-			try {
-				var2 = new Buffer(4);
-				var2.writeByte(var1 ? 2 : 3);
-				var2.writeMedium(0);
-				NetCache.NetCache_socket.write(var2.array, 0, 4);
-			} catch (IOException var7) {
-				try {
-					NetCache.NetCache_socket.close();
-				} catch (Exception var6) {
-				}
-
-				++NetCache.NetCache_ioExceptions;
-				NetCache.NetCache_socket = null;
-			}
-		}
-
-		NetCache.NetCache_responseHeaderBuffer.offset = 0;
-		ClanChannel.NetCache_currentResponse = null;
-		StudioGame.NetCache_responseArchiveBuffer = null;
-		NetCache.field3726 = 0;
-
-		while (true) {
-			NetFileRequest var9 = (NetFileRequest)NetCache.NetCache_pendingPriorityResponses.first();
-			if (var9 == null) {
-				while (true) {
-					var9 = (NetFileRequest)NetCache.NetCache_pendingResponses.first();
-					if (var9 == null) {
-						if (NetCache.field3724 != 0) {
-							try {
-								var2 = new Buffer(4);
-								var2.writeByte(4);
-								var2.writeByte(NetCache.field3724);
-								var2.writeShort(0);
-								NetCache.NetCache_socket.write(var2.array, 0, 4);
-							} catch (IOException var5) {
-								try {
-									NetCache.NetCache_socket.close();
-								} catch (Exception var4) {
-								}
-
-								++NetCache.NetCache_ioExceptions;
-								NetCache.NetCache_socket = null;
-							}
-						}
-
-						NetCache.NetCache_loadTime = 0;
-						NetCache.field3715 = UserComparator4.getServerTime();
-						return;
-					}
-
-					NetCache.NetCache_pendingWritesQueue.addLast(var9);
-					NetCache.NetCache_pendingWrites.put(var9, var9.key);
-					++NetCache.NetCache_pendingWritesCount;
-					--NetCache.NetCache_pendingResponsesCount;
-				}
-			}
-
-			NetCache.NetCache_pendingPriorityWrites.put(var9, var9.key);
-			++NetCache.NetCache_pendingPriorityWritesCount;
-			--NetCache.NetCache_pendingPriorityResponsesCount;
-		}
-	}
-
-	@ObfuscatedName("ii")
-	@ObfuscatedSignature(
-		descriptor = "(B)V",
-		garbageValue = "0"
-	)
-	static void method2699() {
-		for (int var0 = 0; var0 < Client.menuOptionsCount; ++var0) {
-			int var2 = Client.menuOpcodes[var0];
-			boolean var1 = var2 == 57 || var2 == 58 || var2 == 1007 || var2 == 25 || var2 == 30;
-			if (var1) {
-				if (var0 < Client.menuOptionsCount - 1) {
-					for (int var3 = var0; var3 < Client.menuOptionsCount - 1; ++var3) {
-						Client.menuActions[var3] = Client.menuActions[var3 + 1];
-						Client.menuTargets[var3] = Client.menuTargets[var3 + 1];
-						Client.menuOpcodes[var3] = Client.menuOpcodes[var3 + 1];
-						Client.menuIdentifiers[var3] = Client.menuIdentifiers[var3 + 1];
-						Client.menuArguments1[var3] = Client.menuArguments1[var3 + 1];
-						Client.menuArguments2[var3] = Client.menuArguments2[var3 + 1];
-						Client.menuShiftClick[var3] = Client.menuShiftClick[var3 + 1];
-					}
-				}
-
-				--var0;
-				--Client.menuOptionsCount;
-			}
-		}
-
-		Widget.method4997(UserComparator7.menuWidth / 2 + LoginScreenAnimation.menuX, class392.menuY);
-	}
+	} // L: 152
 }

@@ -153,6 +153,8 @@ public class ChatMessageManager
 				break;
 			case CLAN_CHAT:
 			case CLAN_MESSAGE:
+			case CLAN_GIM_CHAT:
+			case CLAN_GIM_MESSAGE:
 				usernameColor = isChatboxTransparent ? chatColorConfig.transparentClanChatUsernames() : chatColorConfig.opaqueClanChatUsernames();
 				senderColor = isChatboxTransparent ? chatColorConfig.transparentClanChannelName() : chatColorConfig.opaqueClanChannelName();
 				break;
@@ -247,6 +249,7 @@ public class ChatMessageManager
 				case FRIENDSCHAT:
 				case CLAN_CHAT:
 				case CLAN_GUEST_CHAT:
+				case CLAN_GIM_CHAT:
 					return JagexColors.CHAT_FC_TEXT_OPAQUE_BACKGROUND;
 				case ITEM_EXAMINE:
 				case OBJECT_EXAMINE:
@@ -255,6 +258,7 @@ public class ChatMessageManager
 				case FRIENDSCHATNOTIFICATION:
 				case CLAN_MESSAGE:
 				case CLAN_GUEST_MESSAGE:
+				case CLAN_GIM_MESSAGE:
 					return JagexColors.CHAT_GAME_EXAMINE_TEXT_OPAQUE_BACKGROUND;
 			}
 		}
@@ -272,6 +276,7 @@ public class ChatMessageManager
 				case FRIENDSCHAT:
 				case CLAN_CHAT:
 				case CLAN_GUEST_CHAT:
+				case CLAN_GIM_CHAT:
 					return JagexColors.CHAT_FC_TEXT_TRANSPARENT_BACKGROUND;
 				case ITEM_EXAMINE:
 				case OBJECT_EXAMINE:
@@ -280,6 +285,7 @@ public class ChatMessageManager
 				case FRIENDSCHATNOTIFICATION:
 				case CLAN_MESSAGE:
 				case CLAN_GUEST_MESSAGE:
+				case CLAN_GIM_MESSAGE:
 					return JagexColors.CHAT_GAME_EXAMINE_TEXT_TRANSPARENT_BACKGROUND;
 			}
 		}
@@ -375,27 +381,37 @@ public class ChatMessageManager
 		{
 			cacheColor(new ChatColor(ChatColorType.NORMAL, chatColorConfig.opaqueClanChatInfo(), false),
 				ChatMessageType.CLAN_MESSAGE);
+			cacheColor(new ChatColor(ChatColorType.NORMAL, chatColorConfig.opaqueClanChatInfo(), false),
+					ChatMessageType.CLAN_GIM_MESSAGE);
 		}
 		if (chatColorConfig.opaqueClanChatInfoHighlight() != null)
 		{
 			cacheColor(new ChatColor(ChatColorType.HIGHLIGHT, chatColorConfig.opaqueClanChatInfoHighlight(), false),
 				ChatMessageType.CLAN_MESSAGE);
+			cacheColor(new ChatColor(ChatColorType.HIGHLIGHT, chatColorConfig.opaqueClanChatInfoHighlight(), false),
+					ChatMessageType.CLAN_GIM_MESSAGE);
 		}
 		if (chatColorConfig.opaqueClanChatMessage() != null)
 		{
 			cacheColor(new ChatColor(ChatColorType.NORMAL, chatColorConfig.opaqueClanChatMessage(), false),
 				ChatMessageType.CLAN_CHAT);
+			cacheColor(new ChatColor(ChatColorType.NORMAL, chatColorConfig.opaqueClanChatMessage(), false),
+					ChatMessageType.CLAN_GIM_CHAT);
 		}
 		if (chatColorConfig.opaqueClanChatMessageHighlight() != null)
 		{
 			cacheColor(new ChatColor(ChatColorType.HIGHLIGHT, chatColorConfig.opaqueClanChatMessageHighlight(), false),
 				ChatMessageType.CLAN_CHAT);
+			cacheColor(new ChatColor(ChatColorType.HIGHLIGHT, chatColorConfig.opaqueClanChatMessageHighlight(), false),
+					ChatMessageType.CLAN_GIM_CHAT);
 		}
 
 		if (chatColorConfig.opaqueClanChatGuestInfo() != null)
 		{
 			cacheColor(new ChatColor(ChatColorType.NORMAL, chatColorConfig.opaqueClanChatGuestInfo(), false),
 				ChatMessageType.CLAN_GUEST_MESSAGE);
+			cacheColor(new ChatColor(ChatColorType.NORMAL, chatColorConfig.transparentClanChatInfo(), true),
+					ChatMessageType.CLAN_GIM_MESSAGE);
 		}
 		if (chatColorConfig.opaqueClanChatGuestInfoHighlight() != null)
 		{
@@ -406,11 +422,15 @@ public class ChatMessageManager
 		{
 			cacheColor(new ChatColor(ChatColorType.NORMAL, chatColorConfig.opaqueClanChatGuestMessage(), false),
 				ChatMessageType.CLAN_GUEST_CHAT);
+			cacheColor(new ChatColor(ChatColorType.NORMAL, chatColorConfig.transparentClanChatMessage(), true),
+					ChatMessageType.CLAN_GIM_CHAT);
 		}
 		if (chatColorConfig.opaqueClanChatGuestMessageHighlight() != null)
 		{
 			cacheColor(new ChatColor(ChatColorType.HIGHLIGHT, chatColorConfig.opaqueClanChatGuestMessageHighlight(), false),
 				ChatMessageType.CLAN_GUEST_CHAT);
+			cacheColor(new ChatColor(ChatColorType.HIGHLIGHT, chatColorConfig.transparentClanChatMessageHighlight(), true),
+					ChatMessageType.CLAN_GIM_CHAT);
 		}
 		//endregion
 		if (chatColorConfig.opaqueAutochatMessage() != null)

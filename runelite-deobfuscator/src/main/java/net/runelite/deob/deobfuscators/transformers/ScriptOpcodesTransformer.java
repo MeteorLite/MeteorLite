@@ -44,32 +44,12 @@ public class ScriptOpcodesTransformer implements Transformer // robots in disgui
       scriptOpcodes.getFields().clear();
     }
 
-    Method clinit = scriptOpcodes.findMethod("<clinit>");
-    if (clinit == null) {
-      clinit = new Method(scriptOpcodes, "<clinit>", new Signature("()V"));
-      clinit.setStatic(true);
-      Code code = new Code(clinit);
-      code.setMaxStack(1);
-      clinit.setCode(code);
-      scriptOpcodes.addMethod(clinit);
-    }
-
-    Code code = clinit.getCode();
-    Instructions ins = code.getInstructions();
-
     for (ScriptOpcode opcode : ScriptOpcode.values()) {
       Field field = new Field(scriptOpcodes, opcode.name(), Type.INT);
       field.setAccessFlags(ACC_PUBLIC | ACC_STATIC | ACC_FINAL);
       field.setValue(opcode.opcode);
       scriptOpcodes.addField(field);
-
-      LDC ldc = new LDC(ins, opcode.opcode);
-      PutStatic put = new PutStatic(ins, field);
-      ins.addInstruction(0, ldc);
-      ins.addInstruction(1, put);
     }
-
-    ins.addInstruction(new VReturn(ins));
   }
 
   @Override

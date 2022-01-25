@@ -1,26 +1,22 @@
 package meteor.plugins.highalchemy;
 
 import com.google.inject.Provides;
+import dev.hoot.api.game.Game;
 import meteor.config.ConfigManager;
 import meteor.eventbus.Subscribe;
 import meteor.plugins.Plugin;
 import meteor.plugins.PluginDescriptor;
-import meteor.plugins.api.items.Bank;
-import meteor.plugins.api.items.Inventory;
-import meteor.plugins.api.magic.Regular;
-import meteor.plugins.api.magic.Rune;
-import meteor.plugins.api.packets.ItemPackets;
-import meteor.plugins.api.packets.MousePackets;
-import meteor.plugins.api.packets.SpellPackets;
-import meteor.plugins.api.widgets.Dialog;
-import meteor.plugins.prayerFlicker.PrayerFlickerConfig;
-import meteor.plugins.runepouch.Runes;
+import dev.hoot.api.items.Bank;
+import dev.hoot.api.items.Inventory;
+import dev.hoot.api.magic.Regular;
+import dev.hoot.api.packets.MousePackets;
+import dev.hoot.api.packets.SpellPackets;
+import dev.hoot.api.widgets.Dialog;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.GameState;
 import net.runelite.api.Item;
 import net.runelite.api.Skill;
 import net.runelite.api.events.ChatMessage;
-import net.runelite.api.events.FakeXpDrop;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.StatChanged;
 
@@ -57,7 +53,7 @@ public class HighAlchPlugin extends Plugin {
         if(client.getGameState()!= GameState.LOGGED_IN){
             return;
         }
-        if(Dialog.isOpen()|| Bank.isOpen()){
+        if(Dialog.isOpen()|| Bank.isOpen()|| Game.isInCutscene()){
             return;
         }
         if(timeout<=-20){

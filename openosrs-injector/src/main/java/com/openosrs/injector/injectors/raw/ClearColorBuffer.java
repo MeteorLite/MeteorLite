@@ -7,7 +7,6 @@
  */
 package com.openosrs.injector.injectors.raw;
 
-import static com.openosrs.injector.injection.InjectData.HOOKS;
 
 import com.openosrs.injector.InjectUtil;
 import com.openosrs.injector.injection.InjectData;
@@ -28,14 +27,14 @@ import net.runelite.asm.signature.Signature;
 
 public class ClearColorBuffer extends AbstractInjector {
 
-  private static final net.runelite.asm.pool.Method CLEARBUFFER = new net.runelite.asm.pool.Method(
-      new net.runelite.asm.pool.Class(HOOKS),
-      "clearColorBuffer",
-      new Signature("(IIIII)V")
-  );
+  private static net.runelite.asm.pool.Method CLEARBUFFER;
 
-  public ClearColorBuffer(InjectData inject) {
+  public ClearColorBuffer(InjectData inject, String hooks) {
     super(inject);
+    CLEARBUFFER = new net.runelite.asm.pool.Method(
+            new net.runelite.asm.pool.Class(hooks),
+            "clearColorBuffer",
+            new Signature("(IIIII)V"));
   }
 
   public void inject() {

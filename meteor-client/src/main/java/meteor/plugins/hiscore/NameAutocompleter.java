@@ -216,7 +216,7 @@ class NameAutocompleter implements KeyListener
 			if (friendContainer != null)
 			{
 				autocompleteName = Arrays.stream(friendContainer.getMembers())
-					.map(Nameable::getName)
+					.map(Nameable::getName$api)
 					.filter(n -> pattern.matcher(n).matches())
 					.findFirst();
 			}
@@ -229,7 +229,7 @@ class NameAutocompleter implements KeyListener
 			if (friendsChatManager != null)
 			{
 				autocompleteName = Arrays.stream(friendsChatManager.getMembers())
-					.map(Nameable::getName)
+					.map(Nameable::getName$api)
 					.filter(n -> pattern.matcher(n).matches())
 					.findFirst();
 			}

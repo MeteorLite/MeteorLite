@@ -1,153 +1,119 @@
 package osrs;
 
-import java.awt.Image;
-import java.io.InputStream;
-import java.io.OutputStreamWriter;
-import java.net.URL;
-import java.net.URLConnection;
 import java.util.concurrent.Callable;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("q")
+@ObfuscatedName("b")
 public class class1 implements Callable {
-	@ObfuscatedName("au")
-	static Image field3;
-	@ObfuscatedName("l")
+	@ObfuscatedName("k")
 	@ObfuscatedSignature(
-		descriptor = "Lot;"
+		descriptor = "Lei;"
 	)
-	final Buffer field1;
-	@ObfuscatedName("q")
+	static ClanChannel field0;
+	@ObfuscatedName("bz")
+	static String field3;
+	@ObfuscatedName("ee")
 	@ObfuscatedSignature(
-		descriptor = "Lj;"
+		descriptor = "Lkz;"
 	)
-	final class3 field4;
+	@Export("archive13")
+	static Archive archive13;
+	@ObfuscatedName("c")
+	@ObfuscatedSignature(
+		descriptor = "Lpi;"
+	)
+	final Buffer field2;
+	@ObfuscatedName("b")
+	@ObfuscatedSignature(
+		descriptor = "Lm;"
+	)
+	final class3 field1;
 	// $FF: synthetic field
 	@ObfuscatedSignature(
-		descriptor = "La;"
+		descriptor = "Lw;"
 	)
 	final class7 this$0;
 
 	@ObfuscatedSignature(
-		descriptor = "(La;Lot;Lj;)V"
+		descriptor = "(Lw;Lpi;Lm;)V"
 	)
 	class1(class7 var1, Buffer var2, class3 var3) {
-		this.this$0 = var1;
-		this.field1 = var2;
-		this.field4 = var3;
-	}
+		this.this$0 = var1; // L: 47
+		this.field2 = var2; // L: 48
+		this.field1 = var3; // L: 49
+	} // L: 50
 
 	public Object call() {
-		return this.field4.vmethod15(this.field1);
+		return this.field1.vmethod15(this.field2); // L: 54
 	}
 
-	@ObfuscatedName("l")
+	@ObfuscatedName("p")
 	@ObfuscatedSignature(
-		descriptor = "(IB)Lbe;",
-		garbageValue = "-96"
+		descriptor = "(B)V",
+		garbageValue = "42"
 	)
-	@Export("getScript")
-	static Script getScript(int var0) {
-		Script var1 = (Script)Script.Script_cached.get((long)var0);
-		if (var1 != null) {
-			return var1;
-		} else {
-			byte[] var2 = UserComparator6.archive12.takeFile(var0, 0);
-			if (var2 == null) {
-				return null;
-			} else {
-				var1 = GrandExchangeOfferOwnWorldComparator.newScript(var2);
-				Script.Script_cached.put(var1, (long)var0);
-				return var1;
+	public static void method8() {
+		VarbitComposition.VarbitDefinition_cached.clear(); // L: 43
+	} // L: 44
+
+	@ObfuscatedName("gw")
+	@ObfuscatedSignature(
+		descriptor = "(IIII)V",
+		garbageValue = "2135260751"
+	)
+	static final void method12(int var0, int var1, int var2) {
+		if (UserComparator7.cameraX < var0) { // L: 4548
+			UserComparator7.cameraX = (var0 - UserComparator7.cameraX) * ItemComposition.field2012 / 1000 + UserComparator7.cameraX + Renderable.field2358; // L: 4549
+			if (UserComparator7.cameraX > var0) { // L: 4550
+				UserComparator7.cameraX = var0;
 			}
 		}
-	}
 
-	@ObfuscatedName("t")
-	@ObfuscatedSignature(
-		descriptor = "(I)V",
-		garbageValue = "1037014776"
-	)
-	static void method13() {
-		Messages.Messages_channels.clear();
-		Messages.Messages_hashTable.clear();
-		Messages.Messages_queue.clear();
-		Messages.Messages_count = 0;
-	}
-
-	@ObfuscatedName("y")
-	@ObfuscatedSignature(
-		descriptor = "(I)V",
-		garbageValue = "182768173"
-	)
-	static void method14() {
-		Login.Login_username = Login.Login_username.trim();
-		if (Login.Login_username.length() == 0) {
-			class17.setLoginResponseString("Please enter your username.", "If you created your account after November", "2010, this will be the creation email address.");
-		} else {
-			long var1;
-			try {
-				URL var3 = new URL(HitSplatDefinition.method3168("services", false) + "m=accountappeal/login.ws");
-				URLConnection var4 = var3.openConnection();
-				var4.setRequestProperty("connection", "close");
-				var4.setDoInput(true);
-				var4.setDoOutput(true);
-				var4.setConnectTimeout(5000);
-				OutputStreamWriter var5 = new OutputStreamWriter(var4.getOutputStream());
-				var5.write("data1=req");
-				var5.flush();
-				InputStream var6 = var4.getInputStream();
-				Buffer var7 = new Buffer(new byte[1000]);
-
-				while (true) {
-					int var8 = var6.read(var7.array, var7.offset, 1000 - var7.offset);
-					if (var8 == -1) {
-						var7.offset = 0;
-						long var10 = var7.readLong();
-						var1 = var10;
-						break;
-					}
-
-					var7.offset += var8;
-					if (var7.offset >= 1000) {
-						var1 = 0L;
-						break;
-					}
-				}
-			} catch (Exception var14) {
-				var1 = 0L;
+		if (UserComparator7.cameraX > var0) { // L: 4552
+			UserComparator7.cameraX -= (UserComparator7.cameraX - var0) * ItemComposition.field2012 / 1000 + Renderable.field2358; // L: 4553
+			if (UserComparator7.cameraX < var0) { // L: 4554
+				UserComparator7.cameraX = var0;
 			}
-
-			int var0;
-			if (0L == var1) {
-				var0 = 5;
-			} else {
-				var0 = UserComparator8.method2413(var1, Login.Login_username);
-			}
-
-			switch(var0) {
-			case 2:
-				class17.setLoginResponseString(Strings.field3604, Strings.field3351, Strings.field3606);
-				class112.method2474(6);
-				break;
-			case 3:
-				class17.setLoginResponseString("", "Error connecting to server.", "");
-				break;
-			case 4:
-				class17.setLoginResponseString("The part of the website you are trying", "to connect to is offline at the moment.", "Please try again later.");
-				break;
-			case 5:
-				class17.setLoginResponseString("Sorry, there was an error trying to", "log you in to this part of the website.", "Please try again later.");
-				break;
-			case 6:
-				class17.setLoginResponseString("", "Error connecting to server.", "");
-				break;
-			case 7:
-				class17.setLoginResponseString("You must enter a valid login to proceed. For accounts", "created after 24th November 2010, please use your", "email address. Otherwise please use your username.");
-			}
-
 		}
+
+		if (AbstractByteArrayCopier.cameraY < var1) { // L: 4556
+			AbstractByteArrayCopier.cameraY = (var1 - AbstractByteArrayCopier.cameraY) * ItemComposition.field2012 / 1000 + AbstractByteArrayCopier.cameraY + Renderable.field2358; // L: 4557
+			if (AbstractByteArrayCopier.cameraY > var1) { // L: 4558
+				AbstractByteArrayCopier.cameraY = var1;
+			}
+		}
+
+		if (AbstractByteArrayCopier.cameraY > var1) { // L: 4560
+			AbstractByteArrayCopier.cameraY -= (AbstractByteArrayCopier.cameraY - var1) * ItemComposition.field2012 / 1000 + Renderable.field2358; // L: 4561
+			if (AbstractByteArrayCopier.cameraY < var1) { // L: 4562
+				AbstractByteArrayCopier.cameraY = var1;
+			}
+		}
+
+		if (UserComparator10.cameraZ < var2) { // L: 4564
+			UserComparator10.cameraZ = (var2 - UserComparator10.cameraZ) * ItemComposition.field2012 / 1000 + UserComparator10.cameraZ + Renderable.field2358; // L: 4565
+			if (UserComparator10.cameraZ > var2) { // L: 4566
+				UserComparator10.cameraZ = var2;
+			}
+		}
+
+		if (UserComparator10.cameraZ > var2) { // L: 4568
+			UserComparator10.cameraZ -= (UserComparator10.cameraZ - var2) * ItemComposition.field2012 / 1000 + Renderable.field2358; // L: 4569
+			if (UserComparator10.cameraZ < var2) { // L: 4570
+				UserComparator10.cameraZ = var2;
+			}
+		}
+
+	} // L: 4572
+
+	@ObfuscatedName("jg")
+	@ObfuscatedSignature(
+		descriptor = "(II)Ljava/lang/String;",
+		garbageValue = "-1424242195"
+	)
+	static final String method11(int var0) {
+		return var0 < 999999999 ? Integer.toString(var0) : "*"; // L: 11040 11041
 	}
 }

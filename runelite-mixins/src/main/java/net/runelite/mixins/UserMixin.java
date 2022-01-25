@@ -2,6 +2,7 @@ package net.runelite.mixins;
 
 import net.runelite.api.mixins.Inject;
 import net.runelite.api.mixins.Mixin;
+import net.runelite.api.util.Text;
 import net.runelite.rs.api.RSBuddy;
 import net.runelite.rs.api.RSFriend;
 import net.runelite.rs.api.RSUser;
@@ -10,7 +11,7 @@ import net.runelite.rs.api.RSUser;
 public abstract class UserMixin implements RSUser {
 	@Inject
 	@Override
-	public String getName() {
-		return getRsName().getName$api();
+	public String getName$api() {
+		return Text.sanitize(getRsName().getName$api());
 	}
 }

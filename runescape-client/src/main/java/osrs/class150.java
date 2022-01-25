@@ -1,73 +1,54 @@
 package osrs;
 
 import net.runelite.mapping.Export;
+import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ed")
-public class class150 {
-	@ObfuscatedName("ev")
-	@ObfuscatedSignature(
-		descriptor = "Lky;"
+@ObfuscatedName("ec")
+public class class150 extends class126 {
+	@ObfuscatedName("dc")
+	@Export("mouseCam")
+	static boolean mouseCam;
+	@ObfuscatedName("c")
+	@ObfuscatedGetter(
+		intValue = 43726911
 	)
-	@Export("archive3")
-	static Archive archive3;
-	@ObfuscatedName("f")
-	public short[] field1606;
-	@ObfuscatedName("j")
-	public short[] field1607;
+	int field1666;
+	@ObfuscatedName("b")
+	@ObfuscatedGetter(
+		longValue = -6413239553486837791L
+	)
+	long field1669;
+	// $FF: synthetic field
+	@ObfuscatedSignature(
+		descriptor = "Lda;"
+	)
+	final class129 this$0;
 
-	public class150(int var1) {
-		ItemComposition var2 = class87.ItemDefinition_get(var1);
-		if (var2.method3297()) {
-			this.field1606 = new short[var2.recolorTo.length];
-			System.arraycopy(var2.recolorTo, 0, this.field1606, 0, this.field1606.length);
-		}
-
-		if (var2.method3272()) {
-			this.field1607 = new short[var2.retextureTo.length];
-			System.arraycopy(var2.retextureTo, 0, this.field1607, 0, this.field1607.length);
-		}
-
+	@ObfuscatedSignature(
+		descriptor = "(Lda;)V"
+	)
+	class150(class129 var1) {
+		this.this$0 = var1; // L: 307
 	}
 
-	@ObfuscatedName("l")
+	@ObfuscatedName("c")
 	@ObfuscatedSignature(
-		descriptor = "(I[BLmm;I)V",
-		garbageValue = "-2027548425"
+		descriptor = "(Lpi;I)V",
+		garbageValue = "1416770155"
 	)
-	static void method2873(int var0, byte[] var1, ArchiveDisk var2) {
-		ArchiveDiskAction var3 = new ArchiveDiskAction();
-		var3.type = 0;
-		var3.key = (long)var0;
-		var3.data = var1;
-		var3.archiveDisk = var2;
-		synchronized(ArchiveDiskActionHandler.ArchiveDiskActionHandler_requestQueue) {
-			ArchiveDiskActionHandler.ArchiveDiskActionHandler_requestQueue.addFirst(var3);
-		}
+	void vmethod3029(Buffer var1) {
+		this.field1666 = var1.readInt(); // L: 310
+		this.field1669 = var1.readLong(); // L: 311
+	} // L: 312
 
-		synchronized(ArchiveDiskActionHandler.ArchiveDiskActionHandler_lock) {
-			if (ArchiveDiskActionHandler.field3671 == 0) {
-				Huffman.ArchiveDiskActionHandler_thread = new Thread(new ArchiveDiskActionHandler());
-				Huffman.ArchiveDiskActionHandler_thread.setDaemon(true);
-				Huffman.ArchiveDiskActionHandler_thread.start();
-				Huffman.ArchiveDiskActionHandler_thread.setPriority(5);
-			}
-
-			ArchiveDiskActionHandler.field3671 = 600;
-		}
-	}
-
-	@ObfuscatedName("j")
+	@ObfuscatedName("b")
 	@ObfuscatedSignature(
-		descriptor = "(III)V",
-		garbageValue = "893646599"
+		descriptor = "(Lej;I)V",
+		garbageValue = "-1531735008"
 	)
-	static void method2874(int var0, int var1) {
-		long var2 = (long)((var0 << 16) + var1);
-		NetFileRequest var4 = (NetFileRequest)NetCache.NetCache_pendingWrites.get(var2);
-		if (var4 != null) {
-			NetCache.NetCache_pendingWritesQueue.addLast(var4);
-		}
-	}
+	void vmethod3028(ClanSettings var1) {
+		var1.method2856(this.field1666, this.field1669); // L: 315
+	} // L: 316
 }

@@ -1,89 +1,47 @@
 package osrs;
 
-import java.io.IOException;
 import java.math.BigInteger;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("bh")
+@ObfuscatedName("bc")
 public class class67 {
-	@ObfuscatedName("l")
-	static final BigInteger field864;
-	@ObfuscatedName("q")
-	static final BigInteger field866;
-	@ObfuscatedName("lh")
-	@ObfuscatedSignature(
-		descriptor = "Lci;"
-	)
-	@Export("localPlayer")
-	static Player localPlayer;
+	@ObfuscatedName("c")
+	static final BigInteger field856;
+	@ObfuscatedName("b")
+	static final BigInteger field857;
 
 	static {
-		field864 = new BigInteger("10001", 16);
-		field866 = new BigInteger("af87d84e6c1040d7966e705070a42393ba8b386e15205b6fb3d688be49039c3fbcc13093eaef5b4f93aecdafa3f8d486196fe7d33ba78a1683eb448d22bd7b994189c9e52db6f532b86ddcc549b641f2ac0d0b411f3fa2c666c877cb7ab8091b2989a105f84cb69b27eacd98c19d098d6f36e6ba7bbf156c082b45f6aa7fd5db", 16);
+		field856 = new BigInteger("10001", 16); // L: 6
+		field857 = new BigInteger("959194ea8a966b960e862427e497e246718ecc7e76f242845673d52b62df19f52fa6fb93c8d9c5129b95747f8ca61fb059fa44297c08c6f5cc6cca99e8d39fc8f0faa58e58d1ca99e861439d01158c14880260b09ace07d25862f6d14e2db785c3016567101e927e4b2513e0b8a0f275ccf60c6a689af387a64b2b82a313d8dd", 16); // L: 7
 	}
 
-	@ObfuscatedName("q")
+	@ObfuscatedName("j")
 	@ObfuscatedSignature(
-		descriptor = "(Lkl;IIIZB)V",
-		garbageValue = "4"
+		descriptor = "(ZI)V",
+		garbageValue = "1654088160"
 	)
-	public static void method1886(AbstractArchive var0, int var1, int var2, int var3, boolean var4) {
-		class247.musicPlayerStatus = 1;
-		class113.musicTrackArchive = var0;
-		Skills.musicTrackGroupId = var1;
-		class137.musicTrackFileId = var2;
-		class247.musicTrackVolume = var3;
-		class247.musicTrackBoolean = var4;
-		class247.pcmSampleLength = 10000;
-	}
-
-	@ObfuscatedName("f")
-	@ObfuscatedSignature(
-		descriptor = "(B)Lcq;",
-		garbageValue = "-21"
-	)
-	static ClientPreferences method1887() {
-		AccessFile var0 = null;
-		ClientPreferences var1 = new ClientPreferences();
-
-		try {
-			var0 = World.getPreferencesFile("", class392.field4267.name, false);
-			byte[] var2 = new byte[(int)var0.length()];
-
-			int var4;
-			for (int var3 = 0; var3 < var2.length; var3 += var4) {
-				var4 = var0.read(var2, var3, var2.length - var3);
-				if (var4 == -1) {
-					throw new IOException();
-				}
-			}
-
-			var1 = new ClientPreferences(new Buffer(var2));
-		} catch (Exception var6) {
+	@Export("Login_promptCredentials")
+	static void Login_promptCredentials(boolean var0) {
+		Login.Login_response1 = ""; // L: 1037
+		Login.Login_response2 = "Enter your username/email & password."; // L: 1038
+		Login.Login_response3 = ""; // L: 1039
+		PlayerType.method5521(2); // L: 1040
+		if (var0) { // L: 1041
+			Login.Login_password = "";
 		}
 
-		try {
-			if (var0 != null) {
-				var0.close();
-			}
-		} catch (Exception var5) {
-		}
+		HealthBar.method2311(); // L: 1042
+		WorldMapID.method4805(); // L: 1043
+	} // L: 1044
 
-		return var1;
-	}
-
-	@ObfuscatedName("y")
+	@ObfuscatedName("af")
 	@ObfuscatedSignature(
-		descriptor = "(III)V",
-		garbageValue = "843333300"
+		descriptor = "(IB)I",
+		garbageValue = "-67"
 	)
-	public static final void method1888(int var0, int var1) {
-		ViewportMouse.ViewportMouse_x = var0;
-		ViewportMouse.ViewportMouse_y = var1;
-		ViewportMouse.ViewportMouse_isInViewport = true;
-		ViewportMouse.ViewportMouse_entityCount = 0;
-		ViewportMouse.ViewportMouse_false0 = false;
+	static int method1962(int var0) {
+		return (int)((Math.log((double)var0) / Interpreter.field814 - 7.0D) * 256.0D); // L: 3631
 	}
 }

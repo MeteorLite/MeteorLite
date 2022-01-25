@@ -6,16 +6,12 @@ import meteor.config.ConfigManager;
 import meteor.eventbus.Subscribe;
 import meteor.plugins.Plugin;
 import meteor.plugins.PluginDescriptor;
-import meteor.plugins.api.widgets.Dialog;
+import dev.hoot.api.widgets.Dialog;
 import net.runelite.api.Client;
-import net.runelite.api.MenuAction;
 import net.runelite.api.events.GameTick;
-import net.runelite.api.widgets.Widget;
-import net.runelite.api.widgets.WidgetInfo;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
-import java.util.List;
 
 @Singleton
 @PluginDescriptor(

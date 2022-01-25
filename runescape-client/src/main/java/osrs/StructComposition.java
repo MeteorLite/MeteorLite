@@ -5,189 +5,151 @@ import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("fd")
+@ObfuscatedName("fp")
 @Implements("StructComposition")
 public class StructComposition extends DualNode {
-	@ObfuscatedName("q")
+	@ObfuscatedName("b")
 	@ObfuscatedSignature(
-		descriptor = "Lii;"
+		descriptor = "Liq;"
 	)
 	@Export("StructDefinition_cached")
 	static EvictingDualNodeHashTable StructDefinition_cached;
-	@ObfuscatedName("f")
+	@ObfuscatedName("p")
 	@ObfuscatedSignature(
-		descriptor = "Lnz;"
+		descriptor = "Loz;"
 	)
 	@Export("params")
 	IterableNodeHashTable params;
 
 	static {
-		StructDefinition_cached = new EvictingDualNodeHashTable(64);
+		StructDefinition_cached = new EvictingDualNodeHashTable(64); // L: 13
 	}
 
 	StructComposition() {
-	}
+	} // L: 16
 
-	@ObfuscatedName("f")
+	@ObfuscatedName("p")
 	@ObfuscatedSignature(
 		descriptor = "(I)V",
-		garbageValue = "793806962"
+		garbageValue = "-1697114474"
 	)
 	@Export("postDecode")
 	void postDecode() {
-	}
+	} // L: 33
 
-	@ObfuscatedName("j")
+	@ObfuscatedName("m")
 	@ObfuscatedSignature(
-		descriptor = "(Lot;B)V",
-		garbageValue = "101"
+		descriptor = "(Lpi;I)V",
+		garbageValue = "260928351"
 	)
 	@Export("decode")
 	void decode(Buffer var1) {
 		while (true) {
-			int var2 = var1.readUnsignedByte();
-			if (var2 == 0) {
-				return;
+			int var2 = var1.readUnsignedByte(); // L: 37
+			if (var2 == 0) { // L: 38
+				return; // L: 41
 			}
 
-			this.decodeNext(var1, var2);
+			this.decodeNext(var1, var2); // L: 39
 		}
-	}
-
-	@ObfuscatedName("m")
-	@ObfuscatedSignature(
-		descriptor = "(Lot;II)V",
-		garbageValue = "-16711936"
-	)
-	@Export("decodeNext")
-	void decodeNext(Buffer var1, int var2) {
-		if (var2 == 249) {
-			this.params = KeyHandler.readStringIntParameters(var1, this.params);
-		}
-
-	}
-
-	@ObfuscatedName("k")
-	@ObfuscatedSignature(
-		descriptor = "(IIB)I",
-		garbageValue = "-24"
-	)
-	@Export("getIntParam")
-	public int getIntParam(int var1, int var2) {
-		IterableNodeHashTable var4 = this.params;
-		int var3;
-		if (var4 == null) {
-			var3 = var2;
-		} else {
-			IntegerNode var5 = (IntegerNode)var4.get((long)var1);
-			if (var5 == null) {
-				var3 = var2;
-			} else {
-				var3 = var5.integer;
-			}
-		}
-
-		return var3;
 	}
 
 	@ObfuscatedName("t")
 	@ObfuscatedSignature(
+		descriptor = "(Lpi;IB)V",
+		garbageValue = "76"
+	)
+	@Export("decodeNext")
+	void decodeNext(Buffer var1, int var2) {
+		if (var2 == 249) {
+			this.params = Canvas.readStringIntParameters(var1, this.params);
+		}
+
+	} // L: 46
+
+	@ObfuscatedName("s")
+	@ObfuscatedSignature(
+		descriptor = "(III)I",
+		garbageValue = "-1808649424"
+	)
+	@Export("getIntParam")
+	public int getIntParam(int var1, int var2) {
+		return class12.method158(this.params, var1, var2); // L: 49
+	}
+
+	@ObfuscatedName("j")
+	@ObfuscatedSignature(
 		descriptor = "(ILjava/lang/String;I)Ljava/lang/String;",
-		garbageValue = "975394033"
+		garbageValue = "-1725182955"
 	)
 	@Export("getStringParam")
 	public String getStringParam(int var1, String var2) {
-		IterableNodeHashTable var4 = this.params;
-		String var3;
-		if (var4 == null) {
-			var3 = var2;
-		} else {
-			ObjectNode var5 = (ObjectNode)var4.get((long)var1);
-			if (var5 == null) {
-				var3 = var2;
-			} else {
-				var3 = (String)var5.obj;
+		return Skeleton.method3948(this.params, var1, var2); // L: 53
+	}
+
+	@ObfuscatedName("p")
+	@ObfuscatedSignature(
+		descriptor = "(B)V",
+		garbageValue = "-64"
+	)
+	public static void method3444() {
+		class260.midiPcmStream.clear(); // L: 42
+		class260.musicPlayerStatus = 1; // L: 43
+		class124.musicTrackArchive = null; // L: 44
+	} // L: 45
+
+	@ObfuscatedName("t")
+	@ObfuscatedSignature(
+		descriptor = "(IB)Z",
+		garbageValue = "2"
+	)
+	public static boolean method3424(int var0) {
+		return var0 >= 0 && var0 < 112 ? KeyHandler.field132[var0] : false; // L: 236 237
+	}
+
+	@ObfuscatedName("lv")
+	@ObfuscatedSignature(
+		descriptor = "(Ljava/lang/String;ZI)V",
+		garbageValue = "488868822"
+	)
+	@Export("findItemDefinitions")
+	static void findItemDefinitions(String var0, boolean var1) {
+		var0 = var0.toLowerCase(); // L: 12615
+		short[] var2 = new short[16]; // L: 12616
+		int var3 = 0; // L: 12617
+
+		for (int var4 = 0; var4 < WorldMapLabelSize.ItemDefinition_fileCount; ++var4) { // L: 12618
+			ItemComposition var9 = UserComparator6.ItemDefinition_get(var4); // L: 12619
+			if ((!var1 || var9.isTradable) && var9.noteTemplate == -1 && var9.name.toLowerCase().indexOf(var0) != -1) { // L: 12620 12621 12622
+				if (var3 >= 250) { // L: 12623
+					GraphicsDefaults.foundItemIdCount = -1; // L: 12624
+					class113.foundItemIds = null; // L: 12625
+					return; // L: 12626
+				}
+
+				if (var3 >= var2.length) { // L: 12628
+					short[] var6 = new short[var2.length * 2]; // L: 12629
+
+					for (int var7 = 0; var7 < var3; ++var7) { // L: 12630
+						var6[var7] = var2[var7];
+					}
+
+					var2 = var6; // L: 12631
+				}
+
+				var2[var3++] = (short)var4; // L: 12633
 			}
 		}
 
-		return var3;
-	}
+		class113.foundItemIds = var2; // L: 12635
+		class336.foundItemIndex = 0; // L: 12636
+		GraphicsDefaults.foundItemIdCount = var3; // L: 12637
+		String[] var8 = new String[GraphicsDefaults.foundItemIdCount]; // L: 12638
 
-	@ObfuscatedName("k")
-	@ObfuscatedSignature(
-		descriptor = "(Lkl;II)Loz;",
-		garbageValue = "1981380909"
-	)
-	public static IndexedSprite method3153(AbstractArchive var0, int var1) {
-		byte[] var3 = var0.takeFileFlat(var1);
-		boolean var2;
-		if (var3 == null) {
-			var2 = false;
-		} else {
-			class398.SpriteBuffer_decode(var3);
-			var2 = true;
+		for (int var5 = 0; var5 < GraphicsDefaults.foundItemIdCount; ++var5) { // L: 12639
+			var8[var5] = UserComparator6.ItemDefinition_get(var2[var5]).name;
 		}
 
-		if (!var2) {
-			return null;
-		} else {
-			IndexedSprite var4 = new IndexedSprite();
-			var4.width = class414.SpriteBuffer_spriteWidth;
-			var4.height = class408.SpriteBuffer_spriteHeight;
-			var4.xOffset = class135.SpriteBuffer_xOffsets[0];
-			var4.yOffset = class131.SpriteBuffer_yOffsets[0];
-			var4.subWidth = class414.SpriteBuffer_spriteWidths[0];
-			var4.subHeight = class16.SpriteBuffer_spriteHeights[0];
-			var4.palette = class351.SpriteBuffer_spritePalette;
-			var4.pixels = class414.SpriteBuffer_pixels[0];
-			StudioGame.method5130();
-			return var4;
-		}
-	}
-
-	@ObfuscatedName("g")
-	@ObfuscatedSignature(
-		descriptor = "(CIB)Ljava/lang/String;",
-		garbageValue = "16"
-	)
-	public static String method3152(char var0, int var1) {
-		char[] var2 = new char[var1];
-
-		for (int var3 = 0; var3 < var1; ++var3) {
-			var2[var3] = var0;
-		}
-
-		return new String(var2);
-	}
-
-	@ObfuscatedName("v")
-	@ObfuscatedSignature(
-		descriptor = "(B)I",
-		garbageValue = "0"
-	)
-	static final int method3151() {
-		return ViewportMouse.ViewportMouse_y;
-	}
-
-	@ObfuscatedName("if")
-	@ObfuscatedSignature(
-		descriptor = "(Ljava/lang/String;Ljava/lang/String;IIIIZB)V",
-		garbageValue = "14"
-	)
-	@Export("insertMenuItem")
-	static final void insertMenuItem(String var0, String var1, int var2, int var3, int var4, int var5, boolean var6) {
-		if (!Client.isMenuOpen) {
-			if (Client.menuOptionsCount < 500) {
-				Client.menuActions[Client.menuOptionsCount] = var0;
-				Client.menuTargets[Client.menuOptionsCount] = var1;
-				Client.menuOpcodes[Client.menuOptionsCount] = var2;
-				Client.menuIdentifiers[Client.menuOptionsCount] = var3;
-				Client.menuArguments1[Client.menuOptionsCount] = var4;
-				Client.menuArguments2[Client.menuOptionsCount] = var5;
-				Client.menuShiftClick[Client.menuOptionsCount] = var6;
-				++Client.menuOptionsCount;
-			}
-
-		}
-	}
+		KeyHandler.method390(var8, class113.foundItemIds); // L: 12640
+	} // L: 12641
 }

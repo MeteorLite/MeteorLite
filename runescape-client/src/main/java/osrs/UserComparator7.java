@@ -5,82 +5,70 @@ import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
-import net.runelite.rs.Reflection;
 
 @ObfuscatedName("cm")
 @Implements("UserComparator7")
 public class UserComparator7 extends AbstractUserComparator {
-	@ObfuscatedName("mj")
+	@ObfuscatedName("p")
 	@ObfuscatedGetter(
-		intValue = 1788791265
+		longValue = 1289611995135137433L
 	)
-	@Export("menuWidth")
-	static int menuWidth;
-	@ObfuscatedName("l")
+	public static long field1319;
+	@ObfuscatedName("hx")
+	@ObfuscatedSignature(
+		descriptor = "[Lpl;"
+	)
+	@Export("mapMarkerSprites")
+	static SpritePixels[] mapMarkerSprites;
+	@ObfuscatedName("iq")
+	@ObfuscatedGetter(
+		intValue = -427505933
+	)
+	@Export("cameraX")
+	static int cameraX;
+	@ObfuscatedName("in")
+	@ObfuscatedGetter(
+		intValue = 1941000053
+	)
+	@Export("cameraPitch")
+	static int cameraPitch;
+	@ObfuscatedName("c")
 	@Export("reversed")
 	final boolean reversed;
 
 	public UserComparator7(boolean var1) {
-		this.reversed = var1;
-	}
+		this.reversed = var1; // L: 10
+	} // L: 11
 
-	@ObfuscatedName("l")
+	@ObfuscatedName("c")
 	@ObfuscatedSignature(
-		descriptor = "(Lmi;Lmi;B)I",
-		garbageValue = "31"
+		descriptor = "(Lmp;Lmp;I)I",
+		garbageValue = "742897399"
 	)
 	@Export("compareBuddy")
 	int compareBuddy(Buddy var1, Buddy var2) {
-		if (var1.world != 0 && var2.world != 0) {
-			return this.reversed ? var1.int2 - var2.int2 : var2.int2 - var1.int2;
+		if (var1.world != 0 && var2.world != 0) { // L: 14
+			return this.reversed ? var1.int2 - var2.int2 : var2.int2 - var1.int2; // L: 15
 		} else {
-			return this.compareUser(var1, var2);
+			return this.compareUser(var1, var2); // L: 17
 		}
 	}
 
 	public int compare(Object var1, Object var2) {
-		return this.compareBuddy((Buddy)var1, (Buddy)var2);
+		return this.compareBuddy((Buddy)var1, (Buddy)var2); // L: 21
 	}
 
-	@ObfuscatedName("l")
+	@ObfuscatedName("hj")
 	@ObfuscatedSignature(
-		descriptor = "(III)I",
-		garbageValue = "2117353733"
+		descriptor = "(I)I",
+		garbageValue = "-1366394197"
 	)
-	static int method2421(int var0, int var1) {
-		ItemContainer var2 = (ItemContainer)ItemContainer.itemContainers.get((long)var0);
-		if (var2 == null) {
-			return -1;
+	static final int method2518() {
+		if (SecureRandomFuture.clientPreferences.roofsHidden) { // L: 5571
+			return class20.Client_plane;
 		} else {
-			return var1 >= 0 && var1 < var2.ids.length ? var2.ids[var1] : -1;
-		}
-	}
-
-	@ObfuscatedName("j")
-	@ObfuscatedSignature(
-		descriptor = "(Ljava/lang/String;I)Ljava/lang/Class;",
-		garbageValue = "-412123539"
-	)
-	@Export("loadClassFromDescriptor")
-	static Class loadClassFromDescriptor(String var0) throws ClassNotFoundException {
-		if (var0.equals("B")) {
-			return Byte.TYPE;
-		} else if (var0.equals("I")) {
-			return Integer.TYPE;
-		} else if (var0.equals("S")) {
-			return Short.TYPE;
-		} else if (var0.equals("J")) {
-			return Long.TYPE;
-		} else if (var0.equals("Z")) {
-			return Boolean.TYPE;
-		} else if (var0.equals("F")) {
-			return Float.TYPE;
-		} else if (var0.equals("D")) {
-			return Double.TYPE;
-		} else if (var0.equals("C")) {
-			return Character.TYPE;
-		} else {
-			return var0.equals("void") ? Void.TYPE : Reflection.findClass(var0);
+			int var0 = FaceNormal.getTileHeight(cameraX, UserComparator10.cameraZ, class20.Client_plane); // L: 5572
+			return var0 - AbstractByteArrayCopier.cameraY < 800 && (Tiles.Tiles_renderFlags[class20.Client_plane][cameraX >> 7][UserComparator10.cameraZ >> 7] & 4) != 0 ? class20.Client_plane : 3; // L: 5573 5574
 		}
 	}
 }

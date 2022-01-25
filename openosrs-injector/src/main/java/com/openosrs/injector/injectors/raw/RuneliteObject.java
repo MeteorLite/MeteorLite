@@ -38,60 +38,22 @@ public class RuneliteObject extends AbstractInjector
 	{
 		ClassFile runeliteObjectVanilla = inject.vanilla.findClass(RUNELITE_OBJECT);
 
-		final ClassFile graphicsObjectVanilla = inject.vanilla.findClass("osrs/GraphicsObject");
-
-		graphicsObjectVanilla.clearFinal();
-
 		final ClassFile clientVanilla = inject.vanilla.findClass("osrs/Client");
 
-		final ClassFile runeLiteObjectDeob = inject.getDeobfuscated()
-						.findClass(RUNELITE_OBJECT);
+		Method copy = new Method(clientVanilla, "createRuneLiteObject", new Signature("()Lnet/runelite/api/RuneLiteObject;"));
+		copy.setPublic();
 
-		if (runeliteObjectVanilla == null)
-		{
-			runeliteObjectVanilla = new ClassFile(inject.vanilla);
-			runeliteObjectVanilla.setName(RUNELITE_OBJECT);
-			runeliteObjectVanilla.setParentClass(graphicsObjectVanilla.getPoolClass());
-			runeliteObjectVanilla.setAccess(Opcodes.ACC_PUBLIC);
-			runeliteObjectVanilla.setVersion(Opcodes.V1_8);
-			inject.vanilla.addClass(runeliteObjectVanilla);
+		final Code code = new Code(copy);
+		code.setMaxStack(2);
+		copy.setCode(code);
+		clientVanilla.addMethod(copy);
 
-			inject.toVanilla.put(runeLiteObjectDeob, runeliteObjectVanilla);
-		}
+		final Instructions instructions = code.getInstructions();
+		final List<Instruction> ins = instructions.getInstructions();
 
-		{
-			Method initRuneliteObject = new Method(runeliteObjectVanilla, "<init>", new Signature("()V"));
-			initRuneliteObject.setPublic();
-
-			final Code code = new Code(initRuneliteObject);
-			code.setMaxStack(1);
-			initRuneliteObject.setCode(code);
-			runeliteObjectVanilla.addMethod(initRuneliteObject);
-
-			final Instructions instructions = code.getInstructions();
-			final List<Instruction> ins = instructions.getInstructions();
-
-			ins.add(new ALoad(instructions, 0));
-			ins.add(new InvokeSpecial(instructions, new net.runelite.asm.pool.Method(graphicsObjectVanilla.getPoolClass(), "<init>", new Signature("()V"))));
-			ins.add(new VReturn(instructions));
-		}
-
-		{
-			Method copy = new Method(clientVanilla, "createRuneLiteObject", new Signature("()Lnet/runelite/api/RuneLiteObject;"));
-			copy.setPublic();
-
-			final Code code = new Code(copy);
-			code.setMaxStack(2);
-			copy.setCode(code);
-			clientVanilla.addMethod(copy);
-
-			final Instructions instructions = code.getInstructions();
-			final List<Instruction> ins = instructions.getInstructions();
-
-			ins.add(new New(instructions, runeliteObjectVanilla.getPoolClass()));
-			ins.add(new Dup(instructions));
-			ins.add(new InvokeSpecial(instructions, new net.runelite.asm.pool.Method(runeliteObjectVanilla.getPoolClass(), "<init>", new Signature("()V"))));
-			ins.add(new Return(instructions, InstructionType.ARETURN));
-		}
+		ins.add(new New(instructions, runeliteObjectVanilla.getPoolClass()));
+		ins.add(new Dup(instructions));
+		ins.add(new InvokeSpecial(instructions, new net.runelite.asm.pool.Method(runeliteObjectVanilla.getPoolClass(), "<init>", new Signature("()V"))));
+		ins.add(new Return(instructions, InstructionType.ARETURN));
 	}
 }

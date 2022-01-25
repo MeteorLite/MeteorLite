@@ -78,6 +78,7 @@ import jogamp.newt.awt.NewtFactoryAWT;
 import meteor.callback.ClientThread;
 import meteor.config.ConfigManager;
 import meteor.eventbus.Subscribe;
+import meteor.eventbus.events.ConfigChanged;
 import meteor.plugins.Plugin;
 import meteor.plugins.PluginDescriptor;
 import meteor.plugins.gpu.config.AntiAliasingMode;
@@ -335,6 +336,10 @@ public class GpuPlugin extends Plugin implements DrawCallbacks {
           this.gl = glContext.getGL().getGL4();
           gl.setSwapInterval(0);
 
+          final boolean unlockFps = this.config.unlockFps();
+          client.setUnlockedFps(unlockFps);
+          gl.setSwapInterval(unlockFps ? 1 : 0);
+
           initVao();
           try {
             initProgram();
@@ -375,6 +380,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks {
     {
       client.setGpu(false);
       client.setDrawCallbacks(null);
+      client.setUnlockedFps(false);
 
       invokeOnMainThread(() ->
       {
@@ -437,6 +443,23 @@ public class GpuPlugin extends Plugin implements DrawCallbacks {
   @Override
   public GpuPluginConfig getConfig(ConfigManager configManager) {
     return configManager.getConfig(GpuPluginConfig.class);
+  }
+
+  @Subscribe
+  public void onConfigChanged(ConfigChanged configChanged)
+  {
+    if (configChanged.getGroup().equals(GpuPluginConfig.GROUP))
+    {
+      if (configChanged.getKey().equals("unlockFps"))
+      {
+        boolean unlockFps = Boolean.parseBoolean(configChanged.getNewValue());
+        clientThread.invokeLater(() ->
+        {
+          client.setUnlockedFps(unlockFps);
+          invokeOnMainThread(() -> gl.setSwapInterval(unlockFps ? 1 : 0));
+        });
+      }
+    }
   }
 
   private void initProgram() throws ShaderException {
@@ -666,6 +689,12 @@ public class GpuPlugin extends Plugin implements DrawCallbacks {
 
     final Scene scene = client.getScene();
     scene.setDrawDistance(getDrawDistance());
+
+    // Only reset the target buffer offset right before drawing the scene. That way if there are frames
+    // after this that don't involve a scene draw, like during LOADING/HOPPING/CONNECTION_LOST, we can
+    // still redraw the previous frame's scene to emulate the client behavior of not painting over the
+    // viewport buffer.
+    targetBufferOffset = 0;
 
     invokeOnMainThread(() ->
     {
@@ -914,19 +943,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks {
   }
 
   private void drawFrame(int overlayColor) {
-    if (jawtWindow.getAWTComponent() != client.getCanvas()) {
-      // We inject code in the game engine mixin to prevent the client from doing canvas replacement,
-      // so this should not ever be hit
-      log.warn("Canvas invalidated!");
-      shutdown();
-      startup();
-      return;
-    }
-
-    if (client.getGameState() == GameState.LOADING || client.getGameState() == GameState.HOPPING) {
-      // While the client is loading it doesn't draw
-      return;
-    }
+    assert jawtWindow.getAWTComponent() == client.getCanvas() : "canvas invalidated";
 
     final int canvasHeight = client.getCanvasHeight();
     final int canvasWidth = client.getCanvasWidth();
@@ -984,7 +1001,8 @@ public class GpuPlugin extends Plugin implements DrawCallbacks {
 
     // Draw 3d scene
     final TextureProvider textureProvider = client.getTextureProvider();
-    if (textureProvider != null) {
+    final GameState gameState = client.getGameState();
+    if (textureProvider != null && gameState.getState() >= GameState.LOADING.getState()) {
       if (textureArrayId == -1) {
         // lazy init textures as they may not be loaded at plugin start.
         // this will return -1 and retry if not all textures are loaded yet, too.
@@ -1135,7 +1153,6 @@ public class GpuPlugin extends Plugin implements DrawCallbacks {
     modelBufferSmall.clear();
     modelBufferUnordered.clear();
 
-    targetBufferOffset = 0;
     smallModels = largeModels = unorderedModels = 0;
     tempOffset = 0;
     tempUvOffset = 0;
@@ -1282,11 +1299,18 @@ public class GpuPlugin extends Plugin implements DrawCallbacks {
 
   @Subscribe
   public void onGameStateChanged(GameStateChanged gameStateChanged) {
-    if (computeMode == ComputeMode.NONE || gameStateChanged.getGameState() != GameState.LOGGED_IN) {
-      return;
+    switch (gameStateChanged.getGameState())
+    {
+      case LOGGED_IN:
+        if (computeMode != ComputeMode.NONE)
+        {
+          invokeOnMainThread(this::uploadScene);
+        }
+        break;
+      case LOGIN_SCREEN:
+        // Avoid drawing the last frame's buffer during LOADING after LOGIN_SCREEN
+        targetBufferOffset = 0;
     }
-
-    invokeOnMainThread(this::uploadScene);
   }
 
   private void uploadScene() {

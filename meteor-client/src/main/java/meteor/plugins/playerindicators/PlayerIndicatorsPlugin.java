@@ -405,7 +405,7 @@ public class PlayerIndicatorsPlugin extends Plugin
 			{
 				if (clanMember.getRank().getValue() >= config.callerRank().getValue())
 				{
-					callers.add(Text.standardize(clanMember.getName()));
+					callers.add(Text.standardize(clanMember.getName$api()));
 				}
 			}
 		}

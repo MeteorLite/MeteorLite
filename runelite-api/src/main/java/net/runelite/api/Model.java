@@ -83,7 +83,7 @@ public interface Model extends Renderable {
 
   void setUvBufferOffset(int bufferOffset);
 
-  int getModelHeight();
+  int getBottomY();
 
   void calculateBoundsCylinder$api();
 

@@ -52,6 +52,13 @@ public abstract class ItemContainerMixin implements RSItemContainer {
   @Inject
   private static int[] itemQuantityCache = new int[28];
 
+  @Inject
+  @Override
+  public int getId()
+  {
+    return (int) this.getHash();
+  }
+
   @FieldHook("changedItemContainers")
   @Inject
   public static void onItemContainerUpdate(int idx) {

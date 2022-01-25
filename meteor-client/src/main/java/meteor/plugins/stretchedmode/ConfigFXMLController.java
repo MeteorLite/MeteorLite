@@ -6,6 +6,8 @@ import javafx.fxml.FXML;
 import meteor.PluginManager;
 import meteor.plugins.Plugin;
 
+import javax.inject.Inject;
+
 public class ConfigFXMLController {
 
   StretchedModePlugin plugin;
@@ -18,8 +20,11 @@ public class ConfigFXMLController {
   @FXML
   private JFXSlider scalingFactorSlider;
 
+  @Inject
+  private PluginManager pluginManager;
+
   {
-    for (Plugin p : PluginManager.plugins) {
+    for (Plugin p : pluginManager.getPlugins()) {
       if (p instanceof StretchedModePlugin) {
         plugin = (StretchedModePlugin) p;
       }

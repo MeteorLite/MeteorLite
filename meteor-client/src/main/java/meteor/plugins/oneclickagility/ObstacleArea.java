@@ -2,7 +2,7 @@ package meteor.plugins.oneclickagility;
 
 import lombok.Getter;
 import lombok.Setter;
-import meteor.plugins.api.game.Game;
+import dev.hoot.api.game.Game;
 import net.runelite.api.GameObject;
 import net.runelite.api.Locatable;
 import net.runelite.api.MenuAction;

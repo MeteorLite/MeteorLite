@@ -24,15 +24,6 @@
  */
 package net.runelite.api;
 
-import java.awt.Canvas;
-import java.awt.Dimension;
-import java.math.BigInteger;
-import java.util.EnumSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import net.runelite.api.annotations.VisibleForExternalPlugins;
 import net.runelite.api.clan.ClanChannel;
 import net.runelite.api.clan.ClanSettings;
@@ -50,6 +41,15 @@ import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 import org.sponge.util.Logger;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+import java.awt.*;
+import java.math.BigInteger;
+import java.util.EnumSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
 /**
  * Represents the RuneScape client.
  */
@@ -59,6 +59,8 @@ public interface Client extends GameEngine {
    * The injected client invokes these callbacks to send events to us
    */
   Callbacks getCallbacks();
+
+  void setCallbacks(Callbacks callbacks);
 
   /**
    * The injected client invokes these callbacks for scene drawing, which is used by the gpu plugin
@@ -1178,9 +1180,26 @@ public interface Client extends GameEngine {
    *
    * @param inventory the inventory type
    * @return the item container
+   * @see InventoryID
    */
   @Nullable
   ItemContainer getItemContainer(InventoryID inventory);
+
+  /**
+   * Get an item container by id
+   *
+   * @param id the inventory id
+   * @return the item container
+   * @see InventoryID
+   */
+  @Nullable
+  ItemContainer getItemContainer(int id);
+
+  /**
+   * Get all item containers
+   * @return
+   */
+  HashTable<ItemContainer> getItemContainers();
 
   /**
    * Gets the length of the cs2 vm's int stack
@@ -2310,72 +2329,6 @@ public interface Client extends GameEngine {
    * The packet which is sent when sending a name input (ex. adding friends).
    * @return the ClientPacket which belongs to this packet
    */
-  ClientPacket getNameInputPacket();
-
-  /**
-   * The packet which is sent when sending a number input (ex. withdrawing X from bank).
-   * @return the ClientPacket which belongs to this packet
-   */
-  ClientPacket getNumberInputPacket();
-
-  /**
-   * The packet which is sent when sending a text input (ex. sending a private message).
-   * @return the ClientPacket which belongs to this packet
-   */
-  ClientPacket getTextInputPacket();
-
-
-  /*
-  The Item packets
-   */
-  ClientPacket getItemActionPacket();
-  ClientPacket getItemAction2Packet();
-  ClientPacket getItemAction3Packet();
-  ClientPacket getItemAction4Packet();
-  ClientPacket getItemAction5Packet();
-  ClientPacket getItemOnItemPacket();
-  ClientPacket getBankItemActionPacket();
-  /*
-  The NPC packets
-   */
-  ClientPacket getNPCActionPacket();
-  ClientPacket getNPCAction2Packet();
-  ClientPacket getNPCAction3Packet();
-  ClientPacket getNPCAction4Packet();
-  ClientPacket getNPCAction5Packet();
-
-  /*
-  GameObject packets
-   */
-  ClientPacket getGameObjectActionPacket();
-  ClientPacket getGameObjectAction2Packet();
-  ClientPacket getGameObjectAction3Packet();
-  ClientPacket getGameObjectAction4Packet();
-  ClientPacket getGameObjectAction5Packet();
-  ClientPacket getItemUseOnGameObjectPacket();
-  /*
-  Widget packets
-   */
-  ClientPacket getWidgetActionPacket();
-  ClientPacket getWidgetAction2Packet();
-  ClientPacket getWidgetAction3Packet();
-  ClientPacket getWidgetAction4Packet();
-  ClientPacket getWidgetAction5Packet();
-  ClientPacket getWidgetAction6Packet();
-  ClientPacket getWidgetAction7Packet();
-  ClientPacket getWidgetAction8Packet();
-  ClientPacket getWidgetAction10Packet();
-
-  /*
-  Spell packets
-   */
-  ClientPacket getSpellOnItemPacket();
-  /*
-  Misc
-   */
-  ClientPacket getClickPacket();
-  ClientPacket getInterfaceClosePacket();
-  ClientPacket getWalkPacket();
 
   void setSelectedSceneTileX(int sceneX);
 
@@ -2455,6 +2408,10 @@ public interface Client extends GameEngine {
 
   void setDestinationY(int sceneY);
 
+  int getDestinationX();
+
+  int getDestinationY();
+
   boolean isWorldSelectOpen();
 
   void setWorldSelectOpen(boolean open);
@@ -2474,4 +2431,24 @@ public interface Client extends GameEngine {
   void setClickCrossX(int x);
 
   void setClickCrossY(int y);
+
+  boolean getCameraPitchRelaxerEnabled();
+
+  /**
+   * Sets local X coord where the camera is pointing when the Oculus orb is active
+   */
+  void setOculusOrbFocalPointX(int xPos);
+
+  /**
+   * Sets local Y coord where the camera is pointing when the Oculus orb is active
+   */
+  void setOculusOrbFocalPointY(int yPos);
+
+  boolean isUnlockedFps();
+
+  void setUnlockedFps(boolean enabled);
+
+  void setUnlockedFpsTarget(int fps);
+
+  void posToCameraAngle(int var0, int var1);
 }

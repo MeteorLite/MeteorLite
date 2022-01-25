@@ -1,18 +1,16 @@
 package meteor.plugins.meteorlite;
 
+import meteor.PluginManager;
 import meteor.config.Config;
 import meteor.config.ConfigManager;
 import meteor.config.MeteorLiteConfig;
 import meteor.eventbus.Subscribe;
 import meteor.eventbus.events.ConfigChanged;
-import meteor.events.ExternalsReloaded;
 import meteor.input.MouseManager;
 import meteor.plugins.Plugin;
 import meteor.plugins.PluginDescriptor;
-import meteor.plugins.api.game.Game;
 import meteor.plugins.meteorlite.interaction.InteractionManager;
 import meteor.plugins.meteorlite.interaction.InteractionOverlay;
-import meteor.plugins.meteorlite.loginscreen.MeteorLiteLoginScreen;
 import net.runelite.api.events.ConfigButtonClicked;
 import org.sponge.util.Logger;
 
@@ -35,9 +33,6 @@ public class MeteorLitePlugin extends Plugin {
     private InteractionOverlay interactionOverlay;
 
     @Inject
-    private MeteorLiteLoginScreen meteorLiteLoginScreen;
-
-    @Inject
     private MouseManager mouseManager;
 
     @Inject
@@ -45,6 +40,9 @@ public class MeteorLitePlugin extends Plugin {
 
     @Inject
     private ConfigManager configManager;
+
+    @Inject
+    private PluginManager pluginManager;
 
     @Override
     public void updateConfig() {
@@ -56,17 +54,6 @@ public class MeteorLitePlugin extends Plugin {
         overlayManager.add(interactionOverlay);
         mouseManager.registerMouseListener(interactionOverlay);
         eventBus.register(interactionManager);
-        eventBus.register(meteorLiteLoginScreen);
-
-        if (config.externalsLoadOnStartup()) {
-            Game.getClient().getCallbacks().post(new ExternalsReloaded());
-        }
-
-        if (config.meteorLoginScreen()) {
-            meteorLiteLoginScreen.setCustom();
-        } else {
-            meteorLiteLoginScreen.setDefault();
-        }
     }
 
     @Override
@@ -83,7 +70,7 @@ public class MeteorLitePlugin extends Plugin {
         }
 
         if (event.getKey().equals("reloadExternals")) {
-            Game.getClient().getCallbacks().post(new ExternalsReloaded());
+            pluginManager.startExternals();
         }
     }
 
@@ -91,14 +78,6 @@ public class MeteorLitePlugin extends Plugin {
     public void onConfigChanged(ConfigChanged event) {
         if (!event.getGroup().equals(MeteorLiteConfig.GROUP_NAME)) {
             return;
-        }
-
-        if (event.getKey().equals("meteorLoginScreen")) {
-            if (config.meteorLoginScreen()) {
-                meteorLiteLoginScreen.setCustom();
-            } else {
-                meteorLiteLoginScreen.setDefault();
-            }
         }
     }
 

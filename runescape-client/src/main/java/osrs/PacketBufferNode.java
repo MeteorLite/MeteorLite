@@ -1,100 +1,83 @@
 package osrs;
 
+import java.lang.management.GarbageCollectorMXBean;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("is")
+@ObfuscatedName("iw")
 @Implements("PacketBufferNode")
 public class PacketBufferNode extends Node {
-	@ObfuscatedName("sf")
-	@ObfuscatedGetter(
-		intValue = 1714569287
-	)
-	static int field2786;
-	@ObfuscatedName("m")
+	@ObfuscatedName("t")
 	@ObfuscatedSignature(
-		descriptor = "[Lis;"
+		descriptor = "[Liw;"
 	)
 	@Export("PacketBufferNode_packetBufferNodes")
 	static PacketBufferNode[] PacketBufferNode_packetBufferNodes;
-	@ObfuscatedName("k")
+	@ObfuscatedName("s")
 	@ObfuscatedGetter(
-		intValue = -1923924179
+		intValue = 1440510259
 	)
 	@Export("PacketBufferNode_packetBufferNodeCount")
 	static int PacketBufferNode_packetBufferNodeCount;
-	@ObfuscatedName("iz")
-	@ObfuscatedGetter(
-		intValue = -1453961237
-	)
-	@Export("selectedItemId")
-	static int selectedItemId;
-	@ObfuscatedName("l")
+	@ObfuscatedName("aq")
+	@Export("garbageCollector")
+	static GarbageCollectorMXBean garbageCollector;
+	@ObfuscatedName("c")
 	@ObfuscatedSignature(
-		descriptor = "Liz;"
+		descriptor = "Liu;"
 	)
 	@Export("clientPacket")
-	public ClientPacket clientPacket;
-	@ObfuscatedName("q")
+	ClientPacket clientPacket;
+	@ObfuscatedName("b")
 	@ObfuscatedGetter(
-		intValue = -215681187
+		intValue = -2059632065
 	)
 	@Export("clientPacketLength")
-	public int clientPacketLength;
-	@ObfuscatedName("f")
-	@ObfuscatedSignature(
-		descriptor = "Loy;"
-	)
-	@Export("packetBuffer")
-	public PacketBuffer packetBuffer;
-	@ObfuscatedName("j")
+	int clientPacketLength;
+	@ObfuscatedName("p")
 	@ObfuscatedGetter(
-		intValue = 1705067673
+		intValue = -531807865
 	)
 	@Export("index")
 	public int index;
+	@ObfuscatedName("m")
+	@ObfuscatedSignature(
+		descriptor = "Lpj;"
+	)
+	@Export("packetBuffer")
+	public PacketBuffer packetBuffer;
 
 	static {
-		PacketBufferNode_packetBufferNodes = new PacketBufferNode[300];
-		PacketBufferNode_packetBufferNodeCount = 0;
+		PacketBufferNode_packetBufferNodes = new PacketBufferNode[300]; // L: 13
+		PacketBufferNode_packetBufferNodeCount = 0; // L: 14
 	}
 
 	PacketBufferNode() {
-	}
+	} // L: 19
 
-	@ObfuscatedName("f")
+	@ObfuscatedName("p")
 	@ObfuscatedSignature(
 		descriptor = "(I)V",
-		garbageValue = "1435986558"
+		garbageValue = "817440472"
 	)
 	@Export("release")
 	public void release() {
-		if (PacketBufferNode_packetBufferNodeCount < PacketBufferNode_packetBufferNodes.length) {
-			PacketBufferNode_packetBufferNodes[++PacketBufferNode_packetBufferNodeCount - 1] = this;
+		if (PacketBufferNode_packetBufferNodeCount < PacketBufferNode_packetBufferNodes.length) { // L: 61
+			PacketBufferNode_packetBufferNodes[++PacketBufferNode_packetBufferNodeCount - 1] = this; // L: 62
 		}
-	}
+	} // L: 63
 
-	@ObfuscatedName("m")
-	@ObfuscatedSignature(
-		descriptor = "(II)Z",
-		garbageValue = "-1167818871"
-	)
-	public static boolean method4654(int var0) {
-		return var0 >= 0 && var0 < 112 ? KeyHandler.field128[var0] : false;
-	}
-
-	@ObfuscatedName("k")
+	@ObfuscatedName("mk")
 	@ObfuscatedSignature(
 		descriptor = "(II)V",
-		garbageValue = "-337771237"
+		garbageValue = "-1828413921"
 	)
-	static void method4653(int var0) {
-		ItemContainer var1 = (ItemContainer)ItemContainer.itemContainers.get((long)var0);
-		if (var1 != null) {
-			var1.remove();
+	static void method5016(int var0) {
+		if (var0 != Client.loginState) { // L: 12733
+			Client.loginState = var0; // L: 12734
 		}
-	}
+	} // L: 12735
 }

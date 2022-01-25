@@ -4,112 +4,143 @@ import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
+import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("hp")
+@ObfuscatedName("gl")
 @Implements("Occluder")
 public final class Occluder {
-	@ObfuscatedName("l")
+	@ObfuscatedName("c")
 	@ObfuscatedGetter(
-		intValue = 1719542493
+		intValue = 1159040081
 	)
 	@Export("minTileX")
 	int minTileX;
-	@ObfuscatedName("q")
+	@ObfuscatedName("b")
 	@ObfuscatedGetter(
-		intValue = 1789010699
+		intValue = -342962923
 	)
 	@Export("maxTileX")
 	int maxTileX;
-	@ObfuscatedName("f")
+	@ObfuscatedName("p")
 	@ObfuscatedGetter(
-		intValue = -1557432233
+		intValue = 1018728031
 	)
 	@Export("minTileY")
 	int minTileY;
-	@ObfuscatedName("j")
+	@ObfuscatedName("m")
 	@ObfuscatedGetter(
-		intValue = 817292531
+		intValue = -303087101
 	)
 	@Export("maxTileY")
 	int maxTileY;
-	@ObfuscatedName("m")
+	@ObfuscatedName("t")
 	@ObfuscatedGetter(
-		intValue = 400749645
+		intValue = -1878203499
 	)
 	@Export("type")
 	int type;
-	@ObfuscatedName("k")
+	@ObfuscatedName("s")
 	@ObfuscatedGetter(
-		intValue = 502654349
+		intValue = 1169287087
 	)
 	@Export("minX")
 	int minX;
-	@ObfuscatedName("t")
+	@ObfuscatedName("j")
 	@ObfuscatedGetter(
-		intValue = -873671995
+		intValue = -1004767669
 	)
 	@Export("maxX")
 	int maxX;
-	@ObfuscatedName("a")
+	@ObfuscatedName("w")
 	@ObfuscatedGetter(
-		intValue = -922941329
+		intValue = -596343551
 	)
 	@Export("minZ")
 	int minZ;
-	@ObfuscatedName("e")
+	@ObfuscatedName("n")
 	@ObfuscatedGetter(
-		intValue = -1363675319
+		intValue = -1032991231
 	)
 	@Export("maxZ")
 	int maxZ;
-	@ObfuscatedName("i")
+	@ObfuscatedName("r")
 	@ObfuscatedGetter(
-		intValue = 468546867
+		intValue = 973854413
 	)
 	@Export("minY")
 	int minY;
-	@ObfuscatedName("y")
+	@ObfuscatedName("o")
 	@ObfuscatedGetter(
-		intValue = -1571319031
+		intValue = 613174517
 	)
 	@Export("maxY")
 	int maxY;
-	@ObfuscatedName("w")
-	@ObfuscatedGetter(
-		intValue = -1978554207
-	)
-	int field2466;
-	@ObfuscatedName("g")
-	@ObfuscatedGetter(
-		intValue = 1028665229
-	)
-	int field2467;
 	@ObfuscatedName("v")
 	@ObfuscatedGetter(
-		intValue = -1892876933
+		intValue = 2116164351
 	)
-	int field2468;
-	@ObfuscatedName("s")
+	int field2378;
+	@ObfuscatedName("d")
 	@ObfuscatedGetter(
-		intValue = 791479165
+		intValue = -824345461
 	)
-	int field2469;
-	@ObfuscatedName("c")
+	int field2369;
+	@ObfuscatedName("h")
 	@ObfuscatedGetter(
-		intValue = -1288534623
+		intValue = -1750638079
 	)
-	int field2470;
-	@ObfuscatedName("b")
+	int field2380;
+	@ObfuscatedName("g")
 	@ObfuscatedGetter(
-		intValue = 1161578073
+		intValue = 72228107
 	)
-	int field2463;
-	@ObfuscatedName("x")
+	int field2381;
+	@ObfuscatedName("e")
 	@ObfuscatedGetter(
-		intValue = 312083711
+		intValue = -1522475315
 	)
-	int field2472;
+	int field2368;
+	@ObfuscatedName("a")
+	@ObfuscatedGetter(
+		intValue = -1800993445
+	)
+	int field2383;
+	@ObfuscatedName("u")
+	@ObfuscatedGetter(
+		intValue = 269877121
+	)
+	int field2367;
 
 	Occluder() {
-	}
+	} // L: 23
+
+	@ObfuscatedName("gt")
+	@ObfuscatedSignature(
+		descriptor = "(IB)V",
+		garbageValue = "-69"
+	)
+	@Export("setWindowedMode")
+	static void setWindowedMode(int var0) {
+		Client.field514 = 0L; // L: 4973
+		if (var0 >= 2) { // L: 4974
+			Client.isResizable = true;
+		} else {
+			Client.isResizable = false; // L: 4975
+		}
+
+		if (class143.getWindowedMode() == 1) { // L: 4976
+			class295.client.setMaxCanvasSize(765, 503); // L: 4977
+		} else {
+			class295.client.setMaxCanvasSize(7680, 2160); // L: 4980
+		}
+
+		if (Client.gameState >= 25) { // L: 4982
+			PacketBufferNode var1 = HitSplatDefinition.getPacketBufferNode(ClientPacket.WINDOW_STATUS, Client.packetWriter.isaacCipher); // L: 4984
+			var1.packetBuffer.writeByte(class143.getWindowedMode()); // L: 4985
+			var1.packetBuffer.writeShort(class186.canvasWidth); // L: 4986
+			var1.packetBuffer.writeShort(BoundaryObject.canvasHeight); // L: 4987
+			Client.packetWriter.addNode(var1); // L: 4988
+		}
+
+	} // L: 4990
 }

@@ -3,6 +3,9 @@ package meteor;
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import com.google.inject.*;
 import com.google.inject.name.Names;
+import dev.hoot.api.movement.pathfinder.GlobalCollisionMap;
+import dev.hoot.api.movement.pathfinder.Walker;
+import dev.hoot.api.movement.pathfinder.RegionManager;
 import javafx.scene.paint.Paint;
 import meteor.callback.Hooks;
 import meteor.chat.ChatMessageManager;
@@ -13,8 +16,10 @@ import meteor.eventbus.DeferredEventBus;
 import meteor.eventbus.EventBus;
 import meteor.eventbus.events.ClientPreLaunch;
 import meteor.game.WorldService;
-import meteor.plugins.api.game.Game;
-import meteor.plugins.api.game.GameThread;
+import dev.hoot.api.game.Game;
+import dev.hoot.api.game.GameThread;
+import dev.hoot.api.game.Prices;
+import dev.hoot.api.game.Worlds;
 import meteor.plugins.itemstats.ItemStatChangesService;
 import meteor.plugins.itemstats.ItemStatChangesServiceImpl;
 import meteor.config.MeteorLiteConfig;
@@ -24,13 +29,14 @@ import meteor.ui.overlay.WidgetOverlay;
 import meteor.ui.overlay.tooltip.TooltipOverlay;
 import meteor.ui.overlay.worldmap.WorldMapOverlay;
 import meteor.util.ExecutorServiceExceptionLogger;
+import meteor.util.JVM;
 import meteor.util.NonScheduledExecutorServiceExceptionLogger;
 import net.runelite.api.Client;
 import net.runelite.api.hooks.Callbacks;
+import net.runelite.api.packets.ClientPacket;
 import net.runelite.http.api.chat.ChatClient;
-import net.runelite.http.api.wiseoldman.Period;
-import net.runelite.http.api.wiseoldman.WiseOldManClient;
 import okhttp3.OkHttpClient;
+import org.apache.commons.io.FileUtils;
 import org.sponge.util.Logger;
 
 import javax.annotation.Nullable;
@@ -39,8 +45,10 @@ import javax.inject.Provider;
 import javax.inject.Singleton;
 import java.applet.Applet;
 import java.io.BufferedReader;
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
@@ -50,8 +58,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.*;
+import java.util.zip.GZIPInputStream;
 
-import static meteor.MeteorLiteClientLauncher.DEFAULT_CONFIG_FILE;
+import static meteor.MeteorLiteClientLauncher.CONFIG_FILE;
 import static org.sponge.util.Logger.ANSI_RESET;
 import static org.sponge.util.Logger.ANSI_YELLOW;
 
@@ -61,6 +70,18 @@ public class MeteorLiteClientModule extends AbstractModule {
   public static Paint METEOR_FONT_COLOR = Paint.valueOf("AQUA");
 
   public static String uuid = UUID.randomUUID().toString();
+
+  ClassLoader classLoader;
+
+  MeteorLiteClientModule() throws IOException, ClassNotFoundException {
+    File injected = new File(System.getProperty("user.home") + "/.meteorlite/cache/injected-client.jar");
+    InputStream initialStream = ClassLoader.getSystemClassLoader().getResourceAsStream("injected-client.osrs");
+    if (!injected.exists() || injected.length() != ClassLoader.getSystemClassLoader().getResource("injected-client.osrs").getFile().length()) {
+      FileUtils.copyInputStreamToFile(initialStream, injected);
+    }
+
+    classLoader = JVM.createJarClassLoader(injected);
+  }
 
   @Inject
   private EventBus eventBus;
@@ -88,6 +109,9 @@ public class MeteorLiteClientModule extends AbstractModule {
 
   @Inject
   private DiscordService discordService;
+
+  @Inject
+  private ClientPacket clientPacket;
 
   public static Map<String, String> properties;
   public static Map<String, String> parameters;
@@ -143,7 +167,9 @@ public class MeteorLiteClientModule extends AbstractModule {
 
     requestStaticInjection(
             GameThread.class,
-            Game.class
+            Game.class,
+            Prices.class,
+            Worlds.class
     );
   }
 
@@ -209,14 +235,26 @@ public class MeteorLiteClientModule extends AbstractModule {
   @Provides
   @javax.inject.Singleton
   File provideConfigFile() {
-    return DEFAULT_CONFIG_FILE;
+    return CONFIG_FILE;
   }
 
   @Provides
   @Singleton
   Applet provideApplet() {
     try {
-      return (Applet) ClassLoader.getSystemClassLoader().loadClass("osrs.Client").newInstance();
+
+      return (Applet) classLoader.loadClass("osrs.Client").newInstance();
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+    return null;
+  }
+
+  @Provides
+  @Singleton
+  ClientPacket provideClientPacket() {
+    try {
+      return (ClientPacket) classLoader.loadClass("osrs.ClientPacket").newInstance();
     } catch (Exception e) {
       e.printStackTrace();
     }
@@ -263,5 +301,22 @@ public class MeteorLiteClientModule extends AbstractModule {
   @Singleton
   MeteorLiteConfig provideMeteorConfig(ConfigManager configManager) {
     return configManager.getConfig(MeteorLiteConfig.class);
+  }
+
+  @Provides
+  @Singleton
+  GlobalCollisionMap provideGlobalCollisionMap() throws IOException {
+    try (InputStream is = new URL(RegionManager.API_URL + "/regions").openStream()) {
+      return new GlobalCollisionMap(new GZIPInputStream(new ByteArrayInputStream(is.readAllBytes())).readAllBytes());
+    } catch (IOException e) {
+      // Fallback to old map
+      return new GlobalCollisionMap(
+              new GZIPInputStream(
+                      new ByteArrayInputStream(
+                              Walker.class.getResourceAsStream("/collision-map").readAllBytes()
+                      )
+              ).readAllBytes()
+      );
+    }
   }
 }

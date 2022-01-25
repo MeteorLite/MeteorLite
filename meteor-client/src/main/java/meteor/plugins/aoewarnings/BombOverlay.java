@@ -68,13 +68,14 @@ public class BombOverlay extends Overlay {
 
   private final AoeWarningConfig config;
 
-  private AoeWarningPlugin plugin = PluginManager.getInstance(AoeWarningPlugin.class);
+  private AoeWarningPlugin plugin;
 
   @Inject
-  public BombOverlay(final Client client, final ConfigManager configManager) {
+  public BombOverlay(final Client client, final ConfigManager configManager, final PluginManager pluginManager) {
     setLayer(OverlayLayer.ABOVE_SCENE);
     this.client = client;
     this.config = configManager.getConfig(AoeWarningConfig.class);
+    plugin = pluginManager.getInstance(AoeWarningPlugin.class);
   }
 
   private void drawDangerZone(Graphics2D graphics) {

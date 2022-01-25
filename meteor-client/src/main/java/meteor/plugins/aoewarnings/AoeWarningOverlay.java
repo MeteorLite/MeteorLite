@@ -59,13 +59,15 @@ public class AoeWarningOverlay extends Overlay {
   private final Client client;
   private final AoeWarningConfig config;
 
-  private AoeWarningPlugin plugin = PluginManager.getInstance(AoeWarningPlugin.class);
+
+  private AoeWarningPlugin plugin;
 
   @Inject
-  public AoeWarningOverlay(final Client client, final ConfigManager configManager) {
+  public AoeWarningOverlay(final Client client, final ConfigManager configManager, final PluginManager pluginManager) {
     setLayer(OverlayLayer.ABOVE_SCENE);
     this.client = client;
     this.config = configManager.getConfig(AoeWarningConfig.class);
+    plugin = pluginManager.getInstance(AoeWarningPlugin.class);
   }
 
   private Point centerPoint(Rectangle rect) {

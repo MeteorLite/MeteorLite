@@ -26,21 +26,36 @@ package meteor.plugins.npcstatus;
 
 import java.awt.Dimension;
 import java.awt.Graphics2D;
+import java.util.Random;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
+import dev.hoot.api.widgets.Prayers;
+import meteor.plugins.npcstatus.NpcStatusConfig.PrayStyle;
 import meteor.ui.overlay.Overlay;
 import meteor.ui.overlay.OverlayLayer;
 import meteor.ui.overlay.OverlayPosition;
 import meteor.ui.overlay.OverlayUtil;
 import net.runelite.api.Client;
 import net.runelite.api.Point;
+import net.runelite.api.Prayer;
 
 @Singleton
 public class NpcStatusOverlay extends Overlay
 {
 	private final Client client;
 	private final NpcStatusPlugin plugin;
+	private int lastTicksLeft = 0;
+	private boolean isPraying;
+	private Random random = new Random();
+
+	@Inject
+	private NpcStatusConfig config;
+
+	@Inject
+	private ScheduledExecutorService executorService;
 
 	@Inject
 	NpcStatusOverlay(final Client client, final NpcStatusPlugin plugin)
@@ -54,20 +69,43 @@ public class NpcStatusOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
+		if (config.autoPray())
+			if (client.getLocalPlayer().isIdle())
+				if (isPraying)
+					queueDisablePrayers(random.nextInt(300));
 		for (MemorizedNPC npc : plugin.getMemorizedNPCs())
 		{
 			if (npc.getNpc().getInteracting() == client.getLocalPlayer() || client.getLocalPlayer().getInteracting() == npc.getNpc())
 			{
+				int flickOn = 40 + random.nextInt(70);
+				int flickOff = 600 - flickOn + random.nextInt(200);
 				switch (npc.getStatus())
 				{
 					case FLINCHING:
 						npc.setTimeLeft(Math.max(0, npc.getFlinchTimerEnd() - client.getTickCount()));
 						break;
 					case IN_COMBAT_DELAY:
+						if (npc.getNpc().getInteracting() == client.getLocalPlayer()) {
+							int ticksLeft = Math.max(0, npc.getCombatTimerEnd() - client.getTickCount() - 7);
+							if (lastTicksLeft != ticksLeft)
+								if (config.autoPray())
+									if (ticksLeft == 1)
+										enablePrayers(flickOn, flickOff);
+							lastTicksLeft = ticksLeft;
+						}
+						npc.setTimeLeft(lastTicksLeft);
 						npc.setTimeLeft(Math.max(0, npc.getCombatTimerEnd() - client.getTickCount() - 7));
 						break;
 					case IN_COMBAT:
-						npc.setTimeLeft(Math.max(0, npc.getCombatTimerEnd() - client.getTickCount()));
+						if (npc.getNpc().getInteracting() == client.getLocalPlayer()) {
+							int ticksLeft = Math.max(0, npc.getCombatTimerEnd() - client.getTickCount());
+							if (lastTicksLeft != ticksLeft)
+								if (config.autoPray())
+									if (ticksLeft == 1)
+										enablePrayers(flickOn, flickOff);
+						lastTicksLeft = ticksLeft;
+						}
+						npc.setTimeLeft(lastTicksLeft);
 						break;
 					case OUT_OF_COMBAT:
 					default:
@@ -84,5 +122,47 @@ public class NpcStatusOverlay extends Overlay
 			}
 		}
 		return null;
+	}
+
+	private void enablePrayers(int flickOn, int flickOff) {
+		executorService.schedule(() -> {
+			if (config.prayStyle() == PrayStyle.MELEE) {
+				if (!Prayers.isEnabled(Prayer.PROTECT_FROM_MELEE))
+					Prayers.toggle(Prayer.PROTECT_FROM_MELEE);
+			}
+			else if (config.prayStyle() == PrayStyle.RANGED) {
+				if (!Prayers.isEnabled(Prayer.PROTECT_FROM_MISSILES))
+					Prayers.toggle(Prayer.PROTECT_FROM_MISSILES);
+			}
+			else if (config.prayStyle() == PrayStyle.MAGIC) {
+				if (!Prayers.isEnabled(Prayer.PROTECT_FROM_MAGIC))
+					Prayers.toggle(Prayer.PROTECT_FROM_MAGIC);
+			}
+			queueDisablePrayers(flickOff);
+			isPraying = true;
+		}, flickOn, TimeUnit.MILLISECONDS);
+	}
+
+	private void queueDisablePrayers(int flickOff) {
+		executorService.schedule(() -> {
+			if (!Prayers.isEnabled(Prayer.PROTECT_FROM_MELEE))
+				if (!Prayers.isEnabled(Prayer.PROTECT_FROM_MELEE))
+					if (!Prayers.isEnabled(Prayer.PROTECT_FROM_MELEE))
+						return;
+
+			if (config.prayStyle() == PrayStyle.MELEE) {
+				if (Prayers.isEnabled(Prayer.PROTECT_FROM_MELEE))
+					Prayers.toggle(Prayer.PROTECT_FROM_MELEE);
+			}
+			else if (config.prayStyle() == PrayStyle.RANGED) {
+				if (Prayers.isEnabled(Prayer.PROTECT_FROM_MISSILES))
+					Prayers.toggle(Prayer.PROTECT_FROM_MISSILES);
+			}
+			else if (config.prayStyle() == PrayStyle.MAGIC) {
+				if (Prayers.isEnabled(Prayer.PROTECT_FROM_MAGIC))
+					Prayers.toggle(Prayer.PROTECT_FROM_MAGIC);
+			}
+			isPraying = false;
+		}, flickOff, TimeUnit.MILLISECONDS);
 	}
 }

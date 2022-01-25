@@ -1,27 +1,19 @@
 package meteor.plugins.worldmapwalker;
 
-import com.google.inject.Provides;
-import meteor.config.ConfigManager;
-import meteor.plugins.api.entities.Players;
-import meteor.plugins.api.game.Game;
-import meteor.plugins.api.movement.Movement;
-import meteor.plugins.api.movement.pathfinder.Walker;
-import meteor.plugins.api.scene.Tiles;
-import meteor.plugins.entityinspector.EntityInspectorConfig;
+import dev.hoot.api.entities.Players;
+import dev.hoot.api.game.Game;
+import dev.hoot.api.movement.pathfinder.Walker;
 import meteor.ui.overlay.Overlay;
 import meteor.ui.overlay.OverlayLayer;
 import meteor.ui.overlay.OverlayPosition;
 import meteor.ui.overlay.OverlayPriority;
-import net.runelite.api.Client;
 import net.runelite.api.Perspective;
-import net.runelite.api.Tile;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import java.awt.*;
-import java.awt.geom.Ellipse2D;
 import java.awt.geom.GeneralPath;
 import java.awt.geom.Path2D;
 import java.util.ArrayList;

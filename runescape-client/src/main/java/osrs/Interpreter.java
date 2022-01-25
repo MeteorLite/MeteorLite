@@ -7,117 +7,97 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("bv")
+@ObfuscatedName("bu")
 @Implements("Interpreter")
 public class Interpreter {
-	@ObfuscatedName("a")
+	@ObfuscatedName("tb")
+	@ObfuscatedSignature(
+		descriptor = "Lnn;"
+	)
+	@Export("platformInfo")
+	static PlatformInfo platformInfo;
+	@ObfuscatedName("w")
 	@Export("Interpreter_arrayLengths")
 	static int[] Interpreter_arrayLengths;
-	@ObfuscatedName("e")
+	@ObfuscatedName("n")
 	@Export("Interpreter_arrays")
 	static int[][] Interpreter_arrays;
-	@ObfuscatedName("i")
+	@ObfuscatedName("r")
 	@Export("Interpreter_intStack")
 	static int[] Interpreter_intStack;
-	@ObfuscatedName("y")
-	@ObfuscatedGetter(
-		intValue = -784806353
-	)
-	static int field829;
-	@ObfuscatedName("w")
+	@ObfuscatedName("v")
 	@Export("Interpreter_stringStack")
 	static String[] Interpreter_stringStack;
-	@ObfuscatedName("v")
+	@ObfuscatedName("h")
 	@ObfuscatedGetter(
-		intValue = -1089183027
+		intValue = -866718889
 	)
 	@Export("Interpreter_frameDepth")
 	static int Interpreter_frameDepth;
-	@ObfuscatedName("s")
+	@ObfuscatedName("g")
 	@ObfuscatedSignature(
-		descriptor = "[Lbj;"
+		descriptor = "[Lbg;"
 	)
 	@Export("Interpreter_frames")
 	static ScriptFrame[] Interpreter_frames;
-	@ObfuscatedName("h")
+	@ObfuscatedName("f")
+	@ObfuscatedGetter(
+		intValue = 355212093
+	)
+	static int field812;
+	@ObfuscatedName("l")
 	@Export("Interpreter_calendar")
 	static java.util.Calendar Interpreter_calendar;
-	@ObfuscatedName("o")
+	@ObfuscatedName("q")
 	@Export("Interpreter_MONTHS")
 	static final String[] Interpreter_MONTHS;
-	@ObfuscatedName("n")
-	static boolean field828;
-	@ObfuscatedName("u")
-	static boolean field832;
-	@ObfuscatedName("d")
-	static ArrayList field830;
-	@ObfuscatedName("ab")
-	@ObfuscatedGetter(
-		intValue = 1390220385
-	)
-	static int field818;
+	@ObfuscatedName("z")
+	static boolean field818;
+	@ObfuscatedName("i")
+	static boolean field816;
+	@ObfuscatedName("y")
+	static ArrayList field817;
 	@ObfuscatedName("ah")
-	static final double field826;
-	@ObfuscatedName("ez")
-	@ObfuscatedSignature(
-		descriptor = "Lky;"
+	@ObfuscatedGetter(
+		intValue = -1880353715
 	)
-	@Export("archive9")
-	static Archive archive9;
-	@ObfuscatedName("gl")
-	@ObfuscatedSignature(
-		descriptor = "Llt;"
-	)
-	@Export("fontBold12")
-	static Font fontBold12;
+	static int field815;
+	@ObfuscatedName("ax")
+	static final double field814;
 
 	static {
-		Interpreter_arrayLengths = new int[5];
-		Interpreter_arrays = new int[5][5000];
-		Interpreter_intStack = new int[1000];
-		Interpreter_stringStack = new String[1000];
-		Interpreter_frameDepth = 0;
-		Interpreter_frames = new ScriptFrame[50];
-		Interpreter_calendar = java.util.Calendar.getInstance();
-		Interpreter_MONTHS = new String[]{"Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"};
-		field828 = false;
-		field832 = false;
-		field830 = new ArrayList();
-		field818 = 0;
-		field826 = Math.log(2.0D);
+		Interpreter_arrayLengths = new int[5]; // L: 77
+		Interpreter_arrays = new int[5][5000]; // L: 78
+		Interpreter_intStack = new int[1000]; // L: 79
+		Interpreter_stringStack = new String[1000]; // L: 81
+		Interpreter_frameDepth = 0; // L: 83
+		Interpreter_frames = new ScriptFrame[50]; // L: 84
+		Interpreter_calendar = java.util.Calendar.getInstance(); // L: 90
+		Interpreter_MONTHS = new String[]{"Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"}; // L: 93
+		field818 = false; // L: 96
+		field816 = false; // L: 97
+		field817 = new ArrayList(); // L: 98
+		field815 = 0; // L: 99
+		field814 = Math.log(2.0D); // L: 103
 	}
 
-	@ObfuscatedName("f")
+	@ObfuscatedName("p")
 	@ObfuscatedSignature(
-		descriptor = "(II)I",
-		garbageValue = "2021156049"
+		descriptor = "(CLlf;B)I",
+		garbageValue = "-56"
 	)
-	@Export("Widget_unpackTargetMask")
-	public static int Widget_unpackTargetMask(int var0) {
-		return var0 >> 11 & 63;
-	}
-
-	@ObfuscatedName("d")
-	@ObfuscatedSignature(
-		descriptor = "(ILbe;ZI)I",
-		garbageValue = "525192996"
-	)
-	static int method1868(int var0, Script var1, boolean var2) {
-		int var3;
-		if (var0 == 3500) {
-			var3 = Interpreter_intStack[--AbstractByteArrayCopier.Interpreter_intStackSize];
-			Interpreter_intStack[++AbstractByteArrayCopier.Interpreter_intStackSize - 1] = class6.method43(var3) ? 1 : 0;
-			return 1;
-		} else if (var0 == 3501) {
-			var3 = Interpreter_intStack[--AbstractByteArrayCopier.Interpreter_intStackSize];
-			Interpreter_intStack[++AbstractByteArrayCopier.Interpreter_intStackSize - 1] = PacketBufferNode.method4654(var3) ? 1 : 0;
-			return 1;
-		} else if (var0 == 3502) {
-			var3 = Interpreter_intStack[--AbstractByteArrayCopier.Interpreter_intStackSize];
-			Interpreter_intStack[++AbstractByteArrayCopier.Interpreter_intStackSize - 1] = Messages.method2350(var3) ? 1 : 0;
-			return 1;
-		} else {
-			return 2;
+	@Export("lowercaseChar")
+	static int lowercaseChar(char var0, Language var1) {
+		int var2 = var0 << 4; // L: 143
+		if (Character.isUpperCase(var0) || Character.isTitleCase(var0)) { // L: 144
+			var0 = Character.toLowerCase(var0); // L: 145
+			var2 = (var0 << 4) + 1; // L: 146
 		}
+
+		if (var0 == 241 && var1 == Language.Language_ES) { // L: 148
+			var2 = 1762;
+		}
+
+		return var2; // L: 149
 	}
 }

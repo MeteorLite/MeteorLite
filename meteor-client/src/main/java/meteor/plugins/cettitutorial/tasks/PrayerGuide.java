@@ -1,23 +1,17 @@
 package meteor.plugins.cettitutorial.tasks;
 
 import meteor.PluginTask;
-import meteor.plugins.api.entities.NPCs;
-import meteor.plugins.api.entities.Players;
-import meteor.plugins.api.entities.TileObjects;
-import meteor.plugins.api.game.Game;
-import meteor.plugins.api.movement.Movement;
-import meteor.plugins.api.movement.Reachable;
-import meteor.plugins.api.widgets.Dialog;
-import meteor.plugins.api.widgets.Tab;
-import meteor.plugins.api.widgets.Tabs;
+import dev.hoot.api.entities.NPCs;
+import dev.hoot.api.entities.Players;
+import dev.hoot.api.entities.TileObjects;
+import dev.hoot.api.game.Game;
+import dev.hoot.api.movement.Movement;
+import dev.hoot.api.widgets.Dialog;
 import net.runelite.api.NPC;
 import net.runelite.api.TileObject;
-import net.runelite.api.World;
 import net.runelite.api.coords.WorldArea;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.widgets.Widget;
-
-import static osrs.Client.logger;
 
 public class PrayerGuide implements PluginTask {
 
@@ -65,7 +59,7 @@ public class PrayerGuide implements PluginTask {
 			Dialog.continueSpace();
 			return;
 		}
-		Widget prayer = Game.getClient().getWidget(164, 64);
+		Widget prayer = Game.getClient().getWidget(164, 56);
 
 		if (prayer == null) {
 			return;
@@ -79,7 +73,7 @@ public class PrayerGuide implements PluginTask {
 			Dialog.continueSpace();
 			return;
 		}
-		Widget friends = Game.getClient().getWidget(164, 46);
+		Widget friends = Game.getClient().getWidget(164, 39);
 
 		if (friends == null) {
 			return;

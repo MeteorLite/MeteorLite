@@ -1,24 +1,18 @@
 package meteor.plugins.cettitutorial.tasks;
 
 import meteor.PluginTask;
-import meteor.plugins.api.commons.Time;
-import meteor.plugins.api.entities.NPCs;
-import meteor.plugins.api.entities.Players;
-import meteor.plugins.api.entities.TileObjects;
-import meteor.plugins.api.game.Game;
-import meteor.plugins.api.items.Inventory;
-import meteor.plugins.api.movement.Movement;
-import meteor.plugins.api.movement.pathfinder.Walker;
-import meteor.plugins.api.widgets.Dialog;
-import meteor.plugins.api.widgets.Widgets;
+import dev.hoot.api.commons.Time;
+import dev.hoot.api.entities.NPCs;
+import dev.hoot.api.entities.Players;
+import dev.hoot.api.entities.TileObjects;
+import dev.hoot.api.game.Game;
+import dev.hoot.api.items.Inventory;
+import dev.hoot.api.movement.Movement;
+import dev.hoot.api.widgets.Dialog;
 import net.runelite.api.*;
-import net.runelite.api.coords.WorldArea;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.widgets.Widget;
-import net.runelite.api.widgets.WidgetID;
 import net.runelite.api.widgets.WidgetInfo;
-
-import static osrs.Client.logger;
 
 public class MiningGuide implements PluginTask {
 
@@ -38,10 +32,11 @@ public class MiningGuide implements PluginTask {
 		}
 
 		NPC guide = NPCs.getNearest("Mining Instructor");
-		WorldArea miningArea = new WorldArea(new WorldPoint(3083, 9520, 0), new WorldPoint(3077, 9500, 0));
+		WorldPoint miningArea = new WorldPoint(3080, 9505, 0);
 
 		if (guide == null) {
-			Movement.walk(miningArea);
+			Movement.walkTo(miningArea, 10);
+
 			return;
 		}
 

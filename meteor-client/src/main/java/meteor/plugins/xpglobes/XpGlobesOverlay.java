@@ -84,7 +84,8 @@ public class XpGlobesOverlay extends Overlay
 		XpGlobesPlugin plugin,
 		XpGlobesConfig config,
 		SkillIconManager iconManager,
-		TooltipManager tooltipManager)
+		TooltipManager tooltipManager,
+		PluginManager pluginManager)
 	{
 		super(plugin);
 		this.iconManager = iconManager;
@@ -93,6 +94,7 @@ public class XpGlobesOverlay extends Overlay
 		this.config = config;
 		this.tooltipManager = tooltipManager;
 		this.xpTooltip.getComponent().setPreferredSize(new Dimension(TOOLTIP_RECT_SIZE_X, 0));
+		this.xpTrackerService = pluginManager.getInstance(XpTrackerPlugin.class);
 		setPosition(OverlayPosition.TOP_CENTER);
 		getMenuEntries().add(new OverlayMenuEntry(RUNELITE_OVERLAY_CONFIG, OPTION_CONFIGURE, "XP Globes overlay"));
 		getMenuEntries().add(new OverlayMenuEntry(RUNELITE_OVERLAY, FLIP_ACTION, "XP Globes overlay"));
@@ -102,9 +104,6 @@ public class XpGlobesOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		for (Plugin p : PluginManager.plugins)
-			if (p instanceof XpTrackerPlugin)
-				xpTrackerService = (XpTrackerPlugin) p;
 		final List<XpGlobe> xpGlobes = plugin.getXpGlobes();
 		final int queueSize = xpGlobes.size();
 		if (queueSize == 0)

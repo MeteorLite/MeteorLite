@@ -1,25 +1,17 @@
 package meteor.plugins.cettitutorial.tasks;
 
 import meteor.PluginTask;
-import meteor.plugins.api.entities.NPCs;
-import meteor.plugins.api.entities.Players;
-import meteor.plugins.api.entities.TileObjects;
-import meteor.plugins.api.game.Game;
-import meteor.plugins.api.magic.Magic;
-import meteor.plugins.api.magic.Regular;
-import meteor.plugins.api.movement.Movement;
-import meteor.plugins.api.widgets.Dialog;
-import meteor.plugins.leftclickcast.Spells;
-import meteor.ui.overlay.OverlayLayer;
-import meteor.ui.overlay.OverlayUtil;
+import dev.hoot.api.entities.NPCs;
+import dev.hoot.api.entities.Players;
+import dev.hoot.api.game.Game;
+import dev.hoot.api.magic.Magic;
+import dev.hoot.api.magic.Regular;
+import dev.hoot.api.movement.Movement;
+import dev.hoot.api.widgets.Dialog;
 import net.runelite.api.NPC;
-import net.runelite.api.World;
 import net.runelite.api.coords.WorldArea;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.widgets.Widget;
-import rs117.hd.materials.Overlay;
-
-import static osrs.Client.logger;
 
 public class MagicGuide implements PluginTask {
 
@@ -54,7 +46,7 @@ public class MagicGuide implements PluginTask {
 			Dialog.continueSpace();
 			return;
 		}
-		Widget magic = Game.getClient().getWidget(164, 65);
+		Widget magic = Game.getClient().getWidget(164, 57);
 
 		if (magic == null) {
 			return;

@@ -1,6 +1,6 @@
 package meteor.plugins.hootagility;
 
-import meteor.plugins.api.entities.Players;
+import dev.hoot.api.entities.Players;
 import net.runelite.api.Player;
 import net.runelite.api.TileObject;
 

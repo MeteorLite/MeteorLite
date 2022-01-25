@@ -1,12 +1,11 @@
 package meteor.plugins.meteorlite.interaction;
 
 import meteor.eventbus.Subscribe;
-import meteor.plugins.api.commons.Rand;
-import meteor.plugins.api.game.GameThread;
-import meteor.plugins.api.input.Mouse;
-import meteor.plugins.api.movement.Movement;
-import meteor.plugins.api.packets.MousePackets;
-import meteor.plugins.api.widgets.DialogOption;
+import dev.hoot.api.commons.Rand;
+import dev.hoot.api.game.GameThread;
+import dev.hoot.api.input.Mouse;
+import dev.hoot.api.movement.Movement;
+import dev.hoot.api.widgets.DialogOption;
 import meteor.config.MeteorLiteConfig;
 import net.runelite.api.Client;
 import net.runelite.api.MenuAction;

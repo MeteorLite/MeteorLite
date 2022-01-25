@@ -1,8 +1,8 @@
 package meteor.plugins.cettitutorial;
 
-import meteor.plugins.api.commons.Rand;
-import meteor.plugins.api.entities.TileObjects;
-import meteor.plugins.api.game.Game;
+import dev.hoot.api.commons.Rand;
+import dev.hoot.api.entities.TileObjects;
+import dev.hoot.api.game.Game;
 import net.runelite.api.TileObject;
 import net.runelite.api.coords.WorldArea;
 import net.runelite.api.coords.WorldPoint;

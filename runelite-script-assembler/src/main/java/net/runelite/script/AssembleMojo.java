@@ -65,8 +65,12 @@ public class AssembleMojo extends AbstractMojo {
 
   public static void main(String[] args) throws Exception {
     File scriptDirectory = new File("../meteor-client/src/main/scripts");
+    File buildScriptsDir = new File("../meteor-client/build/scripts");
     File outputDirectory = new File("../meteor-client/build/scripts/runelite");
     File indexFile = new File("../meteor-client/build/scripts/runelite/index");
+
+    if (buildScriptsDir.exists())
+      buildScriptsDir.delete();
 
     new AssembleMojo(scriptDirectory, outputDirectory).execute();
 

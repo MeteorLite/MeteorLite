@@ -6,45 +6,44 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ga")
+@ObfuscatedName("hm")
 @Implements("WorldMapLabel")
 public class WorldMapLabel {
-	@ObfuscatedName("w")
-	public static short[][] field2180;
-	@ObfuscatedName("fg")
-	@ObfuscatedGetter(
-		intValue = 1364409407
+	@ObfuscatedName("f")
+	@ObfuscatedSignature(
+		descriptor = "Lpi;"
 	)
-	static int field2176;
-	@ObfuscatedName("l")
+	@Export("NetCache_reference")
+	static Buffer NetCache_reference;
+	@ObfuscatedName("c")
 	@Export("text")
 	String text;
-	@ObfuscatedName("q")
+	@ObfuscatedName("b")
 	@ObfuscatedGetter(
-		intValue = -445350199
+		intValue = -353724483
 	)
 	@Export("width")
 	int width;
-	@ObfuscatedName("f")
+	@ObfuscatedName("p")
 	@ObfuscatedGetter(
-		intValue = 22712869
+		intValue = 1345453381
 	)
 	@Export("height")
 	int height;
-	@ObfuscatedName("j")
+	@ObfuscatedName("m")
 	@ObfuscatedSignature(
-		descriptor = "Lfc;"
+		descriptor = "Lhh;"
 	)
 	@Export("size")
-	WorldMapLabelSize size;
+    WorldMapLabelSize size;
 
 	@ObfuscatedSignature(
-		descriptor = "(Ljava/lang/String;IILfc;)V"
+		descriptor = "(Ljava/lang/String;IILhh;)V"
 	)
 	WorldMapLabel(String var1, int var2, int var3, WorldMapLabelSize var4) {
-		this.text = var1;
-		this.width = var2;
-		this.height = var3;
-		this.size = var4;
-	}
+		this.text = var1; // L: 10
+		this.width = var2; // L: 11
+		this.height = var3; // L: 12
+		this.size = var4; // L: 13
+	} // L: 14
 }

@@ -1,107 +1,70 @@
 package osrs;
 
+import java.awt.Desktop;
+import java.awt.Desktop.Action;
+import java.net.URI;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
+import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
-import net.runelite.rs.ScriptOpcodes;
 
-@ObfuscatedName("gw")
+@ObfuscatedName("hq")
 @Implements("WorldMapSprite")
 public final class WorldMapSprite {
-	@ObfuscatedName("q")
+	@ObfuscatedName("ut")
+	@ObfuscatedGetter(
+		longValue = 3393919401906433013L
+	)
+	static long field2727;
+	@ObfuscatedName("b")
 	@Export("tileColors")
 	final int[] tileColors;
 
 	WorldMapSprite() {
-		this.tileColors = new int[4096];
-	}
+		this.tileColors = new int[4096]; // L: 11
+	} // L: 12
 
 	WorldMapSprite(int[] var1) {
-		this.tileColors = var1;
-	}
+		this.tileColors = var1; // L: 15
+	} // L: 16
 
-	@ObfuscatedName("q")
+	@ObfuscatedName("c")
 	@ObfuscatedSignature(
 		descriptor = "(III)I",
-		garbageValue = "214577413"
+		garbageValue = "-1161754740"
 	)
 	@Export("getTileColor")
 	final int getTileColor(int var1, int var2) {
-		return this.tileColors[var1 + var2 * 64];
+		return this.tileColors[var1 + var2 * 64]; // L: 19
 	}
 
-	@ObfuscatedName("b")
+	@ObfuscatedName("c")
 	@ObfuscatedSignature(
-		descriptor = "(ILbe;ZI)I",
-		garbageValue = "523339121"
+		descriptor = "(Ljava/lang/String;ZZI)V",
+		garbageValue = "230861091"
 	)
-	static int method3866(int var0, Script var1, boolean var2) {
-		Widget var7;
-		if (var0 != ScriptOpcodes.CC_CALLONRESIZE && var0 != ScriptOpcodes.IF_CALLONRESIZE) {
-			int var4;
-			if (var0 == ScriptOpcodes.CC_TRIGGEROP) {
-				var7 = var2 ? WorldMapDecoration.scriptDotWidget : class245.scriptActiveWidget;
-				var4 = Interpreter.Interpreter_intStack[--AbstractByteArrayCopier.Interpreter_intStackSize];
-				if (var4 >= 1 && var4 <= 10) {
-					class92 var8 = new class92(var4, var7.id, var7.childIndex, var7.itemId);
-					Interpreter.field830.add(var8);
-					return 1;
-				} else {
-					throw new RuntimeException();
+	@Export("openURL")
+	public static void openURL(String var0, boolean var1, boolean var2) {
+		if (var1) { // L: 23
+			if (Desktop.isDesktopSupported() && Desktop.getDesktop().isSupported(Action.BROWSE)) { // L: 24
+				try {
+					Desktop.getDesktop().browse(new URI(var0)); // L: 26
+					return; // L: 53
+				} catch (Exception var4) { // L: 29
 				}
-			} else if (var0 == ScriptOpcodes.IF_TRIGGEROP) {
-				AbstractByteArrayCopier.Interpreter_intStackSize -= 3;
-				int var3 = Interpreter.Interpreter_intStack[AbstractByteArrayCopier.Interpreter_intStackSize];
-				var4 = Interpreter.Interpreter_intStack[AbstractByteArrayCopier.Interpreter_intStackSize + 1];
-				int var5 = Interpreter.Interpreter_intStack[AbstractByteArrayCopier.Interpreter_intStackSize + 2];
-				if (var5 >= 1 && var5 <= 10) {
-					class92 var6 = new class92(var5, var3, var4, HealthBarUpdate.getWidget(var3).itemId);
-					Interpreter.field830.add(var6);
-					return 1;
-				} else {
-					throw new RuntimeException();
-				}
-			} else {
-				return 2;
 			}
-		} else if (Interpreter.field818 >= 10) {
-			throw new RuntimeException();
+
+			if (class29.field177.startsWith("win")) { // L: 31
+				NPC.method2314(var0, 0, "openjs"); // L: 34
+			} else if (class29.field177.startsWith("mac")) { // L: 39
+				NPC.method2314(var0, 1, "openjs"); // L: 40
+			} else {
+				NPC.method2314(var0, 2, "openjs"); // L: 44
+			}
 		} else {
-			if (var0 >= 2000) {
-				var7 = HealthBarUpdate.getWidget(Interpreter.Interpreter_intStack[--AbstractByteArrayCopier.Interpreter_intStackSize]);
-			} else {
-				var7 = var2 ? WorldMapDecoration.scriptDotWidget : class245.scriptActiveWidget;
-			}
-
-			if (var7.onResize == null) {
-				return 0;
-			} else {
-				ScriptEvent var9 = new ScriptEvent();
-				var9.widget = var7;
-				var9.args = var7.onResize;
-				var9.field1037 = Interpreter.field818 + 1;
-				Client.scriptEvents.addFirst(var9);
-				return 1;
-			}
-		}
-	}
-
-	@ObfuscatedName("fm")
-	@ObfuscatedSignature(
-		descriptor = "(II)V",
-		garbageValue = "1445604382"
-	)
-	@Export("playSong")
-	static void playSong(int var0) {
-		if (var0 == -1 && !Client.field663) {
-			class247.midiPcmStream.clear();
-			class247.musicPlayerStatus = 1;
-			class113.musicTrackArchive = null;
-		} else if (var0 != -1 && var0 != Client.currentTrackGroupId && WorldMapDecorationType.clientPreferences.musicVolume != 0 && !Client.field663) {
-			VertexNormal.method4560(2, Tiles.archive6, var0, 0, WorldMapDecorationType.clientPreferences.musicVolume, false);
+			NPC.method2314(var0, 3, "openjs"); // L: 49
 		}
 
-		Client.currentTrackGroupId = var0;
 	}
 }

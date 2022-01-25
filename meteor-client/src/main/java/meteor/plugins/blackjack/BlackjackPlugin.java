@@ -5,8 +5,8 @@ import meteor.config.ConfigManager;
 import meteor.eventbus.Subscribe;
 import meteor.plugins.Plugin;
 import meteor.plugins.PluginDescriptor;
-import meteor.plugins.api.entities.NPCs;
-import meteor.plugins.api.movement.Reachable;
+import dev.hoot.api.entities.NPCs;
+import dev.hoot.api.movement.Reachable;
 import net.runelite.api.*;
 import net.runelite.api.events.*;
 

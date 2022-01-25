@@ -31,70 +31,90 @@ import net.runelite.api.mixins.Shadow;
 import net.runelite.rs.api.RSClient;
 
 @Mixin(RSClient.class)
-public abstract class CameraMixin implements RSClient {
+public abstract class CameraMixin implements RSClient
+{
+	public static final int STANDARD_PITCH_MIN = 128;
+	public static final int STANDARD_PITCH_MAX = 383;
+	public static final int NEW_PITCH_MAX = 512;
 
-  private static final int STANDARD_PITCH_MAX = 383;
-  private static final int NEW_PITCH_MAX = 512;
+	@Shadow("client")
+	static RSClient client;
 
-  @Shadow("client")
-  static RSClient client;
+	@Inject
+	static boolean pitchRelaxEnabled = false;
 
-  @Inject
-  static boolean pitchRelaxEnabled = false;
+	@Inject
+	static int lastPitch = 128;
 
-  @Inject
-  static int lastPitch = 128;
+	@Inject
+	static int lastPitchTarget = 128;
 
-  @Inject
-  static int lastPitchTarget = 128;
+	@Inject
+	@Override
+	public boolean getCameraPitchRelaxerEnabled()
+	{
+		return pitchRelaxEnabled;
+	}
 
-  @FieldHook("camAngleX")
-  @Inject
-  static void onCameraPitchTargetChanged(int idx) {
-    int newPitch = client.getCameraPitchTarget();
-    int pitch = newPitch;
-    if (pitchRelaxEnabled) {
-      // This works because the vanilla camera movement code only moves %2
-      if (lastPitchTarget > STANDARD_PITCH_MAX && newPitch == STANDARD_PITCH_MAX) {
-        pitch = lastPitchTarget;
-        if (pitch > NEW_PITCH_MAX) {
-          pitch = NEW_PITCH_MAX;
-        }
-        client.setCameraPitchTarget(pitch);
-      }
-    }
-    lastPitchTarget = pitch;
-  }
+	@Inject
+	public void setCameraPitchRelaxerEnabled(boolean enabled)
+	{
+		if (pitchRelaxEnabled == enabled)
+		{
+			return;
+		}
+		pitchRelaxEnabled = enabled;
+		if (!enabled)
+		{
+			int pitch = client.getCameraPitchTarget();
+			if (pitch > STANDARD_PITCH_MAX)
+			{
+				client.setCameraPitchTarget(STANDARD_PITCH_MAX);
+			}
+		}
+	}
 
-  @FieldHook("cameraPitch")
-  @Inject
-  static void onCameraPitchChanged(int idx) {
-    int newPitch = client.getCameraPitch();
-    int pitch = newPitch;
-    if (pitchRelaxEnabled) {
-      // This works because the vanilla camera movement code only moves %2
-      if (lastPitch > STANDARD_PITCH_MAX && newPitch == STANDARD_PITCH_MAX) {
-        pitch = lastPitch;
-        if (pitch > NEW_PITCH_MAX) {
-          pitch = NEW_PITCH_MAX;
-        }
-        client.setCameraPitch(pitch);
-      }
-    }
-    lastPitch = pitch;
-  }
+	@FieldHook("camAngleX")
+	@Inject
+	static void onCameraPitchTargetChanged(int idx)
+	{
+		int newPitch = client.getCameraPitchTarget();
+		int pitch = newPitch;
+		if (pitchRelaxEnabled)
+		{
+			// This works because the vanilla camera movement code only moves %2
+			if (lastPitchTarget > STANDARD_PITCH_MAX && newPitch == STANDARD_PITCH_MAX)
+			{
+				pitch = lastPitchTarget;
+				if (pitch > NEW_PITCH_MAX)
+				{
+					pitch = NEW_PITCH_MAX;
+				}
+				client.setCameraPitchTarget(pitch);
+			}
+		}
+		lastPitchTarget = pitch;
+	}
 
-  @Inject
-  public void setCameraPitchRelaxerEnabled(boolean enabled) {
-    if (pitchRelaxEnabled == enabled) {
-      return;
-    }
-    pitchRelaxEnabled = enabled;
-    if (!enabled) {
-      int pitch = client.getCameraPitchTarget();
-      if (pitch > STANDARD_PITCH_MAX) {
-        client.setCameraPitchTarget(STANDARD_PITCH_MAX);
-      }
-    }
-  }
+	@FieldHook("cameraPitch")
+	@Inject
+	static void onCameraPitchChanged(int idx)
+	{
+		int newPitch = client.getCameraPitch();
+		int pitch = newPitch;
+		if (pitchRelaxEnabled)
+		{
+			// This works because the vanilla camera movement code only moves %2
+			if (lastPitch > STANDARD_PITCH_MAX && newPitch == STANDARD_PITCH_MAX)
+			{
+				pitch = lastPitch;
+				if (pitch > NEW_PITCH_MAX)
+				{
+					pitch = NEW_PITCH_MAX;
+				}
+				client.setCameraPitch(pitch);
+			}
+		}
+		lastPitch = pitch;
+	}
 }

@@ -45,16 +45,23 @@ import org.objectweb.asm.util.CheckClassAdapter;
 
 public class JarUtil {
 
-  public static ClassGroup load(File jarfile) {
+  public static ClassGroup load(File jarfile)
+  {
+    return load(jarfile, false);
+  }
+
+  public static ClassGroup load(File jarfile, boolean skip) {
     ClassGroup group = new ClassGroup();
 
     try (JarFile jar = new JarFile(jarfile)) {
       for (Enumeration<JarEntry> it = jar.entries(); it.hasMoreElements(); ) {
         JarEntry entry = it.nextElement();
 
-        if (!entry.getName().endsWith(".class") || entry.getName()
-            .contains("net/runelite/rs/Reflection")|| entry.getName()
-                .contains("net/runelite/rs/UpdateRefmap")) {
+        if (!entry.getName().endsWith(".class")
+                || entry.getName().contains("net/runelite/rs/Reflection")
+                || entry.getName().contains("net/runelite/rs/UpdateRefmap")
+                || (skip && entry.getName().contains("bouncycastle"))
+        ) {
           continue;
         }
 
@@ -110,11 +117,16 @@ public class JarUtil {
     return cv.getClassFile();
   }
 
-  public static ClassGroup loadClasses(Collection<File> files) throws IOException {
+  public static ClassGroup loadClasses(Collection<File> files) throws IOException
+  {
+    return loadClasses(files, false);
+  }
+
+  public static ClassGroup loadClasses(Collection<File> files, boolean skip) throws IOException {
     final ClassGroup group = new ClassGroup();
 
     for (File file : files) {
-      if (!file.getName().endsWith(".class")) {
+      if (!file.getName().endsWith(".class") || (skip && file.getName().contains("bouncycastle"))) {
         continue;
       }
 

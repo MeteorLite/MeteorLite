@@ -6,148 +6,81 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("hq")
+@ObfuscatedName("gz")
 @Implements("ViewportMouse")
 public class ViewportMouse {
-	@ObfuscatedName("l")
+	@ObfuscatedName("c")
 	@Export("ViewportMouse_isInViewport")
 	public static boolean ViewportMouse_isInViewport;
-	@ObfuscatedName("q")
+	@ObfuscatedName("b")
 	@ObfuscatedGetter(
-		intValue = -953546055
+		intValue = 533460423
 	)
 	@Export("ViewportMouse_x")
-	static int ViewportMouse_x;
-	@ObfuscatedName("f")
+	public static int ViewportMouse_x;
+	@ObfuscatedName("p")
 	@ObfuscatedGetter(
-		intValue = 649288631
+		intValue = 1696550227
 	)
 	@Export("ViewportMouse_y")
-	static int ViewportMouse_y;
-	@ObfuscatedName("j")
+	public static int ViewportMouse_y;
+	@ObfuscatedName("m")
 	@Export("ViewportMouse_false0")
-	static boolean ViewportMouse_false0;
-	@ObfuscatedName("k")
+	public static boolean ViewportMouse_false0;
+	@ObfuscatedName("t")
 	@ObfuscatedGetter(
-		intValue = 1423122717
+		intValue = -2019317565
 	)
-	static int field2585;
-	@ObfuscatedName("e")
+	static int field2503;
+	@ObfuscatedName("h")
 	@ObfuscatedGetter(
-		intValue = 170270171
-	)
-	static int field2579;
-	@ObfuscatedName("w")
-	@ObfuscatedGetter(
-		intValue = 1898268003
-	)
-	static int field2580;
-	@ObfuscatedName("v")
-	@ObfuscatedGetter(
-		intValue = -1146683373
+		intValue = 194867713
 	)
 	@Export("ViewportMouse_entityCount")
 	public static int ViewportMouse_entityCount;
-	@ObfuscatedName("s")
+	@ObfuscatedName("g")
 	@Export("ViewportMouse_entityTags")
 	public static long[] ViewportMouse_entityTags;
-	@ObfuscatedName("ec")
-	@ObfuscatedSignature(
-		descriptor = "Lky;"
-	)
-	@Export("archive19")
-	static Archive archive19;
 
 	static {
-		ViewportMouse_isInViewport = false;
-		ViewportMouse_x = 0;
-		ViewportMouse_y = 0;
-		ViewportMouse_false0 = false;
-		ViewportMouse_entityCount = 0;
-		ViewportMouse_entityTags = new long[1000];
+		ViewportMouse_isInViewport = false; // L: 4
+		ViewportMouse_x = 0; // L: 5
+		ViewportMouse_y = 0; // L: 6
+		ViewportMouse_false0 = false; // L: 7
+		ViewportMouse_entityCount = 0; // L: 17
+		ViewportMouse_entityTags = new long[1000]; // L: 18
 	}
 
-	@ObfuscatedName("l")
+	@ObfuscatedName("bo")
 	@ObfuscatedSignature(
-		descriptor = "(Lcy;I)V",
-		garbageValue = "-1260271458"
+		descriptor = "([BB)[B",
+		garbageValue = "14"
 	)
-	@Export("runScriptEvent")
-	public static void runScriptEvent(ScriptEvent var0) {
-		SoundSystem.runScript(var0, 500000, 475000);
-	}
-
-	@ObfuscatedName("l")
-	@ObfuscatedSignature(
-		descriptor = "(I)V",
-		garbageValue = "457176058"
-	)
-	static void method4556() {
-		for (ObjectSound var0 = (ObjectSound)ObjectSound.objectSounds.last(); var0 != null; var0 = (ObjectSound)ObjectSound.objectSounds.previous()) {
-			if (var0.obj != null) {
-				var0.set();
-			}
-		}
-
-	}
-
-	@ObfuscatedName("q")
-	@ObfuscatedSignature(
-		descriptor = "(III)Ljt;",
-		garbageValue = "1935657633"
-	)
-	@Export("getWidgetChild")
-	public static Widget getWidgetChild(int var0, int var1) {
-		Widget var2 = HealthBarUpdate.getWidget(var0);
-		if (var1 == -1) {
-			return var2;
+	@Export("decompressBytes")
+	static final byte[] decompressBytes(byte[] var0) {
+		Buffer var1 = new Buffer(var0); // L: 424
+		int var2 = var1.readUnsignedByte(); // L: 425
+		int var3 = var1.readInt(); // L: 426
+		if (var3 < 0 || AbstractArchive.field3843 != 0 && var3 > AbstractArchive.field3843) { // L: 427
+			throw new RuntimeException(); // L: 428
+		} else if (var2 == 0) { // L: 430
+			byte[] var6 = new byte[var3]; // L: 431
+			var1.readBytes(var6, 0, var3); // L: 432
+			return var6; // L: 433
 		} else {
-			return var2 != null && var2.children != null && var1 < var2.children.length ? var2.children[var1] : null;
-		}
-	}
-
-	@ObfuscatedName("ih")
-	@ObfuscatedSignature(
-		descriptor = "(Ljt;IIIIIII)V",
-		garbageValue = "1628744155"
-	)
-	static final void method4559(Widget var0, int var1, int var2, int var3, int var4, int var5, int var6) {
-		if (Client.field551) {
-			Client.alternativeScrollbarWidth = 32;
-		} else {
-			Client.alternativeScrollbarWidth = 0;
-		}
-
-		Client.field551 = false;
-		int var7;
-		if (MouseHandler.MouseHandler_currentButton == 1 || !VarbitComposition.mouseCam && MouseHandler.MouseHandler_currentButton == 4) {
-			if (var5 >= var1 && var5 < var1 + 16 && var6 >= var2 && var6 < var2 + 16) {
-				var0.scrollY -= 4;
-				class16.invalidateWidget(var0);
-			} else if (var5 >= var1 && var5 < var1 + 16 && var6 >= var3 + var2 - 16 && var6 < var3 + var2) {
-				var0.scrollY += 4;
-				class16.invalidateWidget(var0);
-			} else if (var5 >= var1 - Client.alternativeScrollbarWidth && var5 < Client.alternativeScrollbarWidth + var1 + 16 && var6 >= var2 + 16 && var6 < var3 + var2 - 16) {
-				var7 = var3 * (var3 - 32) / var4;
-				if (var7 < 8) {
-					var7 = 8;
+			int var4 = var1.readInt(); // L: 436
+			if (var4 >= 0 && (AbstractArchive.field3843 == 0 || var4 <= AbstractArchive.field3843)) { // L: 437
+				byte[] var5 = new byte[var4]; // L: 440
+				if (var2 == 1) { // L: 441
+					BZip2Decompressor.BZip2Decompressor_decompress(var5, var4, var0, var3, 9);
+				} else {
+					AbstractArchive.gzipDecompressor.decompress(var1, var5); // L: 442
 				}
 
-				int var8 = var6 - var2 - 16 - var7 / 2;
-				int var9 = var3 - 32 - var7;
-				var0.scrollY = var8 * (var4 - var3) / var9;
-				class16.invalidateWidget(var0);
-				Client.field551 = true;
+				return var5; // L: 443
+			} else {
+				throw new RuntimeException(); // L: 438
 			}
 		}
-
-		if (Client.mouseWheelRotation != 0) {
-			var7 = var0.width;
-			if (var5 >= var1 - var7 && var6 >= var2 && var5 < var1 + 16 && var6 <= var3 + var2) {
-				var0.scrollY += Client.mouseWheelRotation * 45;
-				class16.invalidateWidget(var0);
-			}
-		}
-
 	}
 }

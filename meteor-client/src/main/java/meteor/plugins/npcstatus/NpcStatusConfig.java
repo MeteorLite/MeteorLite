@@ -24,7 +24,11 @@
  */
 package meteor.plugins.npcstatus;
 
+import java.awt.Font;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 import meteor.config.*;
+import meteor.plugins.fightcave.FightCaveConfig.FontStyle;
 
 @ConfigGroup("npcstatus")
 public interface NpcStatusConfig extends Config
@@ -89,5 +93,44 @@ public interface NpcStatusConfig extends Config
 	default int getCustomAttSpeed()
 	{
 		return 4;
+	}
+
+	@ConfigItem(
+			keyName = "autoPray",
+			name = "Auto Pray",
+			description = "Automatically pray based on Pray Style",
+			position = 5
+	)
+	default boolean autoPray()
+	{
+		return false;
+	}
+
+	@Getter
+	@AllArgsConstructor
+	enum PrayStyle
+	{
+		MAGIC("Magic"),
+		RANGED("Ranged"),
+		MELEE("Melee");
+
+		private String name;
+
+		@Override
+		public String toString()
+		{
+			return getName();
+		}
+	}
+
+	@ConfigItem(
+			position = 6,
+			keyName = "prayStyle",
+			name = "Pray Style",
+			description = ""
+	)
+	default PrayStyle prayStyle()
+	{
+		return PrayStyle.MELEE;
 	}
 }

@@ -3,48 +3,41 @@ package osrs;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
+import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("oj")
-public class class408 {
-	@ObfuscatedName("f")
+@ObfuscatedName("os")
+final class class408 implements class405 {
+	@ObfuscatedName("p")
 	@ObfuscatedGetter(
-		intValue = -1905362917
+		intValue = -271022059
 	)
-	@Export("SpriteBuffer_spriteHeight")
-	public static int SpriteBuffer_spriteHeight;
-	@ObfuscatedName("l")
-	@ObfuscatedGetter(
-		intValue = 1474390477
+	@Export("WorldMapElement_count")
+	public static int WorldMapElement_count;
+
+	@ObfuscatedName("c")
+	@ObfuscatedSignature(
+		descriptor = "(Ljava/lang/Object;Lpi;I)V",
+		garbageValue = "246575309"
 	)
-	public final int field4354;
-	@ObfuscatedName("q")
-	public Object field4353;
+	public void vmethod7273(Object var1, Buffer var2) {
+		this.method7238((Long)var1, var2); // L: 35
+	} // L: 36
 
-	public class408(int var1) {
-		this.field4354 = var1;
+	@ObfuscatedName("b")
+	@ObfuscatedSignature(
+		descriptor = "(Lpi;B)Ljava/lang/Object;",
+		garbageValue = "3"
+	)
+	public Object vmethod7271(Buffer var1) {
+		return var1.readLong(); // L: 31
 	}
 
-	public class408(int var1, Object var2) {
-		this.field4354 = var1;
-		this.field4353 = var2;
-	}
-
-	public int hashCode() {
-		return super.hashCode();
-	}
-
-	public boolean equals(Object var1) {
-		if (!(var1 instanceof class408)) {
-			return false;
-		} else {
-			class408 var2 = (class408)var1;
-			if (var2.field4353 == null && this.field4353 != null) {
-				return false;
-			} else if (this.field4353 == null && var2.field4353 != null) {
-				return false;
-			} else {
-				return this.field4354 == var2.field4354 && var2.field4353.equals(this.field4353);
-			}
-		}
-	}
+	@ObfuscatedName("j")
+	@ObfuscatedSignature(
+		descriptor = "(Ljava/lang/Long;Lpi;I)V",
+		garbageValue = "-1540315910"
+	)
+	void method7238(Long var1, Buffer var2) {
+		var2.writeLong(var1); // L: 26
+	} // L: 27
 }

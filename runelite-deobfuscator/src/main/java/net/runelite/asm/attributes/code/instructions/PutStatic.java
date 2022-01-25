@@ -57,6 +57,12 @@ public class PutStatic extends Instruction implements SetFieldInstruction {
     this.myField = field;
   }
 
+  public PutStatic(Instructions instructions, Field field)
+  {
+    super(instructions, InstructionType.PUTSTATIC);
+    this.field = field;
+  }
+
   @Override
   public String toString() {
     Method m = this.getInstructions().getCode().getMethod();

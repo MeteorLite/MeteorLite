@@ -66,4 +66,9 @@ enum MovementFlag
 			.filter(movementFlag -> (movementFlag.flag & collisionData) != 0)
 			.collect(Collectors.toSet());
 	}
+
+	@Override
+	public String toString() {
+		return super.toString() + " (" + flag + ")" + " (" + Integer.toHexString(flag) + ")";
+	}
 }

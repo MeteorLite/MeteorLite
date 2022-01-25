@@ -54,6 +54,7 @@ import meteor.util.Text;
 
 import javax.inject.Inject;
 import java.awt.*;
+import java.util.Deque;
 import java.util.List;
 import java.util.*;
 
@@ -423,7 +424,7 @@ public class ChatChannelPlugin extends Plugin
 		}
 		message
 			.append("] ")
-			.append(textColor, member.getName() + activityMessage);
+			.append(textColor, member.getName$api() + activityMessage);
 
 		final String messageString = message.build();
 		final MessageNode line = client.addChatMessage(ChatMessageType.FRIENDSCHATNOTIFICATION, "", messageString, "");

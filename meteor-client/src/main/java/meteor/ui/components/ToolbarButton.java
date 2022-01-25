@@ -8,8 +8,7 @@ import javafx.scene.paint.Paint;
 import lombok.Getter;
 import lombok.Setter;
 import meteor.eventbus.events.ToolbarButtonClicked;
-import meteor.plugins.api.game.Game;
-import net.runelite.api.events.ConfigButtonClicked;
+import dev.hoot.api.game.Game;
 
 public class ToolbarButton extends JFXButton {
 

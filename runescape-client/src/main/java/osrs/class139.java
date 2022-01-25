@@ -1,123 +1,118 @@
 package osrs;
 
-import java.applet.Applet;
-import java.net.URL;
+import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
-import netscape.javascript.JSObject$api;
 
-@ObfuscatedName("ea")
-public class class139 extends class132 {
+@ObfuscatedName("em")
+public class class139 extends class142 {
+	@ObfuscatedName("iz")
+	@ObfuscatedGetter(
+		intValue = -723386135
+	)
+	@Export("selectedItemId")
+	static int selectedItemId;
+	@ObfuscatedName("c")
+	@ObfuscatedGetter(
+		intValue = 1906943517
+	)
+	int field1595;
+	@ObfuscatedName("b")
+	byte field1594;
 	@ObfuscatedName("p")
 	@ObfuscatedGetter(
-		intValue = -1632895923
+		intValue = -1562134813
 	)
-	static int field1537;
-	@ObfuscatedName("l")
-	String field1536;
-	@ObfuscatedName("q")
-	byte field1533;
-	@ObfuscatedName("f")
-	byte field1534;
+	int field1593;
+	@ObfuscatedName("m")
+	String field1596;
 	// $FF: synthetic field
 	@ObfuscatedSignature(
-		descriptor = "Lee;"
+		descriptor = "Len;"
 	)
-	final class133 this$0;
+	final class143 this$0;
 
 	@ObfuscatedSignature(
-		descriptor = "(Lee;)V"
+		descriptor = "(Len;)V"
 	)
-	class139(class133 var1) {
+	class139(class143 var1) {
 		this.this$0 = var1;
-	}
+		this.field1595 = -1; // L: 125
+	} // L: 130
 
-	@ObfuscatedName("l")
+	@ObfuscatedName("c")
 	@ObfuscatedSignature(
-		descriptor = "(Lot;B)V",
-		garbageValue = "35"
+		descriptor = "(Lpi;B)V",
+		garbageValue = "4"
 	)
-	void vmethod2760(Buffer var1) {
-		this.field1536 = var1.readStringCp1252NullTerminatedOrNull();
-		if (this.field1536 != null) {
-			var1.readUnsignedByte();
-			this.field1533 = var1.readByte();
-			this.field1534 = var1.readByte();
-		}
+	void vmethod3022(Buffer var1) {
+		var1.readUnsignedByte(); // L: 133
+		this.field1595 = var1.readUnsignedShort(); // L: 134
+		this.field1594 = var1.readByte(); // L: 135
+		this.field1593 = var1.readUnsignedShort(); // L: 136
+		var1.readLong(); // L: 137
+		this.field1596 = var1.readStringCp1252NullTerminated(); // L: 138
+		var1.readUnsignedByte(); // L: 139
+	} // L: 140
 
-	}
-
-	@ObfuscatedName("q")
+	@ObfuscatedName("b")
 	@ObfuscatedSignature(
-		descriptor = "(Leb;I)V",
-		garbageValue = "1634989707"
+		descriptor = "(Lei;B)V",
+		garbageValue = "40"
 	)
-	void vmethod2759(ClanChannel var1) {
-		var1.name = this.field1536;
-		if (this.field1536 != null) {
-			var1.field1517 = this.field1533;
-			var1.field1512 = this.field1534;
-		}
+	void vmethod3021(ClanChannel var1) {
+		ClanChannelMember var2 = (ClanChannelMember)var1.members.get(this.field1595); // L: 143
+		var2.rank = this.field1594; // L: 144
+		var2.world = this.field1593; // L: 145
+		var2.username = new Username(this.field1596); // L: 146
+	} // L: 147
 
-	}
-
-	@ObfuscatedName("j")
+	@ObfuscatedName("b")
 	@ObfuscatedSignature(
-		descriptor = "(Ljava/lang/String;ILjava/lang/String;I)Z",
-		garbageValue = "-1485295086"
+		descriptor = "(Ljava/lang/Throwable;Ljava/lang/String;)Lqg;"
 	)
-	static boolean method2763(String var0, int var1, String var2) {
-		if (var1 == 0) {
-			try {
-				if (!class29.field165.startsWith("win")) {
-					throw new Exception();
-				} else if (!var0.startsWith("http://") && !var0.startsWith("https://")) {
-					throw new Exception();
-				} else {
-					String var11 = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789?&=,.%+-_#:/*";
-
-					for (int var4 = 0; var4 < var0.length(); ++var4) {
-						if (var11.indexOf(var0.charAt(var4)) == -1) {
-							throw new Exception();
-						}
-					}
-
-					Runtime.getRuntime().exec("cmd /c start \"j\" \"" + var0 + "\"");
-					return true;
-				}
-			} catch (Throwable var5) {
-				return false;
-			}
-		} else if (var1 == 1) {
-			try {
-				Object var10 = class27.method406(class29.field168, var2, new Object[]{(new URL(class29.field168.getCodeBase(), var0)).toString()});
-				return var10 != null;
-			} catch (Throwable var6) {
-				return false;
-			}
-		} else if (var1 == 2) {
-			try {
-				class29.field168.getAppletContext().showDocument(new URL(class29.field168.getCodeBase(), var0), "_blank");
-				return true;
-			} catch (Exception var7) {
-				return false;
-			}
-		} else if (var1 == 3) {
-			try {
-				Applet var3 = class29.field168;
-				JSObject$api.getWindow(var3).call("loggedout", (Object[])null);
-			} catch (Throwable var9) {
-			}
-
-			try {
-				class29.field168.getAppletContext().showDocument(new URL(class29.field168.getCodeBase(), var0), "_top");
-				return true;
-			} catch (Exception var8) {
-				return false;
-			}
+	@Export("newRunException")
+	public static RunException newRunException(Throwable var0, String var1) {
+		RunException var2;
+		if (var0 instanceof RunException) { // L: 57
+			var2 = (RunException)var0; // L: 58
+			var2.message = var2.message + ' ' + var1; // L: 59
 		} else {
-			throw new IllegalArgumentException();
+			var2 = new RunException(var0, var1); // L: 61
 		}
+
+		return var2; // L: 62
+	}
+
+	@ObfuscatedName("m")
+	@ObfuscatedSignature(
+		descriptor = "(II)Lbr;",
+		garbageValue = "-1096898317"
+	)
+	@Export("Messages_getMessage")
+	static Message Messages_getMessage(int var0) {
+		return (Message) Messages.Messages_hashTable.get((long)var0); // L: 40
+	}
+
+	@ObfuscatedName("o")
+	@ObfuscatedSignature(
+		descriptor = "(III)I",
+		garbageValue = "1312744051"
+	)
+	static final int method2932(int var0, int var1) {
+		int var2 = KeyHandler.method367(var0 - 1, var1 - 1) + KeyHandler.method367(var0 + 1, var1 - 1) + KeyHandler.method367(var0 - 1, 1 + var1) + KeyHandler.method367(var0 + 1, var1 + 1); // L: 481
+		int var3 = KeyHandler.method367(var0 - 1, var1) + KeyHandler.method367(var0 + 1, var1) + KeyHandler.method367(var0, var1 - 1) + KeyHandler.method367(var0, 1 + var1); // L: 482
+		int var4 = KeyHandler.method367(var0, var1); // L: 483
+		return var2 / 16 + var3 / 8 + var4 / 4; // L: 484
+	}
+
+	@ObfuscatedName("v")
+	@ObfuscatedSignature(
+		descriptor = "(I)Z",
+		garbageValue = "341496897"
+	)
+	static final boolean method2931() {
+		return ViewportMouse.ViewportMouse_isInViewport; // L: 100
 	}
 }

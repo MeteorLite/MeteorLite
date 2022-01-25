@@ -1,15 +1,14 @@
 package meteor.plugins.cettitutorial.tasks;
 
 import meteor.PluginTask;
-import meteor.plugins.api.commons.Time;
-import meteor.plugins.api.entities.NPCs;
-import meteor.plugins.api.entities.Players;
-import meteor.plugins.api.entities.TileObjects;
-import meteor.plugins.api.game.Game;
-import meteor.plugins.api.game.GameThread;
-import meteor.plugins.api.input.Keyboard;
-import meteor.plugins.api.movement.Movement;
-import meteor.plugins.api.widgets.Dialog;
+import dev.hoot.api.commons.Time;
+import dev.hoot.api.entities.NPCs;
+import dev.hoot.api.entities.Players;
+import dev.hoot.api.game.Game;
+import dev.hoot.api.game.GameThread;
+import dev.hoot.api.input.Keyboard;
+import dev.hoot.api.movement.Movement;
+import dev.hoot.api.widgets.Dialog;
 import meteor.plugins.cettitutorial.CettiTutorialConfig;
 import meteor.plugins.cettitutorial.CettiTutorialPlugin;
 import meteor.plugins.cettitutorial.Methods;
@@ -18,9 +17,6 @@ import net.runelite.api.coords.WorldArea;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
-import osrs.PlayerComposition;
-
-import static osrs.Client.logger;
 
 public class IronmanGuide implements PluginTask {
 
@@ -192,7 +188,11 @@ public class IronmanGuide implements PluginTask {
 		}
 
 		if (pinSection.getText().equals("Set new PIN")) {
-			Keyboard.type(config.bankPin());
+
+			for (char pin : config.bankPin().toCharArray()) {
+				Keyboard.type(pin);
+				Time.sleep(600);
+			}
 			Time.sleepUntil(() -> pinSection.getText().equals("Confirm new PIN"), 5000);
 			return;
 		}

@@ -1,19 +1,14 @@
 package meteor.plugins.cettitutorial.tasks;
 
 import meteor.PluginTask;
-import meteor.plugins.api.entities.NPCs;
-import meteor.plugins.api.entities.Players;
-import meteor.plugins.api.entities.TileObjects;
-import meteor.plugins.api.game.Game;
-import meteor.plugins.api.items.Inventory;
-import meteor.plugins.api.widgets.Dialog;
-import meteor.plugins.api.widgets.Tab;
-import meteor.plugins.api.widgets.Tabs;
+import dev.hoot.api.entities.NPCs;
+import dev.hoot.api.entities.Players;
+import dev.hoot.api.entities.TileObjects;
+import dev.hoot.api.game.Game;
+import dev.hoot.api.widgets.Dialog;
 import net.runelite.api.NPC;
 import net.runelite.api.TileObject;
 import net.runelite.api.widgets.Widget;
-
-import static osrs.Client.logger;
 
 public class QuestGuide implements PluginTask {
 
@@ -71,7 +66,7 @@ public class QuestGuide implements PluginTask {
 			Dialog.continueSpace();
 		}
 
-		Widget quest = Game.getClient().getWidget(164, 61);
+		Widget quest = Game.getClient().getWidget(164, 53);
 
 		if (quest == null) {
 			return;

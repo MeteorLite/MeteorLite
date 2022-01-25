@@ -9,165 +9,82 @@ import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("kg")
+@ObfuscatedName("ka")
 @Implements("GrandExchangeEvents")
 public class GrandExchangeEvents {
-	@ObfuscatedName("q")
+	@ObfuscatedName("b")
 	@Export("GrandExchangeEvents_ageComparator")
 	public static Comparator GrandExchangeEvents_ageComparator;
-	@ObfuscatedName("f")
+	@ObfuscatedName("p")
 	@Export("GrandExchangeEvents_priceComparator")
 	public static Comparator GrandExchangeEvents_priceComparator;
-	@ObfuscatedName("j")
+	@ObfuscatedName("m")
 	@Export("GrandExchangeEvents_nameComparator")
 	public static Comparator GrandExchangeEvents_nameComparator;
-	@ObfuscatedName("m")
+	@ObfuscatedName("t")
 	@Export("GrandExchangeEvents_quantityComparator")
 	public static Comparator GrandExchangeEvents_quantityComparator;
-	@ObfuscatedName("l")
+	@ObfuscatedName("c")
 	@Export("events")
 	public final List events;
 
 	static {
-		GrandExchangeEvents_ageComparator = new GrandExchangeOfferAgeComparator();
+		GrandExchangeEvents_ageComparator = new GrandExchangeOfferAgeComparator(); // L: 11
 		new GrandExchangeOfferWorldComparator();
-		GrandExchangeEvents_priceComparator = new GrandExchangeOfferUnitPriceComparator();
-		GrandExchangeEvents_nameComparator = new GrandExchangeOfferNameComparator();
+		GrandExchangeEvents_priceComparator = new GrandExchangeOfferUnitPriceComparator(); // L: 41
+		GrandExchangeEvents_nameComparator = new GrandExchangeOfferNameComparator(); // L: 54
 		GrandExchangeEvents_quantityComparator = new GrandExchangeOfferTotalQuantityComparator();
-	}
+	} // L: 67
 
 	@ObfuscatedSignature(
-		descriptor = "(Lot;Z)V",
+		descriptor = "(Lpi;Z)V",
 		garbageValue = "1"
 	)
 	public GrandExchangeEvents(Buffer var1, boolean var2) {
-		int var3 = var1.readUnsignedShort();
-		boolean var4 = var1.readUnsignedByte() == 1;
+		int var3 = var1.readUnsignedShort(); // L: 82
+		boolean var4 = var1.readUnsignedByte() == 1; // L: 83
 		byte var5;
-		if (var4) {
+		if (var4) { // L: 85
 			var5 = 1;
 		} else {
-			var5 = 0;
+			var5 = 0; // L: 86
 		}
 
-		int var6 = var1.readUnsignedShort();
-		this.events = new ArrayList(var6);
+		int var6 = var1.readUnsignedShort(); // L: 87
+		this.events = new ArrayList(var6); // L: 88
 
-		for (int var7 = 0; var7 < var6; ++var7) {
-			this.events.add(new GrandExchangeEvent(var1, var5, var3));
+		for (int var7 = 0; var7 < var6; ++var7) { // L: 89
+			this.events.add(new GrandExchangeEvent(var1, var5, var3)); // L: 90
 		}
 
-	}
+	} // L: 92
 
-	@ObfuscatedName("l")
+	@ObfuscatedName("c")
 	@ObfuscatedSignature(
-		descriptor = "(Ljava/util/Comparator;ZI)V",
-		garbageValue = "-1787305699"
+		descriptor = "(Ljava/util/Comparator;ZB)V",
+		garbageValue = "39"
 	)
 	@Export("sort")
 	public void sort(Comparator var1, boolean var2) {
-		if (var2) {
-			Collections.sort(this.events, var1);
+		if (var2) { // L: 95
+			Collections.sort(this.events, var1); // L: 96
 		} else {
-			Collections.sort(this.events, Collections.reverseOrder(var1));
+			Collections.sort(this.events, Collections.reverseOrder(var1)); // L: 99
 		}
 
-	}
+	} // L: 101
 
-	@ObfuscatedName("f")
+	@ObfuscatedName("p")
 	@ObfuscatedSignature(
-		descriptor = "(IIII)I",
-		garbageValue = "1446894624"
+		descriptor = "(B)V",
+		garbageValue = "40"
 	)
-	public static int method5348(int var0, int var1, int var2) {
-		int var3 = FloorOverlayDefinition.method3343(var2 - var1 + 1);
-		var3 <<= var1;
-		return var0 & ~var3;
-	}
-
-	@ObfuscatedName("jr")
-	@ObfuscatedSignature(
-		descriptor = "(Ljt;III)V",
-		garbageValue = "135210928"
-	)
-	@Export("clickWidget")
-	static final void clickWidget(Widget var0, int var1, int var2) {
-		if (Client.clickedWidget == null && !Client.isMenuOpen) {
-			if (var0 != null) {
-				Widget var5 = var0;
-				int var6 = Friend.method6003(WorldMapRegion.getWidgetFlags(var0));
-				Widget var4;
-				int var7;
-				if (var6 == 0) {
-					var4 = null;
-				} else {
-					var7 = 0;
-
-					while (true) {
-						if (var7 >= var6) {
-							var4 = var5;
-							break;
-						}
-
-						var5 = HealthBarUpdate.getWidget(var5.parentId);
-						if (var5 == null) {
-							var4 = null;
-							break;
-						}
-
-						++var7;
-					}
-				}
-
-				Widget var8 = var4;
-				if (var4 == null) {
-					var8 = var0.parent;
-				}
-
-				if (var8 != null) {
-					Client.clickedWidget = var0;
-					var5 = var0;
-					var6 = Friend.method6003(WorldMapRegion.getWidgetFlags(var0));
-					if (var6 == 0) {
-						var4 = null;
-					} else {
-						var7 = 0;
-
-						while (true) {
-							if (var7 >= var6) {
-								var4 = var5;
-								break;
-							}
-
-							var5 = HealthBarUpdate.getWidget(var5.parentId);
-							if (var5 == null) {
-								var4 = null;
-								break;
-							}
-
-							++var7;
-						}
-					}
-
-					var8 = var4;
-					if (var4 == null) {
-						var8 = var0.parent;
-					}
-
-					Client.clickedWidgetParent = var8;
-					Client.widgetClickX = var1;
-					Client.widgetClickY = var2;
-					MouseHandler.widgetDragDuration = 0;
-					Client.isDraggingWidget = false;
-					int var9 = Client.menuOptionsCount - 1;
-					if (var9 != -1) {
-						NetFileRequest.method5216(var9);
-					}
-
-					return;
-				}
-			}
-
+	public static void method5716() {
+		if (KeyHandler.KeyHandler_instance != null) { // L: 161
+			synchronized(KeyHandler.KeyHandler_instance) { // L: 162
+				KeyHandler.KeyHandler_instance = null; // L: 163
+			} // L: 164
 		}
-	}
+
+	} // L: 166
 }

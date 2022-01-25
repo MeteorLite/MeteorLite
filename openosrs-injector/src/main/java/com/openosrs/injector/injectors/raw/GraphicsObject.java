@@ -32,6 +32,8 @@ public class GraphicsObject extends AbstractInjector
 		final ClassFile renderableVanilla = inject.vanilla.findClass("osrs/Renderable");
 
 		graphicsObjectVanilla.clearFinal();
+		if (graphicsObjectVanilla.findMethod("<init>") != null)
+			graphicsObjectVanilla.removeMethod(graphicsObjectVanilla.findMethod("<init>"));
 
 		Method initGraphicsObject = new Method(graphicsObjectVanilla, "<init>", new Signature("()V"));
 		initGraphicsObject.setPublic();

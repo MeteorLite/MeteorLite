@@ -26,7 +26,7 @@ package meteor.plugins.nightmareHelper;
 
 import javax.inject.Inject;
 
-import meteor.plugins.api.widgets.Prayers;
+import dev.hoot.api.widgets.Prayers;
 import net.runelite.api.*;
 import net.runelite.api.events.*;
 import meteor.eventbus.Subscribe;

@@ -1,17 +1,14 @@
 package meteor.plugins.cettitutorial.tasks;
 
 import meteor.PluginTask;
-import meteor.plugins.api.commons.Time;
-import meteor.plugins.api.entities.NPCs;
-import meteor.plugins.api.entities.Players;
-import meteor.plugins.api.entities.TileObjects;
-import meteor.plugins.api.game.Game;
-import meteor.plugins.api.items.Inventory;
-import meteor.plugins.api.widgets.Dialog;
+import dev.hoot.api.commons.Time;
+import dev.hoot.api.entities.NPCs;
+import dev.hoot.api.entities.Players;
+import dev.hoot.api.entities.TileObjects;
+import dev.hoot.api.game.Game;
+import dev.hoot.api.items.Inventory;
+import dev.hoot.api.widgets.Dialog;
 import net.runelite.api.*;
-import rs117.hd.materials.Overlay;
-
-import static osrs.Client.logger;
 
 public class CookingGuide implements PluginTask {
 

@@ -7,95 +7,69 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("h")
+@ObfuscatedName("l")
 public class class20 implements Callable {
-	@ObfuscatedName("ba")
+	@ObfuscatedName("kk")
 	@ObfuscatedGetter(
-		intValue = -1667881213
+		intValue = -943773093
 	)
-	static int field103;
-	@ObfuscatedName("l")
+	@Export("Client_plane")
+	static int Client_plane;
+	@ObfuscatedName("no")
+	@ObfuscatedGetter(
+		intValue = -1799052417
+	)
+	@Export("selectedSpellWidget")
+	static int selectedSpellWidget;
+	@ObfuscatedName("c")
 	@ObfuscatedSignature(
-		descriptor = "Ly;"
+		descriptor = "Lo;"
 	)
-	final class10 field104;
+	final class10 field110;
 	// $FF: synthetic field
 	@ObfuscatedSignature(
-		descriptor = "Ls;"
+		descriptor = "Lg;"
 	)
 	final class14 this$0;
 
 	@ObfuscatedSignature(
-		descriptor = "(Ls;Ly;)V"
+		descriptor = "(Lg;Lo;)V"
 	)
 	class20(class14 var1, class10 var2) {
-		this.this$0 = var1;
-		this.field104 = var2;
-	}
+		this.this$0 = var1; // L: 46
+		this.field110 = var2; // L: 47
+	} // L: 48
 
 	public Object call() throws Exception {
 		try {
-			while (this.field104.method94()) {
-				class121.method2542(10L);
+			while (this.field110.method105()) { // L: 53
+				Bounds.method6608(10L); // L: 54
 			}
-		} catch (IOException var2) {
-			return new class21("Error servicing REST query: " + var2.getMessage());
+		} catch (IOException var2) { // L: 57
+			return new class21("Error servicing REST query: " + var2.getMessage()); // L: 58
 		}
 
-		return this.field104.method98();
+		return this.field110.method106(); // L: 60
 	}
 
-	@ObfuscatedName("t")
+	@ObfuscatedName("c")
 	@ObfuscatedSignature(
-		descriptor = "(IIII)I",
-		garbageValue = "846387799"
+		descriptor = "(II)Z",
+		garbageValue = "-76614425"
 	)
-	static final int method303(int var0, int var1, int var2) {
-		int var3 = var0 / var2;
-		int var4 = var0 & var2 - 1;
-		int var5 = var1 / var2;
-		int var6 = var1 & var2 - 1;
-		int var7 = Clock.method2867(var3, var5);
-		int var8 = Clock.method2867(var3 + 1, var5);
-		int var9 = Clock.method2867(var3, var5 + 1);
-		int var10 = Clock.method2867(var3 + 1, var5 + 1);
-		int var11 = class157.method2986(var7, var8, var4, var2);
-		int var12 = class157.method2986(var9, var10, var4, var2);
-		return class157.method2986(var11, var12, var6, var2);
+	public static boolean method332(int var0) {
+		return (var0 & 1) != 0; // L: 9
 	}
 
-	@ObfuscatedName("i")
+	@ObfuscatedName("ke")
 	@ObfuscatedSignature(
-		descriptor = "(ZI)V",
-		garbageValue = "996219685"
+		descriptor = "(II)V",
+		garbageValue = "-1917740045"
 	)
-	@Export("Login_promptCredentials")
-	static void Login_promptCredentials(boolean var0) {
-		Login.Login_response1 = "";
-		Login.Login_response2 = "Enter your username/email & password.";
-		Login.Login_response3 = "";
-		class112.method2474(2);
-		if (var0) {
-			Login.Login_password = "";
-		}
-
-		Login.method1930();
-		class14.method175();
-	}
-
-	@ObfuscatedName("fi")
-	@ObfuscatedSignature(
-		descriptor = "(I)V",
-		garbageValue = "935368725"
-	)
-	static final void method302() {
-		if (Client.logoutTimer > 0) {
-			AttackOption.logOut();
-		} else {
-			Client.timer.method5904();
-			UserList.updateGameState(40);
-			PendingSpawn.field1101 = Client.packetWriter.getSocket();
-			Client.packetWriter.removeSocket();
-		}
-	}
+	@Export("updateSoundEffectVolume")
+	static final void updateSoundEffectVolume(int var0) {
+		var0 = Math.min(Math.max(var0, 0), 127); // L: 12149
+		SecureRandomFuture.clientPreferences.soundEffectsVolume = var0; // L: 12150
+		class127.savePreferences(); // L: 12151
+	} // L: 12152
 }

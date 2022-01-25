@@ -1,83 +1,93 @@
 package osrs;
 
+import java.util.Iterator;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("om")
-public class class404 implements MouseWheel {
-	@ObfuscatedName("l")
+@ObfuscatedName("oo")
+public class class404 extends class371 implements class244 {
+	@ObfuscatedName("b")
 	@ObfuscatedSignature(
-		descriptor = "Lom;"
+		descriptor = "Lku;"
 	)
-	public static final class404 field4344;
-	@ObfuscatedName("q")
+	final AbstractArchive field4435;
+	@ObfuscatedName("p")
 	@ObfuscatedSignature(
-		descriptor = "Lom;"
+		descriptor = "Lic;"
 	)
-	public static final class404 field4348;
-	@ObfuscatedName("f")
-	@ObfuscatedSignature(
-		descriptor = "Lom;"
-	)
-	static final class404 field4343;
-	@ObfuscatedName("j")
-	@ObfuscatedSignature(
-		descriptor = "Lom;"
-	)
-	static final class404 field4346;
+	final DemotingHashTable field4436;
 	@ObfuscatedName("m")
-	@ObfuscatedSignature(
-		descriptor = "Lom;"
-	)
-	static final class404 field4345;
-	@ObfuscatedName("k")
-	@ObfuscatedSignature(
-		descriptor = "Lom;"
-	)
-	static final class404 field4349;
-	@ObfuscatedName("t")
 	@ObfuscatedGetter(
-		intValue = -1980513539
+		intValue = 1252832733
 	)
-	final int field4347;
+	final int field4437;
+
+	@ObfuscatedSignature(
+		descriptor = "(Lko;ILlf;Lku;)V"
+	)
+	public class404(StudioGame var1, int var2, Language var3, AbstractArchive var4) {
+		super(var1, var3, var4 != null ? var4.getGroupFileCount(var2) : 0); // L: 19
+		this.field4436 = new DemotingHashTable(64); // L: 15
+		this.field4435 = var4; // L: 20
+		this.field4437 = var2; // L: 21
+	} // L: 22
+
+	@ObfuscatedName("c")
+	@ObfuscatedSignature(
+		descriptor = "(II)Lnp;",
+		garbageValue = "1453466959"
+	)
+	protected class373 vmethod7209(int var1) {
+		synchronized(this.field4436) { // L: 26
+			class372 var2 = (class372)this.field4436.get((long)var1); // L: 27
+			if (var2 == null) { // L: 28
+				var2 = this.method7215(var1); // L: 29
+				this.field4436.method4958(var2, (long)var1); // L: 30
+			}
+
+			return var2; // L: 33
+		}
+	}
+
+	@ObfuscatedName("e")
+	@ObfuscatedSignature(
+		descriptor = "(II)Lnv;",
+		garbageValue = "277242473"
+	)
+	class372 method7215(int var1) {
+		byte[] var2 = this.field4435.takeFile(this.field4437, var1); // L: 37
+		class372 var3 = new class372(var1); // L: 38
+		if (var2 != null) { // L: 39
+			var3.method6778(new Buffer(var2));
+		}
+
+		return var3; // L: 40
+	}
+
 	@ObfuscatedName("a")
-	@ObfuscatedGetter(
-		intValue = -1627487491
-	)
-	final int field4341;
-
-	static {
-		field4344 = new class404(3, 0);
-		field4348 = new class404(0, 2);
-		field4343 = new class404(1, 5);
-		field4346 = new class404(4, 6);
-		field4345 = new class404(2, 7);
-		field4349 = new class404(5, 8);
-	}
-
-	class404(int var1, int var2) {
-		this.field4347 = var1;
-		this.field4341 = var2;
-	}
-
-	@ObfuscatedName("l")
 	@ObfuscatedSignature(
-		descriptor = "(I)I",
-		garbageValue = "661199397"
+		descriptor = "(I)V",
+		garbageValue = "-1968440370"
 	)
-	@Export("rsOrdinal")
-	public int rsOrdinal() {
-		return this.field4341;
+	public void method7216() {
+		synchronized(this.field4436) { // L: 44
+			this.field4436.clear(); // L: 45
+		}
+	} // L: 47
+
+	public Iterator iterator() {
+		return new class403(this); // L: 51
 	}
 
-	@ObfuscatedName("m")
+	@ObfuscatedName("p")
 	@ObfuscatedSignature(
-		descriptor = "(I)Z",
-		garbageValue = "-433884264"
+		descriptor = "(IS)I",
+		garbageValue = "15695"
 	)
-	public boolean method7148() {
-		return this == field4348;
+	@Export("Widget_unpackTargetMask")
+	public static int Widget_unpackTargetMask(int var0) {
+		return var0 >> 11 & 63; // L: 17
 	}
 }

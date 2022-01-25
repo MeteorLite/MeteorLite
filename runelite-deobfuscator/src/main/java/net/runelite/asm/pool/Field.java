@@ -32,7 +32,7 @@ public class Field {
 
   private final Class clazz;
   private final String name;
-  private final Type type;
+  private Type type;
 
   public Field(Class clazz, String name, Type type) {
     this.clazz = clazz;
@@ -88,5 +88,10 @@ public class Field {
 
   public Type getType() {
     return type;
+  }
+
+  public void setType(Type type)
+  {
+    this.type = type;
   }
 }

@@ -1,9 +1,9 @@
 package meteor.plugins.cettitutorial.tasks;
 
 import meteor.PluginTask;
-import meteor.plugins.api.commons.Time;
-import meteor.plugins.api.game.Game;
-import meteor.plugins.api.input.Keyboard;
+import dev.hoot.api.commons.Time;
+import dev.hoot.api.game.Game;
+import dev.hoot.api.input.Keyboard;
 import meteor.plugins.cettitutorial.CettiTutorialConfig;
 import meteor.plugins.cettitutorial.CettiTutorialPlugin;
 import net.runelite.api.widgets.Widget;
@@ -11,8 +11,6 @@ import net.runelite.api.widgets.Widget;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
-
-import static osrs.Client.logger;
 
 public class CreateCharacter implements PluginTask {
 

@@ -28,6 +28,7 @@ package net.runelite.mixins.meteor;
 import static net.runelite.api.Opcodes.INVOKE;
 import static net.runelite.api.Opcodes.RETURN;
 import static net.runelite.api.Opcodes.RUNELITE_EXECUTE;
+import static net.runelite.rs.ScriptOpcodes.CAM_FORCEANGLE;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -127,6 +128,15 @@ public abstract class ScriptVMMixin implements RSClient {
       case RETURN:
         client.getCallbacks().post(new ScriptPostFired((int) currentScript.getHash()));
         return false;
+      case CAM_FORCEANGLE:
+        int[] intStack = client.getIntStack();
+        int intStackSize = client.getIntStackSize();
+        int var4 = intStack[intStackSize - 1];
+        int var3 = intStack[intStackSize - 2];
+        if (!client.isCameraLocked())
+        {
+          client.posToCameraAngle(var4, var3);
+        }
     }
     return false;
   }

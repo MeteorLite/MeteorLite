@@ -64,7 +64,7 @@ public class RuneLiteAPI {
   private static String version;
 
   private static final String MAVEN_METADATA = "https://repo.runelite.net/net/runelite/runelite-parent/maven-metadata.xml";
-  private static String upstreamVersion;
+  private static String upstreamVersion = "1.8.7-SNAPSHOT";
 
   static {
     parseMavenVersion();
@@ -162,7 +162,7 @@ public class RuneLiteAPI {
       for (int i = 0; i != versionList.getLength(); i++)
       {
         Node node = versionList.item(i);
-        if (node.getTextContent() != null)
+        if (node.getTextContent() != null && !node.getTextContent().endsWith("SNAPSHOT"))
         {
           upstreamVersion = node.getTextContent();
         }

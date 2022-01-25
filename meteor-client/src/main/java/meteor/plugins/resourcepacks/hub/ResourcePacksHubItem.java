@@ -1,6 +1,5 @@
 package meteor.plugins.resourcepacks.hub;
 
-import static osrs.Client.logger;
 import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -23,6 +22,7 @@ import meteor.plugins.resourcepacks.ResourcePacksPlugin;
 import meteor.ui.ColorScheme;
 import meteor.ui.FontManager;
 import meteor.util.ImageUtil;
+import org.sponge.util.Logger;
 
 public class ResourcePacksHubItem extends JPanel
 {
@@ -32,7 +32,7 @@ public class ResourcePacksHubItem extends JPanel
 	private static final int HEIGHT = 147;
 	private static final int ICON_WIDTH = 224;
 	private static final int BOTTOM_LINE_HEIGHT = 16;
-
+	private final Logger logger = new Logger(getClass().getName());
 
 	public final ResourcePackManifest manifest;
 	public final List<String> keywords = new ArrayList<>();

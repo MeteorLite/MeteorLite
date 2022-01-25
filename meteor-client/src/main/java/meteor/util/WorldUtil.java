@@ -44,6 +44,11 @@ public class WorldUtil
 
 		for (net.runelite.http.api.worlds.WorldType apiType : apiTypes)
 		{
+			if (apiType == net.runelite.http.api.worlds.WorldType.TOURNAMENT) {
+				types.add(WorldType.TOURNAMENT_WORLD);
+				continue;
+			}
+
 			types.add(WorldType.valueOf(apiType.name()));
 		}
 

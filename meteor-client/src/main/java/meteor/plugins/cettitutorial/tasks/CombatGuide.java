@@ -1,27 +1,20 @@
 package meteor.plugins.cettitutorial.tasks;
 
 import meteor.PluginTask;
-import meteor.plugins.api.commons.Time;
-import meteor.plugins.api.entities.NPCs;
-import meteor.plugins.api.entities.Players;
-import meteor.plugins.api.entities.TileObjects;
-import meteor.plugins.api.game.Combat;
-import meteor.plugins.api.game.Game;
-import meteor.plugins.api.items.Equipment;
-import meteor.plugins.api.items.Inventory;
-import meteor.plugins.api.movement.Movement;
-import meteor.plugins.api.movement.Reachable;
-import meteor.plugins.api.widgets.Dialog;
-import meteor.plugins.api.widgets.Tab;
-import meteor.plugins.api.widgets.Tabs;
+import dev.hoot.api.commons.Time;
+import dev.hoot.api.entities.NPCs;
+import dev.hoot.api.entities.Players;
+import dev.hoot.api.entities.TileObjects;
+import dev.hoot.api.game.Game;
+import dev.hoot.api.items.Equipment;
+import dev.hoot.api.items.Inventory;
+import dev.hoot.api.movement.Movement;
+import dev.hoot.api.movement.Reachable;
+import dev.hoot.api.widgets.Dialog;
 import net.runelite.api.*;
 import net.runelite.api.coords.WorldArea;
 import net.runelite.api.coords.WorldPoint;
-import net.runelite.api.events.InteractingChanged;
 import net.runelite.api.widgets.Widget;
-import net.runelite.api.widgets.WidgetItem;
-
-import static osrs.Client.logger;
 
 public class CombatGuide implements PluginTask {
 
@@ -84,7 +77,7 @@ public class CombatGuide implements PluginTask {
 			return;
 		}
 
-		Widget equipment = Game.getClient().getWidget(164, 63);
+		Widget equipment = Game.getClient().getWidget(164, 55);
 
 		if (equipment == null) {
 			return;
@@ -113,7 +106,7 @@ public class CombatGuide implements PluginTask {
 			Dialog.continueSpace();
 			return;
 		}
-		Widget combat = Game.getClient().getWidget(164, 59);
+		Widget combat = Game.getClient().getWidget(164, 51);
 
 		if (combat == null) {
 			return;

@@ -1,81 +1,73 @@
 package osrs;
 
+import java.io.DataInputStream;
 import java.io.EOFException;
 import java.io.File;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.io.SyncFailedException;
-import java.lang.management.GarbageCollectorMXBean;
+import java.net.URL;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("nj")
+@ObfuscatedName("oa")
 @Implements("AccessFile")
 public final class AccessFile {
-	@ObfuscatedName("pq")
-	@ObfuscatedSignature(
-		descriptor = "Lec;"
-	)
-	@Export("mouseWheel")
-	static class144 mouseWheel;
-	@ObfuscatedName("am")
-	@Export("garbageCollector")
-	static GarbageCollectorMXBean garbageCollector;
-	@ObfuscatedName("l")
+	@ObfuscatedName("c")
 	@Export("file")
 	RandomAccessFile file;
-	@ObfuscatedName("q")
+	@ObfuscatedName("b")
 	@ObfuscatedGetter(
-		longValue = -672899169781171493L
+		longValue = 6458662844052359411L
 	)
 	@Export("maxSize")
 	final long maxSize;
-	@ObfuscatedName("f")
+	@ObfuscatedName("p")
 	@ObfuscatedGetter(
-		longValue = 492034629015795711L
+		longValue = -4202787537300384147L
 	)
 	@Export("offset")
 	long offset;
 
 	public AccessFile(File var1, String var2, long var3) throws IOException {
-		if (-1L == var3) {
+		if (-1L == var3) { // L: 11
 			var3 = Long.MAX_VALUE;
 		}
 
-		if (var1.length() > var3) {
-			var1.delete();
+		if (var1.length() > var3) { // L: 12
+			var1.delete(); // L: 13
 		}
 
-		this.file = new RandomAccessFile(var1, var2);
-		this.maxSize = var3;
-		this.offset = 0L;
-		int var5 = this.file.read();
-		if (var5 != -1 && !var2.equals("r")) {
-			this.file.seek(0L);
-			this.file.write(var5);
+		this.file = new RandomAccessFile(var1, var2); // L: 15
+		this.maxSize = var3; // L: 16
+		this.offset = 0L; // L: 17
+		int var5 = this.file.read(); // L: 18
+		if (var5 != -1 && !var2.equals("r")) { // L: 19
+			this.file.seek(0L); // L: 20
+			this.file.write(var5); // L: 21
 		}
 
-		this.file.seek(0L);
-	}
+		this.file.seek(0L); // L: 23
+	} // L: 24
 
-	@ObfuscatedName("l")
+	@ObfuscatedName("c")
 	@Export("seek")
 	final void seek(long var1) throws IOException {
-		this.file.seek(var1);
-		this.offset = var1;
-	}
+		this.file.seek(var1); // L: 27
+		this.offset = var1; // L: 28
+	} // L: 29
 
-	@ObfuscatedName("q")
+	@ObfuscatedName("b")
 	@ObfuscatedSignature(
 		descriptor = "([BIIS)V",
-		garbageValue = "-18286"
+		garbageValue = "-13111"
 	)
 	@Export("write")
 	public final void write(byte[] var1, int var2, int var3) throws IOException {
-		if ((long)var3 + this.offset > this.maxSize) {
+		if (this.offset + (long)var3 > this.maxSize) { // L: 32
 			this.file.seek(this.maxSize);
 			this.file.write(1);
 			throw new EOFException();
@@ -85,77 +77,133 @@ public final class AccessFile {
 		}
 	}
 
-	@ObfuscatedName("f")
+	@ObfuscatedName("p")
 	@ObfuscatedSignature(
-		descriptor = "(B)V",
-		garbageValue = "23"
+		descriptor = "(I)V",
+		garbageValue = "1700348985"
 	)
 	@Export("close")
 	public final void close() throws IOException {
 		this.closeSync(false);
 	}
 
-	@ObfuscatedName("j")
+	@ObfuscatedName("m")
 	@ObfuscatedSignature(
-		descriptor = "(ZB)V",
-		garbageValue = "1"
+		descriptor = "(ZI)V",
+		garbageValue = "-824076886"
 	)
 	@Export("closeSync")
 	public final void closeSync(boolean var1) throws IOException {
 		if (this.file != null) {
 			if (var1) {
 				try {
-					this.file.getFD().sync();
+					this.file.getFD().sync(); // L: 49
 				} catch (SyncFailedException var3) {
 				}
 			}
 
-			this.file.close();
-			this.file = null;
+			this.file.close(); // L: 53
+			this.file = null; // L: 54
 		}
 
-	}
+	} // L: 56
 
-	@ObfuscatedName("m")
+	@ObfuscatedName("t")
 	@ObfuscatedSignature(
-		descriptor = "(I)J",
-		garbageValue = "1317310270"
+		descriptor = "(B)J",
+		garbageValue = "-117"
 	)
 	@Export("length")
 	public final long length() throws IOException {
-		return this.file.length();
+		return this.file.length(); // L: 59
 	}
 
-	@ObfuscatedName("k")
+	@ObfuscatedName("s")
 	@ObfuscatedSignature(
-		descriptor = "([BIII)I",
-		garbageValue = "-1029557368"
+		descriptor = "([BIIB)I",
+		garbageValue = "66"
 	)
 	@Export("read")
 	public final int read(byte[] var1, int var2, int var3) throws IOException {
-		int var4 = this.file.read(var1, var2, var3);
+		int var4 = this.file.read(var1, var2, var3); // L: 63
 		if (var4 > 0) {
-			this.offset += (long)var4;
+			this.offset += (long)var4; // L: 64
 		}
 
-		return var4;
+		return var4; // L: 65
 	}
 
 	protected void finalize() throws Throwable {
-		if (this.file != null) {
-			System.out.println("");
-			this.close();
+		if (this.file != null) { // L: 69
+			System.out.println(""); // L: 70
+			this.close(); // L: 71
 		}
 
-	}
+	} // L: 73
 
-	@ObfuscatedName("q")
+	@ObfuscatedName("c")
 	@ObfuscatedSignature(
-		descriptor = "(Lkl;III)Lon;",
-		garbageValue = "-528990707"
+		descriptor = "(Ljava/lang/String;Ljava/lang/Throwable;I)V",
+		garbageValue = "-2057333088"
 	)
-	@Export("SpriteBuffer_getSprite")
-	public static SpritePixels SpriteBuffer_getSprite(AbstractArchive var0, int var1, int var2) {
-		return !VarbitComposition.method3102(var0, var1, var2) ? null : SoundCache.method784();
+	@Export("RunException_sendStackTrace")
+	public static void RunException_sendStackTrace(String var0, Throwable var1) {
+		if (var1 != null) {
+			var1.printStackTrace();
+		} else {
+			try {
+				String var2 = ""; // L: 33
+				if (var1 != null) { // L: 34
+					var2 = IgnoreList.method6267(var1);
+				}
+
+				if (var0 != null) { // L: 35
+					if (var1 != null) { // L: 36
+						var2 = var2 + " | ";
+					}
+
+					var2 = var2 + var0;
+				}
+
+				System.out.println("Error: " + var2);
+				var2 = var2.replace(':', '.');
+				var2 = var2.replace('@', '_');
+				var2 = var2.replace('&', '_');
+				var2 = var2.replace('#', '_');
+				if (RunException.RunException_applet == null) {
+					return;
+				}
+
+				URL var3 = new URL(RunException.RunException_applet.getCodeBase(), "clienterror.ws?c=" + RunException.RunException_revision + "&u=" + RunException.localPlayerName + "&v1=" + TaskHandler.javaVendor + "&v2=" + NPC.javaVersion + "&ct=" + class398.clientType + "&e=" + var2); // L: 45
+				DataInputStream var4 = new DataInputStream(var3.openStream()); // L: 46
+				var4.read(); // L: 47
+				var4.close(); // L: 48
+			} catch (Exception var5) { // L: 50
+			}
+
+		}
+	} // L: 51
+
+	@ObfuscatedName("b")
+	@ObfuscatedSignature(
+		descriptor = "(II)Lfo;",
+		garbageValue = "2133446029"
+	)
+	@Export("SpotAnimationDefinition_get")
+	public static SpotAnimationDefinition SpotAnimationDefinition_get(int var0) {
+		SpotAnimationDefinition var1 = (SpotAnimationDefinition) SpotAnimationDefinition.SpotAnimationDefinition_cached.get((long)var0); // L: 37
+		if (var1 != null) { // L: 38
+			return var1;
+		} else {
+			byte[] var2 = SpotAnimationDefinition.SpotAnimationDefinition_archive.takeFile(13, var0); // L: 39
+			var1 = new SpotAnimationDefinition(); // L: 40
+			var1.id = var0; // L: 41
+			if (var2 != null) { // L: 42
+				var1.decode(new Buffer(var2));
+			}
+
+			SpotAnimationDefinition.SpotAnimationDefinition_cached.put(var1, (long)var0); // L: 43
+			return var1; // L: 44
+		}
 	}
 }

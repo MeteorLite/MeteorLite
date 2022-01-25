@@ -398,6 +398,7 @@ public class GpuHDPlugin extends Plugin implements DrawCallbacks
 	public boolean configNpcLights = true;
 	public boolean configShadowsEnabled = false;
 	public boolean configExpandShadowDraw = false;
+	public boolean configUnlockFps = false;
 
 	// Reduces drawing a buggy mess when toggling HD
 	private boolean startUpCompleted = false;
@@ -419,6 +420,7 @@ public class GpuHDPlugin extends Plugin implements DrawCallbacks
 		configNpcLights = config.npcLights();
 		configShadowsEnabled = config.shadowsEnabled();
 		configExpandShadowDraw = config.expandShadowDraw();
+		configUnlockFps = config.unlockFps();
 
 		clientThread.invoke(() ->
 		{
@@ -510,7 +512,9 @@ public class GpuHDPlugin extends Plugin implements DrawCallbacks
 					}
 
 					this.gl = glContext.getGL().getGL4();
-					gl.setSwapInterval(0);
+					final boolean unlockFps = this.config.unlockFps();
+					client.setUnlockedFps(unlockFps);
+					gl.setSwapInterval(unlockFps ? 1 : 0);
 
 					if (log.isDebugEnabled())
 					{
@@ -1436,22 +1440,17 @@ public class GpuHDPlugin extends Plugin implements DrawCallbacks
 
 	private void drawFrame(int overlayColor)
 	{
-		if (!startUpCompleted)
-			return;
-
 		if (jawtWindow.getAWTComponent() != client.getCanvas())
 		{
 			// We inject code in the game engine mixin to prevent the client from doing canvas replacement,
 			// so this should not ever be hit
 			log.warn("Canvas invalidated!");
-			shutdown();
+			shutDown();
 			startUp();
 			return;
 		}
 
-		if (client.getGameState() == GameState.LOADING || client.getGameState() == GameState.HOPPING)
-		{
-			// While the client is loading it doesn't draw
+		if (client.getGameState() == GameState.LOADING || client.getGameState() == GameState.HOPPING) {
 			return;
 		}
 
@@ -1512,8 +1511,12 @@ public class GpuHDPlugin extends Plugin implements DrawCallbacks
 			shutdownAAFbo();
 		}
 
+		gl.glClearColor(0, 0, 0, 1f);
+		gl.glClear(gl.GL_COLOR_BUFFER_BIT);
+
 		// Draw 3d scene
 		final TextureProvider textureProvider = client.getTextureProvider();
+		final GameState gameState = client.getGameState();
 		if (textureProvider != null)
 		{
 			if (textureArrayId == -1)
@@ -2190,6 +2193,14 @@ public class GpuHDPlugin extends Plugin implements DrawCallbacks
 				break;
 			case "macosIntelWorkaround":
 				recompileProgram();
+				break;
+			case "unlockFps":
+				configUnlockFps = config.unlockFps();
+				clientThread.invokeLater(() ->
+				{
+					client.setUnlockedFps(configUnlockFps);
+					invokeOnMainThread(() -> gl.setSwapInterval(configUnlockFps ? 1 : 0));
+				});
 				break;
 		}
 	}

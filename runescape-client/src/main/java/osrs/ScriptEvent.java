@@ -5,181 +5,170 @@ import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
-import net.runelite.rs.ScriptOpcodes;
 
-@ObfuscatedName("cy")
+@ObfuscatedName("cp")
 @Implements("ScriptEvent")
 public class ScriptEvent extends Node {
-	@ObfuscatedName("l")
+	@ObfuscatedName("dl")
+	@ObfuscatedSignature(
+		descriptor = "Lfk;"
+	)
+	@Export("js5SocketTask")
+	static Task js5SocketTask;
+	@ObfuscatedName("c")
 	@Export("args")
 	Object[] args;
-	@ObfuscatedName("q")
+	@ObfuscatedName("b")
 	@Export("isMouseInputEvent")
 	boolean isMouseInputEvent;
-	@ObfuscatedName("f")
+	@ObfuscatedName("p")
 	@ObfuscatedSignature(
-		descriptor = "Ljt;"
+		descriptor = "Ljm;"
 	)
 	@Export("widget")
-	Widget widget;
-	@ObfuscatedName("j")
+    Widget widget;
+	@ObfuscatedName("m")
 	@ObfuscatedGetter(
-		intValue = -16564539
+		intValue = -1316811587
 	)
 	@Export("mouseX")
 	int mouseX;
-	@ObfuscatedName("m")
+	@ObfuscatedName("t")
 	@ObfuscatedGetter(
-		intValue = -682131027
+		intValue = 429308499
 	)
 	@Export("mouseY")
 	int mouseY;
-	@ObfuscatedName("k")
+	@ObfuscatedName("s")
 	@ObfuscatedGetter(
-		intValue = -1167365765
+		intValue = 2143189111
 	)
 	@Export("opIndex")
 	int opIndex;
-	@ObfuscatedName("t")
+	@ObfuscatedName("j")
 	@ObfuscatedSignature(
-		descriptor = "Ljt;"
+		descriptor = "Ljm;"
 	)
 	@Export("dragTarget")
-	Widget dragTarget;
-	@ObfuscatedName("a")
+    Widget dragTarget;
+	@ObfuscatedName("w")
 	@ObfuscatedGetter(
-		intValue = -334465261
+		intValue = 1992981497
 	)
 	@Export("keyTyped")
 	int keyTyped;
-	@ObfuscatedName("e")
+	@ObfuscatedName("n")
 	@ObfuscatedGetter(
-		intValue = -1224571083
+		intValue = 1481039273
 	)
 	@Export("keyPressed")
 	int keyPressed;
-	@ObfuscatedName("i")
+	@ObfuscatedName("r")
 	@Export("targetName")
 	String targetName;
-	@ObfuscatedName("y")
+	@ObfuscatedName("o")
 	@ObfuscatedGetter(
-		intValue = -1064106161
+		intValue = 2063557447
 	)
-	int field1037;
-	@ObfuscatedName("w")
+	int field1018;
+	@ObfuscatedName("v")
 	@ObfuscatedGetter(
-		intValue = -2078183665
+		intValue = -170521561
 	)
 	@Export("type")
 	int type;
 
 	public ScriptEvent() {
-		this.type = 76;
+		this.type = 76; // L: 19
 	}
 
-	@ObfuscatedName("l")
+	@ObfuscatedName("c")
 	@ObfuscatedSignature(
-		descriptor = "([Ljava/lang/Object;I)V",
-		garbageValue = "1467724189"
+		descriptor = "([Ljava/lang/Object;B)V",
+		garbageValue = "1"
 	)
 	@Export("setArgs")
 	public void setArgs(Object[] var1) {
-		this.args = var1;
-	}
+		this.args = var1; // L: 22
+	} // L: 23
 
-	@ObfuscatedName("q")
+	@ObfuscatedName("b")
 	@ObfuscatedSignature(
 		descriptor = "(II)V",
-		garbageValue = "-1722413774"
+		garbageValue = "-1783513885"
 	)
 	@Export("setType")
 	public void setType(int var1) {
-		this.type = var1;
-	}
+		this.type = var1; // L: 26
+	} // L: 27
 
-	@ObfuscatedName("r")
+	@ObfuscatedName("p")
 	@ObfuscatedSignature(
-		descriptor = "(ILbe;ZI)I",
-		garbageValue = "460269771"
+		descriptor = "(II)Ldh;",
+		garbageValue = "665811152"
 	)
-	static int method2066(int var0, Script var1, boolean var2) {
-		if (var0 == ScriptOpcodes.SOUND_SYNTH) {
-			AbstractByteArrayCopier.Interpreter_intStackSize -= 3;
-			class184.queueSoundEffect(Interpreter.Interpreter_intStack[AbstractByteArrayCopier.Interpreter_intStackSize], Interpreter.Interpreter_intStack[AbstractByteArrayCopier.Interpreter_intStackSize + 1], Interpreter.Interpreter_intStack[AbstractByteArrayCopier.Interpreter_intStackSize + 2]);
-			return 1;
-		} else if (var0 == ScriptOpcodes.SOUND_SONG) {
-			WorldMapSprite.playSong(Interpreter.Interpreter_intStack[--AbstractByteArrayCopier.Interpreter_intStackSize]);
-			return 1;
-		} else if (var0 == ScriptOpcodes.SOUND_JINGLE) {
-			AbstractByteArrayCopier.Interpreter_intStackSize -= 2;
-			PcmPlayer.method741(Interpreter.Interpreter_intStack[AbstractByteArrayCopier.Interpreter_intStackSize], Interpreter.Interpreter_intStack[AbstractByteArrayCopier.Interpreter_intStackSize + 1]);
-			return 1;
-		} else {
-			int var3;
-			int var4;
-			if (var0 != 3209 && var0 != 3181 && var0 != 3203 && var0 != 3205 && var0 != 3207) {
-				if (var0 != 3210 && var0 != 3182 && var0 != 3204 && var0 != 3206 && var0 != 3208) {
-					return var0 == 3211 ? 1 : 2;
-				} else {
-					var3 = 0;
-					var4 = 0;
-					if (var0 == 3210) {
-						var3 = Interpreter.Interpreter_intStack[--AbstractByteArrayCopier.Interpreter_intStackSize];
-					} else if (var0 == 3182) {
-						var3 = 6;
-					} else if (var0 == 3204) {
-						var3 = 7;
-					} else if (var0 == 3206) {
-						var3 = 8;
-					} else if (var0 == 3208) {
-						var3 = 9;
-					}
-
-					if (var3 == 6) {
-						float var5 = 200.0F * ((float)WorldMapDecorationType.clientPreferences.brightness - 0.5F);
-						var4 = 100 - Math.round(var5);
-					} else if (var3 == 7) {
-						var4 = Math.round((float)WorldMapDecorationType.clientPreferences.musicVolume / 2.55F);
-					} else if (var3 == 8) {
-						var4 = Math.round((float)WorldMapDecorationType.clientPreferences.soundEffectsVolume / 1.27F);
-					} else if (var3 == 9) {
-						var4 = Math.round((float)WorldMapDecorationType.clientPreferences.areaSoundEffectsVolume / 1.27F);
-					}
-
-					Interpreter.Interpreter_intStack[++AbstractByteArrayCopier.Interpreter_intStackSize - 1] = var4;
-					return 1;
-				}
-			} else {
-				var3 = 0;
-				var4 = Interpreter.Interpreter_intStack[--AbstractByteArrayCopier.Interpreter_intStackSize];
-				if (var0 == 3209) {
-					var3 = Interpreter.Interpreter_intStack[--AbstractByteArrayCopier.Interpreter_intStackSize];
-				} else if (var0 == 3181) {
-					var3 = 6;
-				} else if (var0 == 3203) {
-					var3 = 7;
-				} else if (var0 == 3205) {
-					var3 = 8;
-				} else if (var0 == 3207) {
-					var3 = 9;
-				}
-
-				if (var3 == 6) {
-					var4 = 100 - Math.min(Math.max(var4, 0), 100);
-					class268.method5105((double)(0.5F + (float)var4 / 200.0F));
-				} else if (var3 == 7) {
-					var4 = Math.min(Math.max(var4, 0), 100);
-					class29.method430(Math.round(2.55F * (float)var4));
-				} else if (var3 == 8) {
-					var4 = Math.min(Math.max(var4, 0), 100);
-					class129.updateSoundEffectVolume(Math.round(1.27F * (float)var4));
-				} else if (var3 == 9) {
-					var4 = Math.min(Math.max(var4, 0), 100);
-					GrandExchangeOfferOwnWorldComparator.method1104(Math.round(1.27F * (float)var4));
-				}
-
-				return 1;
-			}
+	static class114 method2154(int var0) {
+		class114 var1 = (class114)class130.findEnumerated(LoginScreenAnimation.method2251(), var0); // L: 138
+		if (var1 == null) {
+			var1 = class114.field1390; // L: 139
 		}
+
+		return var1; // L: 140
 	}
+
+	@ObfuscatedName("n")
+	@ObfuscatedSignature(
+		descriptor = "(B)V",
+		garbageValue = "-37"
+	)
+	static final void method2152() {
+		Object var10000 = null; // L: 108
+		String var0 = "Your friend list is full. Max of 200 for free users, and 400 for members";
+		class194.addGameMessage(30, "", var0); // L: 110
+	} // L: 112
+
+	@ObfuscatedName("jt")
+	@ObfuscatedSignature(
+		descriptor = "(IIIIIIB)V",
+		garbageValue = "95"
+	)
+	static final void method2147(int var0, int var1, int var2, int var3, int var4, int var5) {
+		int var6 = var2 - var0; // L: 10850
+		int var7 = var3 - var1; // L: 10851
+		int var8 = var6 >= 0 ? var6 : -var6; // L: 10852
+		int var9 = var7 >= 0 ? var7 : -var7; // L: 10853
+		int var10 = var8; // L: 10854
+		if (var8 < var9) { // L: 10855
+			var10 = var9;
+		}
+
+		if (var10 != 0) { // L: 10856
+			int var11 = (var6 << 16) / var10; // L: 10857
+			int var12 = (var7 << 16) / var10; // L: 10858
+			if (var12 <= var11) { // L: 10859
+				var11 = -var11;
+			} else {
+				var12 = -var12; // L: 10860
+			}
+
+			int var13 = var5 * var12 >> 17; // L: 10861
+			int var14 = var5 * var12 + 1 >> 17; // L: 10862
+			int var15 = var5 * var11 >> 17; // L: 10863
+			int var16 = var5 * var11 + 1 >> 17; // L: 10864
+			var0 -= Rasterizer2D.Rasterizer2D_xClipStart; // L: 10865
+			var1 -= Rasterizer2D.Rasterizer2D_yClipStart; // L: 10866
+			int var17 = var0 + var13; // L: 10867
+			int var18 = var0 - var14; // L: 10868
+			int var19 = var0 + var6 - var14; // L: 10869
+			int var20 = var0 + var6 + var13; // L: 10870
+			int var21 = var15 + var1; // L: 10871
+			int var22 = var1 - var16; // L: 10872
+			int var23 = var7 + var1 - var16; // L: 10873
+			int var24 = var7 + var15 + var1; // L: 10874
+			Rasterizer3D.method3853(var17, var18, var19); // L: 10875
+			Rasterizer3D.method3856(var21, var22, var23, var17, var18, var19, var4); // L: 10876
+			Rasterizer3D.method3853(var17, var19, var20); // L: 10877
+			Rasterizer3D.method3856(var21, var23, var24, var17, var19, var20, var4); // L: 10878
+		}
+	} // L: 10879
 }

@@ -181,4 +181,8 @@ public interface RSModel extends RSRenderable, Model
   void setVertexNormalsZ(int[] vertexNormalsZ);
 
   float[] getFaceTextureUVCoordinates();
+
+  @Import("bottomY")
+  @Override
+  int getBottomY();
 }

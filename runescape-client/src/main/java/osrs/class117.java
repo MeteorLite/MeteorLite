@@ -5,215 +5,186 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("dr")
-public class class117 extends class116 {
-	@ObfuscatedName("p")
-	@Export("ByteArrayPool_arrays")
-	public static byte[][][] ByteArrayPool_arrays;
-	@ObfuscatedName("l")
+@ObfuscatedName("dp")
+public class class117 implements MouseWheel {
+	@ObfuscatedName("sx")
 	@ObfuscatedGetter(
-		intValue = 408347163
+		intValue = -1106281963
 	)
-	int field1385;
-	@ObfuscatedName("q")
-	boolean field1383;
-	// $FF: synthetic field
+	static int field1433;
+	@ObfuscatedName("c")
 	@ObfuscatedSignature(
-		descriptor = "Ldg;"
+		descriptor = "Ldp;"
 	)
-	final class119 this$0;
+	static final class117 field1425;
+	@ObfuscatedName("b")
+	@ObfuscatedSignature(
+		descriptor = "Ldp;"
+	)
+	static final class117 field1444;
+	@ObfuscatedName("p")
+	@ObfuscatedSignature(
+		descriptor = "Ldp;"
+	)
+	static final class117 field1430;
+	@ObfuscatedName("m")
+	@ObfuscatedSignature(
+		descriptor = "Ldp;"
+	)
+	static final class117 field1427;
+	@ObfuscatedName("t")
+	@ObfuscatedSignature(
+		descriptor = "Ldp;"
+	)
+	static final class117 field1428;
+	@ObfuscatedName("s")
+	@ObfuscatedSignature(
+		descriptor = "Ldp;"
+	)
+	static final class117 field1429;
+	@ObfuscatedName("j")
+	@ObfuscatedSignature(
+		descriptor = "Ldp;"
+	)
+	static final class117 field1442;
+	@ObfuscatedName("w")
+	@ObfuscatedSignature(
+		descriptor = "Ldp;"
+	)
+	static final class117 field1431;
+	@ObfuscatedName("n")
+	@ObfuscatedSignature(
+		descriptor = "Ldp;"
+	)
+	static final class117 field1432;
+	@ObfuscatedName("r")
+	@ObfuscatedSignature(
+		descriptor = "Ldp;"
+	)
+	static final class117 field1424;
+	@ObfuscatedName("o")
+	@ObfuscatedSignature(
+		descriptor = "Ldp;"
+	)
+	static final class117 field1434;
+	@ObfuscatedName("v")
+	@ObfuscatedSignature(
+		descriptor = "Ldp;"
+	)
+	static final class117 field1435;
+	@ObfuscatedName("d")
+	@ObfuscatedSignature(
+		descriptor = "Ldp;"
+	)
+	static final class117 field1436;
+	@ObfuscatedName("h")
+	@ObfuscatedSignature(
+		descriptor = "Ldp;"
+	)
+	static final class117 field1437;
+	@ObfuscatedName("g")
+	@ObfuscatedSignature(
+		descriptor = "Ldp;"
+	)
+	static final class117 field1438;
+	@ObfuscatedName("e")
+	@ObfuscatedSignature(
+		descriptor = "Ldp;"
+	)
+	static final class117 field1439;
+	@ObfuscatedName("a")
+	@ObfuscatedSignature(
+		descriptor = "Ldp;"
+	)
+	static final class117 field1440;
+	@ObfuscatedName("u")
+	@ObfuscatedGetter(
+		intValue = -1755047429
+	)
+	final int field1441;
+	@ObfuscatedName("k")
+	@ObfuscatedGetter(
+		intValue = -438304939
+	)
+	final int field1426;
+	@ObfuscatedName("f")
+	@ObfuscatedGetter(
+		intValue = 614342417
+	)
+	final int field1443;
 
-	@ObfuscatedSignature(
-		descriptor = "(Ldg;)V"
-	)
-	class117(class119 var1) {
-		this.this$0 = var1;
-		this.field1385 = -1;
+	static {
+		field1425 = new class117(0, 0, (String)null, -1, -1); // L: 46
+		field1444 = new class117(1, 1, (String)null, 0, 2); // L: 47
+		field1430 = new class117(2, 2, (String)null, 1, 2); // L: 48
+		field1427 = new class117(3, 3, (String)null, 2, 2); // L: 49
+		field1428 = new class117(4, 4, (String)null, 3, 1); // L: 50
+		field1429 = new class117(5, 5, (String)null, 4, 1); // L: 51
+		field1442 = new class117(6, 6, (String)null, 5, 1); // L: 52
+		field1431 = new class117(7, 7, (String)null, 6, 3); // L: 53
+		field1432 = new class117(8, 8, (String)null, 7, 3); // L: 54
+		field1424 = new class117(9, 9, (String)null, 8, 3); // L: 55
+		field1434 = new class117(10, 10, (String)null, 0, 7); // L: 56
+		field1435 = new class117(11, 11, (String)null, 1, 7); // L: 57
+		field1436 = new class117(12, 12, (String)null, 2, 7); // L: 58
+		field1437 = new class117(13, 13, (String)null, 3, 7); // L: 59
+		field1438 = new class117(14, 14, (String)null, 4, 7); // L: 60
+		field1439 = new class117(15, 15, (String)null, 5, 7); // L: 61
+		field1440 = new class117(16, 16, (String)null, 0, 5); // L: 62
 	}
 
-	@ObfuscatedName("l")
 	@ObfuscatedSignature(
-		descriptor = "(Lot;I)V",
-		garbageValue = "-912681401"
+		descriptor = "(IILjava/lang/String;II)V",
+		garbageValue = "-1"
 	)
-	void vmethod2767(Buffer var1) {
-		this.field1385 = var1.readUnsignedShort();
-		this.field1383 = var1.readUnsignedByte() == 1;
+	class117(int var1, int var2, String var3, int var4, int var5) {
+		this.field1441 = var1; // L: 72
+		this.field1426 = var2; // L: 73
+		this.field1443 = var4; // L: 74
+	} // L: 75
+
+	@ObfuscatedName("b")
+	@ObfuscatedSignature(
+		descriptor = "(B)I",
+		garbageValue = "48"
+	)
+	@Export("rsOrdinal")
+	public int rsOrdinal() {
+		return this.field1426; // L: 78
 	}
 
-	@ObfuscatedName("q")
-	@ObfuscatedSignature(
-		descriptor = "(Ldk;I)V",
-		garbageValue = "-1225074726"
-	)
-	void vmethod2766(ClanSettings var1) {
-		var1.method2595(this.field1385, this.field1383);
-	}
-
-	@ObfuscatedName("i")
-	@ObfuscatedSignature(
-		descriptor = "(Ljt;IIIB)V",
-		garbageValue = "85"
-	)
-	@Export("Widget_setKeyRate")
-	static final void Widget_setKeyRate(Widget var0, int var1, int var2, int var3) {
-		if (var0.field3147 == null) {
-			throw new RuntimeException();
-		} else {
-			var0.field3147[var1] = var2;
-			var0.field3066[var1] = var3;
-		}
-	}
-
-	@ObfuscatedName("gw")
+	@ObfuscatedName("p")
 	@ObfuscatedSignature(
 		descriptor = "(I)I",
-		garbageValue = "2104571649"
+		garbageValue = "-202233185"
 	)
-	static final int method2519() {
-		if (WorldMapDecorationType.clientPreferences.roofsHidden) {
-			return VertexNormal.Client_plane;
-		} else {
-			int var0 = 3;
-			if (WorldMapIcon_1.cameraPitch < 310) {
-				int var1;
-				int var2;
-				if (Client.oculusOrbState == 1) {
-					var1 = class132.oculusOrbFocalPointX >> 7;
-					var2 = LoginScreenAnimation.oculusOrbFocalPointY >> 7;
-				} else {
-					var1 = class67.localPlayer.x >> 7;
-					var2 = class67.localPlayer.y >> 7;
-				}
-
-				int var3 = Canvas.cameraX >> 7;
-				int var4 = VarpDefinition.cameraZ >> 7;
-				if (var3 < 0 || var4 < 0 || var3 >= 104 || var4 >= 104) {
-					return VertexNormal.Client_plane;
-				}
-
-				if (var1 < 0 || var2 < 0 || var1 >= 104 || var2 >= 104) {
-					return VertexNormal.Client_plane;
-				}
-
-				if ((Tiles.Tiles_renderFlags[VertexNormal.Client_plane][var3][var4] & 4) != 0) {
-					var0 = VertexNormal.Client_plane;
-				}
-
-				int var5;
-				if (var1 > var3) {
-					var5 = var1 - var3;
-				} else {
-					var5 = var3 - var1;
-				}
-
-				int var6;
-				if (var2 > var4) {
-					var6 = var2 - var4;
-				} else {
-					var6 = var4 - var2;
-				}
-
-				int var7;
-				int var8;
-				if (var5 > var6) {
-					var7 = var6 * 65536 / var5;
-					var8 = 32768;
-
-					while (var3 != var1) {
-						if (var3 < var1) {
-							++var3;
-						} else if (var3 > var1) {
-							--var3;
-						}
-
-						if ((Tiles.Tiles_renderFlags[VertexNormal.Client_plane][var3][var4] & 4) != 0) {
-							var0 = VertexNormal.Client_plane;
-						}
-
-						var8 += var7;
-						if (var8 >= 65536) {
-							var8 -= 65536;
-							if (var4 < var2) {
-								++var4;
-							} else if (var4 > var2) {
-								--var4;
-							}
-
-							if ((Tiles.Tiles_renderFlags[VertexNormal.Client_plane][var3][var4] & 4) != 0) {
-								var0 = VertexNormal.Client_plane;
-							}
-						}
-					}
-				} else if (var6 > 0) {
-					var7 = var5 * 65536 / var6;
-					var8 = 32768;
-
-					while (var4 != var2) {
-						if (var4 < var2) {
-							++var4;
-						} else if (var4 > var2) {
-							--var4;
-						}
-
-						if ((Tiles.Tiles_renderFlags[VertexNormal.Client_plane][var3][var4] & 4) != 0) {
-							var0 = VertexNormal.Client_plane;
-						}
-
-						var8 += var7;
-						if (var8 >= 65536) {
-							var8 -= 65536;
-							if (var3 < var1) {
-								++var3;
-							} else if (var3 > var1) {
-								--var3;
-							}
-
-							if ((Tiles.Tiles_renderFlags[VertexNormal.Client_plane][var3][var4] & 4) != 0) {
-								var0 = VertexNormal.Client_plane;
-							}
-						}
-					}
-				}
-			}
-
-			if (class67.localPlayer.x >= 0 && class67.localPlayer.y >= 0 && class67.localPlayer.x < 13312 && class67.localPlayer.y < 13312) {
-				if ((Tiles.Tiles_renderFlags[VertexNormal.Client_plane][class67.localPlayer.x >> 7][class67.localPlayer.y >> 7] & 4) != 0) {
-					var0 = VertexNormal.Client_plane;
-				}
-
-				return var0;
-			} else {
-				return VertexNormal.Client_plane;
-			}
-		}
+	int method2674() {
+		return this.field1443; // L: 82
 	}
 
-	@ObfuscatedName("gq")
+	@ObfuscatedName("j")
 	@ObfuscatedSignature(
-		descriptor = "(Lci;I)Z",
-		garbageValue = "-1848205282"
+		descriptor = "(IB)Z",
+		garbageValue = "8"
 	)
-	static boolean method2516(Player var0) {
-		if (Client.drawPlayerNames == 0) {
-			return false;
-		} else if (class67.localPlayer == var0) {
-			return class317.method5800();
-		} else {
-			boolean var1 = KitDefinition.method2954();
-			boolean var2;
-			if (!var1) {
-				var2 = (Client.drawPlayerNames & 1) != 0;
-				var1 = var2 && var0.isFriend();
-			}
-
-			var2 = var1;
-			if (!var1) {
-				boolean var3 = (Client.drawPlayerNames & 2) != 0;
-				var2 = var3 && var0.isFriendsChatMember();
-			}
-
-			return var2;
-		}
+	public static boolean method2676(int var0) {
+		return var0 >= 0 && var0 < 112 ? KeyHandler.field130[var0] : false; // L: 246 247
 	}
+
+	@ObfuscatedName("fw")
+	@ObfuscatedSignature(
+		descriptor = "(B)V",
+		garbageValue = "0"
+	)
+	static final void method2682() {
+		if (class121.field1470) { // L: 4383
+			for (int var0 = 0; var0 < Players.Players_count; ++var0) { // L: 4385
+				Player var1 = Client.players[Players.Players_indices[var0]]; // L: 4386
+				var1.method2186(); // L: 4387
+			}
+
+			class121.field1470 = false; // L: 4390
+		}
+
+	} // L: 4392
 }

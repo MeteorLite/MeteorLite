@@ -26,12 +26,10 @@ package meteor.plugins.hiscore;
 
 import static meteor.plugins.hiscore.HiscoreController.INSTANCE;
 import static meteor.plugins.hiscore.HiscoreController.searchBox;
-import static meteor.ui.MeteorUI.lastButtonPressed;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ObjectArrays;
 import com.google.inject.Provides;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
-import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.EnumSet;
 import java.util.Objects;
@@ -39,16 +37,14 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Scene;
+import javafx.scene.Parent;
+
 import javax.annotation.Nullable;
 import javax.inject.Inject;
 import javax.inject.Provider;
-import javax.swing.SwingUtilities;
+
 import lombok.Getter;
-import meteor.eventbus.events.ToolbarButtonClicked;
-import meteor.ui.MeteorUI;
-import meteor.ui.components.ToolbarButton;
-import meteor.ui.controllers.ToolbarController;
+import meteor.ui.client.Toolbar;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
@@ -69,7 +65,6 @@ import meteor.eventbus.events.ConfigChanged;
 import meteor.menus.MenuManager;
 import meteor.plugins.Plugin;
 import meteor.plugins.PluginDescriptor;
-import meteor.util.ImageUtil;
 import meteor.util.Text;
 import net.runelite.http.api.hiscore.HiscoreEndpoint;
 import org.apache.commons.lang3.ArrayUtils;
@@ -86,13 +81,6 @@ public class HiscorePlugin extends Plugin
 	private static final String KICK_OPTION = "Kick";
 	private static final ImmutableList<String> AFTER_OPTIONS = ImmutableList.of("Message", "Add ignore", "Remove friend", "Delete", KICK_OPTION);
 	private static final Pattern BOUNTY_PATTERN = Pattern.compile("<col=ff0000>You've been assigned a target: (.*)</col>");
-	private static ToolbarButton navButton;
-
-	static {
-		navButton = new ToolbarButton(FontAwesomeIcon.LINE_CHART, "Hiscores");
-		navButton.width = 80;
-		ToolbarController.addButton(navButton);
-	}
 
 	@Inject
 	@Nullable
@@ -108,13 +96,13 @@ public class HiscorePlugin extends Plugin
 	private HiscoreEndpoint localHiscoreEndpoint;
 
 	@Inject
-	private MeteorUI ui;
+	private Toolbar toolbar;
 
-	private Scene hiscoreScene;
+	private Parent hiscorePanel;
 	{
 		try {
-			hiscoreScene = new Scene(FXMLLoader.load(Objects.requireNonNull(getClass().getClassLoader()
-					.getResource("meteor/plugins/hiscore/hiscore.fxml"))), 350, 800);
+			hiscorePanel = FXMLLoader.load(Objects.requireNonNull(getClass().getClassLoader()
+					.getResource("meteor/plugins/hiscore/hiscore.fxml")));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -124,18 +112,6 @@ public class HiscorePlugin extends Plugin
 	public HiscoreConfig getConfig(ConfigManager configManager)
 	{
 		return configManager.getConfig(HiscoreConfig.class);
-	}
-
-	@Subscribe
-	public void onToolbarButtonClicked(ToolbarButtonClicked event) {
-		if (event.getName().equals("Hiscores")) {
-			if (lastButtonPressed.equals(event.getName()))
-				ui.toggleRightPanel();
-			else {
-				ui.updateRightPanel(hiscoreScene);
-				lastButtonPressed = event.getName();
-			}
-		}
 	}
 
 	@Subscribe
@@ -150,9 +126,9 @@ public class HiscorePlugin extends Plugin
 	}
 
 	@Override
-	public void startUp()
+	public void startup()
 	{
-		final BufferedImage icon = ImageUtil.loadImageResource(getClass(), "normal.png");
+		toolbar.addNavigationButton(FontAwesomeIcon.LINE_CHART, hiscorePanel, this);
 
 		if (config.playerOption() && client != null)
 		{
@@ -163,8 +139,7 @@ public class HiscorePlugin extends Plugin
 	@Override
 	public void shutdown()
 	{
-		ToolbarController.removeButton(navButton);
-
+		toolbar.removeNavigationButton(this);
 		if (client != null)
 		{
 			menuManager.get().removePlayerMenuItem(LOOKUP);
@@ -287,8 +262,6 @@ public class HiscorePlugin extends Plugin
 	{
 		Platform.runLater(() ->
 		{
-			ui.updateRightPanel(hiscoreScene);
-			lastButtonPressed = "Hiscores";
 			searchBox.setText(playerName);
 			HiscoreController.endpoint = endpoint;
 			INSTANCE.lookup();
