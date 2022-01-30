@@ -48,7 +48,10 @@ public class Label extends NOP {
     if (this.getInstructions() == null) {
       string = "label <unattached>";
     } else {
-      Instruction next = next();
+      Instruction next = null;
+      try {
+        next = next();
+      } catch (java.lang.Exception e) {}
 
       if (next == null) {
         string = "label with no next instruction";
