@@ -38,7 +38,16 @@ import net.runelite.asm.attributes.code.Instruction;
 import net.runelite.asm.attributes.code.instructions.BiPush;
 import net.runelite.asm.attributes.code.instructions.SiPush;
 import net.runelite.rs.ScriptOpcodes;
+import org.gradle.internal.impldep.com.google.gson.Gson;
+import org.gradle.internal.impldep.com.google.gson.GsonBuilder;
 import org.sponge.util.Logger;
+
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.TreeMap;
 
 /*
  * This finds packet opcodes
@@ -47,6 +56,9 @@ public class DecodeNet extends AbstractInjector {
     private static final Logger log = new Logger("Packets");
     public int totalFound = 0;
     public final int expected = 52;
+    private File clientPacketsDir = new File("./build/packets/");
+    private File clientPacketsFile = new File(clientPacketsDir, "ClientPackets.json");
+    private HashMap<String, String> clientPackets = new HashMap<>();
 
     public DecodeNet(InjectData inject) {
         super(inject);
@@ -56,208 +68,103 @@ public class DecodeNet extends AbstractInjector {
         for (final ClassFile deobClass : inject.getDeobfuscated()) {
             scanMethods(deobClass);
         }
+        if (clientPacketsFile.exists())
+            clientPacketsFile.delete();
 
-        log.warn("Found " + totalFound + "/" + expected + " packets");
+        clientPacketsDir.mkdirs();
+
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        TreeMap<String, String> sortedClientPackets = new TreeMap<>(clientPackets);
+        try {
+            BufferedWriter writer = new BufferedWriter(new FileWriter(clientPacketsFile));
+            writer.write(gson.toJson(sortedClientPackets));
+            writer.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        log.warn("Found " + sortedClientPackets.size() + "/" + expected + " client packets");
     }
 
     private void scanMethods(ClassFile deobClass) {
         for (Method deobMethod : deobClass.getMethods()) {
-            if (deobMethod.getName().equals("handleMouseScriptOpcode")) {
-                totalFound += extractMouseScriptOpcodePackets(deobMethod);
-            }
+            try {
+                HashMap<String, String> found = extractMouseScriptOpcodePackets(deobMethod);
+                if (found.size() == 4)
+                    clientPackets.putAll(found);
+                else
+                    throw new RuntimeException("Failed to extract MouseScript Packets");
+            } catch (Exception e) {}
 
-            if (deobMethod.getName().equals("handleMenuScriptOpcode")) {
-                totalFound += extractMenuScriptOpcodePackets(deobMethod);
-            }
+            try {
+                HashMap<String, String> found = extractMenuActionPackets(deobMethod);
+                if (found.size() == 48)
+                    clientPackets.putAll(found);
+                else
+                    throw new RuntimeException("Failed to extract MenuAction Packets");
+            } catch (Exception e) {}
         }
     }
 
-    private int extractMenuScriptOpcodePackets(Method deobMethod) {
+    private HashMap<String, String> extractMenuActionPackets(Method deobMethod) {
         int lastCompare = 0;
-        int found = 0;
         String lastPacketField = "";
+        HashMap<String, String> packetMap = new HashMap<>();
         boolean foundObj6 = false;
         for (Instruction i : deobMethod.getCode().getInstructions().getInstructions()) {
             if (i.toString().contains("label getstatic static Losrs/ClientPacket;")) {
                 lastPacketField = i.toString().split("osrs/ClientPacket; ")[1].split(" ")[0];
+                if (!lastPacketField.equals(""))
                 switch (lastCompare) {
-                    case 6 -> {
-                        found++;
-                        log.warn("Found OPLOC4 : " + lastPacketField);
-                    }
-                    case 7 -> {
-                        found++;
-                        log.warn("Found OPNPCU : " + lastPacketField);
-                    }
-                    case 8 -> {
-                        found++;
-                        log.warn("Found OPNPCT : " + lastPacketField);
-                    }
-                    case 9 -> {
-                        found++;
-                        log.warn("Found OPNPC1 : " + lastPacketField);
-                    }
-                    case 10 -> {
-                        found++;
-                        log.warn("Found OPNPC2 : " + lastPacketField);
-                    }
-                    case 11 -> {
-                        found++;
-                        log.warn("Found OPNPC3 : " + lastPacketField);
-                    }
-                    case 12 -> {
-                        found++;
-                        log.warn("Found OPNPC4 : " + lastPacketField);
-                    }
-                    case 13 -> {
-                        found++;
-                        log.warn("Found OPNPC5 : " + lastPacketField);
-                    }
-                    case 14 -> {
-                        found++;
-                        log.warn("Found OPPLAYERU : " + lastPacketField);
-                    }
-                    case 15 -> {
-                        found++;
-                        log.warn("Found OPPLAYERT : " + lastPacketField);
-                    }
-                    case 16 -> {
-                        found++;
-                        log.warn("Found OPOBJU : " + lastPacketField);
-                    }
-                    case 17 -> {
-                        found++;
-                        log.warn("Found OPOBJT : " + lastPacketField);
-                    }
-                    case 18 -> {
-                        found++;
-                        log.warn("Found OPOBJ1 : " + lastPacketField);
-                    }
-                    case 19 -> {
-                        found++;
-                        log.warn("Found OPOBJ2 : " + lastPacketField);
-                    }
-                    case 20 -> {
-                        found++;
-                        log.warn("Found OPOBJ3 : " + lastPacketField);
-                    }
-                    case 21 -> {
-                        found++;
-                        log.warn("Found OPOBJ4 : " + lastPacketField);
-                    }
-                    case 22 -> {
-                        found++;
-                        log.warn("Found OPOBJ5 : " + lastPacketField);
-                    }
-                    case 24 -> {
-                        found++;
-                        log.warn("Found BUTTON_CLICK : " + lastPacketField);
-                    }
-                    case 31 -> {
-                        found++;
-                        log.warn("Found OPHELDU : " + lastPacketField);
-                    }
-                    case 32 -> {
-                        found++;
-                        log.warn("Found OPHELDT : " + lastPacketField);
-                    }
-                    case 33 -> {
-                        found++;
-                        log.warn("Found OPHELD1 : " + lastPacketField);
-                    }
-                    case 34 -> {
-                        found++;
-                        log.warn("Found OPHELD2 : " + lastPacketField);
-                    }
-                    case 35 -> {
-                        found++;
-                        log.warn("Found OPHELD3 : " + lastPacketField);
-                    }
-                    case 36 -> {
-                        found++;
-                        log.warn("Found OPHELD4 : " + lastPacketField);
-                    }
-                    case 37 -> {
-                        found++;
-                        log.warn("Found OPHELD5 : " + lastPacketField);
-                    }
+                    case 6 -> packetMap.put("OPLOC4", lastPacketField);
+                    case 7 -> packetMap.put("OPNPCU", lastPacketField);
+                    case 8 -> packetMap.put("OPNPCT", lastPacketField);
+                    case 9 -> packetMap.put("OPNPC1", lastPacketField);
+                    case 10 -> packetMap.put("OPNPC2", lastPacketField);
+                    case 11 -> packetMap.put("OPNPC3", lastPacketField);
+                    case 12 -> packetMap.put("OPNPC4", lastPacketField);
+                    case 13 -> packetMap.put("OPNPC5", lastPacketField);
+                    case 14 -> packetMap.put("OPPLAYERU", lastPacketField);
+                    case 15 -> packetMap.put("OPPLAYERT", lastPacketField);
+                    case 16 -> packetMap.put("OPOBJU", lastPacketField);
+                    case 17 -> packetMap.put("OPOBJT", lastPacketField);
+                    case 18 -> packetMap.put("OPOBJ1", lastPacketField);
+                    case 19 -> packetMap.put("OPOBJ2", lastPacketField);
+                    case 20 -> packetMap.put("OPOBJ3", lastPacketField);
+                    case 21 -> packetMap.put("OPOBJ4", lastPacketField);
+                    case 22 -> packetMap.put("OPOBJ5", lastPacketField);
+                    case 24 -> packetMap.put("BUTTON_CLICK", lastPacketField);
+                    case 31 -> packetMap.put("OPHELDU", lastPacketField);
+                    case 32 -> packetMap.put("OPHELDT", lastPacketField);
+                    case 33 -> packetMap.put("OPHELD1", lastPacketField);
+                    case 34 -> packetMap.put("OPHELD2", lastPacketField);
+                    case 35 -> packetMap.put("OPHELD3", lastPacketField);
+                    case 36 -> packetMap.put("OPHELD4", lastPacketField);
+                    case 37 -> packetMap.put("OPHELD5", lastPacketField);
                     case 39 -> {
-                        found++;
-                        log.warn("Found IF1_BUTTON1 : " + lastPacketField);
+                        packetMap.put("IF1_BUTTON1", lastPacketField);
                         lastCompare = 1000;
                     }
-                    case 40 -> {
-                        found++;
-                        log.warn("Found IF1_BUTTON2 : " + lastPacketField);
-                    }
-                    case 41 -> {
-                        found++;
-                        log.warn("Found IF1_BUTTON3 : " + lastPacketField);
-                    }
-                    case 42 -> {
-                        found++;
-                        log.warn("Found IF1_BUTTON4 : " + lastPacketField);
-                    }
-                    case 43 -> {
-                        found++;
-                        log.warn("Found IF1_BUTTON5 : " + lastPacketField);
-                    }
-                    case 44 -> {
-                        found++;
-                        log.warn("Found OPPLAYER1 : " + lastPacketField);
-                    }
-                    case 45 -> {
-                        found++;
-                        log.warn("Found OPPLAYER2 : " + lastPacketField);
-                    }
-                    case 46 -> {
-                        found++;
-                        log.warn("Found OPPLAYER3 : " + lastPacketField);
-                    }
-                    case 47 -> {
-                        found++;
-                        log.warn("Found OPPLAYER4 : " + lastPacketField);
-                    }
-                    case 48 -> {
-                        found++;
-                        log.warn("Found OPPLAYER5 : " + lastPacketField);
-                    }
-                    case 49 -> {
-                        found++;
-                        log.warn("Found OPPLAYER6 : " + lastPacketField);
-                    }
-                    case 50 -> {
-                        found++;
-                        log.warn("Found OPPLAYER7 : " + lastPacketField);
-                    }
-                    case 51 -> {
-                        found++;
-                        log.warn("Found OPPLAYER8 : " + lastPacketField);
-                    }
-                    case 52 -> {
-                        found++;
-                        log.warn("Found OPPLAYER8 : " + lastPacketField);
-                    }
-                    case 58 -> {
-                        found++;
-                        log.warn("Found IF_BUTTONT : " + lastPacketField);
-                    }
-                    case 1001 -> {
-                        found++;
-                        log.warn("Found OPLOC5 : " + lastPacketField);
-                    }
-                    case 1002 -> {
-                        found++;
-                        log.warn("Found OPLOC6 : " + lastPacketField);
-                    }
-                    case 1003 -> {
-                        found++;
-                        log.warn("Found OPNPC6 : " + lastPacketField);
-                    }
+                    case 40 -> packetMap.put("IF1_BUTTON2", lastPacketField);
+                    case 41 -> packetMap.put("IF1_BUTTON3", lastPacketField);
+                    case 42 -> packetMap.put("IF1_BUTTON4", lastPacketField);
+                    case 43 -> packetMap.put("IF1_BUTTON5", lastPacketField);
+                    case 44 -> packetMap.put("OPPLAYER1", lastPacketField);
+                    case 45 -> packetMap.put("OPPLAYER2", lastPacketField);
+                    case 46 -> packetMap.put("OPPLAYER3", lastPacketField);
+                    case 47 -> packetMap.put("OPPLAYER4", lastPacketField);
+                    case 48 -> packetMap.put("OPPLAYER5", lastPacketField);
+                    case 49 -> packetMap.put("OPPLAYER6", lastPacketField);
+                    case 50 -> packetMap.put("OPPLAYER7", lastPacketField);
+                    case 51 -> packetMap.put("OPPLAYER8", lastPacketField);
+                    case 52 -> packetMap.put("OPPLAYER8", lastPacketField);
+                    case 58 -> packetMap.put("IF_BUTTONT", lastPacketField);
+                    case 1001 -> packetMap.put("OPLOC5", lastPacketField);
+                    case 1002 -> packetMap.put("OPLOC6", lastPacketField);
+                    case 1003 -> packetMap.put("OPNPC6", lastPacketField);
                     case 1004 -> {
                         if (!foundObj6) {
-                            found++;
-                            log.warn("Found OPOBJ6 : " + lastPacketField);
+                            packetMap.put("OPOBJ6", lastPacketField);
                             foundObj6 = true;
                         }
                     }
@@ -265,27 +172,12 @@ public class DecodeNet extends AbstractInjector {
                 }
             } else if (i instanceof BiPush) {
                 if (((BiPush) i).getOperand() == 82)
-                    switch (found) {
-                        case 0 -> {
-                            found++;
-                            log.warn("Found OPLOCU : " + lastPacketField);
-                        }
-                        case 1 -> {
-                            found++;
-                            log.warn("Found OPLOCT : " + lastPacketField);
-                        }
-                        case 2 -> {
-                            found++;
-                            log.warn("Found OPLOC1 : " + lastPacketField);
-                        }
-                        case 3 -> {
-                            found++;
-                            log.warn("Found OPLOC2 : " + lastPacketField);
-                        }
-                        case 4 -> {
-                            found++;
-                            log.warn("Found OPLOC3 : " + lastPacketField);
-                        }
+                    switch (packetMap.size()) {
+                        case 0 -> packetMap.put("OPLOCU", lastPacketField);
+                        case 1 -> packetMap.put("OPLOCT", lastPacketField);
+                        case 2 -> packetMap.put("OPLOC1", lastPacketField);
+                        case 3 -> packetMap.put("OPLOC2", lastPacketField);
+                        case 4 -> packetMap.put("OPLOC3", lastPacketField);
                     }
                 else if (((BiPush) i).getOperand() == 6) {
                     lastCompare = 6;
@@ -384,34 +276,31 @@ public class DecodeNet extends AbstractInjector {
                 }
             }
         }
-        return found;
+        return packetMap;
     }
 
-    private int extractMouseScriptOpcodePackets(Method deobMethod) {
+    private HashMap<String, String> extractMouseScriptOpcodePackets(Method deobMethod) {
         int lastCompare = 0;
-        int expected = 4;
-        int found = 0;
+        HashMap<String, String> packetMap = new HashMap<>();
         for (Instruction i : deobMethod.getCode().getInstructions().getInstructions())
             if (i instanceof SiPush) {
                 int i1 = ((SiPush) i).getOperand();
                 if (i1 != 500)
                     lastCompare = i1;
+            } else if (packetMap.size() == 4) {
+                break;
             } else if (i.toString().contains("label getstatic static Losrs/ClientPacket;")) {
                 if (lastCompare == ScriptOpcodes.RESUME_NAMEDIALOG) {
-                    log.warn("Found RESUME_P_NAMEDIALOG : " + i.toString().split("osrs/ClientPacket; ")[1].split(" ")[0]);
-                    found++;
+                    packetMap.put("RESUME_P_NAMEDIALOG", i.toString().split("osrs/ClientPacket; ")[1].split(" ")[0]);
                 } else if (lastCompare == ScriptOpcodes.RESUME_STRINGDIALOG) {
-                    log.warn("Found RESUME_P_STRINGDIALOG : " + i.toString().split("osrs/ClientPacket; ")[1].split(" ")[0]);
-                    found++;
+                    packetMap.put("RESUME_P_STRINGDIALOG", i.toString().split("osrs/ClientPacket; ")[1].split(" ")[0]);
                 } else if (lastCompare == ScriptOpcodes.RESUME_OBJDIALOG) {
-                    log.warn("Found RESUME_P_OBJDIALOG : " + i.toString().split("osrs/ClientPacket; ")[1].split(" ")[0]);
-                    found++;
+                    packetMap.put("RESUME_P_OBJDIALOG", i.toString().split("osrs/ClientPacket; ")[1].split(" ")[0]);
                 } else if (lastCompare == ScriptOpcodes.BUG_REPORT) {
-                    log.warn("Found BUG_REPORT : " + i.toString().split("osrs/ClientPacket; ")[1].split(" ")[0]);
-                    found++;
+                    packetMap.put("BUG_REPORT", i.toString().split("osrs/ClientPacket; ")[1].split(" ")[0]);
                 }
             }
-        return found;
+        return packetMap;
     }
 
 }
