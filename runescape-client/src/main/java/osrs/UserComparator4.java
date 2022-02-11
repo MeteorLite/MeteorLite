@@ -1,12 +1,13 @@
 package osrs;
 
+import java.io.IOException;
 import java.util.Comparator;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("cu")
+@ObfuscatedName("cp")
 @Implements("UserComparator4")
 public class UserComparator4 implements Comparator {
 	@ObfuscatedName("c")
@@ -19,8 +20,8 @@ public class UserComparator4 implements Comparator {
 
 	@ObfuscatedName("c")
 	@ObfuscatedSignature(
-		descriptor = "(Lmp;Lmp;I)I",
-		garbageValue = "-427505933"
+		descriptor = "(Lmd;Lmd;I)I",
+		garbageValue = "689643923"
 	)
 	@Export("compare_bridged")
 	int compare_bridged(Buddy var1, Buddy var2) {
@@ -37,204 +38,209 @@ public class UserComparator4 implements Comparator {
 
 	@ObfuscatedName("c")
 	@ObfuscatedSignature(
-		descriptor = "(Low;I)I",
-		garbageValue = "801134739"
+		descriptor = "(ZS)V",
+		garbageValue = "10562"
 	)
-	static final int method2508(LoginType var0) {
-		if (var0 == null) { // L: 16
-			return 12; // L: 17
-		} else {
-			switch(var0.field4406) { // L: 19
-			case 5:
-				return 20; // L: 21
-			default:
-				return 12; // L: 23
+	public static void method2434(boolean var0) {
+		if (NetCache.NetCache_socket != null) { // L: 42
+			try {
+				Buffer var1 = new Buffer(4); // L: 44
+				var1.writeByte(var0 ? 2 : 3); // L: 45
+				var1.writeMedium(0); // L: 46
+				NetCache.NetCache_socket.write(var1.array, 0, 4); // L: 47
+			} catch (IOException var4) {
+				try {
+					NetCache.NetCache_socket.close(); // L: 51
+				} catch (Exception var3) { // L: 53
+				}
+
+				++NetCache.NetCache_ioExceptions; // L: 54
+				NetCache.NetCache_socket = null; // L: 55
 			}
+
 		}
-	}
+	} // L: 57
 
-	@ObfuscatedName("p")
+	@ObfuscatedName("gx")
 	@ObfuscatedSignature(
-		descriptor = "([Lbw;II[I[II)V",
-		garbageValue = "388391303"
+		descriptor = "(B)V",
+		garbageValue = "-63"
 	)
-	@Export("sortWorlds")
-	static void sortWorlds(World[] var0, int var1, int var2, int[] var3, int[] var4) {
-		if (var1 < var2) { // L: 81
-			int var5 = var1 - 1; // L: 82
-			int var6 = var2 + 1; // L: 83
-			int var7 = (var2 + var1) / 2; // L: 84
-			World var8 = var0[var7]; // L: 85
-			var0[var7] = var0[var1]; // L: 86
-			var0[var1] = var8; // L: 87
+	static final void method2443() {
+		int var0;
+		int var1;
+		int var2;
+		int var3;
+		int var4;
+		int var5;
+		if (Client.oculusOrbState == 0) { // L: 3676
+			var0 = WorldMapSprite.localPlayer.x; // L: 3677
+			var1 = WorldMapSprite.localPlayer.y; // L: 3678
+			if (class29.oculusOrbFocalPointX - var0 < -500 || class29.oculusOrbFocalPointX - var0 > 500 || class121.oculusOrbFocalPointY - var1 < -500 || class121.oculusOrbFocalPointY - var1 > 500) { // L: 3679
+				class29.oculusOrbFocalPointX = var0; // L: 3680
+				class121.oculusOrbFocalPointY = var1; // L: 3681
+			}
 
-			while (var5 < var6) { // L: 88
-				boolean var9 = true; // L: 89
+			if (var0 != class29.oculusOrbFocalPointX) { // L: 3683
+				class29.oculusOrbFocalPointX += (var0 - class29.oculusOrbFocalPointX) / 16;
+			}
 
-				int var10;
-				int var11;
-				int var12;
-				do {
-					--var6; // L: 91
+			if (var1 != class121.oculusOrbFocalPointY) { // L: 3684
+				class121.oculusOrbFocalPointY += (var1 - class121.oculusOrbFocalPointY) / 16;
+			}
 
-					for (var10 = 0; var10 < 4; ++var10) { // L: 92
-						if (var3[var10] == 2) { // L: 95
-							var11 = var0[var6].index; // L: 96
-							var12 = var8.index; // L: 97
-						} else if (var3[var10] == 1) { // L: 99
-							var11 = var0[var6].population; // L: 100
-							var12 = var8.population; // L: 101
-							if (var11 == -1 && var4[var10] == 1) { // L: 102
-								var11 = 2001;
-							}
-
-							if (var12 == -1 && var4[var10] == 1) { // L: 103
-								var12 = 2001;
-							}
-						} else if (var3[var10] == 3) { // L: 105
-							var11 = var0[var6].isMembersOnly() ? 1 : 0; // L: 106
-							var12 = var8.isMembersOnly() ? 1 : 0; // L: 107
-						} else {
-							var11 = var0[var6].id; // L: 110
-							var12 = var8.id; // L: 111
+			var2 = class29.oculusOrbFocalPointX >> 7; // L: 3685
+			var3 = class121.oculusOrbFocalPointY >> 7; // L: 3686
+			var4 = class92.getTileHeight(class29.oculusOrbFocalPointX, class121.oculusOrbFocalPointY, SoundSystem.Client_plane); // L: 3687
+			var5 = 0; // L: 3688
+			int var6;
+			if (var2 > 3 && var3 > 3 && var2 < 100 && var3 < 100) { // L: 3689
+				for (var6 = var2 - 4; var6 <= var2 + 4; ++var6) { // L: 3690
+					for (int var7 = var3 - 4; var7 <= var3 + 4; ++var7) { // L: 3691
+						int var8 = SoundSystem.Client_plane; // L: 3692
+						if (var8 < 3 && (Tiles.Tiles_renderFlags[1][var6][var7] & 2) == 2) { // L: 3693
+							++var8;
 						}
 
-						if (var12 != var11) { // L: 113
-							if ((var4[var10] != 1 || var11 <= var12) && (var4[var10] != 0 || var11 >= var12)) { // L: 116 117
-								var9 = false; // L: 119
-							}
-							break;
-						}
-
-						if (var10 == 3) { // L: 114
-							var9 = false;
+						int var9 = var4 - Tiles.Tiles_heights[var8][var6][var7]; // L: 3694
+						if (var9 > var5) { // L: 3695
+							var5 = var9;
 						}
 					}
-				} while(var9);
-
-				var9 = true; // L: 124
-
-				do {
-					++var5; // L: 126
-
-					for (var10 = 0; var10 < 4; ++var10) { // L: 127
-						if (var3[var10] == 2) { // L: 130
-							var11 = var0[var5].index; // L: 131
-							var12 = var8.index; // L: 132
-						} else if (var3[var10] == 1) { // L: 134
-							var11 = var0[var5].population; // L: 135
-							var12 = var8.population; // L: 136
-							if (var11 == -1 && var4[var10] == 1) { // L: 137
-								var11 = 2001;
-							}
-
-							if (var12 == -1 && var4[var10] == 1) { // L: 138
-								var12 = 2001;
-							}
-						} else if (var3[var10] == 3) { // L: 140
-							var11 = var0[var5].isMembersOnly() ? 1 : 0; // L: 141
-							var12 = var8.isMembersOnly() ? 1 : 0; // L: 142
-						} else {
-							var11 = var0[var5].id; // L: 145
-							var12 = var8.id; // L: 146
-						}
-
-						if (var12 != var11) { // L: 148
-							if ((var4[var10] != 1 || var11 >= var12) && (var4[var10] != 0 || var11 <= var12)) { // L: 151 152
-								var9 = false; // L: 154
-							}
-							break;
-						}
-
-						if (var10 == 3) { // L: 149
-							var9 = false;
-						}
-					}
-				} while(var9);
-
-				if (var5 < var6) { // L: 159
-					World var13 = var0[var5]; // L: 160
-					var0[var5] = var0[var6]; // L: 161
-					var0[var6] = var13; // L: 162
 				}
 			}
 
-			sortWorlds(var0, var1, var6, var3, var4); // L: 165
-			sortWorlds(var0, var6 + 1, var2, var3, var4); // L: 166
-		}
-
-	} // L: 168
-
-	@ObfuscatedName("m")
-	@ObfuscatedSignature(
-		descriptor = "(Ldn;[F[FS)V",
-		garbageValue = "5664"
-	)
-	static void method2504(class115 var0, float[] var1, float[] var2) {
-		if (var0 != null) { // L: 288
-			var0.field1406 = var1[0]; // L: 291
-			float var3 = var1[3] - var1[0]; // L: 292
-			float var4 = var2[3] - var2[0]; // L: 293
-			float var5 = var1[1] - var1[0]; // L: 294
-			float var6 = 0.0F; // L: 295
-			float var7 = 0.0F; // L: 296
-			if ((double)var5 != 0.0D) { // L: 297
-				var6 = (var2[1] - var2[0]) / var5; // L: 298
+			var6 = var5 * 192; // L: 3699
+			if (var6 > 98048) { // L: 3700
+				var6 = 98048;
 			}
 
-			var5 = var1[3] - var1[2]; // L: 300
-			if (0.0D != (double)var5) { // L: 301
-				var7 = (var2[3] - var2[2]) / var5; // L: 302
+			if (var6 < 32768) { // L: 3701
+				var6 = 32768;
 			}
 
-			float var8 = 1.0F / (var3 * var3); // L: 304
-			float var9 = var6 * var3; // L: 305
-			float var10 = var7 * var3; // L: 306
-			var0.field1401[0] = var8 * (var9 + var10 - var4 - var4) / var3; // L: 307
-			var0.field1401[1] = (var4 + var4 + var4 - var9 - var9 - var10) * var8; // L: 308
-			var0.field1401[2] = var6; // L: 309
-			var0.field1401[3] = var2[0]; // L: 310
-		}
-	} // L: 289 311
+			if (var6 > Client.field590) { // L: 3702
+				Client.field590 += (var6 - Client.field590) / 24;
+			} else if (var6 < Client.field590) { // L: 3703
+				Client.field590 += (var6 - Client.field590) / 80;
+			}
 
-	@ObfuscatedName("s")
-	@ObfuscatedSignature(
-		descriptor = "(Lbw;Lbw;IZIZB)I",
-		garbageValue = "-82"
-	)
-	static int method2506(World var0, World var1, int var2, boolean var3, int var4, boolean var5) {
-		int var6 = ReflectionCheck.compareWorlds(var0, var1, var2, var3); // L: 199
-		if (var6 != 0) { // L: 200
-			return var3 ? -var6 : var6; // L: 201
-		} else if (var4 == -1) { // L: 204
-			return 0;
-		} else {
-			int var7 = ReflectionCheck.compareWorlds(var0, var1, var4, var5); // L: 205
-			return var5 ? -var7 : var7; // L: 206
-		}
-	}
+			SpriteMask.field3218 = class92.getTileHeight(WorldMapSprite.localPlayer.x, WorldMapSprite.localPlayer.y, SoundSystem.Client_plane) - Client.camFollowHeight; // L: 3704
+		} else if (Client.oculusOrbState == 1) { // L: 3706
+			class16.method200(); // L: 3707
+			short var10 = -1; // L: 3708
+			if (KeyHandler.KeyHandler_pressedKeys[33]) { // L: 3709
+				var10 = 0;
+			} else if (KeyHandler.KeyHandler_pressedKeys[49]) { // L: 3710
+				var10 = 1024;
+			}
 
-	@ObfuscatedName("lm")
-	@ObfuscatedSignature(
-		descriptor = "(Ljava/lang/String;I)V",
-		garbageValue = "-452202636"
-	)
-	static void method2499(String var0) {
-		class1.field3 = var0; // L: 12602
+			if (KeyHandler.KeyHandler_pressedKeys[48]) { // L: 3711
+				if (var10 == 0) { // L: 3712
+					var10 = 1792;
+				} else if (var10 == 1024) { // L: 3713
+					var10 = 1280;
+				} else {
+					var10 = 1536; // L: 3714
+				}
+			} else if (KeyHandler.KeyHandler_pressedKeys[50]) { // L: 3716
+				if (var10 == 0) { // L: 3717
+					var10 = 256;
+				} else if (var10 == 1024) { // L: 3718
+					var10 = 768;
+				} else {
+					var10 = 512; // L: 3719
+				}
+			}
 
-		try {
-			String var1 = class295.client.getParameter(Integer.toString(18)); // L: 12604
-			String var2 = class295.client.getParameter(Integer.toString(13)); // L: 12605
-			String var3 = var1 + "settings=" + var0 + "; version=1; path=/; domain=" + var2; // L: 12606
-			if (var0.length() == 0) { // L: 12607
-				var3 = var3 + "; Expires=Thu, 01-Jan-1970 00:00:00 GMT; Max-Age=0";
+			byte var11 = 0; // L: 3721
+			if (KeyHandler.KeyHandler_pressedKeys[35]) { // L: 3722
+				var11 = -1;
+			} else if (KeyHandler.KeyHandler_pressedKeys[51]) { // L: 3723
+				var11 = 1;
+			}
+
+			var2 = 0; // L: 3724
+			if (var10 >= 0 || var11 != 0) { // L: 3725
+				var2 = KeyHandler.KeyHandler_pressedKeys[81] ? Client.oculusOrbSlowedSpeed * -1756488183 * 714395705 : Client.oculusOrbNormalSpeed * -1640452853 * 1261221539; // L: 3726
+				var2 *= 16; // L: 3727
+				Client.field497 = var10; // L: 3728
+				Client.field583 = var11; // L: 3729
+			}
+
+			if (Client.field581 < var2) { // L: 3731
+				Client.field581 += var2 / 8; // L: 3732
+				if (Client.field581 > var2) { // L: 3733
+					Client.field581 = var2;
+				}
+			} else if (Client.field581 > var2) { // L: 3735
+				Client.field581 = Client.field581 * 9 / 10;
+			}
+
+			if (Client.field581 > 0) { // L: 3736
+				var3 = Client.field581 / 16; // L: 3737
+				if (Client.field497 >= 0) { // L: 3738
+					var0 = Client.field497 - class7.cameraYaw & 2047; // L: 3739
+					var4 = Rasterizer3D.Rasterizer3D_sine[var0]; // L: 3740
+					var5 = Rasterizer3D.Rasterizer3D_cosine[var0]; // L: 3741
+					class29.oculusOrbFocalPointX += var3 * var4 / 65536; // L: 3742
+					class121.oculusOrbFocalPointY += var3 * var5 / 65536; // L: 3743
+				}
+
+				if (Client.field583 != 0) { // L: 3745
+					SpriteMask.field3218 += var3 * Client.field583; // L: 3746
+					if (SpriteMask.field3218 > 0) { // L: 3747
+						SpriteMask.field3218 = 0;
+					}
+				}
 			} else {
-				var3 = var3 + "; Expires=" + class13.method195(Ignored.getServerTime() + 94608000000L) + "; Max-Age=" + 94608000L; // L: 12608
+				Client.field497 = -1; // L: 3751
+				Client.field583 = -1; // L: 3752
 			}
 
-			class27.method432(class295.client, "document.cookie=\"" + var3 + "\""); // L: 12609
-		} catch (Throwable var4) { // L: 12611
+			if (KeyHandler.KeyHandler_pressedKeys[13]) { // L: 3754
+				Client.packetWriter.addNode(class135.getPacketBufferNode(ClientPacket.field2891, Client.packetWriter.isaacCipher)); // L: 3756
+				Client.oculusOrbState = 0; // L: 3757
+			}
 		}
 
-	} // L: 12612
+		if (MouseHandler.MouseHandler_currentButton == 4 && class370.mouseCam) { // L: 3761
+			var0 = MouseHandler.MouseHandler_y - Client.mouseCamClickedY; // L: 3762
+			Client.camAngleDX = var0 * 2; // L: 3763
+			Client.mouseCamClickedY = var0 != -1 && var0 != 1 ? (Client.mouseCamClickedY + MouseHandler.MouseHandler_y) / 2 : MouseHandler.MouseHandler_y * 674458539 * 231487235; // L: 3764
+			var1 = Client.mouseCamClickedX - MouseHandler.MouseHandler_x; // L: 3765
+			Client.camAngleDY = var1 * 2; // L: 3766
+			Client.mouseCamClickedX = var1 != -1 && var1 != 1 ? (MouseHandler.MouseHandler_x + Client.mouseCamClickedX) / 2 : MouseHandler.MouseHandler_x * -639406763 * 977348605; // L: 3767
+		} else {
+			if (KeyHandler.KeyHandler_pressedKeys[96]) { // L: 3770
+				Client.camAngleDY += (-24 - Client.camAngleDY) / 2;
+			} else if (KeyHandler.KeyHandler_pressedKeys[97]) { // L: 3771
+				Client.camAngleDY += (24 - Client.camAngleDY) / 2;
+			} else {
+				Client.camAngleDY /= 2; // L: 3772
+			}
+
+			if (KeyHandler.KeyHandler_pressedKeys[98]) { // L: 3773
+				Client.camAngleDX += (12 - Client.camAngleDX) / 2;
+			} else if (KeyHandler.KeyHandler_pressedKeys[99]) { // L: 3774
+				Client.camAngleDX += (-12 - Client.camAngleDX) / 2;
+			} else {
+				Client.camAngleDX /= 2; // L: 3775
+			}
+
+			Client.mouseCamClickedY = MouseHandler.MouseHandler_y; // L: 3776
+			Client.mouseCamClickedX = MouseHandler.MouseHandler_x; // L: 3777
+		}
+
+		Client.camAngleY = Client.camAngleDY / 2 + Client.camAngleY & 2047; // L: 3779
+		Client.camAngleX += Client.camAngleDX / 2; // L: 3780
+		if (Client.camAngleX < 128) { // L: 3781
+			Client.camAngleX = 128;
+		}
+
+		if (Client.camAngleX > 383) { // L: 3782
+			Client.camAngleX = 383;
+		}
+
+	} // L: 3783
 }

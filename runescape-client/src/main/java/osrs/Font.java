@@ -4,7 +4,7 @@ import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 
-@ObfuscatedName("lx")
+@ObfuscatedName("lv")
 @Implements("Font")
 public final class Font extends AbstractFont {
 	public Font(byte[] var1, int[] var2, int[] var3, int[] var4, int[] var5, int[] var6, byte[][] var7) {
@@ -57,7 +57,7 @@ public final class Font extends AbstractFont {
 		}
 	} // L: 44
 
-	@ObfuscatedName("b")
+	@ObfuscatedName("l")
 	@Export("drawGlyphAlpha")
 	final void drawGlyphAlpha(byte[] var1, int var2, int var3, int var4, int var5, int var6, int var7) {
 		int var8 = var3 * Rasterizer2D.Rasterizer2D_width + var2; // L: 47

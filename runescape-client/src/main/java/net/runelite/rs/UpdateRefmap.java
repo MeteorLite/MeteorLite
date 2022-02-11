@@ -18,7 +18,7 @@ public class UpdateRefmap {
 
   public static void main(String[] args) throws Exception {
     Map<String, Class<?>> classMap = new HashMap<>();
-    Path path = new File("./runescape-client/build/classes/java/main/osrs/")
+    Path path = new File("./osrs/build/classes/java/main/osrs/")
         .toPath();
 
     Files.walk(path)
@@ -49,7 +49,7 @@ public class UpdateRefmap {
       refmap.put(s, classMap.get(s).getName());
     }
     Gson gson = new GsonBuilder().setPrettyPrinting().create();
-    try (Writer writer = new FileWriter("./meteor-client/src/main/resources/osrs-refmap.json")) {
+    try (Writer writer = new FileWriter("./osrs-refmap.json")) {
       gson.toJson(refmap, writer);
     }
     System.exit(0);

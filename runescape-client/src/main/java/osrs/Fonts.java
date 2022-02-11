@@ -6,27 +6,30 @@ import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("oh")
+@ObfuscatedName("ov")
 @Implements("Fonts")
 public class Fonts {
+	@ObfuscatedName("i")
+	@Export("SpriteBuffer_spriteHeights")
+	public static int[] SpriteBuffer_spriteHeights;
 	@ObfuscatedName("c")
 	@ObfuscatedSignature(
-		descriptor = "Lku;"
+		descriptor = "Lkq;"
 	)
 	@Export("spritesArchive")
 	AbstractArchive spritesArchive;
-	@ObfuscatedName("b")
+	@ObfuscatedName("l")
 	@ObfuscatedSignature(
-		descriptor = "Lku;"
+		descriptor = "Lkq;"
 	)
 	@Export("fontsArchive")
 	AbstractArchive fontsArchive;
-	@ObfuscatedName("p")
+	@ObfuscatedName("s")
 	@Export("map")
 	HashMap map;
 
 	@ObfuscatedSignature(
-		descriptor = "(Lku;Lku;)V"
+		descriptor = "(Lkq;Lkq;)V"
 	)
 	public Fonts(AbstractArchive var1, AbstractArchive var2) {
 		this.spritesArchive = var1; // L: 14
@@ -36,8 +39,8 @@ public class Fonts {
 
 	@ObfuscatedName("c")
 	@ObfuscatedSignature(
-		descriptor = "([Lot;I)Ljava/util/HashMap;",
-		garbageValue = "700588236"
+		descriptor = "([Lox;I)Ljava/util/HashMap;",
+		garbageValue = "1264329107"
 	)
 	@Export("createMap")
 	public HashMap createMap(FontName[] var1) {
@@ -54,30 +57,29 @@ public class Fonts {
 				String var9 = var5.name; // L: 33
 				int var10 = var7.getGroupId(var9); // L: 35
 				int var11 = var7.getFileId(var10, ""); // L: 36
-				Font var12;
-				if (!class147.method3009(var7, var10, var11)) { // L: 39
-					var12 = null; // L: 40
-				} else {
-					byte[] var14 = var8.takeFile(var10, var11); // L: 44
-					Font var13;
-					if (var14 == null) { // L: 46
-						var13 = null; // L: 47
-					} else {
-						Font var15 = new Font(var14, class141.SpriteBuffer_xOffsets, RouteStrategy.SpriteBuffer_yOffsets, class432.SpriteBuffer_spriteWidths, class330.SpriteBuffer_spriteHeights, class432.SpriteBuffer_spritePalette, class369.SpriteBuffer_pixels); // L: 50
-						UserComparator3.method2529(); // L: 51
-						var13 = var15; // L: 52
-					}
-
-					var12 = var13; // L: 54
-				}
-
-				if (var12 != null) { // L: 59
-					this.map.put(var5, var12); // L: 60
-					var2.put(var5, var12); // L: 61
+				Font var6 = DynamicObject.method1996(var7, var8, var10, var11); // L: 37
+				if (var6 != null) { // L: 40
+					this.map.put(var5, var6); // L: 41
+					var2.put(var5, var6); // L: 42
 				}
 			}
 		}
 
-		return var2; // L: 67
+		return var2; // L: 48
 	}
+
+	@ObfuscatedName("kt")
+	@ObfuscatedSignature(
+		descriptor = "(Ljava/lang/String;I)V",
+		garbageValue = "-1409007711"
+	)
+	@Export("Clan_joinChat")
+	static final void Clan_joinChat(String var0) {
+		if (!var0.equals("")) { // L: 11927
+			PacketBufferNode var1 = class135.getPacketBufferNode(ClientPacket.field2860, Client.packetWriter.isaacCipher); // L: 11929
+			var1.packetBuffer.writeByte(GrandExchangeEvents.stringCp1252NullTerminatedByteSize(var0)); // L: 11930
+			var1.packetBuffer.writeStringCp1252NullTerminated(var0); // L: 11931
+			Client.packetWriter.addNode(var1); // L: 11932
+		}
+	} // L: 11933
 }

@@ -1,38 +1,46 @@
 package osrs;
 
+import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
-import net.runelite.rs.ScriptOpcodes;
 
-@ObfuscatedName("ef")
+@ObfuscatedName("eh")
 public class class134 extends class142 {
+	@ObfuscatedName("l")
+	@Export("javaVersion")
+	public static String javaVersion;
+	@ObfuscatedName("fr")
+	@ObfuscatedGetter(
+		intValue = -2098238709
+	)
+	static int field1572;
 	@ObfuscatedName("c")
 	@ObfuscatedGetter(
-		intValue = 642006289
+		intValue = -1109793603
 	)
-	int field1552;
+	int field1573;
 	// $FF: synthetic field
 	@ObfuscatedSignature(
-		descriptor = "Len;"
+		descriptor = "Led;"
 	)
 	final class143 this$0;
 
 	@ObfuscatedSignature(
-		descriptor = "(Len;)V"
+		descriptor = "(Led;)V"
 	)
 	class134(class143 var1) {
 		this.this$0 = var1;
-		this.field1552 = -1; // L: 82
+		this.field1573 = -1; // L: 82
 	} // L: 84
 
 	@ObfuscatedName("c")
 	@ObfuscatedSignature(
 		descriptor = "(Lpi;B)V",
-		garbageValue = "4"
+		garbageValue = "-103"
 	)
-	void vmethod3022(Buffer var1) {
-		this.field1552 = var1.readUnsignedShort(); // L: 87
+	void vmethod3014(Buffer var1) {
+		this.field1573 = var1.readUnsignedShort(); // L: 87
 		var1.readUnsignedByte(); // L: 88
 		if (var1.readUnsignedByte() != 255) { // L: 89
 			--var1.offset; // L: 90
@@ -41,65 +49,63 @@ public class class134 extends class142 {
 
 	} // L: 93
 
-	@ObfuscatedName("b")
+	@ObfuscatedName("l")
 	@ObfuscatedSignature(
-		descriptor = "(Lei;B)V",
-		garbageValue = "40"
+		descriptor = "(Leg;B)V",
+		garbageValue = "48"
 	)
-	void vmethod3021(ClanChannel var1) {
-		var1.removeMember(this.field1552); // L: 96
+	void vmethod3015(ClanChannel var1) {
+		var1.removeMember(this.field1573); // L: 96
 	} // L: 97
 
-	@ObfuscatedName("av")
+	@ObfuscatedName("c")
 	@ObfuscatedSignature(
-		descriptor = "(ILbn;ZB)I",
-		garbageValue = "1"
+		descriptor = "(Li;I)Le;",
+		garbageValue = "-62373396"
 	)
-	static int method2824(int var0, Script var1, boolean var2) {
-		if (var0 == ScriptOpcodes.GETWINDOWMODE) { // L: 3533
-			Interpreter.Interpreter_intStack[++IsaacCipher.Interpreter_intStackSize - 1] = class143.getWindowedMode(); // L: 3534
-			return 1; // L: 3535
-		} else {
-			int var3;
-			if (var0 == ScriptOpcodes.SETWINDOWMODE) { // L: 3537
-				var3 = Interpreter.Interpreter_intStack[--IsaacCipher.Interpreter_intStackSize]; // L: 3538
-				if (var3 == 1 || var3 == 2) { // L: 3539
-					Occluder.setWindowedMode(var3);
-				}
+	public static class3 method2824(class6 var0) {
+		switch(var0.field22) { // L: 9
+		case 0:
+			return new class0(); // L: 16
+		default:
+			throw new IllegalArgumentException(); // L: 12
+		}
+	}
 
-				return 1; // L: 3540
-			} else if (var0 == ScriptOpcodes.GETDEFAULTWINDOWMODE) { // L: 3542
-				Interpreter.Interpreter_intStack[++IsaacCipher.Interpreter_intStackSize - 1] = SecureRandomFuture.clientPreferences.windowMode; // L: 3543
-				return 1; // L: 3544
-			} else if (var0 != ScriptOpcodes.SETDEFAULTWINDOWMODE) { // L: 3546
-				if (var0 == 5310) { // L: 3554
-					--IsaacCipher.Interpreter_intStackSize; // L: 3555
-					return 1; // L: 3556
-				} else if (var0 == 5311) { // L: 3558
-					IsaacCipher.Interpreter_intStackSize -= 2; // L: 3559
-					return 1; // L: 3560
-				} else if (var0 == 5312) { // L: 3562
-					--IsaacCipher.Interpreter_intStackSize; // L: 3563
-					return 1; // L: 3564
-				} else if (var0 == 5350) { // L: 3566
-					class13.Interpreter_stringStackSize -= 2; // L: 3567
-					--IsaacCipher.Interpreter_intStackSize; // L: 3568
-					return 1; // L: 3569
-				} else if (var0 == 5351) { // L: 3571
-					--class13.Interpreter_stringStackSize; // L: 3572
-					return 1; // L: 3573
+	@ObfuscatedName("c")
+	@ObfuscatedSignature(
+		descriptor = "([BIIB)Ljava/lang/String;",
+		garbageValue = "-15"
+	)
+	public static String method2826(byte[] var0, int var1, int var2) {
+		StringBuilder var3 = new StringBuilder(); // L: 58
+
+		for (int var4 = var1; var4 < var2 + var1; var4 += 3) { // L: 59
+			int var5 = var0[var4] & 255; // L: 60
+			var3.append(class334.field4052[var5 >>> 2]); // L: 61
+			if (var4 < var2 - 1) { // L: 62
+				int var6 = var0[var4 + 1] & 255; // L: 63
+				var3.append(class334.field4052[(var5 & 3) << 4 | var6 >>> 4]); // L: 64
+				if (var4 < var2 - 2) { // L: 65
+					int var7 = var0[var4 + 2] & 255; // L: 66
+					var3.append(class334.field4052[(var6 & 15) << 2 | var7 >>> 6]).append(class334.field4052[var7 & 63]); // L: 67
 				} else {
-					return 2; // L: 3575
+					var3.append(class334.field4052[(var6 & 15) << 2]).append("="); // L: 69
 				}
 			} else {
-				var3 = Interpreter.Interpreter_intStack[--IsaacCipher.Interpreter_intStackSize]; // L: 3547
-				if (var3 == 1 || var3 == 2) { // L: 3548
-					SecureRandomFuture.clientPreferences.windowMode = var3; // L: 3549
-					class127.savePreferences(); // L: 3550
-				}
-
-				return 1; // L: 3552
+				var3.append(class334.field4052[(var5 & 3) << 4]).append("=="); // L: 71
 			}
 		}
+
+		return var3.toString(); // L: 73
+	}
+
+	@ObfuscatedName("l")
+	@ObfuscatedSignature(
+		descriptor = "(IIIB)I",
+		garbageValue = "6"
+	)
+	static int method2825(int var0, int var1, int var2) {
+		return var0 << 28 | var1 << 14 | var2; // L: 34
 	}
 }

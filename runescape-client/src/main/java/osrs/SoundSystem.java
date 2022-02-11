@@ -2,18 +2,22 @@ package osrs;
 
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
+import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("al")
+@ObfuscatedName("ad")
 @Implements("SoundSystem")
 public class SoundSystem implements Runnable {
-	@ObfuscatedName("qt")
-	@Export("ClanChat_inClanChat")
-	static boolean ClanChat_inClanChat;
+	@ObfuscatedName("lm")
+	@ObfuscatedGetter(
+		intValue = 750290801
+	)
+	@Export("Client_plane")
+	static int Client_plane;
 	@ObfuscatedName("c")
 	@ObfuscatedSignature(
-		descriptor = "[Lar;"
+		descriptor = "[Lag;"
 	)
 	@Export("players")
 	volatile PcmPlayer[] players;
@@ -31,8 +35,17 @@ public class SoundSystem implements Runnable {
 				}
 			}
 		} catch (Exception var4) { // L: 17
-			AccessFile.RunException_sendStackTrace((String)null, var4); // L: 18
+			FloorDecoration.RunException_sendStackTrace((String)null, var4); // L: 18
 		}
 
 	} // L: 20
+
+	@ObfuscatedName("c")
+	@ObfuscatedSignature(
+		descriptor = "(Lkq;B)V",
+		garbageValue = "0"
+	)
+	public static void method782(AbstractArchive var0) {
+		EnumComposition.EnumDefinition_archive = var0; // L: 25
+	} // L: 26
 }

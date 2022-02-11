@@ -6,74 +6,68 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("cp")
+@ObfuscatedName("cg")
 @Implements("ScriptEvent")
 public class ScriptEvent extends Node {
-	@ObfuscatedName("dl")
-	@ObfuscatedSignature(
-		descriptor = "Lfk;"
-	)
-	@Export("js5SocketTask")
-	static Task js5SocketTask;
 	@ObfuscatedName("c")
 	@Export("args")
 	Object[] args;
-	@ObfuscatedName("b")
+	@ObfuscatedName("l")
 	@Export("isMouseInputEvent")
 	boolean isMouseInputEvent;
-	@ObfuscatedName("p")
+	@ObfuscatedName("s")
 	@ObfuscatedSignature(
-		descriptor = "Ljm;"
+		descriptor = "Ljz;"
 	)
 	@Export("widget")
-    Widget widget;
-	@ObfuscatedName("m")
+	Widget widget;
+	@ObfuscatedName("e")
 	@ObfuscatedGetter(
-		intValue = -1316811587
+		intValue = -858505837
 	)
 	@Export("mouseX")
 	int mouseX;
-	@ObfuscatedName("t")
+	@ObfuscatedName("r")
 	@ObfuscatedGetter(
-		intValue = 429308499
+		intValue = 126424841
 	)
 	@Export("mouseY")
 	int mouseY;
-	@ObfuscatedName("s")
+	@ObfuscatedName("o")
 	@ObfuscatedGetter(
-		intValue = 2143189111
+		intValue = -210169861
 	)
 	@Export("opIndex")
 	int opIndex;
-	@ObfuscatedName("j")
+	@ObfuscatedName("i")
 	@ObfuscatedSignature(
-		descriptor = "Ljm;"
+		descriptor = "Ljz;"
 	)
 	@Export("dragTarget")
-    Widget dragTarget;
+	Widget dragTarget;
 	@ObfuscatedName("w")
 	@ObfuscatedGetter(
-		intValue = 1992981497
+		intValue = 24554727
 	)
 	@Export("keyTyped")
 	int keyTyped;
-	@ObfuscatedName("n")
+	@ObfuscatedName("v")
 	@ObfuscatedGetter(
-		intValue = 1481039273
+		intValue = -42257657
 	)
 	@Export("keyPressed")
 	int keyPressed;
-	@ObfuscatedName("r")
+	@ObfuscatedName("a")
 	@Export("targetName")
 	String targetName;
-	@ObfuscatedName("o")
+	@ObfuscatedName("y")
 	@ObfuscatedGetter(
-		intValue = 2063557447
+		intValue = -1380078595
 	)
-	int field1018;
-	@ObfuscatedName("v")
+	int field1041;
+	@ObfuscatedName("u")
 	@ObfuscatedGetter(
-		intValue = -170521561
+		intValue = -465756931
 	)
 	@Export("type")
 	int type;
@@ -84,91 +78,64 @@ public class ScriptEvent extends Node {
 
 	@ObfuscatedName("c")
 	@ObfuscatedSignature(
-		descriptor = "([Ljava/lang/Object;B)V",
-		garbageValue = "1"
+		descriptor = "([Ljava/lang/Object;I)V",
+		garbageValue = "476436061"
 	)
 	@Export("setArgs")
 	public void setArgs(Object[] var1) {
 		this.args = var1; // L: 22
 	} // L: 23
 
-	@ObfuscatedName("b")
+	@ObfuscatedName("l")
 	@ObfuscatedSignature(
 		descriptor = "(II)V",
-		garbageValue = "-1783513885"
+		garbageValue = "1370467396"
 	)
 	@Export("setType")
 	public void setType(int var1) {
 		this.type = var1; // L: 26
 	} // L: 27
 
-	@ObfuscatedName("p")
+	@ObfuscatedName("e")
 	@ObfuscatedSignature(
-		descriptor = "(II)Ldh;",
-		garbageValue = "665811152"
+		descriptor = "([BB)V",
+		garbageValue = "84"
 	)
-	static class114 method2154(int var0) {
-		class114 var1 = (class114)class130.findEnumerated(LoginScreenAnimation.method2251(), var0); // L: 138
-		if (var1 == null) {
-			var1 = class114.field1390; // L: 139
-		}
-
-		return var1; // L: 140
-	}
-
-	@ObfuscatedName("n")
-	@ObfuscatedSignature(
-		descriptor = "(B)V",
-		garbageValue = "-37"
-	)
-	static final void method2152() {
-		Object var10000 = null; // L: 108
-		String var0 = "Your friend list is full. Max of 200 for free users, and 400 for members";
-		class194.addGameMessage(30, "", var0); // L: 110
-	} // L: 112
-
-	@ObfuscatedName("jt")
-	@ObfuscatedSignature(
-		descriptor = "(IIIIIIB)V",
-		garbageValue = "95"
-	)
-	static final void method2147(int var0, int var1, int var2, int var3, int var4, int var5) {
-		int var6 = var2 - var0; // L: 10850
-		int var7 = var3 - var1; // L: 10851
-		int var8 = var6 >= 0 ? var6 : -var6; // L: 10852
-		int var9 = var7 >= 0 ? var7 : -var7; // L: 10853
-		int var10 = var8; // L: 10854
-		if (var8 < var9) { // L: 10855
-			var10 = var9;
-		}
-
-		if (var10 != 0) { // L: 10856
-			int var11 = (var6 << 16) / var10; // L: 10857
-			int var12 = (var7 << 16) / var10; // L: 10858
-			if (var12 <= var11) { // L: 10859
-				var11 = -var11;
-			} else {
-				var12 = -var12; // L: 10860
+	@Export("ByteArrayPool_release")
+	public static synchronized void ByteArrayPool_release(byte[] var0) {
+		if (var0.length == 100 && ByteArrayPool.ByteArrayPool_smallCount < ByteArrayPool.field4073) { // L: 98
+			ByteArrayPool.ByteArrayPool_small[++ByteArrayPool.ByteArrayPool_smallCount - 1] = var0; // L: 99
+		} else if (var0.length == 5000 && ByteArrayPool.ByteArrayPool_mediumCount < ByteArrayPool.field4074) { // L: 102
+			ByteArrayPool.ByteArrayPool_medium[++ByteArrayPool.ByteArrayPool_mediumCount - 1] = var0; // L: 103
+		} else if (var0.length == 10000 && ByteArrayPool.ByteArrayPool_largeCount < ByteArrayPool.field4071) { // L: 106
+			ByteArrayPool.ByteArrayPool_large[++ByteArrayPool.ByteArrayPool_largeCount - 1] = var0; // L: 107
+		} else if (var0.length == 30000 && ByteArrayPool.field4072 < ByteArrayPool.field4076) { // L: 110
+			ByteArrayPool.field4080[++ByteArrayPool.field4072 - 1] = var0; // L: 111
+		} else {
+			if (class113.ByteArrayPool_arrays != null) { // L: 114
+				for (int var1 = 0; var1 < ByteArrayPool.ByteArrayPool_alternativeSizes.length; ++var1) { // L: 115
+					if (var0.length == ByteArrayPool.ByteArrayPool_alternativeSizes[var1] && ArchiveDiskActionHandler.ByteArrayPool_altSizeArrayCounts[var1] < class113.ByteArrayPool_arrays[var1].length) { // L: 116
+						class113.ByteArrayPool_arrays[var1][ArchiveDiskActionHandler.ByteArrayPool_altSizeArrayCounts[var1]++] = var0; // L: 117
+						return; // L: 118
+					}
+				}
 			}
 
-			int var13 = var5 * var12 >> 17; // L: 10861
-			int var14 = var5 * var12 + 1 >> 17; // L: 10862
-			int var15 = var5 * var11 >> 17; // L: 10863
-			int var16 = var5 * var11 + 1 >> 17; // L: 10864
-			var0 -= Rasterizer2D.Rasterizer2D_xClipStart; // L: 10865
-			var1 -= Rasterizer2D.Rasterizer2D_yClipStart; // L: 10866
-			int var17 = var0 + var13; // L: 10867
-			int var18 = var0 - var14; // L: 10868
-			int var19 = var0 + var6 - var14; // L: 10869
-			int var20 = var0 + var6 + var13; // L: 10870
-			int var21 = var15 + var1; // L: 10871
-			int var22 = var1 - var16; // L: 10872
-			int var23 = var7 + var1 - var16; // L: 10873
-			int var24 = var7 + var15 + var1; // L: 10874
-			Rasterizer3D.method3853(var17, var18, var19); // L: 10875
-			Rasterizer3D.method3856(var21, var22, var23, var17, var18, var19, var4); // L: 10876
-			Rasterizer3D.method3853(var17, var19, var20); // L: 10877
-			Rasterizer3D.method3856(var21, var23, var24, var17, var19, var20, var4); // L: 10878
 		}
-	} // L: 10879
+	} // L: 100 104 108 112 122
+
+	@ObfuscatedName("v")
+	@ObfuscatedSignature(
+		descriptor = "(IIIZII)J",
+		garbageValue = "2021733791"
+	)
+	@Export("calculateTag")
+	public static long calculateTag(int var0, int var1, int var2, boolean var3, int var4) {
+		long var5 = (long)((var0 & 127) << 0 | (var1 & 127) << 7 | (var2 & 3) << 14) | ((long)var4 & 4294967295L) << 17; // L: 84
+		if (var3) { // L: 85
+			var5 |= 65536L;
+		}
+
+		return var5; // L: 86
+	}
 }

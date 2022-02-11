@@ -6,36 +6,41 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ga")
+@ObfuscatedName("gz")
 @Implements("VertexNormal")
 public class VertexNormal {
-	@ObfuscatedName("ei")
+	@ObfuscatedName("cu")
 	@ObfuscatedSignature(
-		descriptor = "Lkz;"
+		descriptor = "[Lpg;"
 	)
-	@Export("archive18")
-	static Archive archive18;
-	@ObfuscatedName("b")
+	@Export("worldSelectArrows")
+	static IndexedSprite[] worldSelectArrows;
+	@ObfuscatedName("ft")
 	@ObfuscatedGetter(
-		intValue = 571778343
+		intValue = 1283636305
+	)
+	static int field2534;
+	@ObfuscatedName("l")
+	@ObfuscatedGetter(
+		intValue = -1628753811
 	)
 	@Export("x")
 	int x;
-	@ObfuscatedName("p")
+	@ObfuscatedName("s")
 	@ObfuscatedGetter(
-		intValue = -1513329049
+		intValue = 121040327
 	)
 	@Export("y")
 	int y;
-	@ObfuscatedName("m")
+	@ObfuscatedName("e")
 	@ObfuscatedGetter(
-		intValue = -73747775
+		intValue = -1962176809
 	)
 	@Export("z")
 	int z;
-	@ObfuscatedName("t")
+	@ObfuscatedName("r")
 	@ObfuscatedGetter(
-		intValue = 89505295
+		intValue = -1634225463
 	)
 	@Export("magnitude")
 	int magnitude;
@@ -44,7 +49,7 @@ public class VertexNormal {
 	} // L: 9
 
 	@ObfuscatedSignature(
-		descriptor = "(Lga;)V"
+		descriptor = "(Lgz;)V"
 	)
 	VertexNormal(VertexNormal var1) {
 		this.x = var1.x; // L: 12
@@ -53,10 +58,10 @@ public class VertexNormal {
 		this.magnitude = var1.magnitude; // L: 15
 	} // L: 16
 
-	@ObfuscatedName("n")
+	@ObfuscatedName("v")
 	@ObfuscatedSignature(
-		descriptor = "(II)I",
-		garbageValue = "339374654"
+		descriptor = "(IB)I",
+		garbageValue = "32"
 	)
 	@Export("Messages_getLastChatID")
 	static int Messages_getLastChatID(int var0) {
@@ -68,57 +73,39 @@ public class VertexNormal {
 		}
 	}
 
-	@ObfuscatedName("ew")
+	@ObfuscatedName("x")
 	@ObfuscatedSignature(
-		descriptor = "(II)V",
-		garbageValue = "-2020888732"
+		descriptor = "(I)V",
+		garbageValue = "426410975"
 	)
-	@Export("updateGameState")
-	static void updateGameState(int var0) {
-		if (var0 != Client.gameState) { // L: 1959
-			if (Client.gameState == 0) { // L: 1960
-				class295.client.method498();
-			}
+	public static void method4265() {
+		Widget.Widget_cachedSprites.clear(); // L: 703
+		Widget.Widget_cachedModels.clear(); // L: 704
+		Widget.Widget_cachedFonts.clear(); // L: 705
+		Widget.Widget_cachedSpriteMasks.clear(); // L: 706
+	} // L: 707
 
-			if (var0 == 20 || var0 == 40 || var0 == 45) { // L: 1961
-				PacketBufferNode.method5016(0); // L: 1962
-				Client.field545 = 0; // L: 1963
-				Client.field541 = 0; // L: 1964
-				Client.timer.method6232(var0); // L: 1965
-				if (var0 != 20) { // L: 1966
-					FriendSystem.method1791(false);
-				}
-			}
+	@ObfuscatedName("kr")
+	@ObfuscatedSignature(
+		descriptor = "(I)V",
+		garbageValue = "2102981058"
+	)
+	static final void method4267() {
+		PacketBufferNode var0 = class135.getPacketBufferNode(ClientPacket.field2929, Client.packetWriter.isaacCipher); // L: 11671
+		Client.packetWriter.addNode(var0); // L: 11672
+		Interpreter.field848 = true; // L: 11673
 
-			if (var0 != 20 && var0 != 40 && Coord.field3186 != null) { // L: 1968 1969
-				Coord.field3186.close(); // L: 1970
-				Coord.field3186 = null; // L: 1971
+		for (InterfaceParent var1 = (InterfaceParent)Client.interfaceParents.first(); var1 != null; var1 = (InterfaceParent)Client.interfaceParents.next()) { // L: 11674
+			if (var1.type == 0 || var1.type == 3) { // L: 11675
+				class127.closeInterface(var1, true);
 			}
-
-			if (Client.gameState == 25) { // L: 1974
-				Client.field602 = 0; // L: 1975
-				Client.field529 = 0; // L: 1976
-				Client.field530 = 1; // L: 1977
-				Client.field617 = 0; // L: 1978
-				Client.field532 = 1; // L: 1979
-			}
-
-			int var1;
-			if (var0 != 5 && var0 != 10) { // L: 1981
-				if (var0 == 20) { // L: 1985
-					var1 = Client.gameState == 11 ? 4 : 0; // L: 1986
-					DefaultsGroup.method6568(class257.archive10, UserComparator6.archive8, true, var1); // L: 1987
-				} else if (var0 == 11) { // L: 1989
-					DefaultsGroup.method6568(class257.archive10, UserComparator6.archive8, false, 4); // L: 1990
-				} else {
-					SoundCache.method823(); // L: 1992
-				}
-			} else {
-				var1 = AttackOption.method2356() ? 0 : 12; // L: 1982
-				DefaultsGroup.method6568(class257.archive10, UserComparator6.archive8, true, var1); // L: 1983
-			}
-
-			Client.gameState = var0; // L: 1993
 		}
-	} // L: 1994
+
+		if (Client.meslayerContinueWidget != null) { // L: 11677
+			class112.invalidateWidget(Client.meslayerContinueWidget); // L: 11678
+			Client.meslayerContinueWidget = null; // L: 11679
+		}
+
+		Interpreter.field848 = false; // L: 11681
+	} // L: 11682
 }

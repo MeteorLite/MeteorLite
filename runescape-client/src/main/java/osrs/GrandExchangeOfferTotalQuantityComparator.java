@@ -6,13 +6,13 @@ import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("kh")
+@ObfuscatedName("kl")
 @Implements("GrandExchangeOfferTotalQuantityComparator")
 final class GrandExchangeOfferTotalQuantityComparator implements Comparator {
 	@ObfuscatedName("c")
 	@ObfuscatedSignature(
-		descriptor = "(Lkj;Lkj;B)I",
-		garbageValue = "79"
+		descriptor = "(Lld;Lld;I)I",
+		garbageValue = "-2044428673"
 	)
 	@Export("compare_bridged")
 	int compare_bridged(GrandExchangeEvent var1, GrandExchangeEvent var2) {
@@ -26,15 +26,4 @@ final class GrandExchangeOfferTotalQuantityComparator implements Comparator {
 	public boolean equals(Object var1) {
 		return super.equals(var1); // L: 77
 	}
-
-	@ObfuscatedName("c")
-	@ObfuscatedSignature(
-		descriptor = "(Lku;Lku;I)V",
-		garbageValue = "-1737768501"
-	)
-	public static void method5725(AbstractArchive var0, AbstractArchive var1) {
-		KitDefinition.KitDefinition_archive = var0; // L: 27
-		KitDefinition.KitDefinition_modelsArchive = var1; // L: 28
-		KitDefinition.KitDefinition_fileCount = KitDefinition.KitDefinition_archive.getGroupFileCount(3); // L: 29
-	} // L: 30
 }

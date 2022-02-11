@@ -6,52 +6,63 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("br")
+@ObfuscatedName("bd")
 @Implements("Message")
 public class Message extends DualNode {
+	@ObfuscatedName("sv")
+	@ObfuscatedGetter(
+		intValue = 1210639323
+	)
+	static int field478;
+	@ObfuscatedName("ej")
+	@ObfuscatedSignature(
+		descriptor = "Lkz;"
+	)
+	@Export("archive8")
+	static Archive archive8;
 	@ObfuscatedName("c")
 	@ObfuscatedGetter(
-		intValue = 20750645
+		intValue = 22593719
 	)
 	@Export("count")
 	int count;
-	@ObfuscatedName("b")
+	@ObfuscatedName("l")
 	@ObfuscatedGetter(
-		intValue = -1521210849
+		intValue = -1858764081
 	)
 	@Export("cycle")
 	int cycle;
-	@ObfuscatedName("p")
+	@ObfuscatedName("s")
 	@ObfuscatedGetter(
-		intValue = 2033042895
+		intValue = 1974054315
 	)
 	@Export("type")
 	int type;
-	@ObfuscatedName("m")
+	@ObfuscatedName("e")
 	@Export("sender")
 	String sender;
-	@ObfuscatedName("t")
+	@ObfuscatedName("r")
 	@ObfuscatedSignature(
-		descriptor = "Lpo;"
+		descriptor = "Lpb;"
 	)
 	@Export("senderUsername")
-    Username senderUsername;
-	@ObfuscatedName("s")
+	Username senderUsername;
+	@ObfuscatedName("o")
 	@ObfuscatedSignature(
-		descriptor = "Lmu;"
+		descriptor = "Lmc;"
 	)
 	@Export("isFromFriend0")
-    TriBool isFromFriend0;
-	@ObfuscatedName("j")
+	TriBool isFromFriend0;
+	@ObfuscatedName("i")
 	@ObfuscatedSignature(
-		descriptor = "Lmu;"
+		descriptor = "Lmc;"
 	)
 	@Export("isFromIgnored0")
-    TriBool isFromIgnored0;
+	TriBool isFromIgnored0;
 	@ObfuscatedName("w")
 	@Export("prefix")
 	String prefix;
-	@ObfuscatedName("n")
+	@ObfuscatedName("v")
 	@Export("text")
 	String text;
 
@@ -64,7 +75,7 @@ public class Message extends DualNode {
 	@ObfuscatedName("c")
 	@ObfuscatedSignature(
 		descriptor = "(ILjava/lang/String;Ljava/lang/String;Ljava/lang/String;I)V",
-		garbageValue = "-707456994"
+		garbageValue = "-1055264133"
 	)
 	@Export("set")
 	void set(int var1, String var2, String var3, String var4) {
@@ -80,20 +91,20 @@ public class Message extends DualNode {
 		this.clearIsFromIgnored(); // L: 35
 	} // L: 36
 
-	@ObfuscatedName("b")
+	@ObfuscatedName("l")
 	@ObfuscatedSignature(
 		descriptor = "(I)V",
-		garbageValue = "1704976906"
+		garbageValue = "-761093100"
 	)
 	@Export("clearIsFromFriend")
 	void clearIsFromFriend() {
 		this.isFromFriend0 = TriBool.TriBool_unknown; // L: 39
 	} // L: 40
 
-	@ObfuscatedName("p")
+	@ObfuscatedName("s")
 	@ObfuscatedSignature(
 		descriptor = "(B)Z",
-		garbageValue = "69"
+		garbageValue = "-117"
 	)
 	@Export("isFromFriend")
 	final boolean isFromFriend() {
@@ -104,30 +115,30 @@ public class Message extends DualNode {
 		return this.isFromFriend0 == TriBool.TriBool_true; // L: 46
 	}
 
-	@ObfuscatedName("m")
+	@ObfuscatedName("e")
 	@ObfuscatedSignature(
 		descriptor = "(B)V",
-		garbageValue = "108"
+		garbageValue = "-29"
 	)
 	@Export("fillIsFromFriend")
 	void fillIsFromFriend() {
-		this.isFromFriend0 = GameEngine.friendSystem.friendsList.contains(this.senderUsername) ? TriBool.TriBool_true : TriBool.TriBool_false; // L: 50
+		this.isFromFriend0 = ClanSettings.friendSystem.friendsList.contains(this.senderUsername) ? TriBool.TriBool_true : TriBool.TriBool_false; // L: 50
 	} // L: 51
 
-	@ObfuscatedName("t")
+	@ObfuscatedName("r")
 	@ObfuscatedSignature(
-		descriptor = "(B)V",
-		garbageValue = "15"
+		descriptor = "(I)V",
+		garbageValue = "-1530358618"
 	)
 	@Export("clearIsFromIgnored")
 	void clearIsFromIgnored() {
 		this.isFromIgnored0 = TriBool.TriBool_unknown; // L: 54
 	} // L: 55
 
-	@ObfuscatedName("s")
+	@ObfuscatedName("o")
 	@ObfuscatedSignature(
 		descriptor = "(I)Z",
-		garbageValue = "1173025660"
+		garbageValue = "-940344008"
 	)
 	@Export("isFromIgnored")
 	final boolean isFromIgnored() {
@@ -138,81 +149,54 @@ public class Message extends DualNode {
 		return this.isFromIgnored0 == TriBool.TriBool_true; // L: 61
 	}
 
-	@ObfuscatedName("j")
+	@ObfuscatedName("i")
 	@ObfuscatedSignature(
-		descriptor = "(B)V",
-		garbageValue = "-35"
+		descriptor = "(I)V",
+		garbageValue = "-7389410"
 	)
 	@Export("fillIsFromIgnored")
 	void fillIsFromIgnored() {
-		this.isFromIgnored0 = GameEngine.friendSystem.ignoreList.contains(this.senderUsername) ? TriBool.TriBool_true : TriBool.TriBool_false; // L: 65
-	} // L: 66
+		this.isFromIgnored0 = ClanSettings.friendSystem.ignoreList.contains(this.senderUsername) ? TriBool.TriBool_true : TriBool.TriBool_false;
+	}
 
 	@ObfuscatedName("w")
 	@ObfuscatedSignature(
 		descriptor = "(I)V",
-		garbageValue = "719777600"
+		garbageValue = "-1271337219"
 	)
 	@Export("fillSenderUsername")
 	final void fillSenderUsername() {
-		if (this.sender != null) { // L: 69
-			this.senderUsername = new Username(AbstractWorldMapData.method4791(this.sender), class194.loginType);
+		if (this.sender != null) {
+			this.senderUsername = new Username(PlayerComposition.method5380(this.sender), VarcInt.loginType);
 		} else {
-			this.senderUsername = null; // L: 70
+			this.senderUsername = null;
 		}
 
-	} // L: 71
+	}
 
-	@ObfuscatedName("in")
+	@ObfuscatedName("l")
 	@ObfuscatedSignature(
-		descriptor = "(I)V",
-		garbageValue = "1989735073"
+		descriptor = "(III)V",
+		garbageValue = "-625577603"
 	)
-	static final void method1115() {
-		boolean var0 = false; // L: 10008
+	@Export("changeWorldSelectSorting")
+	static void changeWorldSelectSorting(int var0, int var1) {
+		int[] var2 = new int[4]; // L: 63
+		int[] var3 = new int[4]; // L: 64
+		var2[0] = var0; // L: 65
+		var3[0] = var1; // L: 66
+		int var4 = 1; // L: 67
 
-		while (!var0) { // L: 10009
-			var0 = true; // L: 10010
-
-			for (int var1 = 0; var1 < Client.menuOptionsCount - 1; ++var1) { // L: 10011
-				if (Client.menuOpcodes[var1] < 1000 && Client.menuOpcodes[var1 + 1] > 1000) { // L: 10012
-					String var2 = Client.menuTargets[var1]; // L: 10013
-					Client.menuTargets[var1] = Client.menuTargets[var1 + 1]; // L: 10014
-					Client.menuTargets[var1 + 1] = var2; // L: 10015
-					String var3 = Client.menuActions[var1]; // L: 10016
-					Client.menuActions[var1] = Client.menuActions[var1 + 1]; // L: 10017
-					Client.menuActions[var1 + 1] = var3; // L: 10018
-					int var4 = Client.menuOpcodes[var1]; // L: 10019
-					Client.menuOpcodes[var1] = Client.menuOpcodes[var1 + 1]; // L: 10020
-					Client.menuOpcodes[var1 + 1] = var4; // L: 10021
-					var4 = Client.menuArguments1[var1]; // L: 10022
-					Client.menuArguments1[var1] = Client.menuArguments1[var1 + 1]; // L: 10023
-					Client.menuArguments1[var1 + 1] = var4; // L: 10024
-					var4 = Client.menuArguments2[var1]; // L: 10025
-					Client.menuArguments2[var1] = Client.menuArguments2[var1 + 1]; // L: 10026
-					Client.menuArguments2[var1 + 1] = var4; // L: 10027
-					var4 = Client.menuIdentifiers[var1]; // L: 10028
-					Client.menuIdentifiers[var1] = Client.menuIdentifiers[var1 + 1]; // L: 10029
-					Client.menuIdentifiers[var1 + 1] = var4; // L: 10030
-					boolean var5 = Client.menuShiftClick[var1]; // L: 10031
-					Client.menuShiftClick[var1] = Client.menuShiftClick[var1 + 1]; // L: 10032
-					Client.menuShiftClick[var1 + 1] = var5; // L: 10033
-					var0 = false; // L: 10034
-				}
+		for (int var5 = 0; var5 < 4; ++var5) { // L: 68
+			if (World.World_sortOption1[var5] != var0) { // L: 69
+				var2[var4] = World.World_sortOption1[var5]; // L: 70
+				var3[var4] = World.World_sortOption2[var5]; // L: 71
+				++var4; // L: 72
 			}
 		}
 
-	} // L: 10038
-
-	@ObfuscatedName("kf")
-	@ObfuscatedSignature(
-		descriptor = "(III)V",
-		garbageValue = "1320031067"
-	)
-	@Export("runIntfCloseListeners")
-	static final void runIntfCloseListeners(int var0, int var1) {
-		if (class242.loadInterface(var0)) { // L: 11879
-			Canvas.runComponentCloseListeners(MouseRecorder.Widget_interfaceComponents[var0], var1); // L: 11880
-		}
-	} // L: 11881
+		World.World_sortOption1 = var2; // L: 75
+		World.World_sortOption2 = var3; // L: 76
+		Players.sortWorlds(class33.World_worlds, 0, class33.World_worlds.length - 1, World.World_sortOption1, World.World_sortOption2); // L: 77
+	} // L: 78
 }

@@ -1,30 +1,32 @@
 package osrs;
 
-import java.io.File;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
-import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("jv")
+@ObfuscatedName("je")
 @Implements("Huffman")
 public class Huffman {
-	@ObfuscatedName("m")
-	@Export("JagexCache_locationFile")
-	public static File JagexCache_locationFile;
-	@ObfuscatedName("bl")
-	@ObfuscatedGetter(
-		intValue = 1568185021
+	@ObfuscatedName("uf")
+	@ObfuscatedSignature(
+		descriptor = "Lor;"
 	)
-	static int field3152;
+	@Export("worldMap")
+	static WorldMap worldMap;
+	@ObfuscatedName("ih")
+	@ObfuscatedSignature(
+		descriptor = "[Lpt;"
+	)
+	@Export("mapDotSprites")
+	static SpritePixels[] mapDotSprites;
 	@ObfuscatedName("c")
 	@Export("masks")
 	int[] masks;
-	@ObfuscatedName("b")
+	@ObfuscatedName("l")
 	@Export("bits")
 	byte[] bits;
-	@ObfuscatedName("p")
+	@ObfuscatedName("s")
 	@Export("keys")
 	int[] keys;
 
@@ -53,7 +55,7 @@ public class Huffman {
 
 					for (var10 = var6 - 1; var10 >= 1; --var10) { // L: 25
 						var11 = var3[var10]; // L: 26
-						if (var8 != var11) { // L: 27
+						if (var11 != var8) { // L: 27
 							break;
 						}
 
@@ -67,17 +69,17 @@ public class Huffman {
 					}
 				}
 
-				var3[var6] = var9; // L: 38
+				var3[var6] = var9;
 
-				for (var10 = var6 + 1; var10 <= 32; ++var10) { // L: 39
+				for (var10 = var6 + 1; var10 <= 32; ++var10) {
 					if (var8 == var3[var10]) { // L: 40
 						var3[var10] = var9;
 					}
 				}
 
-				var10 = 0; // L: 42
+				var10 = 0;
 
-				for (var11 = 0; var11 < var6; ++var11) { // L: 43
+				for (var11 = 0; var11 < var6; ++var11) {
 					var12 = Integer.MIN_VALUE >>> var11; // L: 44
 					if ((var8 & var12) != 0) { // L: 45
 						if (this.keys[var10] == 0) { // L: 46
@@ -86,42 +88,42 @@ public class Huffman {
 
 						var10 = this.keys[var10]; // L: 47
 					} else {
-						++var10; // L: 49
+						++var10;
 					}
 
-					if (var10 >= this.keys.length) { // L: 50
-						int[] var13 = new int[this.keys.length * 2]; // L: 51
+					if (var10 >= this.keys.length) {
+						int[] var13 = new int[this.keys.length * 2];
 
-						for (int var14 = 0; var14 < this.keys.length; ++var14) { // L: 52
+						for (int var14 = 0; var14 < this.keys.length; ++var14) {
 							var13[var14] = this.keys[var14];
 						}
 
-						this.keys = var13; // L: 53
+						this.keys = var13;
 					}
 
-					var12 >>>= 1; // L: 55
+					var12 >>>= 1;
 				}
 
-				this.keys[var10] = ~var5; // L: 57
-				if (var10 >= var4) { // L: 58
+				this.keys[var10] = ~var5;
+				if (var10 >= var4) {
 					var4 = var10 + 1;
 				}
 			}
 		}
 
-	} // L: 60
+	}
 
 	@ObfuscatedName("c")
 	@ObfuscatedSignature(
 		descriptor = "([BII[BII)I",
-		garbageValue = "1986002175"
+		garbageValue = "647813929"
 	)
 	@Export("compress")
 	int compress(byte[] var1, int var2, int var3, byte[] var4, int var5) {
-		int var6 = 0; // L: 63
+		int var6 = 0;
 		int var7 = var5 << 3; // L: 64
 
-		for (var3 += var2; var2 < var3; ++var2) { // L: 65 66
+		for (var3 += var2; var2 < var3; ++var2) { // L: 66
 			int var8 = var1[var2] & 255; // L: 67
 			int var9 = this.masks[var8]; // L: 68
 			byte var10 = this.bits[var8]; // L: 69
@@ -132,7 +134,7 @@ public class Huffman {
 			int var11 = var7 >> 3; // L: 71
 			int var12 = var7 & 7; // L: 72
 			var6 &= -var12 >> 31; // L: 73
-			int var13 = (var10 + var12 - 1 >> 3) + var11; // L: 74
+			int var13 = (var12 + var10 - 1 >> 3) + var11; // L: 74
 			var12 += 24; // L: 76
 			var4[var11] = (byte)(var6 |= var9 >>> var12); // L: 77
 			if (var11 < var13) { // L: 78
@@ -162,10 +164,10 @@ public class Huffman {
 		return (var7 + 7 >> 3) - var5; // L: 97
 	}
 
-	@ObfuscatedName("b")
+	@ObfuscatedName("l")
 	@ObfuscatedSignature(
-		descriptor = "([BI[BIIB)I",
-		garbageValue = "67"
+		descriptor = "([BI[BIII)I",
+		garbageValue = "1600049269"
 	)
 	@Export("decompress")
 	int decompress(byte[] var1, int var2, byte[] var3, int var4, int var5) {
@@ -284,8 +286,8 @@ public class Huffman {
 					var6 = 0; // L: 155
 				}
 
-				if ((var8 & 1) != 0) {
-					var6 = this.keys[var6]; // L: 157
+				if ((var8 & 1) != 0) { // L: 157
+					var6 = this.keys[var6];
 				} else {
 					++var6; // L: 158
 				}
@@ -304,5 +306,38 @@ public class Huffman {
 
 			return var7 + 1 - var2; // L: 165
 		}
+	}
+
+	@ObfuscatedName("e")
+	@ObfuscatedSignature(
+		descriptor = "(Lkq;Ljava/lang/String;Ljava/lang/String;I)[Lpg;",
+		garbageValue = "-1550512202"
+	)
+	public static IndexedSprite[] method5278(AbstractArchive var0, String var1, String var2) {
+		int var3 = var0.getGroupId(var1); // L: 38
+		int var4 = var0.getFileId(var3, var2); // L: 39
+		IndexedSprite[] var5;
+		if (!class125.method2744(var0, var3, var4)) { // L: 42
+			var5 = null; // L: 43
+		} else {
+			IndexedSprite[] var7 = new IndexedSprite[class434.SpriteBuffer_spriteCount]; // L: 48
+
+			for (int var8 = 0; var8 < class434.SpriteBuffer_spriteCount; ++var8) { // L: 49
+				IndexedSprite var9 = var7[var8] = new IndexedSprite(); // L: 50
+				var9.width = class434.SpriteBuffer_spriteWidth; // L: 51
+				var9.height = class434.SpriteBuffer_spriteHeight; // L: 52
+				var9.xOffset = class434.SpriteBuffer_xOffsets[var8]; // L: 53
+				var9.yOffset = class434.SpriteBuffer_yOffsets[var8]; // L: 54
+				var9.subWidth = class434.SpriteBuffer_spriteWidths[var8]; // L: 55
+				var9.subHeight = Fonts.SpriteBuffer_spriteHeights[var8]; // L: 56
+				var9.palette = HealthBarUpdate.SpriteBuffer_spritePalette; // L: 57
+				var9.pixels = WorldMapLabelSize.SpriteBuffer_pixels[var8]; // L: 58
+			}
+
+			Canvas.method365(); // L: 60
+			var5 = var7; // L: 63
+		}
+
+		return var5; // L: 65
 	}
 }

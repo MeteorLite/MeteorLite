@@ -6,53 +6,59 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("bn")
+@ObfuscatedName("bl")
 @Implements("Script")
 public class Script extends DualNode {
 	@ObfuscatedName("c")
 	@ObfuscatedSignature(
-		descriptor = "Liq;"
+		descriptor = "Lic;"
 	)
 	@Export("Script_cached")
 	static EvictingDualNodeHashTable Script_cached;
-	@ObfuscatedName("b")
-	String field937;
-	@ObfuscatedName("p")
+	@ObfuscatedName("h")
+	@ObfuscatedSignature(
+		descriptor = "Lpg;"
+	)
+	@Export("options_buttons_0Sprite")
+	static IndexedSprite options_buttons_0Sprite;
+	@ObfuscatedName("l")
+	String field960;
+	@ObfuscatedName("s")
 	@Export("opcodes")
 	int[] opcodes;
-	@ObfuscatedName("m")
+	@ObfuscatedName("e")
 	@Export("intOperands")
 	int[] intOperands;
-	@ObfuscatedName("t")
+	@ObfuscatedName("r")
 	@Export("stringOperands")
 	String[] stringOperands;
-	@ObfuscatedName("s")
+	@ObfuscatedName("o")
 	@ObfuscatedGetter(
-		intValue = 1986002175
+		intValue = 1266754377
 	)
 	@Export("localIntCount")
 	int localIntCount;
-	@ObfuscatedName("j")
+	@ObfuscatedName("i")
 	@ObfuscatedGetter(
-		intValue = 140084379
+		intValue = 915485379
 	)
 	@Export("localStringCount")
 	int localStringCount;
 	@ObfuscatedName("w")
 	@ObfuscatedGetter(
-		intValue = 773546685
+		intValue = 1163597385
 	)
 	@Export("intArgumentCount")
 	int intArgumentCount;
-	@ObfuscatedName("n")
+	@ObfuscatedName("v")
 	@ObfuscatedGetter(
-		intValue = -2027696431
+		intValue = -1119154997
 	)
 	@Export("stringArgumentCount")
 	int stringArgumentCount;
-	@ObfuscatedName("r")
+	@ObfuscatedName("a")
 	@ObfuscatedSignature(
-		descriptor = "[Loz;"
+		descriptor = "[Lon;"
 	)
 	@Export("switches")
 	IterableNodeHashTable[] switches;
@@ -64,30 +70,22 @@ public class Script extends DualNode {
 	Script() {
 	} // L: 23
 
-	@ObfuscatedName("m")
+	@ObfuscatedName("r")
 	@ObfuscatedSignature(
-		descriptor = "(II)[Loz;",
-		garbageValue = "-1725303821"
+		descriptor = "(IB)[Lon;",
+		garbageValue = "-83"
 	)
 	@Export("newIterableNodeHashTable")
 	IterableNodeHashTable[] newIterableNodeHashTable(int var1) {
-		return new IterableNodeHashTable[var1]; // L: 155
+		return new IterableNodeHashTable[var1]; // L: 119
 	}
 
-	@ObfuscatedName("m")
+	@ObfuscatedName("e")
 	@ObfuscatedSignature(
-		descriptor = "(ILku;Ljava/lang/String;Ljava/lang/String;IZB)V",
-		garbageValue = "62"
+		descriptor = "(II)V",
+		garbageValue = "-2117274807"
 	)
-	public static void method2040(int var0, AbstractArchive var1, String var2, String var3, int var4, boolean var5) {
-		int var6 = var1.getGroupId(var2); // L: 48
-		int var7 = var1.getFileId(var6, var3); // L: 49
-		class260.musicPlayerStatus = 1; // L: 51
-		class124.musicTrackArchive = var1; // L: 52
-		VarcInt.musicTrackGroupId = var6; // L: 53
-		class260.musicTrackFileId = var7; // L: 54
-		ChatChannel.musicTrackVolume = var4; // L: 55
-		DynamicObject.musicTrackBoolean = var5; // L: 56
-		class260.pcmSampleLength = var0; // L: 57
-	} // L: 59
+	public static void method1993(int var0) {
+		MouseHandler.MouseHandler_idleCycles = var0; // L: 61
+	} // L: 62
 }

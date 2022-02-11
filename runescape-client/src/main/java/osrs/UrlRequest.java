@@ -1,27 +1,31 @@
 package osrs;
 
+import java.io.File;
 import java.net.URL;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("cf")
+@ObfuscatedName("cm")
 @Implements("UrlRequest")
 public class UrlRequest {
-	@ObfuscatedName("ce")
+	@ObfuscatedName("r")
+	@Export("cacheDir")
+	static File cacheDir;
+	@ObfuscatedName("em")
 	@ObfuscatedSignature(
-		descriptor = "Lpa;"
+		descriptor = "Lkz;"
 	)
-	@Export("worldSelectRightSprite")
-	static IndexedSprite worldSelectRightSprite;
+	@Export("archive18")
+	static Archive archive18;
 	@ObfuscatedName("c")
 	@Export("url")
 	final URL url;
-	@ObfuscatedName("b")
+	@ObfuscatedName("l")
 	@Export("isDone0")
 	volatile boolean isDone0;
-	@ObfuscatedName("p")
+	@ObfuscatedName("s")
 	@Export("response0")
 	volatile byte[] response0;
 
@@ -32,100 +36,67 @@ public class UrlRequest {
 	@ObfuscatedName("c")
 	@ObfuscatedSignature(
 		descriptor = "(I)Z",
-		garbageValue = "-11682805"
+		garbageValue = "-1976117199"
 	)
 	@Export("isDone")
 	public boolean isDone() {
 		return this.isDone0; // L: 101
 	}
 
-	@ObfuscatedName("b")
+	@ObfuscatedName("l")
 	@ObfuscatedSignature(
 		descriptor = "(I)[B",
-		garbageValue = "309471456"
+		garbageValue = "1707102034"
 	)
 	@Export("getResponse")
 	public byte[] getResponse() {
 		return this.response0; // L: 105
 	}
 
-	@ObfuscatedName("fc")
+	@ObfuscatedName("c")
 	@ObfuscatedSignature(
-		descriptor = "(I)V",
-		garbageValue = "1703812589"
+		descriptor = "(ILnb;Lkz;I)V",
+		garbageValue = "-793908641"
 	)
-	static final void method2496() {
-		class364.method6623(); // L: 3587
-		FloorUnderlayDefinition.FloorUnderlayDefinition_cached.clear(); // L: 3589
-		ScriptFrame.method1110(); // L: 3591
-		UserComparator5.method2524(); // L: 3592
-		NPCComposition.NpcDefinition_cached.clear(); // L: 3594
-		NPCComposition.NpcDefinition_cachedModels.clear(); // L: 3595
-		ItemComposition.ItemDefinition_cached.clear(); // L: 3598
-		ItemComposition.ItemDefinition_cachedModels.clear(); // L: 3599
-		ItemComposition.ItemDefinition_cachedSprites.clear(); // L: 3600
-		SequenceDefinition.SequenceDefinition_cached.clear(); // L: 3603
-		SequenceDefinition.SequenceDefinition_cachedFrames.clear(); // L: 3604
-		SequenceDefinition.field2086.clear(); // L: 3605
-		InterfaceParent.method2143(); // L: 3607
-		class1.method8(); // L: 3608
-		VarpDefinition.VarpDefinition_cached.clear(); // L: 3610
-		AbstractSocket.HitSplatDefinition_cachedSprites.method7216(); // L: 3612
-		Ignored.HitSplatDefinition_cached.method7216(); // L: 3613
-		ObjectSound.method1796(); // L: 3614
-		HealthBarDefinition.HealthBarDefinition_cachedSprites.clear(); // L: 3616
-		HealthBarDefinition.field1795.clear(); // L: 3617
-		ObjectComposition.method3542(); // L: 3619
-		ParamComposition.ParamDefinition_cached.clear(); // L: 3621
-		WorldMapElement.PlayerAppearance_cachedModels.clear(); // L: 3624
-		PlayerComposition.Widget_cachedSprites.clear(); // L: 3627
-		WorldMapSection2.method4417(); // L: 3629
-		((TextureProvider)Rasterizer3D.Rasterizer3D_textureLoader).clear(); // L: 3630
-		Script.Script_cached.clear(); // L: 3631
-		class115.archive1.clearFiles(); // L: 3632
-		class9.archive3.clearFiles(); // L: 3633
-		class19.archive4.clearFiles(); // L: 3634
-		KeyHandler.field151.clearFiles(); // L: 3635
-		class140.archive5.clearFiles(); // L: 3636
-		WorldMapScaleHandler.archive6.clearFiles(); // L: 3637
-		class115.archive7.clearFiles(); // L: 3638
-		UserComparator6.archive8.clearFiles(); // L: 3639
-		NetSocket.archive9.clearFiles(); // L: 3640
-		class257.archive10.clearFiles(); // L: 3641
-		Players.archive11.clearFiles(); // L: 3642
-		TaskHandler.archive12.clearFiles(); // L: 3643
-	} // L: 3644
+	static void method2422(int var0, ArchiveDisk var1, Archive var2) {
+		ArchiveDiskAction var3 = new ArchiveDiskAction(); // L: 18
+		var3.type = 1; // L: 19
+		var3.key = (long)var0; // L: 20
+		var3.archiveDisk = var1; // L: 21
+		var3.archive = var2; // L: 22
+		synchronized(ArchiveDiskActionHandler.ArchiveDiskActionHandler_requestQueue) { // L: 23
+			ArchiveDiskActionHandler.ArchiveDiskActionHandler_requestQueue.addFirst(var3); // L: 24
+		} // L: 25
 
-	@ObfuscatedName("hk")
-	@ObfuscatedSignature(
-		descriptor = "(I)V",
-		garbageValue = "-1546953811"
-	)
-	static void method2489() {
-		Client.menuOptionsCount = 0; // L: 8781
-		Client.isMenuOpen = false; // L: 8782
-	} // L: 8783
+		synchronized(ArchiveDiskActionHandler.ArchiveDiskActionHandler_lock) { // L: 27
+			if (ArchiveDiskActionHandler.field3869 == 0) { // L: 28
+				ArchiveDiskActionHandler.ArchiveDiskActionHandler_thread = new Thread(new ArchiveDiskActionHandler()); // L: 29
+				ArchiveDiskActionHandler.ArchiveDiskActionHandler_thread.setDaemon(true); // L: 30
+				ArchiveDiskActionHandler.ArchiveDiskActionHandler_thread.start(); // L: 31
+				ArchiveDiskActionHandler.ArchiveDiskActionHandler_thread.setPriority(5); // L: 32
+			}
 
-	@ObfuscatedName("iz")
-	@ObfuscatedSignature(
-		descriptor = "(IIIII)V",
-		garbageValue = "-101999626"
-	)
-	@Export("selectSpell")
-	static void selectSpell(int var0, int var1, int var2, int var3) {
-		Widget var4 = class126.getWidgetChild(var0, var1); // L: 9865
-		if (var4 != null && var4.onTargetEnter != null) { // L: 9866
-			ScriptEvent var5 = new ScriptEvent(); // L: 9867
-			var5.widget = var4; // L: 9868
-			var5.args = var4.onTargetEnter; // L: 9869
-			class285.runScriptEvent(var5); // L: 9870
+			ArchiveDiskActionHandler.field3869 = 600; // L: 34
 		}
+	}
 
-		Client.field633 = var3; // L: 9872
-		Client.isSpellSelected = true; // L: 9873
-		class20.selectedSpellWidget = var0; // L: 9874
-		Client.selectedSpellChildIndex = var1; // L: 9875
-		class91.selectedSpellFlags = var2; // L: 9876
-		SecureRandomCallable.invalidateWidget(var4); // L: 9877
-	} // L: 9878
+	@ObfuscatedName("e")
+	@ObfuscatedSignature(
+		descriptor = "(II)I",
+		garbageValue = "-1455921541"
+	)
+	public static int method2432(int var0) {
+		return class383.field4276[var0 & 16383]; // L: 37
+	}
+
+	@ObfuscatedName("ku")
+	@ObfuscatedSignature(
+		descriptor = "(II)V",
+		garbageValue = "1421327475"
+	)
+	static final void method2424(int var0) {
+		var0 = Math.min(Math.max(var0, 0), 127); // L: 11563
+		class424.clientPreferences.areaSoundEffectsVolume = var0; // L: 11564
+		GameEngine.savePreferences(); // L: 11565
+	} // L: 11566
 }

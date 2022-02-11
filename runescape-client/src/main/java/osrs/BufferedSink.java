@@ -7,45 +7,38 @@ import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
-import net.runelite.rs.ScriptOpcodes;
 
-@ObfuscatedName("mb")
+@ObfuscatedName("mj")
 @Implements("BufferedSink")
 public class BufferedSink implements Runnable {
-	@ObfuscatedName("mk")
-	@ObfuscatedGetter(
-		intValue = -719644833
-	)
-	@Export("menuY")
-	static int menuY;
 	@ObfuscatedName("c")
 	@Export("thread")
 	Thread thread;
-	@ObfuscatedName("b")
+	@ObfuscatedName("l")
 	@Export("outputStream")
 	OutputStream outputStream;
-	@ObfuscatedName("p")
+	@ObfuscatedName("s")
 	@ObfuscatedGetter(
-		intValue = 345474963
+		intValue = -1231606927
 	)
 	@Export("capacity")
 	int capacity;
-	@ObfuscatedName("m")
+	@ObfuscatedName("e")
 	@Export("buffer")
 	byte[] buffer;
-	@ObfuscatedName("t")
+	@ObfuscatedName("r")
 	@ObfuscatedGetter(
-		intValue = 2075331091
+		intValue = -1144762949
 	)
 	@Export("position")
 	int position;
-	@ObfuscatedName("s")
+	@ObfuscatedName("o")
 	@ObfuscatedGetter(
-		intValue = 154665981
+		intValue = -515609021
 	)
 	@Export("limit")
 	int limit;
-	@ObfuscatedName("j")
+	@ObfuscatedName("i")
 	@Export("exception")
 	IOException exception;
 	@ObfuscatedName("w")
@@ -66,7 +59,7 @@ public class BufferedSink implements Runnable {
 	@ObfuscatedName("c")
 	@ObfuscatedSignature(
 		descriptor = "(I)Z",
-		garbageValue = "1810348727"
+		garbageValue = "-1120914050"
 	)
 	@Export("isClosed")
 	boolean isClosed() {
@@ -88,10 +81,10 @@ public class BufferedSink implements Runnable {
 		}
 	}
 
-	@ObfuscatedName("b")
+	@ObfuscatedName("l")
 	@ObfuscatedSignature(
 		descriptor = "([BIII)V",
-		garbageValue = "103815641"
+		garbageValue = "-1714956737"
 	)
 	@Export("write")
 	void write(byte[] var1, int var2, int var3) throws IOException {
@@ -107,8 +100,8 @@ public class BufferedSink implements Runnable {
 						var5 = this.position - this.limit - 1; // L: 273
 					}
 
-					if (var5 < var3) {
-						throw new IOException(""); // L: 274
+					if (var5 < var3) { // L: 274
+						throw new IOException("");
 					} else {
 						if (var3 + this.limit <= this.capacity) { // L: 275
 							System.arraycopy(var1, var2, this.buffer, this.limit, var3); // L: 276
@@ -128,10 +121,10 @@ public class BufferedSink implements Runnable {
 		}
 	} // L: 286
 
-	@ObfuscatedName("p")
+	@ObfuscatedName("s")
 	@ObfuscatedSignature(
 		descriptor = "(I)V",
-		garbageValue = "784609340"
+		garbageValue = "-775633703"
 	)
 	@Export("close")
 	void close() {
@@ -205,65 +198,5 @@ public class BufferedSink implements Runnable {
 			} // L: 262
 		} while(!this.isClosed()); // L: 263
 
-	}
-
-	@ObfuscatedName("h")
-	@ObfuscatedSignature(
-		descriptor = "(ILbn;ZI)I",
-		garbageValue = "-1853043366"
-	)
-	static int method6551(int var0, Script var1, boolean var2) {
-		Widget var3 = var2 ? WorldMapArea.scriptDotWidget : Messages.scriptActiveWidget; // L: 1113
-		if (var0 == ScriptOpcodes.CC_GETSCROLLX) { // L: 1114
-			Interpreter.Interpreter_intStack[++IsaacCipher.Interpreter_intStackSize - 1] = var3.scrollX; // L: 1115
-			return 1; // L: 1116
-		} else if (var0 == ScriptOpcodes.CC_GETSCROLLY) { // L: 1118
-			Interpreter.Interpreter_intStack[++IsaacCipher.Interpreter_intStackSize - 1] = var3.scrollY; // L: 1119
-			return 1; // L: 1120
-		} else if (var0 == ScriptOpcodes.CC_GETTEXT) { // L: 1122
-			Interpreter.Interpreter_stringStack[++class13.Interpreter_stringStackSize - 1] = var3.text; // L: 1123
-			return 1; // L: 1124
-		} else if (var0 == ScriptOpcodes.CC_GETSCROLLWIDTH) { // L: 1126
-			Interpreter.Interpreter_intStack[++IsaacCipher.Interpreter_intStackSize - 1] = var3.scrollWidth; // L: 1127
-			return 1; // L: 1128
-		} else if (var0 == ScriptOpcodes.CC_GETSCROLLHEIGHT) { // L: 1130
-			Interpreter.Interpreter_intStack[++IsaacCipher.Interpreter_intStackSize - 1] = var3.scrollHeight; // L: 1131
-			return 1; // L: 1132
-		} else if (var0 == ScriptOpcodes.CC_GETMODELZOOM) { // L: 1134
-			Interpreter.Interpreter_intStack[++IsaacCipher.Interpreter_intStackSize - 1] = var3.modelZoom; // L: 1135
-			return 1; // L: 1136
-		} else if (var0 == ScriptOpcodes.CC_GETMODELANGLE_X) { // L: 1138
-			Interpreter.Interpreter_intStack[++IsaacCipher.Interpreter_intStackSize - 1] = var3.modelAngleX; // L: 1139
-			return 1; // L: 1140
-		} else if (var0 == ScriptOpcodes.CC_GETMODELANGLE_Z) { // L: 1142
-			Interpreter.Interpreter_intStack[++IsaacCipher.Interpreter_intStackSize - 1] = var3.modelAngleZ; // L: 1143
-			return 1; // L: 1144
-		} else if (var0 == ScriptOpcodes.CC_GETMODELANGLE_Y) { // L: 1146
-			Interpreter.Interpreter_intStack[++IsaacCipher.Interpreter_intStackSize - 1] = var3.modelAngleY; // L: 1147
-			return 1; // L: 1148
-		} else if (var0 == ScriptOpcodes.CC_GETTRANS) { // L: 1150
-			Interpreter.Interpreter_intStack[++IsaacCipher.Interpreter_intStackSize - 1] = var3.transparencyTop; // L: 1151
-			return 1; // L: 1152
-		} else if (var0 == 1610) { // L: 1154
-			Interpreter.Interpreter_intStack[++IsaacCipher.Interpreter_intStackSize - 1] = var3.transparencyBot; // L: 1155
-			return 1; // L: 1156
-		} else if (var0 == ScriptOpcodes.CC_GETCOLOUR) { // L: 1158
-			Interpreter.Interpreter_intStack[++IsaacCipher.Interpreter_intStackSize - 1] = var3.color; // L: 1159
-			return 1; // L: 1160
-		} else if (var0 == ScriptOpcodes.CC_GETFILLCOLOUR) { // L: 1162
-			Interpreter.Interpreter_intStack[++IsaacCipher.Interpreter_intStackSize - 1] = var3.color2; // L: 1163
-			return 1; // L: 1164
-		} else if (var0 == 1613) { // L: 1166
-			Interpreter.Interpreter_intStack[++IsaacCipher.Interpreter_intStackSize - 1] = var3.fillMode.rsOrdinal(); // L: 1167
-			return 1; // L: 1168
-		} else if (var0 == ScriptOpcodes.CC_GETMODELTRANSPARENT) { // L: 1170
-			Interpreter.Interpreter_intStack[++IsaacCipher.Interpreter_intStackSize - 1] = var3.modelTransparency ? 1 : 0; // L: 1171
-			return 1; // L: 1172
-		} else if (var0 != 1615 && var0 != 1616) { // L: 1174
-			return 2; // L: 1178
-		} else {
-			++IsaacCipher.Interpreter_intStackSize; // L: 1175
-			return 1; // L: 1176
-		}
 	}
 }

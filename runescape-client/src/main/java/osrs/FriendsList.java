@@ -1,81 +1,83 @@
 package osrs;
 
+import java.io.File;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
+import net.runelite.rs.ScriptOpcodes;
 
-@ObfuscatedName("mm")
+@ObfuscatedName("mi")
 @Implements("FriendsList")
 public class FriendsList extends UserList {
-	@ObfuscatedName("p")
+	@ObfuscatedName("s")
 	@ObfuscatedSignature(
-		descriptor = "Low;"
+		descriptor = "Lok;"
 	)
 	@Export("loginType")
 	final LoginType loginType;
-	@ObfuscatedName("m")
+	@ObfuscatedName("e")
 	@ObfuscatedGetter(
-		intValue = -2043730647
+		intValue = 759780713
 	)
-	int field4081;
-	@ObfuscatedName("t")
+	int field4127;
+	@ObfuscatedName("r")
 	@ObfuscatedSignature(
-		descriptor = "Llc;"
+		descriptor = "Llp;"
 	)
 	@Export("friendLoginUpdates")
 	public LinkDeque friendLoginUpdates;
 
 	@ObfuscatedSignature(
-		descriptor = "(Low;)V"
+		descriptor = "(Lok;)V"
 	)
 	public FriendsList(LoginType var1) {
-		super(400); // L: 18
-		this.field4081 = 1; // L: 14
+		super(400);
+		this.field4127 = 1; // L: 14
 		this.friendLoginUpdates = new LinkDeque(); // L: 15
-		this.loginType = var1; // L: 19
+		this.loginType = var1;
 	} // L: 20
 
 	@ObfuscatedName("c")
 	@ObfuscatedSignature(
-		descriptor = "(B)Lmv;",
-		garbageValue = "2"
+		descriptor = "(I)Lmy;",
+		garbageValue = "2000225121"
 	)
 	@Export("newInstance")
-    User newInstance() {
+	User newInstance() {
 		return new Friend(); // L: 24
 	}
 
-	@ObfuscatedName("b")
+	@ObfuscatedName("l")
 	@ObfuscatedSignature(
-		descriptor = "(II)[Lmv;",
-		garbageValue = "-813912346"
+		descriptor = "(IB)[Lmy;",
+		garbageValue = "55"
 	)
 	@Export("newTypedArray")
 	User[] newTypedArray(int var1) {
 		return new Friend[var1]; // L: 29
 	}
 
-	@ObfuscatedName("p")
+	@ObfuscatedName("s")
 	@ObfuscatedSignature(
-		descriptor = "(Lpo;ZI)Z",
-		garbageValue = "-611613577"
+		descriptor = "(Lpb;ZI)Z",
+		garbageValue = "-770793649"
 	)
 	@Export("isFriended")
 	public boolean isFriended(Username var1, boolean var2) {
 		Friend var3 = (Friend)this.getByUsername(var1); // L: 33
-		if (var3 == null) {
-			return false; // L: 34
+		if (var3 == null) { // L: 34
+			return false;
 		} else {
 			return !var2 || var3.world != 0; // L: 35
 		}
 	}
 
-	@ObfuscatedName("w")
+	@ObfuscatedName("v")
 	@ObfuscatedSignature(
-		descriptor = "(Lpi;II)V",
-		garbageValue = "2023217222"
+		descriptor = "(Lpi;IB)V",
+		garbageValue = "8"
 	)
 	@Export("read")
 	public void read(Buffer var1, int var2) {
@@ -85,11 +87,11 @@ public class FriendsList extends UserList {
 				Username var4 = new Username(var1.readStringCp1252NullTerminated(), this.loginType); // L: 42
 				Username var5 = new Username(var1.readStringCp1252NullTerminated(), this.loginType); // L: 43
 				int var6 = var1.readUnsignedShort(); // L: 44
-				int var7 = var1.readUnsignedByte(); // L: 45
-				int var8 = var1.readUnsignedByte(); // L: 46
-				boolean var9 = (var8 & 2) != 0; // L: 47
-				boolean var10 = (var8 & 1) != 0; // L: 48
-				if (var6 > 0) { // L: 49
+				int var7 = var1.readUnsignedByte();
+				int var8 = var1.readUnsignedByte();
+				boolean var9 = (var8 & 2) != 0;
+				boolean var10 = (var8 & 1) != 0;
+				if (var6 > 0) {
 					var1.readStringCp1252NullTerminated(); // L: 50
 					var1.readUnsignedByte(); // L: 51
 					var1.readInt(); // L: 52
@@ -139,17 +141,17 @@ public class FriendsList extends UserList {
 					}
 
 					if (var6 != var11.world) { // L: 91
-						var11.int2 = ++this.field4081 - 1; // L: 92
+						var11.int2 = ++this.field4127 - 1; // L: 92
 						if (var11.world == -1 && var6 == 0) { // L: 93
-							var11.int2 = -(var11.int2 * -818070345) * -79798009;
+							var11.int2 = -(var11.int2 * 650111289) * 2142778633;
 						}
 
 						var11.world = var6; // L: 94
 					}
 
 					var11.rank = var7; // L: 96
-					var11.field4085 = var9; // L: 97
-					var11.field4086 = var10; // L: 98
+					var11.field4133 = var9; // L: 97
+					var11.field4134 = var10; // L: 98
 					continue; // L: 99
 				}
 
@@ -160,4 +162,71 @@ public class FriendsList extends UserList {
 			return; // L: 101
 		}
 	}
+
+	@ObfuscatedName("c")
+	@ObfuscatedSignature(
+		descriptor = "(Ljava/io/File;I)V",
+		garbageValue = "-428175274"
+	)
+	static void method6282(File var0) {
+		SecureRandomCallable.FileSystem_cacheDir = var0; // L: 16
+		if (!SecureRandomCallable.FileSystem_cacheDir.exists()) { // L: 17
+			throw new RuntimeException("");
+		} else {
+			FileSystem.FileSystem_hasPermissions = true; // L: 18
+		}
+	} // L: 19
+
+	@ObfuscatedName("j")
+	@ObfuscatedSignature(
+		descriptor = "(ILbl;ZI)I",
+		garbageValue = "-490218334"
+	)
+	static int method6283(int var0, Script var1, boolean var2) {
+		Widget var5;
+		if (var0 == ScriptOpcodes.IF_GETINVOBJECT) { // L: 1362
+			var5 = class130.getWidget(Interpreter.Interpreter_intStack[--Interpreter.Interpreter_intStackSize]); // L: 1363
+			Interpreter.Interpreter_intStack[++Interpreter.Interpreter_intStackSize - 1] = var5.itemId; // L: 1364
+			return 1; // L: 1365
+		} else if (var0 == ScriptOpcodes.IF_GETINVCOUNT) { // L: 1367
+			var5 = class130.getWidget(Interpreter.Interpreter_intStack[--Interpreter.Interpreter_intStackSize]); // L: 1368
+			if (var5.itemId != -1) { // L: 1369
+				Interpreter.Interpreter_intStack[++Interpreter.Interpreter_intStackSize - 1] = var5.itemQuantity;
+			} else {
+				Interpreter.Interpreter_intStack[++Interpreter.Interpreter_intStackSize - 1] = 0; // L: 1370
+			}
+
+			return 1; // L: 1371
+		} else if (var0 == ScriptOpcodes.IF_HASSUB) { // L: 1373
+			int var3 = Interpreter.Interpreter_intStack[--Interpreter.Interpreter_intStackSize]; // L: 1374
+			InterfaceParent var4 = (InterfaceParent)Client.interfaceParents.get((long)var3); // L: 1375
+			if (var4 != null) { // L: 1376
+				Interpreter.Interpreter_intStack[++Interpreter.Interpreter_intStackSize - 1] = 1;
+			} else {
+				Interpreter.Interpreter_intStack[++Interpreter.Interpreter_intStackSize - 1] = 0; // L: 1377
+			}
+
+			return 1; // L: 1378
+		} else if (var0 == ScriptOpcodes.IF_GETTOP) { // L: 1380
+			Interpreter.Interpreter_intStack[++Interpreter.Interpreter_intStackSize - 1] = Client.rootInterface; // L: 1381
+			return 1; // L: 1382
+		} else {
+			return 2; // L: 1384
+		}
+	}
+
+	@ObfuscatedName("g")
+	@ObfuscatedSignature(
+		descriptor = "(IZIB)V",
+		garbageValue = "-56"
+	)
+	public static final void method6281(int var0, boolean var1, int var2) {
+		if (var0 >= 8000 && var0 <= 48000) { // L: 45
+			PcmPlayer.field305 = var0; // L: 46
+			PcmPlayer.PcmPlayer_stereo = var1; // L: 47
+			DevicePcmPlayerProvider.field156 = var2; // L: 48
+		} else {
+			throw new IllegalArgumentException();
+		}
+	} // L: 49
 }

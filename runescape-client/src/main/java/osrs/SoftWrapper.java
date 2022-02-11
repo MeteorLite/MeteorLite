@@ -5,7 +5,7 @@ import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 
-@ObfuscatedName("iz")
+@ObfuscatedName("ir")
 @Implements("SoftWrapper")
 public class SoftWrapper extends Wrapper {
 	@ObfuscatedName("c")
@@ -23,7 +23,7 @@ public class SoftWrapper extends Wrapper {
 		return this.ref.get(); // L: 15
 	}
 
-	@ObfuscatedName("b")
+	@ObfuscatedName("l")
 	@Export("isSoft")
 	boolean isSoft() {
 		return true; // L: 19
