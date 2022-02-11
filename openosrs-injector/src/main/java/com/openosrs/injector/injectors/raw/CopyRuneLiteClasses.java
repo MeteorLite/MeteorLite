@@ -22,7 +22,7 @@ public class CopyRuneLiteClasses extends AbstractInjector
 {
 	private static final List<String> RUNELITE_OBJECTS = List.of(
 					"osrs/RuneLiteObject",
-					"osrs/RuneLiteIterableHashTable"
+					"osrs/RuneLiteIterableNodeHashTable"
 	);
 
 	public CopyRuneLiteClasses(InjectData inject)

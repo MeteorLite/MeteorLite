@@ -24,8 +24,6 @@
  */
 package net.runelite.mixins;
 
-import java.util.ArrayList;
-import java.util.List;
 import net.runelite.api.EnumComposition;
 import net.runelite.api.clan.ClanMember;
 import net.runelite.api.clan.ClanRank;
@@ -35,6 +33,9 @@ import net.runelite.api.mixins.Mixin;
 import net.runelite.api.mixins.Shadow;
 import net.runelite.rs.api.RSClanSettings;
 import net.runelite.rs.api.RSClient;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Mixin(RSClanSettings.class)
 public abstract class ClanSettingsMixin implements RSClanSettings
@@ -53,7 +54,18 @@ public abstract class ClanSettingsMixin implements RSClanSettings
 
 		for (int i = 0; i < memberCount; i++)
 		{
-			memberList.add(new ClanMember(memberNames[i], client.getClanRankFromRs(memberRanks[i])));
+			int finalI = i;
+			memberList.add(new ClanMember() {
+				@Override
+				public String getName() {
+					return memberNames[finalI];
+				}
+
+				@Override
+				public ClanRank getRank() {
+					return client.getClanRankFromRs(memberRanks[finalI]);
+				}
+			});
 		}
 
 		return memberList;
@@ -82,7 +94,18 @@ public abstract class ClanSettingsMixin implements RSClanSettings
 			}
 			else if (compare == 0)
 			{
-				return new ClanMember(memberName, client.getClanRankFromRs(memberRanks[tag]));
+
+				return new ClanMember() {
+					@Override
+					public String getName() {
+						return memberName;
+					}
+
+					@Override
+					public ClanRank getRank() {
+						return client.getClanRankFromRs(memberRanks[tag]);
+					}
+				};
 			}
 			else
 			{

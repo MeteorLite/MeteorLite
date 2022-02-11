@@ -15,7 +15,7 @@ import java.util.List;
 
 public class RuneLiteIterableHashTable extends AbstractInjector
 {
-	private static final String RUNELITE_ITERABLE_HASHTABLE = "osrs/RuneLiteIterableHashTable";
+	private static final String RUNELITE_ITERABLE_HASHTABLE = "osrs/RuneLiteIterableNodeHashTable";
 
 	public RuneLiteIterableHashTable(InjectData inject)
 	{

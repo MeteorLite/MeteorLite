@@ -23,6 +23,7 @@ java {
 
 dependencies {
     implementation(project(":runelite-annotations"))
+    implementation(project(":runelite-api"))
     implementation(project(":meteor-logger"))
     implementation 'org.bouncycastle:bcprov-jdk15on:1.52'
     compileOnly 'org.projectlombok:lombok:1.18.20'

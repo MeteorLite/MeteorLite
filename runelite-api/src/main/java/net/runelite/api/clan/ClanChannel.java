@@ -24,8 +24,8 @@
  */
 package net.runelite.api.clan;
 
-import java.util.List;
 import javax.annotation.Nullable;
+import java.util.List;
 
 /**
  * A clan channel.
