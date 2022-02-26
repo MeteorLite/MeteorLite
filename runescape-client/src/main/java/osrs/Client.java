@@ -3601,7 +3601,7 @@ public final class Client extends GameEngine implements Usernamed, OAuthApi {
 																			var41.packetBuffer.method7405(dragItemSlotDestination); // L: 3293
 																			var41.packetBuffer.method7405(dragItemSlotSource); // L: 3294
 																			var41.packetBuffer.writeInt(class20.dragInventoryWidget.id); // L: 3295
-																			var41.packetBuffer.method7403(var29); // L: 3296
+																			var41.packetBuffer.writeByteAdd$rs(var29); // L: 3296
 																			packetWriter.addNode(var41); // L: 3297
 																		}
 																	} else if (this.shouldLeftClickOpenMenu()) { // L: 3301
@@ -3623,7 +3623,7 @@ public final class Client extends GameEngine implements Usernamed, OAuthApi {
 																var4 = Scene.Scene_selectedY; // L: 3322
 																var41 = class135.getPacketBufferNode(ClientPacket.MOVE_CLICK, packetWriter.isaacCipher); // L: 3324
 																var41.packetBuffer.writeByte(5); // L: 3325
-																var41.packetBuffer.method7403(KeyHandler.KeyHandler_pressedKeys[82] ? (KeyHandler.KeyHandler_pressedKeys[81] ? 2 : 1) : 0); // L: 3326
+																var41.packetBuffer.writeByteAdd$rs(KeyHandler.KeyHandler_pressedKeys[82] ? (KeyHandler.KeyHandler_pressedKeys[81] ? 2 : 1) : 0); // L: 3326
 																var41.packetBuffer.method7555(var3 + Canvas.baseX); // L: 3327
 																var41.packetBuffer.method7555(var4 + class118.baseY); // L: 3328
 																packetWriter.addNode(var41); // L: 3329

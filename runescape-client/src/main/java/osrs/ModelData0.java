@@ -92,7 +92,7 @@ public class ModelData0 {
 				} else if (var0 == 4) { // L: 9138
 					var8 = class135.getPacketBufferNode(ClientPacket.field2884, Client.packetWriter.isaacCipher); // L: 9140
 					var8.packetBuffer.method7394(var3[var6]); // L: 9141
-					var8.packetBuffer.method7403(0); // L: 9142
+					var8.packetBuffer.writeByteAdd$rs(0); // L: 9142
 					Client.packetWriter.addNode(var8); // L: 9143
 				} else if (var0 == 6) { // L: 9145
 					var8 = class135.getPacketBufferNode(ClientPacket.field2867, Client.packetWriter.isaacCipher); // L: 9147

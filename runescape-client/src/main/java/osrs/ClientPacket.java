@@ -10,6 +10,10 @@ import net.runelite.rs.ScriptOpcodes;
 @ObfuscatedName("ie")
 @Implements("ClientPacket")
 public class ClientPacket implements class253 {
+	public ClientPacket() {
+		this.id = -1;
+		this.length= -1;
+	}
 	@ObfuscatedName("c")
 	@ObfuscatedSignature(
 		descriptor = "Lie;"

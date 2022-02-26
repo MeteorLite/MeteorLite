@@ -3,7 +3,8 @@ package net.runelite.rs.api;
 import net.runelite.api.packets.ClientPacket;
 import net.runelite.mapping.Import;
 
-public interface RSClientPacket extends ClientPacket {
+public interface RSClientPacket extends ClientPacket
+{
     @Import("id")
     @Override
     int getId();
@@ -31,6 +32,10 @@ public interface RSClientPacket extends ClientPacket {
     @Import("OPLOCU")
     @Override
     RSClientPacket OPLOCU();
+
+    @Import("OPLOCT")
+    @Override
+    RSClientPacket OPLOCT();
 
     @Import("OPHELD1")
     @Override
@@ -179,4 +184,52 @@ public interface RSClientPacket extends ClientPacket {
     @Import("CLOSE_MODAL")
     @Override
     RSClientPacket CLOSE_MODAL();
+
+    @Import("OPOBJU")
+    @Override
+    RSClientPacket OPOBJU();
+
+    @Import("OPOBJT")
+    @Override
+    RSClientPacket OPOBJT();
+
+    @Import("OPPLAYERU")
+    @Override
+    RSClientPacket OPPLAYERU();
+
+    @Import("OPPLAYERT")
+    @Override
+    RSClientPacket OPPLAYERT();
+
+    @Import("OPPLAYER1")
+    @Override
+    RSClientPacket OPPLAYER1();
+
+    @Import("OPPLAYER2")
+    @Override
+    RSClientPacket OPPLAYER2();
+
+    @Import("OPPLAYER3")
+    @Override
+    RSClientPacket OPPLAYER3();
+
+    @Import("OPPLAYER4")
+    @Override
+    RSClientPacket OPPLAYER4();
+
+    @Import("OPPLAYER5")
+    @Override
+    RSClientPacket OPPLAYER5();
+
+    @Import("OPPLAYER6")
+    @Override
+    RSClientPacket OPPLAYER6();
+
+    @Import("OPPLAYER7")
+    @Override
+    RSClientPacket OPPLAYER7();
+
+    @Import("OPPLAYER8")
+    @Override
+    RSClientPacket OPPLAYER8();
 }

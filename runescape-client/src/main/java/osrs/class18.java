@@ -202,7 +202,7 @@ class class18 implements Comparator {
 					Client.destinationY = var1; // L: 8584
 					var9 = class135.getPacketBufferNode(ClientPacket.field2834, Client.packetWriter.isaacCipher); // L: 8586
 					var9.packetBuffer.method7555(var3); // L: 8587
-					var9.packetBuffer.method7403(KeyHandler.KeyHandler_pressedKeys[82] ? 1 : 0); // L: 8588
+					var9.packetBuffer.writeByteAdd$rs(KeyHandler.KeyHandler_pressedKeys[82] ? 1 : 0); // L: 8588
 					Client.packetWriter.addNode(var9); // L: 8589
 				}
 			} else if (var2 == 10) {
@@ -258,7 +258,7 @@ class class18 implements Comparator {
 					Client.destinationY = var1; // L: 8983
 					var9 = class135.getPacketBufferNode(ClientPacket.field2911, Client.packetWriter.isaacCipher); // L: 8985
 					var9.packetBuffer.writeShort(var3); // L: 8986
-					var9.packetBuffer.method7403(KeyHandler.KeyHandler_pressedKeys[82] ? 1 : 0); // L: 8987
+					var9.packetBuffer.writeByteAdd$rs(KeyHandler.KeyHandler_pressedKeys[82] ? 1 : 0); // L: 8987
 					Client.packetWriter.addNode(var9); // L: 8988
 				}
 			} else {
@@ -273,7 +273,7 @@ class class18 implements Comparator {
 						Client.destinationX = var0; // L: 9084
 						Client.destinationY = var1; // L: 9085
 						var9 = class135.getPacketBufferNode(ClientPacket.field2913, Client.packetWriter.isaacCipher); // L: 9087
-						var9.packetBuffer.method7403(KeyHandler.KeyHandler_pressedKeys[82] ? 1 : 0); // L: 9088
+						var9.packetBuffer.writeByteAdd$rs(KeyHandler.KeyHandler_pressedKeys[82] ? 1 : 0); // L: 9088
 						var9.packetBuffer.writeIntME(class133.selectedItemWidget); // L: 9089
 						var9.packetBuffer.method7394(WorldMapAreaData.selectedItemSlot); // L: 9090
 						var9.packetBuffer.method7555(var3); // L: 9091
@@ -290,7 +290,7 @@ class class18 implements Comparator {
 						Client.destinationX = var0; // L: 8478
 						Client.destinationY = var1; // L: 8479
 						var9 = class135.getPacketBufferNode(ClientPacket.field2842, Client.packetWriter.isaacCipher); // L: 8480
-						var9.packetBuffer.method7403(KeyHandler.KeyHandler_pressedKeys[82] ? 1 : 0); // L: 8481
+						var9.packetBuffer.writeByteAdd$rs(KeyHandler.KeyHandler_pressedKeys[82] ? 1 : 0); // L: 8481
 						var9.packetBuffer.writeIntME(WorldMapLabelSize.selectedSpellWidget); // L: 8482
 						var9.packetBuffer.writeShort(Client.selectedSpellChildIndex); // L: 8483
 						var9.packetBuffer.method7405(Client.field536); // L: 8484
@@ -351,7 +351,7 @@ class class18 implements Comparator {
 					Client.destinationY = var1; // L: 8543
 					var8 = class135.getPacketBufferNode(ClientPacket.field2920, Client.packetWriter.isaacCipher); // L: 8545
 					var8.packetBuffer.method7555(class118.baseY + var1); // L: 8546
-					var8.packetBuffer.method7403(KeyHandler.KeyHandler_pressedKeys[82] ? 1 : 0); // L: 8547
+					var8.packetBuffer.writeByteAdd$rs(KeyHandler.KeyHandler_pressedKeys[82] ? 1 : 0); // L: 8547
 					var8.packetBuffer.method7394(var0 + Canvas.baseX); // L: 8548
 					var8.packetBuffer.method7394(var3); // L: 8549
 					Client.packetWriter.addNode(var8); // L: 8550
@@ -653,7 +653,7 @@ class class18 implements Comparator {
 										Client.destinationY = var1; // L: 9038
 										var9 = class135.getPacketBufferNode(ClientPacket.field2884, Client.packetWriter.isaacCipher); // L: 9040
 										var9.packetBuffer.method7394(var3); // L: 9041
-										var9.packetBuffer.method7403(KeyHandler.KeyHandler_pressedKeys[82] ? 1 : 0); // L: 9042
+										var9.packetBuffer.writeByteAdd$rs(KeyHandler.KeyHandler_pressedKeys[82] ? 1 : 0); // L: 9042
 										Client.packetWriter.addNode(var9); // L: 9043
 									}
 								} else if (var2 == 48) {
@@ -736,7 +736,7 @@ class class18 implements Comparator {
 										var8.packetBuffer.method7555(var0 + Canvas.baseX); // L: 8718
 										var8.packetBuffer.writeShort(class118.baseY + var1); // L: 8719
 										var8.packetBuffer.writeShort(var3); // L: 8720
-										var8.packetBuffer.method7403(KeyHandler.KeyHandler_pressedKeys[82] ? 1 : 0); // L: 8721
+										var8.packetBuffer.writeByteAdd$rs(KeyHandler.KeyHandler_pressedKeys[82] ? 1 : 0); // L: 8721
 										Client.packetWriter.addNode(var8); // L: 8722
 									} else if (var2 == 1002) {
 										Client.mouseCrossX = var6; // L: 8846

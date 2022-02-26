@@ -752,7 +752,7 @@ public class Buffer extends Node {
 		descriptor = "(II)V",
 		garbageValue = "-1143251662"
 	)
-	public void method7403(int var1) {
+	public void writeByteAdd$rs(int var1) {
 		this.array[++this.offset - 1] = (byte)(var1 + 128); // L: 446
 	} // L: 447
 
@@ -833,6 +833,7 @@ public class Buffer extends Node {
 		descriptor = "(IB)V",
 		garbageValue = "127"
 	)
+	@Export("writeShortLE")
 	public void method7555(int var1) {
 		this.array[++this.offset - 1] = (byte)var1; // L: 482
 		this.array[++this.offset - 1] = (byte)(var1 >> 8); // L: 483

@@ -24,8 +24,6 @@ import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Type;
@@ -87,8 +85,10 @@ public class TransportLoader {
         try {
             assert newTransports != null;
             remoteTransports = gson.fromJson(new String(newTransports.readAllBytes()), (Type) RemoteTransport[].class);
-            for (RemoteTransport rt : remoteTransports)
-                System.out.println(rt.objName);
+            for (RemoteTransport rt : remoteTransports) {
+
+            }
+
         } catch (IOException e) {
             e.printStackTrace();
         }

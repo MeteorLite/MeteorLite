@@ -15,11 +15,7 @@ import static org.sponge.util.Logger.ANSI_YELLOW;
 
 import com.openosrs.injector.injection.InjectData;
 import com.openosrs.injector.injection.InjectTaskHandler;
-import com.openosrs.injector.injectors.CreateAnnotations;
-import com.openosrs.injector.injectors.InjectConstruct;
-import com.openosrs.injector.injectors.InterfaceInjector;
-import com.openosrs.injector.injectors.MixinInjector;
-import com.openosrs.injector.injectors.RSApiInjector;
+import com.openosrs.injector.injectors.*;
 import com.openosrs.injector.injectors.raw.*;
 import com.openosrs.injector.net.DecodeNet;
 import com.openosrs.injector.rsapi.RSApi;
@@ -114,6 +110,8 @@ public class Injector extends InjectData implements InjectTaskHandler {
 
     transform(new Java8Ifier(this));
 
+    inject(new MapUnethicalPackets(this));
+
     inject(new CreateAnnotations(this));
 
     inject(new GraphicsObject(this));
@@ -158,8 +156,6 @@ public class Injector extends InjectData implements InjectTaskHandler {
     //inject(new Occluder(this));
 
     inject(new DrawMenu(this, HOOKS));
-
-    inject(new DecodeNet(this));
 
     //inject(new AddPlayerToMenu(this));
 

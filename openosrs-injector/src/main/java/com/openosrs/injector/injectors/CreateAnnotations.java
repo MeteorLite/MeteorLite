@@ -47,12 +47,12 @@ public class CreateAnnotations extends AbstractInjector {
 
   public void inject() {
     for (final ClassFile deobClass : inject.getDeobfuscated()) {
-      injectFields(deobClass);
-      injectMethods(deobClass);
-
-      if (deobClass.getName().startsWith("class")) {
+      if (deobClass.getName().startsWith("class") || deobClass.getName().contains("ClientPacket") || deobClass.getName().equals("osrs/Buffer")) {
         continue;
       }
+
+      injectFields(deobClass);
+      injectMethods(deobClass);
 
       deobClass.addAnnotation(DeobAnnotations.IMPLEMENTS, deobClass.getName());
     }

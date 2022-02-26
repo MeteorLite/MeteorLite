@@ -53,7 +53,7 @@ public class class91 {
 					int var12 = WorldMapSprite.localPlayer.y - var10 >> 7; // L: 3551
 					PacketBufferNode var13 = class135.getPacketBufferNode(ClientPacket.field2926, Client.packetWriter.isaacCipher); // L: 3553
 					var13.packetBuffer.writeByte(18); // L: 3554
-					var13.packetBuffer.method7403(KeyHandler.KeyHandler_pressedKeys[82] ? (KeyHandler.KeyHandler_pressedKeys[81] ? 2 : 1) : 0); // L: 3555
+					var13.packetBuffer.writeByteAdd$rs(KeyHandler.KeyHandler_pressedKeys[82] ? (KeyHandler.KeyHandler_pressedKeys[81] ? 2 : 1) : 0); // L: 3555
 					var13.packetBuffer.method7555(var11 + Canvas.baseX); // L: 3556
 					var13.packetBuffer.method7555(var12 + class118.baseY); // L: 3557
 					var13.packetBuffer.writeByte(var4); // L: 3558

@@ -31,10 +31,17 @@ public class Movement {
     private static final int RUN_VARP = 173;
 
     public static void setDestination(int worldX, int worldY) {
-        MovementPackets.sendMovement(worldX, worldY, Movement.isRunEnabled());
-        Game.getClient().setDestinationX(worldX - Game.getClient().getBaseX());
-        Game.getClient().setDestinationY(worldY - Game.getClient().getBaseY());
+        LocalPoint localPoint = new LocalPoint(worldX - Game.getClient().getBaseX(), worldY - Game.getClient().getBaseY());
+        setDestination(localPoint);
     }
+
+    public static void setDestination(LocalPoint scenePoint)
+    {
+        Game.getClient().setSelectedSceneTileX(scenePoint.getX());
+        Game.getClient().setSelectedSceneTileY(scenePoint.getY());
+        Game.getClient().setViewportWalking(true);
+    }
+
 
     public static WorldPoint getDestination() {
         LocalPoint local = Game.getClient().getLocalDestinationLocation();

@@ -13,9 +13,9 @@ public class MovementPackets {
 		ClientPacket clientPacket = Game.getClientPacket();
 		PacketBufferNode var18 = Game.getClient().preparePacket(clientPacket.MOVE_GAMECLICK(), client.getPacketWriter().getIsaacCipher());
 		var18.getPacketBuffer().writeByte(5);
-		var18.getPacketBuffer().writeByte(run ? 2 : 0);
+		var18.getPacketBuffer().writeByteAdd(run ? 2 : 0);
 		var18.getPacketBuffer().writeShortLE$api(worldY);
-		var18.getPacketBuffer().writeByteC$api(worldX);
+		var18.getPacketBuffer().writeShortLE$api(worldX);
 		client.getPacketWriter().queuePacket(var18);
 	}
 
