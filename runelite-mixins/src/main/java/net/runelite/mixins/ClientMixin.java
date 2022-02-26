@@ -2039,4 +2039,10 @@ public abstract class ClientMixin implements RSClient {
   public static void clientPlaneChanged(int idx) {
     client.getCallbacks().post(new PlaneChanged(client.getPlane()));
   }
+
+  @Inject
+  @Override
+  public long getCurrentTime() {
+    return System.currentTimeMillis();
+  }
 }

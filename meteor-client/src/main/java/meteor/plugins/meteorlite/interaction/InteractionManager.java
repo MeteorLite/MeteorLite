@@ -121,12 +121,11 @@ public class InteractionManager {
 	}
 
 	private void processAction(MenuEntry entry, int x, int y) {
-		if (entry.getMenuAction() == MenuAction.WALK) {
+		if (entry.getMenuAction() == MenuAction.WALK)
 			Movement.setDestination(entry.getParam0(), entry.getParam1());
-		} else {
+		else
 			GameThread.invoke(() -> client.invokeMenuAction(entry.getOption(), entry.getTarget(), entry.getId(),
-							entry.getMenuAction().getId(), entry.getParam0(), entry.getParam1(), x, y));
-		}
+					entry.getMenuAction().getId(), entry.getParam0(), entry.getParam1(), x, y));
 	}
 
 	private Point getClickPoint(InvokeMenuActionEvent e) {

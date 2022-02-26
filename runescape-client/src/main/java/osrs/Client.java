@@ -3621,7 +3621,7 @@ public final class Client extends GameEngine implements Usernamed, OAuthApi {
 															if (Scene.shouldSendWalk()) { // L: 3320
 																var3 = Scene.Scene_selectedX; // L: 3321
 																var4 = Scene.Scene_selectedY; // L: 3322
-																var41 = class135.getPacketBufferNode(ClientPacket.field2861, packetWriter.isaacCipher); // L: 3324
+																var41 = class135.getPacketBufferNode(ClientPacket.MOVE_CLICK, packetWriter.isaacCipher); // L: 3324
 																var41.packetBuffer.writeByte(5); // L: 3325
 																var41.packetBuffer.method7403(KeyHandler.KeyHandler_pressedKeys[82] ? (KeyHandler.KeyHandler_pressedKeys[81] ? 2 : 1) : 0); // L: 3326
 																var41.packetBuffer.method7555(var3 + Canvas.baseX); // L: 3327

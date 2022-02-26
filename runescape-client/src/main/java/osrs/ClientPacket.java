@@ -219,7 +219,8 @@ public class ClientPacket implements class253 {
 	@ObfuscatedSignature(
 		descriptor = "Lie;"
 	)
-	public static final ClientPacket field2861;
+	@Export("MOVE_GAMECLICK")
+	public static final ClientPacket MOVE_CLICK;
 	@ObfuscatedName("au")
 	@ObfuscatedSignature(
 		descriptor = "Lie;"
@@ -595,7 +596,7 @@ public class ClientPacket implements class253 {
 		field2916 = new ClientPacket(38, -1); // L: 43
 		field2872 = new ClientPacket(39, 3); // L: 44
 		field2873 = new ClientPacket(40, -1); // L: 45
-		field2861 = new ClientPacket(41, -1); // L: 46
+		MOVE_CLICK = new ClientPacket(41, -1); // L: 46
 		field2875 = new ClientPacket(42, -2); // L: 47
 		field2876 = new ClientPacket(43, 7); // L: 48
 		field2877 = new ClientPacket(44, -1); // L: 49

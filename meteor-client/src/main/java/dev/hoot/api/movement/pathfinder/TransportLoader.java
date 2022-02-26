@@ -1,5 +1,7 @@
 package dev.hoot.api.movement.pathfinder;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import dev.hoot.api.entities.NPCs;
 import dev.hoot.api.entities.Players;
 import dev.hoot.api.entities.TileObjects;
@@ -11,6 +13,7 @@ import dev.hoot.api.movement.Movement;
 import dev.hoot.api.movement.Reachable;
 import dev.hoot.api.widgets.Dialog;
 import dev.hoot.api.widgets.Widgets;
+import meteor.MeteorLiteClientLauncher;
 import net.runelite.api.Item;
 import net.runelite.api.NPC;
 import net.runelite.api.Skill;
@@ -21,8 +24,12 @@ import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.reflect.Type;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.time.Instant;
 import java.util.ArrayList;
@@ -69,20 +76,23 @@ public class TransportLoader {
         if (!STATIC_TRANSPORTS.isEmpty()) {
             return STATIC_TRANSPORTS;
         }
-
-        try (InputStream txt = new URL(RegionManager.API_URL + "/transports").openStream()) {
-            String[] lines = new String(txt.readAllBytes()).split("\n");
-            for (String l : lines) {
-                String line = l.trim();
-                if (line.startsWith("#") || line.isEmpty()) {
-                    continue;
-                }
-
-                STATIC_TRANSPORTS.add(parseTransportLine(line));
-            }
+        try {
+            System.out.println(new URL(RegionManager.API_URL + "/transports").toString());
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        InputStream newTransports = MeteorLiteClientLauncher.class.getResourceAsStream("/trans.txt");
+        RemoteTransport[] remoteTransports;
+        try {
+            assert newTransports != null;
+            remoteTransports = gson.fromJson(new String(newTransports.readAllBytes()), (Type) RemoteTransport[].class);
+            for (RemoteTransport rt : remoteTransports)
+                System.out.println(rt.objName);
         } catch (IOException e) {
             e.printStackTrace();
         }
+
 
         return STATIC_TRANSPORTS;
     }
